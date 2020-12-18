@@ -8,8 +8,10 @@ Base = declarative_base()
 
 class Messages(db.Model,Base):
  __tablename__ = 'message'
- message_id           =  db.Column(db.Integer,ForeignKey('student.user_id', ondelete='CASCADE',onupdate="CASCADE"),primary_key=True)
- sender_id            =  db.Column(db.String(5),ForeignKey('course.course_code',ondelete='CASCADE',onupdate="CASCADE"),primary_key=True)
- 
- student = relationship('Student', backref=backref('right_association'), passive_deletes=True)
- course  = relationship('Course', backref=backref('left_association'), passive_deletes=True)
+ message_id           =  db.Column(db.Integer,primary_key=True)
+ sender_id            =  db.Column(db.Integer,ForeignKey('user.user_id',ondelete='CASCADE',onupdate="CASCADE"))
+ receiver_id          =  db.Column(db.Integer,ForeignKey('user.user_id',ondelete='CASCADE',onupdate="CASCADE"))
+ sent_time            =  db.Column(db.DateTime)
+
+ sender     = relationship('User', backref=backref('right_association'), passive_deletes=True)
+ receiver   = relationship('User', backref=backref('left_association'), passive_deletes=True)
