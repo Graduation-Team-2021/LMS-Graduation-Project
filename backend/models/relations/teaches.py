@@ -11,5 +11,4 @@ class Teaches_Relation(db.Model,Base):
  professor_id           =  db.Column(db.Integer,ForeignKey('professor.user_id', ondelete='CASCADE',onupdate="CASCADE"),primary_key=True)
  course_id            =  db.Column(db.String(5),ForeignKey('course.course_code',ondelete='CASCADE',onupdate="CASCADE"),primary_key=True)
  
- professor = relationship('Professor', backref=backref('right_association'), passive_deletes=True)
- course  = relationship('Course', backref=backref('left_association'), passive_deletes=True)
+

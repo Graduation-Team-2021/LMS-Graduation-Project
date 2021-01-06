@@ -1,6 +1,6 @@
 from backend.models.config import db
 from sqlalchemy import Column, String, Integer, Date, ForeignKey
-from sqlalchemy.orm import relationship,backref
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -15,10 +15,7 @@ class Student(db.Model,Base):
  birthday       =  db.Column(db.Date,nullable=False)
  password       =  db.Column(db.String(255))
  
- '''
- Relations
- '''
- user                =  relationship("User", back_populates="student") 
+
 
 
 def serialize(self):

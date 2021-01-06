@@ -15,8 +15,5 @@ class Events(db.Model,Base):
  max_students        =  db.Column(db.Integer,nullable=False)
 
 
- '''
- Relations
- '''
- course      =  relationship("Course", back_populates="events") 
+ 
 

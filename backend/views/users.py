@@ -6,5 +6,4 @@ class Users(Resource):
     def get(self):
         controller_object = users_controller()
         user = controller_object.get_user(user_id=1)
-        current_app.logger.warning(user)
         return user
