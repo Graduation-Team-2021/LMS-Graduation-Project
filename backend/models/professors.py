@@ -11,10 +11,6 @@ class Professor(db.Model,Base):
  user_id            =  db.Column(db.Integer, ForeignKey('user.user_id',ondelete='CASCADE',onupdate="CASCADE"), nullable=False, primary_key=True)
  scientific_degree  =  db.Column(db.String(50),nullable=False)
  
- '''
- Relations
- '''
- user       =  relationship("User", back_populates="professor") 
 
  def serialize(self):
         return {

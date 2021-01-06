@@ -15,11 +15,8 @@ class User(db.Model,Base):
  birthday       =  db.Column(db.Date,nullable=False)
  password       =  db.Column(db.String(255))
 
- '''
- Relations
- '''
- student            =  relationship("Student", back_populates="user", passive_deletes=True)
- professor          =  relationship("Professor", back_populates="user", passive_deletes=True)
+
+
 
 
  def serialize(self):
@@ -28,6 +25,10 @@ class User(db.Model,Base):
             'name': self.name
         }
 
+#TODO: add serialize to all tables
+
  def get(self,user_id):
      user = self.query.filter_by(user_id=user_id).one()
      return user.serialize()
+
+#TODO: add database functions

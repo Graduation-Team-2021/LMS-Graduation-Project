@@ -12,5 +12,4 @@ class Finished(db.Model,Base):
  course_code                  =  db.Column(db.String(5),ForeignKey('course.course_code',ondelete='CASCADE',onupdate="CASCADE"),primary_key=True)
  student_id                   =  db.Column(db.Integer,ForeignKey('student.user_id',ondelete='CASCADE',onupdate="CASCADE"),primary_key=True)
 
- course           = relationship('Course', backref=backref('right_association'), passive_deletes=True)
- student          = relationship('Student', backref=backref('left_association'), passive_deletes=True)
+ 

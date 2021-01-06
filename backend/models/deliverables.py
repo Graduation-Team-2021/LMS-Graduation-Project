@@ -15,8 +15,5 @@ class Deliverables(db.Model,Base):
  students_number                =  db.Column(db.Integer,nullable=False)
 
 
- '''
- Relations
- '''
- course      =  relationship("Course", back_populates="deliverable") 
+
 
