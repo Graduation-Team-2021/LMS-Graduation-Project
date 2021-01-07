@@ -9,6 +9,23 @@ Base = declarative_base()
 class Learns_Relation(db.Model,Base):
  __tablename__ = 'learns'
  student_id           =  db.Column(db.Integer,ForeignKey('student.user_id', ondelete='CASCADE',onupdate="CASCADE"),primary_key=True)
- course_id            =  db.Column(db.String(5),ForeignKey('course.course_code',ondelete='CASCADE',onupdate="CASCADE"),primary_key=True)
+ course_code         =  db.Column(db.String(5),ForeignKey('course.course_code',ondelete='CASCADE',onupdate="CASCADE"),primary_key=True)
  
+ def serialize(self):
+        return {
+            'student_id': self.student_id,
+            'course_id': self.course_id
+        }
  
+ def insert(self):
+    db.session.add(self)
+    db.session.commit()
+  
+ def update(self):
+    db.session.merge(self)
+    db.session.commit()
+    
+
+ def delete(self):
+    db.session.delete(self)
+    db.session.commit()

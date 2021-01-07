@@ -1,4 +1,4 @@
-from backend.models.courses import Course
+from backend.models.course.courses import Course
 
 class courses_controller():
     def get_course(self,course_code):
@@ -33,6 +33,9 @@ class courses_controller():
         if courses is None:
             abort(404)
         data = [course.serialize() for course in courses]
-        return (data)    
+        return (data)   
+
+    
+         
 
     
