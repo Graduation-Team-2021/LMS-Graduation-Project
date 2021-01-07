@@ -1,6 +1,6 @@
-from backend.controllers.courses import courses_controller
-from flask_restful import Resource,reqparse
-from flask import current_app,jsonify
+from backend.controllers.course.courses import courses_controller
+from flask_restful                      import Resource,reqparse
+from flask                              import current_app,jsonify
 
 # /courses/:course_code
 class Course(Resource):
@@ -79,5 +79,9 @@ class Courses(Resource):
             'message':'Course created successfully',
             'status_code':200
         })
+
+
+
+
     
     

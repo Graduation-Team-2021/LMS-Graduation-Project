@@ -1,4 +1,4 @@
-from backend.models.users import User
+from backend.models.user.users import User
 
 class users_controller:
     def get_user(self,user_id):
