@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Integer, Date
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
+
 Base = declarative_base()
 
 
@@ -14,8 +15,7 @@ class User(db.Model,Base):
  national_id    =  db.Column(db.Integer,nullable=False, unique=True)
  birthday       =  db.Column(db.Date,nullable=False)
  password       =  db.Column(db.String(255))
-
-
+ 
  def serialize(self):
         return {
             'id': self.user_id,
