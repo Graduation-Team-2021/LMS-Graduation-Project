@@ -1,5 +1,5 @@
 from flask                  import Flask
-from backend.models.config  import setup_db
+from backend.models.config  import app_setup
 from flask_restful          import Api
 
 
@@ -28,7 +28,7 @@ from backend.models.relations.finished              import Finished
 app and database initilization
 """
 app = Flask(__name__)
-setup_db(app)
+app_setup(app)
 api = Api(app)
 
 
@@ -36,14 +36,16 @@ api = Api(app)
 """
 import all the endpoints from views
 """
-from backend.views.user.users                       import User
+from backend.views.user.users                       import User,Sign_Up
 from backend.views.course.courses                   import Course,Courses
 from backend.views.relations.user_course_relation   import User_Course_Relation
 
-api.add_resource(User, '/user')
+api.add_resource(User, '/users')
+api.add_resource(Sign_Up, '/sign_up')
 api.add_resource(Course, '/courses/<course_code>')
 api.add_resource(Courses, '/courses')
 api.add_resource(User_Course_Relation, '/user/courses')
+
 
 
 
