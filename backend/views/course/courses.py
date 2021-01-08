@@ -1,4 +1,5 @@
 from backend.controllers.course.courses import courses_controller
+from backend.methods.errors import *
 from flask_restful                      import Resource,reqparse
 from flask                              import current_app,jsonify
 
@@ -14,7 +15,13 @@ class Course(Resource):
         self.reqparse.add_argument('max_students', type = int, location = 'json')
 
     def get(self,course_code):
-        course = self.controller_object.get_course(course_code=course_code)
+        try:
+            course = self.controller_object.get_course(course_code=course_code)
+        except CourseNotFound:
+            return jsonify({
+                'code':'course_not_found',
+                'description':'Course does not exist.'
+            })
         return jsonify({
             'course':course,
             'status_code': 200

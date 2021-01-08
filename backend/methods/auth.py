@@ -8,7 +8,8 @@ class AuthError(Exception):
         self.status_code = status_code
 
 class Auth:
-    self.secret_key = app.config.get('SECRET_KEY')
+    def __init__(self):
+        self.secret_key = app.config.get('SECRET_KEY')
 
     def encode_auth_token(self,user_id):
                 payload = {
@@ -29,44 +30,42 @@ class Auth:
         if check_password_hash(password,hash):
             return
         raise AuthError({
-            'code': 'invalid_password'
+            'code': 'invalid_password',
             'description': 'Password is incorrect.'
         })
 
-    def get_token_auth_header():
-    """Obtains the Access Token from the Authorization Header
-    """
-    auth = request.headers.get('Authorization', None)
-    if not auth:
-        raise AuthError({
-            'code': 'authorization_header_missing',
-            'description': 'Authorization header is expected.'
-        }, 401)
+    def get_token_auth_header(self):
+        auth = request.headers.get('Authorization', None)
+        if not auth:
+            raise AuthError({
+                'code': 'authorization_header_missing',
+                'description': 'Authorization header is expected.'
+            }, 401)
 
-    parts = auth.split()
-    if parts[0].lower() != 'bearer':
-        raise AuthError({
-            'code': 'invalid_header',
-            'description': 'Authorization header must start with "Bearer".'
-        }, 401)
+        parts = auth.split()
+        if parts[0].lower() != 'bearer':
+            raise AuthError({
+                'code': 'invalid_header',
+                'description': 'Authorization header must start with "Bearer".'
+            }, 401)
 
-    elif len(parts) == 1:
-        raise AuthError({
-            'code': 'invalid_header',
-            'description': 'Token not found.'
-        }, 401)
+        elif len(parts) == 1:
+            raise AuthError({
+                'code': 'invalid_header',
+                'description': 'Token not found.'
+            }, 401)
 
-    elif len(parts) > 2:
-        raise AuthError({
-            'code': 'invalid_header',
-            'description': 'Authorization header must be bearer token.'
-        }, 401)
+        elif len(parts) > 2:
+            raise AuthError({
+                'code': 'invalid_header',
+                'description': 'Authorization header must be bearer token.'
+            }, 401)
 
-    token = parts[1]
-    return token
+        token = parts[1]
+        return token
 
 
-    def verify_decode_jwt(token):
+    def verify_decode_jwt(self,token):
             try:
                 payload = jwt.decode(
                     token,
