@@ -7,7 +7,7 @@ from flask_restful              import Resource,reqparse
 controller_object = users_controller()
 #/users/:id
 class User(Resource):
-    method_decorators = {'get': [requires_auth('admin')]}
+    method_decorators = {'get': [requires_auth('')]}
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -45,3 +45,13 @@ class Sign_Up(Resource):
         # create user and return id
         # if role = teacher create teacher entry else create student entry return auth
         return encode_auth_token(1,'admin')
+
+class Profile(Resource):
+    method_decorators = {'get': [requires_auth_identity("")]}
+    def get(self,user_id,role):
+        try:
+            user = controller_object.get_user(user_id=user_id)
+        except UserNotFound:
+            return 
+        return user
+

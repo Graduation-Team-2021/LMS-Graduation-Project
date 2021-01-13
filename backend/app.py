@@ -1,5 +1,5 @@
 from flask                  import Flask
-from models.config  import app_setup
+from models.config          import app_setup
 from flask_restful          import Api
 
 
@@ -39,6 +39,7 @@ from views.user.users                       import User,Sign_Up
 from views.course.courses                   import Course,Courses
 from views.relations.user_course_relation   import User_Course_Relation
 
+api.add_resource(Profile,'/profile')
 api.add_resource(User, '/users/<user_id>')
 api.add_resource(Sign_Up, '/sign_up')
 api.add_resource(Course, '/courses/<course_code>')
