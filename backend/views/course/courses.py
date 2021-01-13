@@ -1,13 +1,14 @@
-from backend.controllers.course.courses import courses_controller
-from backend.methods.errors import *
+from controllers.course.courses import courses_controller
+from methods.errors import *
 from flask_restful                      import Resource,reqparse
 from flask                              import current_app,jsonify
+
+controller_object = courses_controller()
 
 # /courses/:course_code
 class Course(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.controller_object = courses_controller()
         self.reqparse.add_argument('course_code', type = str, location = 'json')
         self.reqparse.add_argument('course_name', type = str, location = 'json')
         self.reqparse.add_argument('weekly_hours', type = int, location = 'json')
@@ -16,7 +17,7 @@ class Course(Resource):
 
     def get(self,course_code):
         try:
-            course = self.controller_object.get_course(course_code=course_code)
+            course = controller_object.get_course(course_code=course_code)
         except CourseNotFound:
             return jsonify({
                 'code':'course_not_found',
@@ -28,7 +29,7 @@ class Course(Resource):
             })
     
     def delete(self,course_code):
-        course = self.controller_object.delete_course(course_code=course_code)
+        course = controller_object.delete_course(course_code=course_code)
         return jsonify({
             'course':course,
             'message':'Course deleted successfully',
@@ -44,7 +45,7 @@ class Course(Resource):
             'group_number': args['group_number'],
             'max_students': args['max_students'],
         }
-        course = self.controller_object.update_course(course_code,course)
+        course = controller_object.update_course(course_code,course)
         return jsonify({
             'course':course,
             'message':'Course updated successfully',
@@ -56,7 +57,6 @@ class Course(Resource):
 class Courses(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.controller_object = courses_controller()
         self.reqparse.add_argument('course_code', type = str, location = 'json')
         self.reqparse.add_argument('course_name', type = str, location = 'json')
         self.reqparse.add_argument('weekly_hours', type = int, location = 'json')
@@ -64,7 +64,7 @@ class Courses(Resource):
         self.reqparse.add_argument('max_students', type = int, location = 'json')
 
     def get(self):
-        courses = self.controller_object.get_all_courses()
+        courses = controller_object.get_all_courses()
         return {
             'total_courses':len(courses),
             'status_code':200,
@@ -80,7 +80,7 @@ class Courses(Resource):
             'group_number': args['group_number'],
             'max_students': args['max_students'],
         }
-        course = self.controller_object.post_course(course)
+        course = controller_object.post_course(course)
         return jsonify({
             'course':course,
             'message':'Course created successfully',

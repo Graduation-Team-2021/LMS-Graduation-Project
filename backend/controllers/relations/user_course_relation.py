@@ -1,5 +1,5 @@
-from backend.models.relations.teaches import Teaches_Relation
-from backend.models.relations.learns import Learns_Relation
+from models.relations.teaches import Teaches_Relation
+from models.relations.learns import Learns_Relation
 
 # user/courses
 class user_course_relation_controller():
