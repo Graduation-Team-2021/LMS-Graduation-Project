@@ -1,5 +1,5 @@
-from backend.models.course.courses import Course
-from backend.methods.errors import *
+from models.course.courses import Course
+from methods.errors import *
 
 class courses_controller():
     def get_course(self,course_code):
@@ -9,15 +9,15 @@ class courses_controller():
      return course.serialize()
 
     def delete_course(self,course_code):
-        course = Course.query.filter_by(course_code=course_code).first()
-        if course is None:
+        deleted_course = Course.query.filter_by(course_code=course_code).first()
+        if deleted_course is None:
             raise CourseNotFound
-        deleted_course = Course.delete(course)
-        return deleted_course
+        Course.delete(course)
+        return 
 
     def update_course(self,course_code,course):
         updated_course = Course.query.filter_by(course_code=course_code)
-        if course is None:
+        if updated_course is None:
             raise CourseNotFound
         updated_course = Course(**course)
         updated_course.update()

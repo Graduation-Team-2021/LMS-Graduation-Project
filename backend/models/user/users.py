@@ -1,4 +1,4 @@
-from backend.models.config import db
+from models.config import db
 from sqlalchemy import Column, String, Integer, Date
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
