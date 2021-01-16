@@ -2,6 +2,7 @@ from controllers.user.users     import users_controller
 from methods.auth               import *
 from methods.errors             import *
 from flask_restful              import Resource,reqparse
+from app import app
 
 
 controller_object = users_controller()
