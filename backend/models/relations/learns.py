@@ -14,7 +14,7 @@ class Learns_Relation(db.Model,Base):
  def serialize(self):
         return {
             'student_id': self.student_id,
-            'course_id': self.course_id
+            'course_code': self.course_code
         }
  
  def insert(self):

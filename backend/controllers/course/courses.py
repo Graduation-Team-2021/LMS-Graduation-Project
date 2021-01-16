@@ -1,5 +1,5 @@
 from models.course.courses import Course
-from methods.errors import ErrorHandler
+from methods.errors import *
 
 class courses_controller():
     def get_course(self,course_code):

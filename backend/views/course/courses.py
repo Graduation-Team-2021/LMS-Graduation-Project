@@ -1,9 +1,14 @@
 from controllers.course.courses import courses_controller
-from methods.errors import ErrorHandler
-from flask_restful                      import Resource,reqparse
-from flask                              import current_app,jsonify
+from controllers.relations.professor_course_relation  import professor_course_relation_controller
+from controllers.relations.student_course_relation  import student_course_relation_controller
+from methods.errors import *
+from methods.auth import *
+from flask_restful import Resource,reqparse
+from flask import current_app,jsonify
 
 controller_object = courses_controller()
+professor_controller_object = professor_course_relation_controller()
+student_controller_object = student_course_relation_controller()
 
 # /courses/:course_code
 class Course(Resource):
@@ -88,10 +93,33 @@ class Courses(Resource):
         }
         course = controller_object.post_course(course)
         return jsonify({
-            'course':course,
             'message':'Course created successfully',
             'status_code':200
         })
+
+class My_Courses(Resource):
+    method_decorators = {'get': [requires_auth_identity("")]}
+    def get(self,user_id,role):
+        if role == 'student':
+            try:
+                student_courses = student_controller_object.get_courses_by_student_id(user_id)
+            except ErrorHandler as e:
+                return e.error
+            return jsonify({
+                'courses':student_courses,
+                'status_code': 200
+                })
+        elif role == 'professor':
+            try:
+                professor_courses = professor_controller_object.get_courses_by_professor_id(user_id)
+            except ErrorHandler as e:
+                return e.error
+            return jsonify({
+                'courses':professor_courses,
+                'status_code': 200
+                })
+
+
 
 
 
