@@ -1,4 +1,4 @@
-from backend.models.config import db
+from models.config import db
 from sqlalchemy import Column, String, Integer, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -15,8 +15,5 @@ class Deliverables(db.Model,Base):
  students_number                =  db.Column(db.Integer,nullable=False)
 
 
- '''
- Relations
- '''
- course      =  relationship("Course", back_populates="deliverable") 
+
 
