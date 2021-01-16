@@ -1,5 +1,5 @@
 from controllers.course.courses import courses_controller
-from methods.errors import *
+from methods.errors import ErrorHandler
 from flask_restful                      import Resource,reqparse
 from flask                              import current_app,jsonify
 
@@ -18,18 +18,18 @@ class Course(Resource):
     def get(self,course_code):
         try:
             course = controller_object.get_course(course_code=course_code)
-        except CourseNotFound:
-            return jsonify({
-                'code':'course_not_found',
-                'description':'Course does not exist.'
-            })
+        except ErrorHandler as e:
+            return e.error
         return jsonify({
             'course':course,
             'status_code': 200
             })
     
     def delete(self,course_code):
-        course = controller_object.delete_course(course_code=course_code)
+        try:
+            course = controller_object.delete_course(course_code=course_code)
+        except ErrorHandler as e:
+            return e.error
         return jsonify({
             'course':course,
             'message':'Course deleted successfully',
@@ -45,7 +45,10 @@ class Course(Resource):
             'group_number': args['group_number'],
             'max_students': args['max_students'],
         }
-        course = controller_object.update_course(course_code,course)
+        try:
+            course = controller_object.update_course(course_code,course)
+        except ErrorHandler as e:
+            return e.error
         return jsonify({
             'course':course,
             'message':'Course updated successfully',
@@ -64,7 +67,10 @@ class Courses(Resource):
         self.reqparse.add_argument('max_students', type = int, location = 'json')
 
     def get(self):
-        courses = controller_object.get_all_courses()
+        try:
+            courses = controller_object.get_all_courses()
+        except ErrorHandler as e:
+            return e.error
         return {
             'total_courses':len(courses),
             'status_code':200,
