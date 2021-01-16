@@ -1,4 +1,4 @@
-from backend.models.config import db
+from models.config import db
 from sqlalchemy import Column, String, Integer, Date, ForeignKey
 from sqlalchemy.orm import relationship,backref
 from sqlalchemy.ext.declarative import declarative_base
@@ -13,5 +13,4 @@ class Messages(db.Model,Base):
  receiver_id          =  db.Column(db.Integer,ForeignKey('user.user_id',ondelete='CASCADE',onupdate="CASCADE"))
  sent_time            =  db.Column(db.DateTime)
 
- sender     = relationship('User', backref=backref('right_association'), passive_deletes=True)
- receiver   = relationship('User', backref=backref('left_association'), passive_deletes=True)
+ 
