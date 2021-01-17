@@ -4,10 +4,10 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 
-Base = declarative_base()
 
 
-class User(db.Model,Base):
+
+class User(db.Model):
  __tablename__ = 'user'
  user_id        =  db.Column(db.Integer, primary_key=True)
  name           =  db.Column(db.String(50),nullable=False)
