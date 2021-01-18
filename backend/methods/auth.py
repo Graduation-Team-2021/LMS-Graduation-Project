@@ -1,14 +1,13 @@
-from app import app
 from flask import request,jsonify
 from flask_restful import abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from methods.errors import ErrorHandler
-import datetime,jwt
+import datetime,jwt,os
 
 
+secret_key = os.environ['SECRET_KEY']
 
-secret_key = app.config.get('SECRET_KEY')
 
 def encode_auth_token(user_id,role):
         payload = {

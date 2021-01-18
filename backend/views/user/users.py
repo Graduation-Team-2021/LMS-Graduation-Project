@@ -4,6 +4,7 @@ from methods.errors             import *
 from flask_restful              import Resource,reqparse
 
 
+
 controller_object = users_controller()
 #/users/:id
 class User(Resource):
@@ -44,7 +45,7 @@ class Sign_Up(Resource):
         }
         # create user and return id
         # if role = teacher create teacher entry else create student entry return auth
-        return encode_auth_token(1,'student')
+        return encode_auth_token(2,'student')
 
 class Profile(Resource):
     method_decorators = {'get': [requires_auth_identity("")]}
