@@ -15,3 +15,15 @@ class messages_controller():
             })
         data = [message.serialize() for message in messages]
         return(data)
+    
+    def post_message(self,message):
+        try:
+            new_message = Messages(**message)
+            new_message = Messages.insert(new_message)
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+            'description':error,
+            'status_code': 500
+            })
+        return new_message

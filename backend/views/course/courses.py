@@ -91,7 +91,10 @@ class Courses(Resource):
             'group_number': args['group_number'],
             'max_students': args['max_students'],
         }
-        course = controller_object.post_course(course)
+        try:
+            course = controller_object.post_course(course)
+        except ErrorHandler as e:
+            return e.error
         return jsonify({
             'message':'Course created successfully',
             'status_code':200
