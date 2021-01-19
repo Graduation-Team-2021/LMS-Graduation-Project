@@ -4,6 +4,7 @@ from methods.errors import ErrorHandler
 class materials_controller():
     def get_Materials(self,course_code):
      materials = Materials.query.filter_by(course_material=course_code)
+     #TODO: Handle SQLAlchemyError 
      if materials is None:
         raise ErrorHandler({
                 'description':'Materials does not exist.',
