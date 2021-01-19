@@ -18,7 +18,7 @@ class courses_controller():
                 'description':'Course does not exist.',
                 'status_code': 404
                 })
-        Course.delete(course)
+        Course.delete(deleted_course)
         return 
 
     def update_course(self,course_code,course):
