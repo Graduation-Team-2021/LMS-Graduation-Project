@@ -44,7 +44,7 @@ class Course(Resource):
     def put(self,course_code):
         args = self.reqparse.parse_args()
         course = {
-            'course_code': args['course_code'],
+            'course_code':  course_code,
             'course_name': args['course_name'],
             'weekly_hours': args['weekly_hours'],
             'group_number': args['group_number'],
