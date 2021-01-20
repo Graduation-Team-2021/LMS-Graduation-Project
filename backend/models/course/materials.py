@@ -12,7 +12,6 @@ class Materials(db.Model,Base):
  material_name                   =  db.Column(db.String(50),nullable=False)
  material_type                   =  db.Column(db.String(50),nullable=False)
  downloadable                    =  db.Column(db.Boolean,nullable=False)
- file_path                       =  db.Column(db.String(80),nullable=False)
  course_material                 =  db.Column(db.String(5), ForeignKey('course.course_code',ondelete='CASCADE',onupdate="CASCADE"), nullable=False)
  students_number                 =  db.Column(db.Integer,nullable=False)
 
@@ -22,9 +21,7 @@ class Materials(db.Model,Base):
         "material_name": self.material_name,
         "material_type": self.material_type,
         "downloadable": self.downloadable,
-        "file_path": self.file_path,
-        "course_material": self.course_material,
-        "students_number": self.students_number
+        "course_material": self.course_material
         }
  def insert(self):
     db.session.add(self)

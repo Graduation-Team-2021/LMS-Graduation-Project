@@ -41,22 +41,37 @@ import all the endpoints from views
 """
 from views.user.users                           import User,Sign_Up
 from views.course.courses                       import Course,Courses,My_Courses
-from views.course.materials                      import material,materials
+from views.course.materials                     import material,materials,download_material,upload_material
 from views.relations.professor_course_relation  import Professor_Course_Relation,Professor_Courses_Relation
 from views.relations.student_course_relation    import Student_Course_Relation,Student_Courses_Relation
 from views.relations.messages                   import Messages_Relation
+
+"""
+ Users
+"""
 api.add_resource(User, '/users/<user_id>')
 api.add_resource(Sign_Up, '/sign_up')
+# Professor
+api.add_resource(Professor_Course_Relation, '/professor/<professor_id>/courses')
+api.add_resource(Professor_Courses_Relation, '/professor/<professor_id>/courses/<course_code>')
+# Student
+api.add_resource(Student_Course_Relation, '/student/<student_id>/courses')
+api.add_resource(Student_Courses_Relation, '/student/<student_id>/courses/<course_code>')
+# Messages
+api.add_resource(Messages_Relation,'/users/messages/<conversee_id>')
+
+"""
+Courses
+"""
 api.add_resource(Course, '/courses/<course_code>')
 api.add_resource(Courses, '/courses')
 api.add_resource(My_Courses, '/my_courses')
+# Materials
 api.add_resource(material,'/courses/<course_code>/materials/<id>')
 api.add_resource(materials,'/courses/<course_code>/materials')
-api.add_resource(Professor_Course_Relation, '/professor/<professor_id>/courses')
-api.add_resource(Professor_Courses_Relation, '/professor/<professor_id>/courses/<course_code>')
-api.add_resource(Student_Course_Relation, '/student/<student_id>/courses')
-api.add_resource(Student_Courses_Relation, '/student/<student_id>/courses/<course_code>')
-api.add_resource(Messages_Relation,'/users/messages/<conversee_id>')
+api.add_resource(download_material,'/courses/<course_code>/materials/<id>/download')
+api.add_resource(upload_material,'/courses/<course_code>/materials/<id>/upload')
+
 
 
 

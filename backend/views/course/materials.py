@@ -2,7 +2,8 @@ from controllers.course.materials import materials_controller
 from methods.errors import *
 from methods.auth import *
 from flask_restful import Resource,reqparse
-from flask import current_app,jsonify
+from flask import current_app,jsonify,send_from_directory
+import werkzeug
 
 controller_object = materials_controller()
 
@@ -51,7 +52,7 @@ class material(Resource):
         })
         
     
-#/coursers/<course_code>/materials
+#/courses/<course_code>/materials
 class materials(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -91,4 +92,33 @@ class materials(Resource):
             'message':'Materials created successfully',
             'status_code':200
         }) 
+
+#/courses/<course_code>/materials/<id>/download
+class download_material(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        
+    
+    def post(self,id,course_code):
+        try:
+            material = controller_object.get_Material(id)
+            return controller_object.download_material(material,course_code) 
+        except ErrorHandler as e:
+            return e.error
+        
+#/courses/<course_code>/materials/<id>/upload
+class upload_material(Resource):
+    def __init__(self):
+       self.reqparse = reqparse.RequestParser()
+       self.reqparse.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
+    
+    def post(self,id,course_code):
+       args = self.reqparse.parse_args()
+       data = args['file']
+       controller_object.upload_material(data,course_code)
+       return jsonify({
+            'message':'Materials uploaded successfully',
+            'status_code':200
+        }) 
+
     

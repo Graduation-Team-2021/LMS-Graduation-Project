@@ -14,6 +14,8 @@ def app_setup(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_PATH')
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['STATIC_PATH'] = os.getenv('STATIC_PATH')
+    app.config['ALLOWED_EXTENSIONS'] = ['jpg', 'jpeg', 'png']
     app.config['DEBUG'] = True
     db.app = app
     db.init_app(app)
