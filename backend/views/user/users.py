@@ -17,6 +17,14 @@ class User(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('name', type=str, location='json')
+        self.reqparse.add_argument('email', type=str, location='json')
+        self.reqparse.add_argument('national_id', type=str, location='json')
+        self.reqparse.add_argument('birthday', type=str, location='json')
+        self.reqparse.add_argument('password', type=str, location='json')
+        self.reqparse.add_argument('student_year', type=str, location='json')
+        self.reqparse.add_argument('scientific_degree', type=str, location='json')
+        self.reqparse.add_argument('role', type=str, location='json')
 
     def get(self, user_id):
         try:
@@ -24,6 +32,26 @@ class User(Resource):
         except ErrorHandler as e:
             return e.error
         return user
+
+    def put(self, user_id):
+        args = self.reqparse.parse_args()
+        user = {
+            'user_id': user_id,
+            'name': args['name'],
+            'email': args['email'],
+            'national_id': args['national_id'],
+            'birthday': args['birthday']
+        }
+        try:
+            controller_object.update_user(user_id, user)
+        except ErrorHandler as e:
+            return e.error
+        # return updated_user
+        return jsonify({
+            'user': user,
+            'message': 'User updated successfully',
+            'status code': 200
+        })
 
     def delete(self, user_id):
         try:
@@ -102,7 +130,7 @@ class Sign_Up(Resource):
                 'scientific_degree': args['scientific_degree']
             }
             cont_professor.post_professor(professor)
-        return encode_auth_token(1, "student")
+        return encode_auth_token(id, role)
 
 
 # /login

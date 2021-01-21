@@ -10,6 +10,7 @@ controller_object = students_controller()
 class Student(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('student_year', type=str, location='json')
 
     def get(self, user_id):
         try:
@@ -19,6 +20,22 @@ class Student(Resource):
         return jsonify({
             'Student': student,
             'status_code': 200
+        })
+
+    def put(self, user_id):
+        args = self.reqparse.parse_args()
+        student = {
+            'user_id': user_id,
+            'student_year':args['student_year']
+        }
+        try:
+            controller_object.update_student(user_id, student)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'student': student,
+            'message': 'student updated successfully',
+            'status code': 200
         })
 
     def delete(self, user_id):

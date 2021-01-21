@@ -1,8 +1,7 @@
 from flask import Flask
 from models.config import app_setup
 from flask_restful import Api
-from methods.errors import ErrorHandler
-import logging
+
 
 """
 import all models from models
@@ -46,14 +45,14 @@ from views.relations.messages import Messages_Relation
 api.add_resource(User, '/users/<user_id>')
 api.add_resource(Users, '/users')
 api.add_resource(Sign_Up, '/sign_up')
-api.add_resource(Login,'/login')
+api.add_resource(Login, '/login')
 # Professor
 api.add_resource(Professor, '/professor/<user_id>')
 api.add_resource(Professors, '/professors')
 # Professor relation
 api.add_resource(Professor_Course_Relation, '/professor/<professor_id>/courses')
 api.add_resource(Professor_Courses_Relation, '/professor/<professor_id>/courses/<course_code>')
-#Student
+# Student
 api.add_resource(Students, '/students')
 api.add_resource(Student, '/student/<user_id>')
 # Student relation

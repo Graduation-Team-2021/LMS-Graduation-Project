@@ -13,6 +13,7 @@ class Professor(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('scientific_degree', type=str, location='json')
 
     def get(self, user_id):
         try:
@@ -21,6 +22,19 @@ class Professor(Resource):
             return e.error
         return jsonify({'professor': professor,
                         'status_code': 200})
+
+    def put(self, user_id):
+        args = self.reqparse.parse_args()
+        professor = {'user_id': user_id, 'scientific_degree': args['scientific_degree']}
+        try:
+            controller_object.update_professor(user_id, professor)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'professor': professor,
+            'message': 'professor updated successfully',
+            'status code': 200
+        })
 
     def delete(self, user_id):
         try:
