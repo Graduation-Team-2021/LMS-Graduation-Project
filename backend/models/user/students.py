@@ -6,20 +6,26 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-class Student(db.Model,Base):
- __tablename__ = 'student'
- user_id        =  db.Column(db.Integer, ForeignKey('user.user_id', ondelete='CASCADE',onupdate="CASCADE"), nullable=False, primary_key=True)
- student_year   =  db.Column(db.Integer,nullable=False)
- 
+class Student(db.Model, Base):
+    __tablename__ = 'student'
+    user_id = db.Column(db.Integer, ForeignKey('user.user_id', ondelete='CASCADE', onupdate="CASCADE"), nullable=False,
+                        primary_key=True)
+    student_year = db.Column(db.Integer, nullable=False)
 
-
-
-def serialize(self):
+    def serialize(self):
         return {
             'id': self.user_id,
-            'name': self.name
+            'student_year': self.student_year
         }
 
-def get(self,user_id):
-     user = self.query.filter_by(user_id=user_id).one()
-     return user.serialize()
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.merge(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
