@@ -17,7 +17,7 @@ class messages_controller():
                 'status_code': 500
             })
         data = [message.serialize() for message in messages]
-        return (data)
+        return data
 
     def post_message(self, message):
         try:

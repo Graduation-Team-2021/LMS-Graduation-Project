@@ -12,7 +12,7 @@ class Deliver(db.Model, Base):
     deliverable_id = db.Column(db.Integer,
                                ForeignKey('deliverable.deliverable_id', ondelete='CASCADE', onupdate="CASCADE"),
                                primary_key=True)  # table name not class name
-    group_id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer) #, primary_key=True)
     student_id = db.Column(db.Integer, ForeignKey('student.user_id', ondelete='CASCADE', onupdate="CASCADE"),
                            primary_key=True)  # table name not class name
     student = relationship("Student", foreign_keys=[student_id])  # class name not table name
@@ -20,8 +20,8 @@ class Deliver(db.Model, Base):
 
     def serialize(self):
         return {
-            'deliverable_id ': self.deliverable_id,
-            'group_id ': self.group_id,
+            'deliverable_id': self.deliverable_id,
+            'group_id': self.group_id,
             'student_id': self.student_id,
         }
 
