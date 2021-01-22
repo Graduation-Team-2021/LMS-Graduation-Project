@@ -8,25 +8,26 @@ class professors_controller():
 
     def get_professor(self, prof_id):
         try:
-            professors = Professor.query.join(User).filter(User.user_id == prof_id).with_entities(User.name,User.email,User.national_id,
+            professors = Professor.query.join(User).filter(User.user_id == prof_id).with_entities(User.name, User.email,
+                                                                                                  User.national_id,
                                                                                                   Professor.scientific_degree,
-                                                                                                  User.user_id,User.birthday)
-            professor = [professor for professor in professors]
+                                                                                                  User.user_id,
+                                                                                                  User.birthday)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
             })
-
+        professor = [professor for professor in professors]
         # professor = Professor.query.filter_by(user_id=prof_id).first()
-        if professor is None:
+        if not professor:
             raise ErrorHandler({
-                'description': 'Student does not exist.',
+                'description': 'Professor does not exist.',
                 'status_code': 404
             })
         return {'name': professor[0][0], 'email': professor[0][1], 'national_id': professor[0][2],
-                'id': professor[0][4], 'scientific_degree': professor[0][3],"birthday":professor[0][5]}
+                'id': professor[0][4], 'scientific_degree': professor[0][3], "birthday": professor[0][5]}
         # return professor
 
     def delete_professor(self, prof_id):
