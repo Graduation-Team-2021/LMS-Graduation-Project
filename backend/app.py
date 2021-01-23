@@ -39,7 +39,7 @@ from views.relations.student_course_relation import Student_Course_Relation, Stu
 from views.relations.messages import Messages_Relation
 from views.relations.delivers import Delivers_Relation,Delete_Deliverable
 from views.course.deliverables import upload_file,Deliverable_view,All_Deliverables
-
+from views.course.events import Event, Events
 """
 Users
 """
@@ -108,3 +108,6 @@ get Deliverable
 api.add_resource(All_Deliverables, '/deliverables')
 api.add_resource(Deliverable_view, '/deliverables/<deliverable_id>')
 
+# Events
+api.add_resource(Event, '/courses/<course_code>/events/<event_id>')
+api.add_resource(Events, '/courses/<course_code>/events')
