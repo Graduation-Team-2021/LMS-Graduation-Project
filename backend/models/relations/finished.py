@@ -13,3 +13,21 @@ class Finished(db.Model, Base):
                             primary_key=True)
     student_id = db.Column(db.Integer, ForeignKey('student.user_id', ondelete='CASCADE', onupdate="CASCADE"),
                            primary_key=True)
+
+    def serialize(self):
+        return {
+            'course_code': self.course_code,
+            'student_id': self.student_id
+        }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.merge(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()

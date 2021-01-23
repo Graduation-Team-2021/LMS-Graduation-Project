@@ -37,9 +37,11 @@ from views.course.materials import material, materials, download_material, uploa
 from views.relations.professor_course_relation import Professor_Course_Relation, Professor_Courses_Relation
 from views.relations.student_course_relation import Student_Course_Relation, Student_Courses_Relation
 from views.relations.messages import Messages_Relation
-from views.relations.delivers import Delivers_Relation,Delete_Deliverable
-from views.course.deliverables import upload_file,Deliverable_view,All_Deliverables
+from views.relations.delivers import Delivers_Relation, Delete_Deliverable
+from views.course.deliverables import upload_file, Deliverable_view, All_Deliverables
 from views.course.events import Event, Events
+from views.relations.finished import finished_relation_view,finished_relation_using_the_two_keys
+
 """
 Users
 """
@@ -107,7 +109,27 @@ get Deliverable
 """
 api.add_resource(All_Deliverables, '/deliverables')
 api.add_resource(Deliverable_view, '/deliverables/<deliverable_id>')
-
-# Events
+"""
+Events
+"""
 api.add_resource(Event, '/courses/<course_code>/events/<event_id>')
 api.add_resource(Events, '/courses/<course_code>/events')
+
+"""
+Finished courses relation
+"""
+api.add_resource(finished_relation_view, '/student/<student_id>/finishedCourses')
+
+
+"""
+(Put) method in finished relation
+"""
+# feh moshkela hena en el course el gedeed bytdaf msh by3ml replace lel adeem
+api.add_resource(finished_relation_using_the_two_keys, '/student/<student_id>/finishedCourses/<course_code>')
+
+"""
+Run app
+"""
+if __name__ == "__main__":
+    app.config["DEBUG"] = True
+    app.run()

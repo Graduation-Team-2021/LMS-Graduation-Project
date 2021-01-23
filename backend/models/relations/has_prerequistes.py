@@ -12,3 +12,21 @@ class Prerequiste(db.Model, Base):
     course_code = db.Column(db.String(5), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                             primary_key=True)
     pre_course_id = db.Column(db.String(5), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"))
+
+    def serialize(self):
+        return {
+            'course_code': self.course_code,
+            'pre_course_id': self.pre_course_id
+        }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.merge(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
