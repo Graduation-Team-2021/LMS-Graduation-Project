@@ -3,7 +3,7 @@ from sqlalchemy import or_, and_
 from methods.errors import *
 from models.course.deliverables import Deliverables
 from flask import json
-
+from models.user.students import Student
 
 class delivers_controller():
     def get_deliverable(self, student_id):
@@ -46,6 +46,11 @@ class delivers_controller():
         return True
 
     def get_one_student_all_deliverables(self, student_id):
+        if not Student.query.filter_by(user_id=student_id).first():
+            raise ErrorHandler ({
+                "message":"student does not exist",
+                "status code":404
+            })
         deliverables_list = []
         all_deliverables = Deliverables.query.join(Deliver).filter(
             Deliverables.deliverable_id == Deliver.deliverable_id,

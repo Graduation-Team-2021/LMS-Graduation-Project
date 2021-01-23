@@ -41,7 +41,7 @@ from views.relations.delivers import Delivers_Relation,Delete_Deliverable
 from views.course.deliverables import upload_file,Deliverable_view,All_Deliverables
 
 """
- Users
+Users
 """
 api.add_resource(User, '/users/<user_id>')
 api.add_resource(Users, '/users')
@@ -53,15 +53,16 @@ Professor
 api.add_resource(Professor, '/professors/<user_id>')
 api.add_resource(Professors, '/professors')
 """
-Professor relation
-"""
-api.add_resource(Professor_Course_Relation, '/professor/<professor_id>/courses')
-api.add_resource(Professor_Courses_Relation, '/professor/<professor_id>/courses/<course_code>')
-"""
 Student
 """
 api.add_resource(Students, '/students')
 api.add_resource(Student, '/students/<user_id>')
+"""
+Professor relation
+"""
+# feh moshkela hena
+api.add_resource(Professor_Course_Relation, '/professor/<professor_id>/courses')
+api.add_resource(Professor_Courses_Relation, '/professor/<professor_id>/courses/<course_code>')
 """
 Student relation
 """
@@ -86,7 +87,7 @@ api.add_resource(materials, '/courses/<course_code>/materials')
 api.add_resource(download_material, '/courses/<course_code>/materials/<id>/download')
 api.add_resource(upload_material, '/courses/<course_code>/materials/<id>/upload')
 """
-Each student Delivers
+Each student deliverables
 """
 api.add_resource(Delivers_Relation, '/student/<student_id>/deliverables')
 """
@@ -98,14 +99,12 @@ Each course deliverables
 """
 # api.add_resource(, '/course/<course_code>/deliverables')
 """
-Upload file
+Upload file (deliverable)
 """
 api.add_resource(upload_file, '/students/<student_id>/course/<course_code>/deliverables/<deliverable_id>')
 """
 get Deliverable
 """
-api.add_resource(Deliverable_view, '/deliverables/<deliverable_id>')
-"""
-Get all deliverables
-"""
 api.add_resource(All_Deliverables, '/deliverables')
+api.add_resource(Deliverable_view, '/deliverables/<deliverable_id>')
+
