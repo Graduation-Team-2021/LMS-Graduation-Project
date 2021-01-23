@@ -51,6 +51,7 @@ class finished_relation_using_the_two_keys(Resource):
             'status_code': 200
         })
 
+    # feh moshkela hena , new course doesnot replace the old one but is added to the table
     def put(self, student_id, course_code):
         args = self.reqparse.parse_args()
         new_course = {

@@ -8,8 +8,14 @@ from models.user.students import Student
 
 class delivers_controller():
     def get_deliverable(self, student_id):
-
-        deliverable = Deliver.query.filter_by(student_id=student_id).first()
+        try:
+            deliverable = Deliver.query.filter_by(student_id=student_id).first()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
         if not deliverable:
             raise ErrorHandler({'description': 'deliverable does not exists',
                                 'status_code': 500

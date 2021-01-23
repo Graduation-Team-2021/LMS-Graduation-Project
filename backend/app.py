@@ -41,6 +41,9 @@ from views.relations.delivers import Delivers_Relation, Delete_Deliverable
 from views.course.deliverables import upload_file, Deliverable_view, All_Deliverables
 from views.course.events import Event, Events
 from views.relations.finished import finished_relation_view,finished_relation_using_the_two_keys
+from views.relations.has_prerequisites import prerequisite_view
+from views.relations.has_prerequisites import retrieve_all_prequisites
+from views.relations.has_prerequisites import postAndUpdatePrequisites
 
 """
 Users
@@ -126,6 +129,19 @@ api.add_resource(finished_relation_view, '/student/<student_id>/finishedCourses'
 """
 # feh moshkela hena en el course el gedeed bytdaf msh by3ml replace lel adeem
 api.add_resource(finished_relation_using_the_two_keys, '/student/<student_id>/finishedCourses/<course_code>')
+
+"""
+Course prerequisite routes
+"""
+api.add_resource(prerequisite_view, '/courses/<course_id>/prerequisites')
+"""
+Get all prequisites
+"""
+api.add_resource(retrieve_all_prequisites, '/prerequisites')
+"""
+post or update prequisite
+"""
+api.add_resource(postAndUpdatePrequisites, '/prerequisites')
 
 """
 Run app
