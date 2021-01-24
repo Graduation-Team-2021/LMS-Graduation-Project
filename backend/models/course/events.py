@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
+
 class Events(db.Model, Base):
     __tablename__ = 'events'
     event_id = db.Column(db.Integer, primary_key=True)
@@ -35,6 +36,3 @@ class Events(db.Model, Base):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-
-
-

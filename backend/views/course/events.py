@@ -1,12 +1,13 @@
 from controllers.course.events import events_controller
 from methods.errors import *
 from methods.auth import *
+
 from flask_restful import Resource, reqparse
 from flask import current_app, jsonify, send_from_directory
+
 import werkzeug
 
 controller_object = events_controller()
-
 
 # /course/<course_code>/events/<id>
 class Event(Resource):
@@ -55,10 +56,12 @@ class Event(Resource):
         })
 
 
+
 # /courses/<course_code>/events
 class Events(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+
         self.reqparse.add_argument('event_id', type=int, location='json')
         self.reqparse.add_argument('event_name', type=str, location='json')
         self.reqparse.add_argument('event_date', type=str,
@@ -93,3 +96,5 @@ class Events(Resource):
             'message': 'event created successfully',
             'status_code': 200
         })
+
+       

@@ -33,6 +33,7 @@ from views.user.users import User, Sign_Up, Users, Login
 from views.user.professors import Professor, Professors
 from views.user.students import Students, Student
 from views.course.courses import Course, Courses, My_Courses
+from views.course.events import Event, Events;
 from views.course.materials import material, materials, download_material, upload_material
 from views.relations.professor_course_relation import Professor_Course_Relation, Professor_Courses_Relation
 from views.relations.student_course_relation import Student_Course_Relation, Student_Courses_Relation
@@ -90,6 +91,7 @@ api.add_resource(material, '/courses/<course_code>/materials/<id>')
 api.add_resource(materials, '/courses/<course_code>/materials')
 api.add_resource(download_material, '/courses/<course_code>/materials/<id>/download')
 api.add_resource(upload_material, '/courses/<course_code>/materials/<id>/upload')
+
 """
 Each student deliverables
 """
