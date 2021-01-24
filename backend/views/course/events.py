@@ -67,7 +67,7 @@ class Events(Resource):
         self.reqparse.add_argument('event_date', type=str,
                                    location='json')  # FIXME: need to be checked TODO: Search about converting from UTC string to datetime
         self.reqparse.add_argument('course_code', type=str, location='json')
-        self.reqparse.add_argument('max_students', type=int, location='json')
+        self.reqparse.add_argument('event_type', type=str, location='json')
 
     def get(self, course_code):
         try:
@@ -81,12 +81,17 @@ class Events(Resource):
 
     def post(self, course_code):
         args = self.reqparse.parse_args()
+        event_type = args["event_type"]
+        if event_type not in ["exam","lecture"]:
+            return jsonify({
+            'message': 'incorrect event type',
+            'status_code': 404
+        })
         event = {
-            "event_id": args['event_id'],
             "event_name": args['event_name'],
             "event_date": args['event_date'],
             "course_code": course_code,
-            "max_students": args["max_students"]
+            "event_type": args["event_type"]
         }
         try:
             controller_object.post_Event(event)

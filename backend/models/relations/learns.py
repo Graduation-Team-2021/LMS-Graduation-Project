@@ -12,7 +12,7 @@ class Learns_Relation(db.Model, Base):
                            primary_key=True)
     course_code = db.Column(db.String(5), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                             primary_key=True)
-
+    
     def serialize(self):
         return {
             'student_id': self.student_id,

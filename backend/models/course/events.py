@@ -14,7 +14,7 @@ class Events(db.Model, Base):
     event_date = db.Column(db.Date, nullable=False)
     course_code = db.Column(db.String(50), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                             nullable=False)
-    max_students = db.Column(db.Integer, nullable=False)
+    event_type = db.Column(db.String(50),nullable=False)
 
     def serialize(self):
         return {

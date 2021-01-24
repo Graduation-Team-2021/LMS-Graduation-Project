@@ -13,6 +13,7 @@ class Course(db.Model,Base):
  weekly_hours          =  db.Column(db.Integer,nullable=False)
  group_number          =  db.Column(db.Integer,nullable=False, unique=True)
  max_students          =  db.Column(db.Integer,nullable=False)
+ 
 
  def serialize(self):
         return {
