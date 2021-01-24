@@ -18,7 +18,8 @@ from models.relations.messages import Messages
 from models.relations.has_prerequistes import Prerequiste
 from models.relations.delivers import Deliver
 from models.relations.finished import Finished
-
+from models.course.exams.questions import Questions
+from models.course.exams.answers import Answers
 """
 app and database initilization
 """
@@ -41,6 +42,8 @@ from views.relations.messages import Messages_Relation
 from views.relations.delivers import Delivers_Relation, Delete_Deliverable
 from views.course.deliverables import upload_file, Deliverable_view, All_Deliverables
 from views.course.events import Event, Events
+from views.course.exams.questions import Question,Questions
+from views.course.exams.answers import Answers
 from views.relations.finished import finished_relation_view,finished_relation_using_the_two_keys
 from views.relations.has_prerequisites import prerequisite_view
 from views.relations.has_prerequisites import retrieve_all_prequisites
@@ -91,6 +94,12 @@ api.add_resource(material, '/courses/<course_code>/materials/<id>')
 api.add_resource(materials, '/courses/<course_code>/materials')
 api.add_resource(download_material, '/courses/<course_code>/materials/<id>/download')
 api.add_resource(upload_material, '/courses/<course_code>/materials/<id>/upload')
+
+"""
+Exams
+"""
+api.add_resource(Questions, '/events/<event_id>/questions')
+api.add_resource(Answers, '/questions/<question_id>/answers')
 
 """
 Each student deliverables

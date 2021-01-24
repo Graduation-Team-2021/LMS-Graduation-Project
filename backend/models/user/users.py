@@ -11,7 +11,7 @@ class User(db.Model, Base):
     user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
-    national_id = db.Column(db.String, nullable=False, unique=True)
+    national_id = db.Column(db.String(50), nullable=False, unique=True)
     birthday = db.Column(db.Date, nullable=False)
     password = db.Column(db.String(255))
 
