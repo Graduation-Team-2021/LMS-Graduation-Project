@@ -38,7 +38,7 @@ from views.relations.professor_course_relation import Professor_Course_Relation,
 from views.relations.student_course_relation import Student_Course_Relation, Student_Courses_Relation
 from views.relations.messages import Messages_Relation
 from views.relations.delivers import Delivers_Relation, Delete_Deliverable
-from views.course.deliverables import upload_file, Deliverable_view, All_Deliverables
+from views.course.deliverables import upload_file, Deliverable_view, All_Deliverables,download_file
 from views.course.events import Event, Events
 from views.relations.finished import finished_relation_view,finished_relation_using_the_two_keys
 from views.relations.has_prerequisites import prerequisite_view
@@ -98,6 +98,7 @@ api.add_resource(Delivers_Relation, '/student/<student_id>/deliverables')
 Delete deliverable 
 """
 api.add_resource(Delete_Deliverable, '/deliverables/<deliverable_id>/students/<student_id>')
+
 """
 Each course deliverables
 """
@@ -105,7 +106,11 @@ Each course deliverables
 """
 Upload file (deliverable)
 """
-api.add_resource(upload_file, '/students/<student_id>/course/<course_code>/deliverables/<deliverable_id>')
+api.add_resource(upload_file, '/students/<student_id>/course/<course_code>/deliverables/upload/<deliverable_id>')
+"""
+Download file (deliverable)
+"""
+api.add_resource(download_file, '/students/<student_id>/course/<course_code>/deliverables/download/<deliverable_id>')
 """
 get Deliverable
 """

@@ -44,6 +44,19 @@ class Delivers_Relation(Resource):
 class Delete_Deliverable(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('deliverable_id', type=int, location='json')
+        self.reqparse.add_argument('group_id', type=int, location='json')
+        self.reqparse.add_argument('student_id', type=int, location='json')
+
+    def put(self, deliverable_id, student_id):
+        args = self.reqparse.parse_args()
+        deliver = {
+            'deliverable_id': args['deliverable_id'], 'group_id':args['group_id'], 'student_id':args['student_id']}
+        try:
+            controller_object.update_deliverable(deliverable_id, student_id, deliver)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({'message': 'deliver updated successfully', 'status_code': 200})
 
     def delete(self, deliverable_id, student_id):
         try:
@@ -54,7 +67,6 @@ class Delete_Deliverable(Resource):
             'message': 'deliverable deleted successfully',
             'status_code': 200
         })
-
 
 # class upload_file(Resource):
 #     post:

@@ -52,6 +52,25 @@ class delivers_controller():
         Deliver.delete(deleted_deliverable)
         return True
 
+    def update_deliverable(self, deliverable_id,student_id, new_deliver):
+        try:
+            to_be_updated = Deliver.query.filter_by(deliverable_id=deliverable_id,student_id=student_id).first()
+            to_be_updated.delete()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
+        if not to_be_updated:
+            raise ErrorHandler({
+                'description': 'User does not exist.',
+                'status_code': 404
+            })
+        to_be_updated = Deliver(**new_deliver)
+        to_be_updated.update()
+        return to_be_updated.serialize()
+
     def get_one_student_all_deliverables(self, student_id):
         if not Student.query.filter_by(user_id=student_id).first():
             raise ErrorHandler({

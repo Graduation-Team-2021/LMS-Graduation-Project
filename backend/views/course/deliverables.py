@@ -69,6 +69,7 @@ class Deliverable_view(Resource):
         })
 
 
+# /students/<student_id>/course/<course_code>/deliverables/upload/<deliverable_id>
 class upload_file(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -77,11 +78,29 @@ class upload_file(Resource):
     def post(self, student_id, course_code, deliverable_id):
         args = self.reqparse.parse_args()
         file_to_be_uploaded = args['file']
-        controller_object.upload_file(student_id, course_code, deliverable_id, file_to_be_uploaded)
+        try:
+            controller_object.upload_file(student_id, course_code, deliverable_id, file_to_be_uploaded)
+        except ErrorHandler as e:
+            return e.error
         return jsonify({
             'message': 'Materials uploaded successfully',
             'status_code': 200
         })
+
+
+# /students/<student_id>/course/<course_code>/deliverables/download/<deliverable_id>
+class download_file(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('deliverable_type', type=str, location='json')
+
+    def post(self, student_id, course_code, deliverable_id):
+        # args = self.reqparse.parse_args()
+        # deliverable_type = args['deliverable_type']
+        try:
+            return controller_object.download_deliverable(student_id, course_code, deliverable_id)
+        except ErrorHandler as e:
+            return e.error
 
 
 class All_Deliverables(Resource):

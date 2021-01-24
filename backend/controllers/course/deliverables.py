@@ -64,6 +64,27 @@ class deliverable_controller:
         file.save(file_path)
         return
 
+    def download_deliverable(self, student_id, course_code, deliverable_id):  # deliverable type is the extension of the file , i.e. txt,pdf
+        try:
+            deliverable_name = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_name
+            deliverable_type=Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_type
+            file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
+                                     f"deliverables\{deliverable_name}",
+                                     f"student\student-id{student_id}",
+                                     f"{deliverable_type}")
+            return send_from_directory(file_path, filename=f"{deliverable_name}.{deliverable_type}", as_attachment=True)
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        except FileNotFoundError:
+            raise ErrorHandler({
+                'description': "File not found.",
+                'status_code': 404
+            })
+
     def get_all_deliverables(self):
         deliverables_list = []
         deliverables = Deliverables.query.all()
