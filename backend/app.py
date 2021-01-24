@@ -43,7 +43,7 @@ from views.course.events import Event, Events
 from views.relations.finished import finished_relation_view,finished_relation_using_the_two_keys
 from views.relations.has_prerequisites import prerequisite_view
 from views.relations.has_prerequisites import retrieve_all_prequisites
-from views.relations.has_prerequisites import postAndUpdatePrequisites
+from views.relations.has_prerequisites import postPrequisites
 
 """
 Users
@@ -67,7 +67,6 @@ Professor relation
 """
 # feh moshkela hena
 api.add_resource(Professor_Course_Relation, '/professor/<professor_id>/courses')
-api.add_resource(Professor_Courses_Relation, '/professor/<professor_id>/courses/<course_code>')
 """
 Student relation
 """
@@ -129,6 +128,7 @@ api.add_resource(finished_relation_view, '/student/<student_id>/finishedCourses'
 """
 # feh moshkela hena en el course el gedeed bytdaf msh by3ml replace lel adeem
 api.add_resource(finished_relation_using_the_two_keys, '/student/<student_id>/finishedCourses/<course_code>')
+# api.add_resource(update_finished_course, '/student/<student_id>/updateFinishedCourses/<course_code>')
 
 """
 Course prerequisite routes
@@ -141,7 +141,7 @@ api.add_resource(retrieve_all_prequisites, '/prerequisites')
 """
 post or update prequisite
 """
-api.add_resource(postAndUpdatePrequisites, '/prerequisites')
+api.add_resource(postPrequisites, '/prerequisites')
 
 """
 Run app

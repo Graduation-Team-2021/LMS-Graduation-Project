@@ -15,8 +15,8 @@ class finished_relation_controller():
         data = [course.serialize() for course in finished_courses]
         return data
 
-    def post_finished_course(self,course):
-        new_course=Finished(**course)
+    def post_finished_course(self, course):
+        new_course = Finished(**course)
         try:
             new_course.insert()
         except SQLAlchemyError as e:
@@ -26,9 +26,10 @@ class finished_relation_controller():
                 'status_code': 404
             })
 
-    def update_finished_course(self, student_id,course_code, new_course):
+    def update_finished_course(self, student_id, course_code, new_course):
         try:
             to_be_updated = Finished.query.filter_by(course_code=course_code, student_id=student_id).first()
+            to_be_updated.delete()
             # Finished.delete(to_be_updated)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
@@ -45,9 +46,9 @@ class finished_relation_controller():
         to_be_updated.update()
         return to_be_updated.serialize()
 
-    def delete_finished_course(self,student_id,course_code):
+    def delete_finished_course(self, student_id, course_code):
         try:
-            deleted_course=Finished.query.filter_by(student_id=student_id,course_code=course_code).first()
+            deleted_course = Finished.query.filter_by(student_id=student_id, course_code=course_code).first()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({

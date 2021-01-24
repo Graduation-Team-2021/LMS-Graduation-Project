@@ -27,22 +27,23 @@ class prerequisite_view(Resource):
             return e.error
         return jsonify({"message": "prequisite deleted successfully", "status_code": 200})
 
-    def put(self,course_id):
+    def put(self, course_id):
         args = self.reqparse.parse_args()
         prerequisite = {"course_code": args["course_id"],
                         "pre_course_id": args["pre_course_id"]}
         try:
-            controller_object.update_prerequisite(course_id,prerequisite)
+            updated=controller_object.update_prerequisite(course_id, prerequisite)
         except ErrorHandler as e:
             return e.error
         return jsonify({
-            'prerequisite': prerequisite,
+            'prerequisite': updated,
             'message': 'prerequisite updated successfully',
             'status code': 200
         })
 
+
 # /prerequisites
-class postAndUpdatePrequisites(Resource):
+class postPrequisites(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('course_id', type=str, location='json')
@@ -56,8 +57,6 @@ class postAndUpdatePrequisites(Resource):
         except ErrorHandler as e:
             return e.error
         return jsonify({"message": "prequisite added successfully", "status_code": 200})
-
-
 
 
 # /prerequisites

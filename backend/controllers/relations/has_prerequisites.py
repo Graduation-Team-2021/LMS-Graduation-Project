@@ -54,7 +54,7 @@ class prequisite_controller:
 
     def update_prerequisite(self, course_id, new_prerequisite):
         try:
-            updated_prerequisite = Prerequiste.query.filter_by(course_code=course_id)
+            updated_prerequisite = Prerequiste.query.filter_by(course_code=course_id).first()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
