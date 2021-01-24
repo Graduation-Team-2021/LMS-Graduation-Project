@@ -6,7 +6,14 @@ from methods.errors import *
 
 class users_controller:
     def get_user(self, user_id):
-        user = User.query.filter_by(user_id=user_id).first()
+        try:
+            user = User.query.filter_by(user_id=user_id).first()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
         if user is None:
             raise ErrorHandler({
                 'description': 'User does not exist.',
@@ -16,9 +23,16 @@ class users_controller:
 
     def get_user_by_email(self, email):
         role = ""
-        user = User.query.filter_by(email=email).first()
-        prof = Professor.query.filter_by(user_id=user.user_id).first()
-        student = Student.query.filter_by(user_id=user.user_id).first()
+        try:
+            user = User.query.filter_by(email=email).first()
+            prof = Professor.query.filter_by(user_id=user.user_id).first()
+            student = Student.query.filter_by(user_id=user.user_id).first()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
         if user is None:
             raise ErrorHandler({
                 'description': 'User does not exist.',
@@ -26,7 +40,7 @@ class users_controller:
             })
         if user and not prof and not student:
             return {"user": user.serialize(), "password": user.password}
-        if user and prof:
+        elif user and prof:
             role = "professor"
             return {"user": user.serialize(),"password":user.password, "role": role,
                     "scientific_degree": prof.scientific_degree}
@@ -35,7 +49,14 @@ class users_controller:
             return {"user": user.serialize(),"password":user.password, "role": role, "student_year": student.student_year}
 
     def delete_user(self, user_id):
-        deleted_user = User.query.filter_by(user_id=user_id).first()
+        try:
+            deleted_user = User.query.filter_by(user_id=user_id).first()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
         if deleted_user is None:
             raise ErrorHandler({
                 'description': 'User does not exist.',
@@ -45,7 +66,14 @@ class users_controller:
         return
 
     def update_user(self, user_id, user):
-        updated_user = User.query.filter_by(user_id=user_id)
+        try:
+            updated_user = User.query.filter_by(user_id=user_id)
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
         if updated_user is None:
             raise ErrorHandler({
                 'description': 'User does not exist.',
@@ -57,11 +85,25 @@ class users_controller:
 
     def post_user(self, user):
         new_user = User(**user)
-        new_user = User.insert(new_user)
+        try:
+            new_user = User.insert(new_user)
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
         return User.query.filter_by(national_id=user["national_id"]).first().user_id
 
     def get_all_users(self):
-        users = User.query.all()
+        try:
+            users = User.query.all()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
         if users is None:
             raise ErrorHandler({
                 'description': 'Users do not exist.',

@@ -46,4 +46,4 @@ class courses_controller():
                 'status_code': 404
             })
         data = [course.serialize() for course in courses]
-        return (data)
+        return data
