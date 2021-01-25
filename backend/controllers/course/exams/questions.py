@@ -37,30 +37,44 @@ class questions_controller():
                 questions_formatted[index]['answers'].append({"answers": i[1], "right_answer": i[2]
                 ,"answer_id": i[4],"mark": i[5]})    
             
-            
-        
         return questions_formatted
 
-    # def delete_course(self, course_code):
-    #     deleted_course = Course.query.filter_by(course_code=course_code).first()
-    #     if deleted_course is None:
-    #         raise ErrorHandler({
-    #             'description': 'Course does not exist.',
-    #             'status_code': 404
-    #         })
-    #     Course.delete(deleted_course)
-    #     return
+    def delete_question(self, question_id):
+        try:
+            deleted_question = Questions.query.filter_by(question_id=question_id).first()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        if deleted_question is None:
+            raise ErrorHandler({
+                'description': 'Question does not exist.',
+                'status_code': 404
+            })
+        Questions.delete(deleted_question)
+        return
 
-    # def update_course(self, course_code, course):
-    #     updated_course = Course.query.filter_by(course_code=course_code)
-    #     if updated_course is None:
-    #         raise ErrorHandler({
-    #             'description': 'Course does not exist.',
-    #             'status_code': 404
-    #         })
-    #     updated_course = Course(**course)
-    #     updated_course.update()
-    #     return updated_course.serialize()
+    def update_question(self, question_id, question):
+        try:
+            updated_question = Questions.query.filter_by(question_id=question_id).first()
+            if updated_question is None:
+                raise ErrorHandler({
+                    'description': 'Question does not exist.',
+                    'status_code': 404
+                })
+            question["event_id"] = updated_question.event_id
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        
+        updated_question = Questions(**question)
+        updated_question.update()
+        return 
 
     def post_question(self, question):
         try:    
@@ -73,13 +87,3 @@ class questions_controller():
                 'status_code': 500
             })
         return new_question
-
-    # def get_all_courses(self):
-    #     courses = Course.query.all()
-    #     if courses is None:
-    #         raise ErrorHandler({
-    #             'description': 'Course does not exist.',
-    #             'status_code': 404
-    #         })
-    #     data = [course.serialize() for course in courses]
-    #     return data

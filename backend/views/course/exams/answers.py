@@ -12,7 +12,7 @@ class Answer(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('answer', type=str, location='json')
-        self.reqparse.add_argument('right_answer', type=Boolean, location='json')
+        self.reqparse.add_argument('right_answer', type=bool, location='json')
 
     def delete(self, answer_id):
         try:
