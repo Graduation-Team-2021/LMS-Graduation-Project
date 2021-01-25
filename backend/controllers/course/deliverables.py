@@ -53,9 +53,10 @@ class deliverable_controller:
 
     # sha3'ala
     def upload_file(self, student_id, course_code, deliverable_id, file):
-        deliverable_name = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_name
+        # deliverable_name = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_name
 
         # material_type = file.content_type.split("/")[1]
+        deliverable_name=file.filename.split('.')[0]
         file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
                                  f"deliverables\{deliverable_name}",
                                  f"student\student-id{student_id}",
@@ -76,7 +77,10 @@ class deliverable_controller:
                                      f"deliverables\{deliverable_name}",
                                      f"student\student-id{student_id}",
                                      f"{deliverable_type}")
-            return f"{file_path}" + "\\" + f"{deliverable_name}.{deliverable_type.lower()}"
+            return send_from_directory(file_path, filename=f"{deliverable_name}.{deliverable_type.lower()}",
+                                       as_attachment=True)
+            # return send_file(file_path,attachment_filename=f"{deliverable_name}.{deliverable_type.lower()}",as_attachment=True)
+            # return f"{file_path}" + "\\" + f"{deliverable_name}.{deliverable_type.lower()}"
             # return send_from_directory(file_path,f"{deliverable_name}.{deliverable_type}",as_attachment=True)
             # send_from_directory(file_path, filename=f"{material_name}.{material_type}", as_attachment=True)
             # return send_file(filename_or_fp="C:/Users/tarek/Desktop/LMS-Graduation-Project/backend/static/courses/123/deliverables/MANET_experiment/student/student-id1/JPG/MANET_experiment.jpg",                 attachment_filename=f"{deliverable_name}.{deliverable_type}")
