@@ -8,7 +8,6 @@ class events_controller():
     def get_Events(self, course_code):
         try:
             events = Events.query.filter_by(course_code=course_code).all()
-            # TODO: Handle SQLAlchemyError
             if not events:
                 raise ErrorHandler({
                     'description': 'Events do not exist.',
@@ -68,6 +67,8 @@ class events_controller():
                 'status_code': 404
             })
         try:
+            if event["event_type"] != to_be_updated_Event.event_type:
+                Events.delete(to_be_updated_Event)
             updated_Event = Events(**event)
             updated_Event.update()
             updated_Event.event_date = json.dumps(updated_Event.event_date, default=str)
