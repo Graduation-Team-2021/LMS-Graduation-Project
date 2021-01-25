@@ -13,8 +13,6 @@ class Question(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('question', type=str, location='json')
         self.reqparse.add_argument('mark', type=int, location='json')
-        self.reqparse.add_argumetn('answer', type=str, location='json')
-        self.reqparse.add_argumetn('right_answer', type=Boolean, location='json')
 
     def delete(self, question_id):
         try:
@@ -38,8 +36,7 @@ class Question(Resource):
         except ErrorHandler as e:
             return e.error
         return jsonify({
-            'question': question,
-            'message': 'Answer updated successfully',
+            'message': 'Question updated successfully',
             'status_code': 200
         })
 
@@ -49,7 +46,7 @@ class Questions(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('question', type=str, location='json')
-        self.reqparse.add_argument('mark', type=int, location='json')
+        self.reqparse.add_argument('mark', type=str, location='json')
 
     def get(self,event_id):
         try:
@@ -62,17 +59,19 @@ class Questions(Resource):
         }
 
     def post(self,event_id):
+        
         args = self.reqparse.parse_args()
-        question = {
-            'question': args['question'],
-            'mark': args['mark'],
-            'event_id': event_id
+        new_question = {
+            "question":args["question"],
+            "mark":args["mark"],
+            "event_id": event_id
         }
         try:
-            controller_object.post_question(question)
+            controller_object.post_question(new_question)
+            
         except ErrorHandler as e:
             return e.error
         return jsonify({
-            'message': 'Answer created successfully',
+            'message': 'Question created successfully',
             'status_code': 200
         })

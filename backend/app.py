@@ -43,7 +43,7 @@ from views.relations.delivers import Delivers_Relation, Delete_Deliverable
 from views.course.deliverables import upload_file, Deliverable_view, All_Deliverables
 from views.course.events import Event, Events
 from views.course.exams.questions import Question,Questions
-from views.course.exams.answers import Answers
+from views.course.exams.answers import Answers,Answer
 from views.relations.finished import finished_relation_view,finished_relation_using_the_two_keys
 from views.relations.has_prerequisites import prerequisite_view
 from views.relations.has_prerequisites import retrieve_all_prequisites
@@ -99,7 +99,9 @@ api.add_resource(upload_material, '/courses/<course_code>/materials/<id>/upload'
 Exams
 """
 api.add_resource(Questions, '/events/<event_id>/questions')
+api.add_resource(Question, '/questions/<question_id>')
 api.add_resource(Answers, '/questions/<question_id>/answers')
+api.add_resource(Answer, '/answers/<answer_id>')
 
 """
 Each student deliverables
