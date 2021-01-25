@@ -18,6 +18,7 @@ class Deliverables(db.Model, Base):
     students_number = db.Column(db.Integer, nullable=False)
     deliverable_type=db.Column(db.String(7), nullable=False)
 
+
     def serialize(self):
         return {
             'deliverable_id': self.deliverable_id,

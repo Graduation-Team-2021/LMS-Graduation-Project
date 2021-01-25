@@ -18,6 +18,13 @@ from models.relations.messages import Messages
 from models.relations.has_prerequistes import Prerequiste
 from models.relations.delivers import Deliver
 from models.relations.finished import Finished
+from models.course.exams.exam import Exams
+from models.course.exams.questions import Questions
+from models.course.exams.answers import Answers
+from models.course.exams.results import Results
+from models.course.exams.student_answers import Student_Answers
+from models.course.exams.student_questions import Student_Questions
+
 
 """
 app and database initilization
@@ -33,13 +40,22 @@ from views.user.users import User, Sign_Up, Users, Login
 from views.user.professors import Professor, Professors
 from views.user.students import Students, Student
 from views.course.courses import Course, Courses, My_Courses
+from views.course.events import Event, Events;
 from views.course.materials import material, materials, download_material, upload_material
 from views.relations.teaches import Professor_Course_Relation, UpdateAndDelete_professor_Courses_Relation
 from views.relations.learns import Student_Course_Relation, Student_Courses_Relation
 from views.relations.messages import Messages_Relation,DeleteMessageById
 from views.relations.delivers import Delivers_Relation, Delete_Deliverable
+
 from views.course.deliverables import upload_file, Deliverable_view, All_Deliverables,download_file
+
 from views.course.events import Event, Events
+from views.course.exams.questions import Question,Questions
+from views.course.exams.answers import Answers,Answer
+from views.course.exams.exam import Exams,Exam,Submit_Exam,Student_Exam_Results
+from views.course.exams.results import Results
+from views.course.exams.student_questions import Student_Questions
+from views.course.exams.student_answers import Student_Answers
 from views.relations.finished import finished_relation_view,finished_relation_using_the_two_keys
 from views.relations.has_prerequisites import prerequisite_view
 from views.relations.has_prerequisites import retrieve_all_prequisites
@@ -92,6 +108,22 @@ api.add_resource(material, '/courses/<course_code>/materials/<id>')
 api.add_resource(materials, '/courses/<course_code>/materials')
 api.add_resource(download_material, '/courses/<course_code>/materials/<id>/download')
 api.add_resource(upload_material, '/courses/<course_code>/materials/<id>/upload')
+
+"""
+Exams
+"""
+api.add_resource(Questions, '/exams/<exam_id>/questions')
+api.add_resource(Question, '/questions/<question_id>')
+api.add_resource(Answers, '/questions/<question_id>/answers')
+api.add_resource(Answer, '/answers/<answer_id>')
+api.add_resource(Exams, '/events/<event_id>/exams')
+api.add_resource(Exam, '/exams/<exam_id>')
+api.add_resource(Submit_Exam,'/exams/<exam_id>/submit_exam')
+api.add_resource(Student_Questions, '/student/<student_id>/question')
+api.add_resource(Student_Answers, '/student_question/<student_question_id>/student_answer')
+api.add_resource(Results,'/exams/<exam_id>/results')
+api.add_resource(Student_Exam_Results,'/exams/<exam_id>/my_results')
+
 """
 Each student deliverables
 """
@@ -108,10 +140,12 @@ Each course deliverables
 """
 Upload file (deliverable)
 """
+
 api.add_resource(upload_file, '/students/<student_id>/course/<course_code>/deliverables/upload/<deliverable_id>')
 """
 Download file (deliverable)
 """
+
 api.add_resource(download_file, '/students/<student_id>/course/<course_code>/deliverables/download/<deliverable_id>')
 """
 get Deliverable

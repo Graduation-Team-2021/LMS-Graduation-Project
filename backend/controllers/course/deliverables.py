@@ -1,6 +1,8 @@
 from methods.errors import *
 import os
+
 from flask import current_app, send_file, send_from_directory
+
 from models.course.deliverables import Deliverables
 from flask import json
 
@@ -109,3 +111,15 @@ class deliverable_controller:
             deliverable.deadline = json.dumps(deliverable.deadline, default=str).replace("\"", "")
         deliverables = [deliverable.serialize() for deliverable in deliverables]
         return deliverables
+
+    def download_deliverable(self, student_id, course_code,deliverable_id):  
+        
+        deliverable_name = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_name
+        deliverable_type = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_type
+        file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
+                                    f"deliverables\{deliverable_name}",
+                                    f"student\student-id{student_id}",
+                                    f"{deliverable_type}")
+
+        return send_from_directory(file_path,filename=f"{deliverable_name}.{deliverable_type.lower()}",as_attachment=True)
+      

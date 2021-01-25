@@ -58,7 +58,6 @@ class materials(Resource):
         self.reqparse.add_argument('material_name', type=str, location='json')
         self.reqparse.add_argument('material_type', type=str, location='json')
         self.reqparse.add_argument('downloadable', type=bool, location='json')
-        self.reqparse.add_argument('file_path', type=str, location='json')
         self.reqparse.add_argument('course_material', type=str,
                                    location='json')  # course material is the course code to which the materials belong
         self.reqparse.add_argument('students_number', type=int, location='json')
@@ -80,7 +79,6 @@ class materials(Resource):
             'material_name': args['material_name'],
             'material_type': args['material_type'],
             'downloadable': args['downloadable'],
-            'file_path': args['file_path'],
             'students_number': args['students_number']
         }
         try:
@@ -106,7 +104,7 @@ class download_material(Resource):
             return e.error
 
 
-# /courses/<course_code>/materials/<id>/upload
+
 class upload_material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -115,7 +113,7 @@ class upload_material(Resource):
     def post(self, id, course_code):
         args = self.reqparse.parse_args()
         data = args['file']
-        controller_object.upload_material(data, course_code)
+        text = controller_object.upload_material(data, course_code)
         return jsonify({
             'message': 'Materials uploaded successfully',
             'status_code': 200
