@@ -8,7 +8,7 @@ import werkzeug
 controller_object = materials_controller()
 
 
-# /coursers/<course_code>/materials/<id>
+# /courses/<course_code>/materials/<id>
 class material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -90,9 +90,8 @@ class materials(Resource):
             'status_code': 200
         })
 
-    # /courses/<course_code>/materials/<id>/download
 
-
+# /courses/<course_code>/materials/<id>/download
 class download_material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()

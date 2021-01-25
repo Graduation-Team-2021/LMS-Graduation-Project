@@ -63,7 +63,7 @@ class Events(Resource):
         self.reqparse.add_argument('event_id', type=int, location='json')
         self.reqparse.add_argument('event_name', type=str, location='json')
         self.reqparse.add_argument('event_date', type=str,
-                                   location='json')  # FIXME: need to be checked TODO: Search about converting from UTC string to datetime
+                                   location='json') # FIXME: need to be checked TODO: Search about converting from UTC string to datetime
         self.reqparse.add_argument('course_code', type=str, location='json')
         self.reqparse.add_argument('event_type', type=str, location='json')
 

@@ -42,3 +42,14 @@ class Messages_Relation(Resource):
             'message': 'Message added successfully',
             'status_code': 200
         })
+
+
+# /users/messages/delete/<message_id>
+class DeleteMessageById(Resource):
+    def delete(self, message_id):
+        try:
+            controller_object.delete_message(message_id)
+        except ErrorHandler as e:
+            return e.error
+
+        return jsonify({"description": "message deleted successfully", "status_code": 200})

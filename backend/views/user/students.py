@@ -6,10 +6,11 @@ from flask import current_app, jsonify
 controller_object = students_controller()
 
 
-# /student/<user_id>
+# /students/<user_id>
 class Student(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_id', type=str, location='json')
         self.reqparse.add_argument('student_year', type=str, location='json')
 
     def get(self, user_id):
@@ -25,8 +26,8 @@ class Student(Resource):
     def put(self, user_id):
         args = self.reqparse.parse_args()
         student = {
-            'user_id': user_id,
-            'student_year':args['student_year']
+            'user_id': args['user_id'],
+            'student_year': args['student_year']
         }
         try:
             controller_object.update_student(user_id, student)
@@ -55,6 +56,16 @@ class Student(Resource):
 class Students(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_id', type=str, location='json')
+        self.reqparse.add_argument('student_year', type=str, location='json')
+
+    def post(self):
+        args = self.reqparse.parse_args()
+        new = {'user_id': args['user_id'], 'student_year': args['student_year']}
+        try:
+            controller_object.post_student(new)
+        except ErrorHandler as e:
+            return e.error
 
     def get(self):
         try:

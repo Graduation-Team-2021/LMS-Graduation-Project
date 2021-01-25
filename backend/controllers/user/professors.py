@@ -49,21 +49,22 @@ class professors_controller():
         return
 
     def update_professor(self, prof_id, professor):
+        updated_professor = Professor.query.filter_by(user_id=prof_id).first()
+        if updated_professor is None:
+            raise ErrorHandler({
+                'description': 'Student does not exist.',
+                'status_code': 404
+            })
+
+        updated_professor = Professor(**professor)
         try:
-            updated_professor = Professor.query.filter_by(user_id=prof_id)
+            updated_professor.update()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
             })
-        if updated_professor is None:
-            raise ErrorHandler({
-                'description': 'Student does not exist.',
-                'status_code': 404
-            })
-        updated_professor = Professor(**professor)
-        updated_professor.update()
         return updated_professor.serialize()
 
     def post_professor(self, professor):

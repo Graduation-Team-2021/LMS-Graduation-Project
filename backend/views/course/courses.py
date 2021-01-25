@@ -1,6 +1,6 @@
 from controllers.course.courses import courses_controller
-from controllers.relations.professor_course_relation import professor_course_relation_controller
-from controllers.relations.student_course_relation import student_course_relation_controller
+from controllers.relations.teaches import professor_course_relation_controller
+from controllers.relations.learns import student_course_relation_controller
 from methods.errors import *
 from methods.auth import *
 from flask_restful import Resource, reqparse
@@ -11,7 +11,7 @@ professor_controller_object = professor_course_relation_controller()
 student_controller_object = student_course_relation_controller()
 
 
-# /courses/:course_code
+# /courses/course_code
 class Course(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -102,6 +102,7 @@ class Courses(Resource):
         })
 
 
+# /my_courses
 class My_Courses(Resource):
     method_decorators = {'get': [requires_auth_identity("")]}
 
