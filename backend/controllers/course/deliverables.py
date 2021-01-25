@@ -1,6 +1,6 @@
 from methods.errors import *
 import os
-from flask import current_app, send_from_directory
+from flask import current_app, send_file, send_from_directory
 from models.course.deliverables import Deliverables
 from flask import json
 
@@ -51,28 +51,36 @@ class deliverable_controller:
         updated_deliverable.update()
         return updated_deliverable.serialize()
 
+    # sha3'ala
     def upload_file(self, student_id, course_code, deliverable_id, file):
         deliverable_name = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_name
-        material_type = file.content_type.split("/")[1]
+
+        # material_type = file.content_type.split("/")[1]
         file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
                                  f"deliverables\{deliverable_name}",
                                  f"student\student-id{student_id}",
-                                 f"{material_type}")
+                                 f"{file.filename.split('.')[1]}")
         if not os.path.exists(file_path):
             os.makedirs(file_path)
         file_path = os.path.join(file_path, file.filename)
         file.save(file_path)
         return
 
-    def download_deliverable(self, student_id, course_code, deliverable_id):  # deliverable type is the extension of the file , i.e. txt,pdf
+    # msh sha3'ala
+    def download_deliverable(self, student_id, course_code,
+                             deliverable_id):  # deliverable type is the extension of the file , i.e. txt,pdf
         try:
             deliverable_name = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_name
-            deliverable_type=Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_type
+            deliverable_type = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_type
             file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
                                      f"deliverables\{deliverable_name}",
                                      f"student\student-id{student_id}",
                                      f"{deliverable_type}")
-            return send_from_directory(file_path, filename=f"{deliverable_name}.{deliverable_type}", as_attachment=True)
+            return f"{file_path}" + "\\" + f"{deliverable_name}.{deliverable_type.lower()}"
+            # return send_from_directory(file_path,f"{deliverable_name}.{deliverable_type}",as_attachment=True)
+            # send_from_directory(file_path, filename=f"{material_name}.{material_type}", as_attachment=True)
+            # return send_file(filename_or_fp="C:/Users/tarek/Desktop/LMS-Graduation-Project/backend/static/courses/123/deliverables/MANET_experiment/student/student-id1/JPG/MANET_experiment.jpg",                 attachment_filename=f"{deliverable_name}.{deliverable_type}")
+            # return send_from_directory(file_path, filename=f"{deliverable_name}.{deliverable_type.lower()}",as_attachment=True)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({

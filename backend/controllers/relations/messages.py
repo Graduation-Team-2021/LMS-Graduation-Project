@@ -30,3 +30,31 @@ class messages_controller():
                 'status_code': 500
             })
         return new_message
+
+    def delete_message(self, message_id):
+        to_be_deleted = Messages.query.filter_by(message_id=message_id).first()
+        if not to_be_deleted:
+            raise ErrorHandler('message does not exist')
+        try:
+            Messages.delete(to_be_deleted)
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        return
+
+    # lsa maktabtahash fl view
+    def update_message(self, message_id, msg):
+        try:
+            to_be_updated = Messages.query.filter_by(message_id=message_id).first()
+            to_be_updated = Messages(**msg)
+            to_be_updated.update()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        return to_be_updated.serialize()

@@ -7,12 +7,13 @@ from flask import jsonify
 controller_object = professors_controller()
 
 
-# /professor/<user_id>
+# /professors/<user_id>
 class Professor(Resource):
     # method_decorators = {'get': [requires_auth('')]}
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_id', type=str, location='json')
         self.reqparse.add_argument('scientific_degree', type=str, location='json')
 
     def get(self, user_id):
@@ -25,7 +26,7 @@ class Professor(Resource):
 
     def put(self, user_id):
         args = self.reqparse.parse_args()
-        professor = {'user_id': user_id, 'scientific_degree': args['scientific_degree']}
+        professor = {'user_id': args['user_id'], 'scientific_degree': args['scientific_degree']}
         try:
             controller_object.update_professor(user_id, professor)
         except ErrorHandler as e:
@@ -53,6 +54,8 @@ class Professor(Resource):
 class Professors(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_id', type=str, location='json')
+        self.reqparse.add_argument('scientific_degree', type=str, location='json')
 
     def get(self):
         try:
@@ -64,3 +67,14 @@ class Professors(Resource):
             'status_code': 200,
             'professors': professrs
         }
+
+    def post(self):
+        args = self.reqparse.parse_args()
+
+        new = {'user_id': args['user_id'],
+               'scientific_degree': args['scientific_degree']}
+        try:
+            controller_object.post_professor(new)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({'message': 'professor added successfully', 'status_code': 200})

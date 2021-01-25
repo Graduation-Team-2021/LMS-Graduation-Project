@@ -66,21 +66,22 @@ class users_controller:
         return
 
     def update_user(self, user_id, user):
+        updated_user = User.query.filter_by(user_id=user_id).first()
+        if updated_user is None:
+            raise ErrorHandler({
+                'description': 'User does not exist.',
+                'status_code': 404
+            })
+        updated_user.delete()
+        updated_user = User(**user)
         try:
-            updated_user = User.query.filter_by(user_id=user_id)
+            updated_user.update()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
             })
-        if updated_user is None:
-            raise ErrorHandler({
-                'description': 'User does not exist.',
-                'status_code': 404
-            })
-        updated_user = User(**user)
-        updated_user.update()
         return updated_user.serialize()
 
     def post_user(self, user):

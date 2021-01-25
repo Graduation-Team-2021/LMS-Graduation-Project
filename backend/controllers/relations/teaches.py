@@ -29,12 +29,28 @@ class professor_course_relation_controller():
             })
         return
 
+    def update_professor_course_relation(self, professor_id, course_code, new_relation):
+        to_be_updated = Teaches_Relation.query.filter_by(professor_id=professor_id, course_code=course_code).first()
+        if not to_be_updated:
+            raise ErrorHandler({"message": 'relation does not exist ,please recheck your data.'})
+        to_be_updated.delete()
+        updated_relation = Teaches_Relation(**new_relation)
+        try:
+            updated_relation.update()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        return updated_relation.serialize()
+
     def delete_professor_course_relation(self, professor_id, course_code):
         try:
             relation = Teaches_Relation.query.filter_by(professor_id=professor_id, course_code=course_code).first()
             if relation is None:
                 raise ErrorHandler({
-                    'description': 'relation not found',
+                    'description': 'relation not found, please re-check your data.',
                     'status_code': 500
                 })
             Teaches_Relation.delete(relation)

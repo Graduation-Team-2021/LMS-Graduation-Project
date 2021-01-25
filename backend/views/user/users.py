@@ -11,12 +11,13 @@ cont_stud = students_controller()
 cont_professor = professors_controller()
 
 
-# /users/:id
+# /users/<user_id>
 class User(Resource):
     # method_decorators = {'get': [requires_auth('')]}
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_id', type=str, location='json')
         self.reqparse.add_argument('name', type=str, location='json')
         self.reqparse.add_argument('email', type=str, location='json')
         self.reqparse.add_argument('national_id', type=str, location='json')
@@ -36,7 +37,7 @@ class User(Resource):
     def put(self, user_id):
         args = self.reqparse.parse_args()
         user = {
-            'user_id': user_id,
+            'user_id': args['user_id'],
             'name': args['name'],
             'email': args['email'],
             'national_id': args['national_id'],

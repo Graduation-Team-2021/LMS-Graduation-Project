@@ -6,6 +6,7 @@ from models.course.deliverables import Deliverables
 controller_object = delivers_controller()
 
 
+# /student/<student_id>/deliverables
 class Delivers_Relation(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -41,6 +42,7 @@ class Delivers_Relation(Resource):
         })
 
 
+# /deliverables/<deliverable_id>/students/<student_id>
 class Delete_Deliverable(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -51,7 +53,7 @@ class Delete_Deliverable(Resource):
     def put(self, deliverable_id, student_id):
         args = self.reqparse.parse_args()
         deliver = {
-            'deliverable_id': args['deliverable_id'], 'group_id':args['group_id'], 'student_id':args['student_id']}
+            'deliverable_id': args['deliverable_id'], 'group_id': args['group_id'], 'student_id': args['student_id']}
         try:
             controller_object.update_deliverable(deliverable_id, student_id, deliver)
         except ErrorHandler as e:

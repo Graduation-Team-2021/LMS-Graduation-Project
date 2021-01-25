@@ -7,6 +7,7 @@ from methods.errors import *
 controller_object = deliverable_controller()
 
 
+# /deliverables/<deliverable_id>
 class Deliverable_view(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -103,6 +104,7 @@ class download_file(Resource):
             return e.error
 
 
+# /deliverables
 class All_Deliverables(Resource):
     def get(self):
         try:
