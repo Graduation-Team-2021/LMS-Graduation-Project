@@ -9,7 +9,7 @@ Base = declarative_base()
 class Answers(db.Model, Base):
     __tablename__ = 'answers'
     answer_id = db.Column(db.Integer, primary_key=True)
-    answer = db.Column(db.Text, nullable=False)        
+    answer = db.Column(db.String(50), nullable=False)        
     question_id = db.Column(db.Integer, ForeignKey('questions.question_id', ondelete='CASCADE', onupdate="CASCADE"),
                             nullable=False)
     right_answer = db.Column(db.Boolean)

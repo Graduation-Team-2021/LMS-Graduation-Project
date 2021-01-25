@@ -73,7 +73,8 @@ class materials_controller():
             })
 
     def upload_material(self, data, course_code):
-        material_type = data.content_type.split("/")[1]
+        material_type = data.filename.split(".")
+        return material_type
         file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
                                  f"materials\{material_type}")
         if not os.path.exists(file_path):

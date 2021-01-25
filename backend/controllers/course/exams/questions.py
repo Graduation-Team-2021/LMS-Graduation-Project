@@ -6,11 +6,11 @@ from methods.errors import *
 
 
 class questions_controller():
-    def get_all_questions(self, event_id):
+    def get_all_questions(self, exam_id):
         questions_formatted = []
         try:
-            questions = Questions.query.join(Events).filter(
-                        Events.event_id == Questions.event_id
+            questions = Questions.query.join(Exams).filter(
+                        Exams.exam_id == Questions.exam_id
                     ).join(Answers).filter(
                         Questions.question_id == Answers.question_id
                     ).with_entities(Questions.question,Answers.answer,Answers.right_answer,Questions.question_id,Answers.answer_id,Questions.mark).all()
@@ -88,3 +88,19 @@ class questions_controller():
                 'status_code': 500
             })
         return new_question
+
+    def get_question(self,question_id):
+        try:
+            question = Questions.query.filter(Questions.question_id==question_id).first()
+            if question is None:
+                raise ErrorHandler({
+                    'description': 'Question does not exist.',
+                    'status_code': 404
+                })
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })    
+        return question
