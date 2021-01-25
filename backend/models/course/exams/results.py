@@ -6,18 +6,17 @@ Base = declarative_base()
 
 
 
-class Questions(db.Model, Base):
-    __tablename__ = 'questions'
-    question_id = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.String(50), nullable=False)   
-    mark =    db.Column(db.Integer)          
+class Results(db.Model, Base):
+    __tablename__ = 'results'    
+    student_id = db.Column(db.Integer, ForeignKey('student.user_id', ondelete='CASCADE', onupdate="CASCADE"),
+                           primary_key=True)
     exam_id = db.Column(db.Integer, ForeignKey('exams.exam_id', ondelete='CASCADE', onupdate="CASCADE"),
-                            nullable=False)
-    db.UniqueConstraint(question,exam_id)
+                            primary_key=True)
+    mark = db.Column(db.Float,nullable=False)
     def serialize(self):
         return {
-            "question_id": self.question_id,
-            "question": self.question,
+            "student_id": self.student_id,
+            "exam_id": self.exam_id,
             "mark": self.mark
         }
 

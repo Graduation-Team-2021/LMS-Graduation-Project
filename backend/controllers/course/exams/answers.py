@@ -52,3 +52,16 @@ class answers_controller():
         updated_answer = Answers(**answer)
         updated_answer.update()
         return 
+
+    def get_all_correct_answers(self,question_id):
+        try:
+            correct_answers = Answers.query.filter_by(question_id=question_id,right_answer=1).all()
+            answers = [correct_answer.serialize() for correct_answer in correct_answers]
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        return answers
+

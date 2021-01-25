@@ -22,23 +22,6 @@ class Deliverable_view(Resource):
             return e.error
         return deliverable
 
-    def post(self, deliverable_id):
-        args = self.reqparse.parse_args()
-        deliverable = {
-            "deliverable_id": deliverable_id,
-            "deliverable_name": args["deliverable_name"],
-            "deadline": args["deadline"],
-            "course_deliverables": args["course_deliverables"],
-            "students_number": args["students_number"]
-        }
-        try:
-            controller_object.post_deliverable(deliverable)
-        except ErrorHandler as e:
-            return e.error
-        return jsonify({
-            'message': 'deliverable added successfully',
-            'status_code': 200
-        })
 
     def put(self, deliverable_id):
         args = self.reqparse.parse_args()
@@ -85,8 +68,47 @@ class upload_file(Resource):
 
 
 class All_Deliverables(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('deliverable_id', type=str, location='json')
+        self.reqparse.add_argument('deliverable_name', type=str, location='json')
+        self.reqparse.add_argument('deadline', type=str, location='json')
+        self.reqparse.add_argument('course_deliverables', type=str, location='json')
+        self.reqparse.add_argument('students_number', type=int, location='json')
+        self.reqparse.add_argument('deliverable_type', type=str, location='json')
     def get(self):
         try:
             return controller_object.get_all_deliverables()
+        except ErrorHandler as e:
+            return e.error
+    def post(self):
+        args = self.reqparse.parse_args()
+        deliverable = {
+            "deliverable_id": args['deliverable_id'],
+            "deliverable_name": args["deliverable_name"],
+            "deadline": args["deadline"],
+            "course_deliverables": args["course_deliverables"],
+            "students_number": args["students_number"],
+            "deliverable_type": args["deliverable_type"]
+        }
+        try:
+            controller_object.post_deliverable(deliverable)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'message': 'deliverable added successfully',
+            'status_code': 200
+        })
+
+class download_file(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('deliverable_type', type=str, location='json')
+        
+    def post(self, student_id, course_code, deliverable_id):
+        # args = self.reqparse.parse_args()
+        # deliverable_type = args['deliverable_type']
+        try:
+            return controller_object.download_deliverable(student_id, course_code, deliverable_id)
         except ErrorHandler as e:
             return e.error

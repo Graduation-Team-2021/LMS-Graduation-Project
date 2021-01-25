@@ -16,6 +16,7 @@ class Deliverables(db.Model, Base):
                                     ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                                     nullable=False)
     students_number = db.Column(db.Integer, nullable=False)
+    deliverable_type= db.Column(db.String(50),nullable=False)
 
     def serialize(self):
         return {
