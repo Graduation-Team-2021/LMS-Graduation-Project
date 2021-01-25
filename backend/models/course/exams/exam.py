@@ -6,19 +6,17 @@ Base = declarative_base()
 
 
 
-class Questions(db.Model, Base):
-    __tablename__ = 'questions'
-    question_id = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.Text(), nullable=False)   
-    mark =    db.Column(db.Integer)          
-    exam_id = db.Column(db.Integer, ForeignKey('exams.exam_id', ondelete='CASCADE', onupdate="CASCADE"),
+class Exams(db.Model, Base):
+    __tablename__ = 'exams'
+    exam_id = db.Column(db.Integer, primary_key=True)
+    actual_mark = db.Column(db.Float)          
+    event_id = db.Column(db.Integer, ForeignKey('events.event_id', ondelete='CASCADE', onupdate="CASCADE"),
                             nullable=False)
 
     def serialize(self):
         return {
-            "question_id": self.question_id,
-            "question": self.question,
-            "mark": self.mark
+            "actual_mark": self.actual_mark,
+            "event_id": self.event_id
         }
 
     def insert(self):

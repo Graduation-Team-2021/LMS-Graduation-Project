@@ -22,7 +22,6 @@ class Events(db.Model, Base):
             "event_name": self.event_name,
             "event_date": self.event_date,
             "course_code": self.course_code,
-            "max_students": self.max_students
         }
 
     def insert(self):

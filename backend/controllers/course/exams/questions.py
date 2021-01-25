@@ -1,6 +1,7 @@
 from models.course.exams.questions import Questions
 from models.course.exams.answers   import Answers
 from models.course.events          import Events
+from models.course.exams.exam      import Exams
 from methods.errors import *
 
 
@@ -64,7 +65,7 @@ class questions_controller():
                     'description': 'Question does not exist.',
                     'status_code': 404
                 })
-            question["event_id"] = updated_question.event_id
+            question["exam_id"] = updated_question.exam_id
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({

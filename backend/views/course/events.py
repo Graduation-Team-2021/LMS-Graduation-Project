@@ -13,12 +13,10 @@ controller_object = events_controller()
 class Event(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('event_id', type=int, location='json')
         self.reqparse.add_argument('event_name', type=str, location='json')
         self.reqparse.add_argument('event_date', type=str,
                                    location='json')  # FIXME: need to be checked TODO: Search about converting from UTC string to datetime
-        self.reqparse.add_argument('course_code', type=str, location='json')
-        self.reqparse.add_argument('max_students', type=int, location='json')
+        self.reqparse.add_argument('event_type', type=str,location='json')
 
     def get(self, course_code, event_id):
         try:
@@ -44,7 +42,7 @@ class Event(Resource):
             "event_name": args['event_name'],
             "event_date": args['event_date'],
             "course_code": course_code,
-            "max_students": args["max_students"]
+            'event_type': args['event_type']
         }
         try:
             controller_object.update_event(event_id, event)

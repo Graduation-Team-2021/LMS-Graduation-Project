@@ -18,8 +18,10 @@ from models.relations.messages import Messages
 from models.relations.has_prerequistes import Prerequiste
 from models.relations.delivers import Deliver
 from models.relations.finished import Finished
+from models.course.exams.exam import Exams
 from models.course.exams.questions import Questions
 from models.course.exams.answers import Answers
+
 """
 app and database initilization
 """
@@ -44,6 +46,7 @@ from views.course.deliverables import upload_file, Deliverable_view, All_Deliver
 from views.course.events import Event, Events
 from views.course.exams.questions import Question,Questions
 from views.course.exams.answers import Answers,Answer
+from views.course.exams.exam import Exams,Exam
 from views.relations.finished import finished_relation_view,finished_relation_using_the_two_keys
 from views.relations.has_prerequisites import prerequisite_view
 from views.relations.has_prerequisites import retrieve_all_prequisites
@@ -98,10 +101,12 @@ api.add_resource(upload_material, '/courses/<course_code>/materials/<id>/upload'
 """
 Exams
 """
-api.add_resource(Questions, '/events/<event_id>/questions')
+api.add_resource(Questions, '/exams/<exam_id>/questions')
 api.add_resource(Question, '/questions/<question_id>')
 api.add_resource(Answers, '/questions/<question_id>/answers')
 api.add_resource(Answer, '/answers/<answer_id>')
+api.add_resource(Exams, '/events/<event_id>/exams')
+api.add_resource(Exam, '/exams/<exam_id>')
 
 """
 Each student deliverables
