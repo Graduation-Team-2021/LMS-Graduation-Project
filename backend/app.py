@@ -1,6 +1,9 @@
 from flask import Flask
 from models.config import app_setup
 from flask_restful import Api
+from flask_mail import Mail, Message
+import smtplib
+import os
 
 """
 import all models from models
@@ -34,9 +37,19 @@ app_setup(app)
 api = Api(app)
 
 """
+Mail service
+"""
+# def send_email():
+#     mail = Mail(app)
+#     msg = Message('Hello,our lms mail service is working!', sender='ziadtht@gmail.com',
+#                   recipients=['ziadtht@yahoo.com'])
+#     mail.send(msg)
+# send_email()
+
+"""
 import all the endpoints from views
 """
-from views.user.users import User, Sign_Up, Users, Login
+from views.user.users import User, Sign_Up, Users, Login,Reset_password
 from views.user.professors import Professor, Professors
 from views.user.students import Students, Student
 from views.course.courses import Course, Courses, My_Courses
@@ -67,6 +80,7 @@ api.add_resource(User, '/users/<user_id>')
 api.add_resource(Users, '/users')
 api.add_resource(Sign_Up, '/sign_up')
 api.add_resource(Login, '/login')
+api.add_resource(Reset_password, '/reset/password')
 """
 Professor
 """

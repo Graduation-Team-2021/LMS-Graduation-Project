@@ -160,6 +160,20 @@ class Login(Resource):
             return e.error
 
 
+# /reset/password
+class Reset_password(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('email', type=str, location='json')
+        self.reqparse.add_argument('national_id', type=str, location='json')
+
+    def post(self):
+        args = self.reqparse.parse_args()
+        if controller_object.reset_password(args['national_id']):
+            return jsonify({"message": 'an email has been sent to you.'})
+        return jsonify("wrong national id , please re-check your data.")
+
+
 class Profile(Resource):
     method_decorators = {'get': [requires_auth_identity("")]}
 
