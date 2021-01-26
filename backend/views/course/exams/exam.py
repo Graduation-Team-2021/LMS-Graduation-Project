@@ -69,14 +69,12 @@ class Submit_Exam(Resource):
     # method_decorators = {'post': [requires_auth_identity("")]}
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('questions', type=dict, action="append")
 
     def post(self,exam_id):
         args = self.reqparse.parse_args()
-        questions = args['questions']
         student_id=1
         try:
-            submitted_exam = controller_object.submit_exam(questions,exam_id,student_id)
+            submitted_exam = controller_object.submit_exam(exam_id,student_id)
         except ErrorHandler as e:
             return e.error
         return jsonify({

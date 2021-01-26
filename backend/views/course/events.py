@@ -17,6 +17,7 @@ class Event(Resource):
         self.reqparse.add_argument('event_date', type=str,
                                    location='json')  # FIXME: need to be checked TODO: Search about converting from UTC string to datetime
         self.reqparse.add_argument('event_type', type=str,location='json')
+        self.reqparse.add_argument('event_duration', type=int,location='json')
 
     def get(self, course_code, event_id):
         try:
@@ -66,6 +67,7 @@ class Events(Resource):
                                    location='json') # FIXME: need to be checked TODO: Search about converting from UTC string to datetime
         self.reqparse.add_argument('course_code', type=str, location='json')
         self.reqparse.add_argument('event_type', type=str, location='json')
+        self.reqparse.add_argument('event_duration', type=int,location='json')
 
     def get(self, course_code):
         try:
@@ -89,7 +91,8 @@ class Events(Resource):
             "event_name": args['event_name'],
             "event_date": args['event_date'],
             "course_code": course_code,
-            "event_type": args["event_type"]
+            "event_type": args["event_type"],
+            "event_duration": args['event_duration']
         }
         try:
             controller_object.post_Event(event)
