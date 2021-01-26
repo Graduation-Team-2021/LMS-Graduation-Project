@@ -1,6 +1,9 @@
 from flask import Flask
 from models.config import app_setup
 from flask_restful import Api
+from flask_mail import Mail, Message
+import smtplib
+import os
 
 """
 import all models from models
@@ -25,18 +28,31 @@ from models.course.exams.results import Results
 from models.course.exams.student_answers import Student_Answers
 from models.course.exams.student_questions import Student_Questions
 
-
 """
 app and database initilization
 """
 app = Flask(__name__)
 app_setup(app)
 api = Api(app)
+app.app_context().push()
+
+""" 
+mail service
+"""
+
+
+# def send_email():
+#     mail = Mail(app)
+#     msg = Message('Hello,our lms mail service is working!', sender='ziadtht@gmail.com',
+#                   recipients=['ziadtht@yahoo.com'])
+#     mail.send(msg)
+# send_email()
+
 
 """
 import all the endpoints from views
 """
-from views.user.users import User, Sign_Up, Users, Login
+from views.user.users import User, Sign_Up, Users, Login,Reset_password
 from views.user.professors import Professor, Professors
 from views.user.students import Students, Student
 from views.course.courses import Course, Courses, My_Courses
@@ -44,19 +60,19 @@ from views.course.events import Event, Events;
 from views.course.materials import material, materials, download_material, upload_material
 from views.relations.teaches import Professor_Course_Relation, UpdateAndDelete_professor_Courses_Relation
 from views.relations.learns import Student_Course_Relation, Student_Courses_Relation
-from views.relations.messages import Messages_Relation,DeleteMessageById
+from views.relations.messages import Messages_Relation, DeleteMessageById
 from views.relations.delivers import Delivers_Relation, Delete_Deliverable
 
-from views.course.deliverables import upload_file, Deliverable_view, All_Deliverables,download_file
+from views.course.deliverables import upload_file, Deliverable_view, All_Deliverables, download_file
 
 from views.course.events import Event, Events
-from views.course.exams.questions import Question,Questions
-from views.course.exams.answers import Answers,Answer
-from views.course.exams.exam import Exams,Exam,Submit_Exam,Student_Exam_Results
+from views.course.exams.questions import Question, Questions
+from views.course.exams.answers import Answers, Answer
+from views.course.exams.exam import Exams, Exam, Submit_Exam, Student_Exam_Results
 from views.course.exams.results import Results
 from views.course.exams.student_questions import Student_Questions
 from views.course.exams.student_answers import Student_Answers
-from views.relations.finished import finished_relation_view,finished_relation_using_the_two_keys
+from views.relations.finished import finished_relation_view, finished_relation_using_the_two_keys
 from views.relations.has_prerequisites import prerequisite_view
 from views.relations.has_prerequisites import retrieve_all_prequisites
 from views.relations.has_prerequisites import postPrequisites
@@ -68,6 +84,7 @@ api.add_resource(User, '/users/<user_id>')
 api.add_resource(Users, '/users')
 api.add_resource(Sign_Up, '/sign_up')
 api.add_resource(Login, '/login')
+api.add_resource(Reset_password, '/reset/password')
 """
 Professor
 """
@@ -118,11 +135,11 @@ api.add_resource(Answers, '/questions/<question_id>/answers')
 api.add_resource(Answer, '/answers/<answer_id>')
 api.add_resource(Exams, '/events/<event_id>/exams')
 api.add_resource(Exam, '/exams/<exam_id>')
-api.add_resource(Submit_Exam,'/exams/<exam_id>/submit_exam')
+api.add_resource(Submit_Exam, '/exams/<exam_id>/submit_exam')
 api.add_resource(Student_Questions, '/student/<student_id>/question')
 api.add_resource(Student_Answers, '/student_question/<student_question_id>/student_answer')
-api.add_resource(Results,'/exams/<exam_id>/results')
-api.add_resource(Student_Exam_Results,'/exams/<exam_id>/my_results')
+api.add_resource(Results, '/exams/<exam_id>/results')
+api.add_resource(Student_Exam_Results, '/exams/<exam_id>/my_results')
 
 """
 Each student deliverables
@@ -162,7 +179,6 @@ api.add_resource(Events, '/courses/<course_code>/events')
 Finished courses relation
 """
 api.add_resource(finished_relation_view, '/student/<student_id>/finishedCourses')
-
 
 """
 (Put) method in finished relation

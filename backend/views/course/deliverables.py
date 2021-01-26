@@ -77,6 +77,14 @@ class download_file(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('deliverable_type', type=str, location='json')
 
+    def get(self, student_id, course_code, deliverable_id):
+        # args = self.reqparse.parse_args()
+        # deliverable_type = args['deliverable_type']
+        try:
+            return controller_object.download_deliverable(student_id, course_code, deliverable_id)
+        except ErrorHandler as e:
+            return e.error
+
     def post(self, student_id, course_code, deliverable_id):
         # args = self.reqparse.parse_args()
         # deliverable_type = args['deliverable_type']

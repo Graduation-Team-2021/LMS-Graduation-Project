@@ -40,6 +40,7 @@ class Answer(Resource):
             'status_code': 200
         })
 
+
 # /questions/question_id/answers
 class Answers(Resource):
     def __init__(self):
@@ -47,8 +48,7 @@ class Answers(Resource):
         self.reqparse.add_argument('answer', type=str, location='json')
         self.reqparse.add_argument('right_answer', type=bool, location='json')
 
-
-    def post(self,question_id):
+    def post(self, question_id):
         args = self.reqparse.parse_args()
         answer = {
             'question_id': question_id,

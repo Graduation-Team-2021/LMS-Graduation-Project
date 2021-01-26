@@ -68,7 +68,7 @@ def get_token_auth_header():
 
 def check_permissions(permission, payload):
     if 'permissions' not in payload.keys():
-        raise ErrodrHanler({
+        raise ErrorHandler({
             'status_code': 401,
             'description': 'Permission parameter missing in payload.'
         })
