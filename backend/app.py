@@ -55,7 +55,6 @@ from views.course.exams.answers import Answers,Answer
 from views.course.exams.exam import Exams,Exam,Submit_Exam,Student_Exam_Results
 from views.course.exams.results import Results
 from views.course.exams.student_questions import Student_Questions
-from views.course.exams.student_answers import Student_Answers
 from views.relations.finished import finished_relation_view,finished_relation_using_the_two_keys
 from views.relations.has_prerequisites import prerequisite_view
 from views.relations.has_prerequisites import retrieve_all_prequisites
@@ -120,7 +119,6 @@ api.add_resource(Exams, '/events/<event_id>/exams')
 api.add_resource(Exam, '/exams/<exam_id>')
 api.add_resource(Submit_Exam,'/exams/<exam_id>/submit_exam')
 api.add_resource(Student_Questions, '/student/<student_id>/question')
-api.add_resource(Student_Answers, '/student_question/<student_question_id>/student_answer')
 api.add_resource(Results,'/exams/<exam_id>/results')
 api.add_resource(Student_Exam_Results,'/exams/<exam_id>/my_results')
 

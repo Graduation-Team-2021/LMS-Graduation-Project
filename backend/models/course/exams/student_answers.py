@@ -11,7 +11,7 @@ class Student_Answers(db.Model, Base):
     student_answer_id = db.Column(db.Integer,primary_key=True)
     student_question_id = db.Column(db.Integer, ForeignKey('student_questions.student_question_id', ondelete='CASCADE', onupdate="CASCADE"))
     student_answer = db.Column(db.String(50), nullable=False)
-    correct_answer = db.Column(db.Boolean,nullable=False)
+    correct_answer = db.Column(db.Boolean)
     
     def serialize(self):
         return {

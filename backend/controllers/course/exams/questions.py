@@ -9,11 +9,14 @@ class questions_controller():
     def get_all_questions(self, exam_id):
         questions_formatted = []
         try:
-            questions = Questions.query.join(Exams).filter(
-                        Exams.exam_id == Questions.exam_id
+            answers = Questions.query.join(Exams).filter(
+                        Questions.exam_id == exam_id
                     ).join(Answers).filter(
                         Questions.question_id == Answers.question_id
-                    ).with_entities(Questions.question,Answers.answer,Answers.right_answer,Questions.question_id,Answers.answer_id,Questions.mark).all()
+                    ).with_entities(Answers.answer,Answers.right_answer,Answers.answer_id,Questions.question_id).all()
+            questions = Questions.query.join(Exams).filter(
+                        Questions.exam_id == exam_id
+                    ).with_entities(Questions.question,Questions.question_id,Questions.mark).all()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
@@ -25,18 +28,18 @@ class questions_controller():
                 'description': 'Questions do not exist.',
                 'status_code': 404
             })
-        for i in questions:
-            index = next((index for (index, d) in enumerate(questions_formatted) if d["question"] == i[0]), None)
-            if index is None:
+        for i in questions: 
                 questions_formatted.append(
                     {"question": i[0], 
-                    "question_id": i[3],
-                    "answers":[{"answers": i[1], "right_answer": i[2]
-                    ,"answer_id": i[4],"mark": i[5]
-                }]})
-            else:
-                questions_formatted[index]['answers'].append({"answers": i[1], "right_answer": i[2]
-                ,"answer_id": i[4],"mark": i[5]})    
+                    "question_id": i[1],
+                    "mark": i[2],
+                    "answers":[]})
+        
+        for i in answers:
+            index = next((index for (index, d) in enumerate(questions_formatted) if d["question_id"] == i[3]), None)
+            questions_formatted[index]['answers'].append({"answers": i[0], "right_answer": i[1]
+                ,"answer_id": i[3]})    
+                
             
         return questions_formatted
 

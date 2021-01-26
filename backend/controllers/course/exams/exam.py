@@ -4,6 +4,7 @@ from models.course.exams.exam      import Exams
 from models.course.exams.student_answers import Student_Answers
 from models.course.exams.student_questions import Student_Questions
 from models.course.exams.results import Results
+from models.course.events import Events
 from models.user.students import Student
 from controllers.course.exams.results import results_controller
 from controllers.course.exams.questions import questions_controller
@@ -11,6 +12,9 @@ from controllers.course.exams.answers import answers_controller
 from controllers.course.exams.student_questions import student_questions_controller
 from controllers.course.exams.student_answers import student_answers_controller
 from methods.errors import *
+from flask import json
+from datetime import datetime, timedelta
+
 
 results_controller = results_controller()
 questions_controller = questions_controller()
@@ -66,36 +70,32 @@ class exams_controller():
                 'status_code': 500
             }) 
         return updated_exam.serialize()
+ 
 
-    
-    def submit_exam(self,questions,exam_id,student_id):
+    def submit_exam(self,exam_id,student_id):
         try:
+            questions = self.format_answers(exam_id,student_id)
             students_mark = 0.0
             flag=1
-            for question_id,answers in questions[0].items():
+            for question_id,answers in questions.items():
                 wrong_answer_flag = 0
-                student_question = {
-                    'student_id':student_id,
-                    'question_id':question_id
-                }
-                student_questions_controller.post_student_question(student_question)
-                student_question_id = student_questions_controller.get_student_question(student_id,question_id).student_question_id
                 correct_answers = answers_controller.get_all_correct_answers(int(question_id))
-                question_mark = questions_controller.get_question(question_id).mark
+                question = questions_controller.get_question(question_id)
+                question_mark = question.mark
+                student_question_id = student_questions_controller.get_student_question(student_id,question_id)
                 if len(correct_answers) != len(answers):
                     wrong_answer_flag=1
                     flag=0
                 for answer in answers:
+                    student_answer_id = student_answers_controller.get_student_answer_with_student_question_id_and_answer(student_question_id,answer)['student_answer_id']
                     if not any(d['answer'] == answer for d in correct_answers):
                         wrong_answer_flag=1
                         flag=0
-                    student_answer = {
-                    'student_question_id':student_question_id,
-                    'student_answer':answer,
-                    'correct_answer':flag
-                    }
+                    if flag==0:
+                        student_answers_controller.update_one_student_answer(student_answer_id,False)
+                    else:
+                        student_answers_controller.update_one_student_answer(student_answer_id,True)
                     flag=1
-                    student_answers_controller.post_student_answer(student_answer)
                 if wrong_answer_flag==0:
                     students_mark += question_mark
                 
@@ -113,8 +113,34 @@ class exams_controller():
                 'status_code': 500
             })  
     
+    def format_answers(self,exam_id,student_id):
+        answers = Questions.query.join(Exams).filter(
+                        Questions.exam_id == exam_id
+                    ).join(Student_Questions).filter(
+                        Questions.question_id == Student_Questions.question_id
+                    ).filter(Student_Questions.student_id==Student.user_id).join(Student_Answers).filter(
+                        Student_Answers.student_question_id==Student_Questions.student_question_id
+                    ).with_entities(Questions.question_id,Student_Answers.student_answer).all()
+        formatted_answers = {}
+        for i in answers:
+            if i[0] not in formatted_answers:
+                formatted_answers[i[0]] = list()
+            formatted_answers[i[0]].append(i[1])  
+        return formatted_answers
+    
     def student_exam_results(self,exam_id):
         try:
+            event = Exams.query.join(Events).filter(Events.event_id==Exams.event_id).filter(Exams.exam_id==exam_id).with_entities(Events.event_duration,Events.event_date).first()
+            if event is None:
+                raise ErrorHandler({
+                'description': "Exam does not exist.",
+                'status_code': 404
+                })
+            # if datetime.now() < event[1] + timedelta(minutes=event[0]):
+            #     raise ErrorHandler({
+            #     'description': "Exam is not over yet.",
+            #     'status_code': 404
+            #     })    
             student_id = 1
             my_results = Student_Answers.query.join(Student_Questions).filter(
                 Student_Answers.student_question_id==Student_Questions.student_question_id).join(
@@ -134,16 +160,21 @@ class exams_controller():
                 question_id = result[2]
                 mark = result[3]
                 right_answer = result[4]
+                wrong_answers = answers_controller.get_all_wrong_answers(int(question_id))
                 correct_answers = answers_controller.get_all_correct_answers(int(question_id))
                 correct_answers_formatted = []
+                wrong_answers_formatted = []
                 for correct_answer in correct_answers:
                     correct_answers_formatted.append(correct_answer['answer'])
+                for wrong_answer in wrong_answers:
+                    wrong_answers_formatted.append(wrong_answer['answer'])
                 index = next((index for (index, d) in enumerate(formatted_results) if d["question"] == result[0]), None)
                 if index is None:
                     formatted_results.append({
                         'question' : question,
                         'my_answers' :[my_answer],
                         'correct_answers':correct_answers_formatted,
+                        'wrong_answers':wrong_answers_formatted,
                         'question_id': question_id,
                         'mark': mark,
                         'correct_answer': right_answer
@@ -151,13 +182,6 @@ class exams_controller():
                     )
                 else:
                     formatted_results[index]['my_answers'].append(my_answer)
-            
-            if not formatted_results:
-                raise ErrorHandler({
-                'description': 'Results do not exist.',
-                'status_code': 404
-            })
-
 
             return formatted_results
         except SQLAlchemyError as e:

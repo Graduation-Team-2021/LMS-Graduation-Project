@@ -12,6 +12,7 @@ class Exams(db.Model, Base):
     actual_mark = db.Column(db.Float)          
     event_id = db.Column(db.Integer, ForeignKey('events.event_id', ondelete='CASCADE', onupdate="CASCADE"),
                             nullable=False,unique=True)
+    
 
     def serialize(self):
         return {
