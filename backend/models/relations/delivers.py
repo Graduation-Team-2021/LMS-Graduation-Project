@@ -8,21 +8,20 @@ Base = declarative_base()
 
 class Deliver(db.Model, Base):
     __tablename__ = 'deliver'
-
-    deliverable_id = db.Column(db.Integer,
-                               ForeignKey('deliverable.deliverable_id', ondelete='CASCADE', onupdate="CASCADE"),
-                               primary_key=True)  # table name not class name
-    group_id = db.Column(db.Integer) #, primary_key=True)
-    student_id = db.Column(db.Integer, ForeignKey('student.user_id', ondelete='CASCADE', onupdate="CASCADE"),
-                           primary_key=True)  # table name not class name
-    student = relationship("Student", foreign_keys=[student_id])  # class name not table name
-    deliverable = relationship("Deliverables", foreign_keys=[deliverable_id])  # class name not table name
-
+    delivers_id = db.Column(db.Integer,primary_key=True)
+    deliverable_id = db.Column(db.Integer,ForeignKey('deliverable.deliverable_id', ondelete='CASCADE', onupdate="CASCADE"))  
+    student_id = db.Column(db.Integer, ForeignKey('student.user_id', ondelete='CASCADE', onupdate="CASCADE"))  
+    file_type = db.Column(db.String(6))
+    file_name = db.Column(db.String(50))
+    
+    student = relationship("Student", foreign_keys=[student_id])  
+    deliverable = relationship("Deliverables", foreign_keys=[deliverable_id]) 
+    
     def serialize(self):
         return {
-            'deliverable_id': self.deliverable_id,
-            'group_id': self.group_id,
-            'student_id': self.student_id,
+            'delivers_id': self.delivers_id,
+            "file_type":self.file_type,
+            "file_name":self.file_name
         }
 
     def insert(self):

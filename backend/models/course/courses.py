@@ -13,7 +13,7 @@ class Course(db.Model, Base):
     course_code = db.Column(db.String(7), primary_key=True)
     course_name = db.Column(db.String(50), nullable=False)
     weekly_hours = db.Column(db.Integer, nullable=False)
-    group_number = db.Column(db.Integer, nullable=False, unique=True)
+    group_number = db.Column(db.Integer, nullable=False)
     max_students = db.Column(db.Integer, nullable=False)
 
 

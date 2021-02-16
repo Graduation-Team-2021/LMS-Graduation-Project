@@ -2,7 +2,7 @@ from models.user.users import User
 from models.user.professors import Professor
 from models.user.students import Student
 from methods.errors import *
-from flask_mail import Mail, Message
+# from flask_mail import Mail, Message
 import smtplib
 from methods.auth import *
 import os

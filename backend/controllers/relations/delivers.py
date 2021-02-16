@@ -2,42 +2,48 @@ from models.relations.delivers import Deliver
 from sqlalchemy import or_, and_
 from methods.errors import *
 from models.course.deliverables import Deliverables
-from flask import json
+from models.course.courses import Course
+from flask import json,current_app,send_file, send_from_directory
 from models.user.students import Student
+import os
+
 
 
 class delivers_controller():
-    def get_deliverable(self, student_id):
+    def get_all_delivers_by_user_id_and_deliverable_id(self, user_id,deliverable_id):
         try:
-            deliverable = Deliver.query.filter_by(student_id=student_id).first()
+            delivers_relations = Deliver.query.filter(Deliver.student_id==user_id).filter(Deliver.deliverable_id==deliverable_id)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
             })
-        if not deliverable:
-            raise ErrorHandler({'description': 'deliverable does not exists',
+        if not delivers_relations:
+            raise ErrorHandler({'description': 'deliverables do not exist',
                                 'status_code': 500
                                 })
-        return deliverable.serialize()
-
-    def post_deliverable(self, deliverable):
-        new_deliverable = Deliver(**deliverable)
+        deliver_relations_formatted =[]
+        for i in delivers_relations:
+            deliver_relations_formatted.append(i.serialize())
+        return deliver_relations_formatted
+    
+    def post_delivers_relation(self, delivers_relation):
+        new_delivers_relation = Deliver(**delivers_relation)
         try:
-            new_deliverable = Deliver.insert(new_deliverable)
+            Deliver.insert(new_delivers_relation)
+            new_delivers_id = Deliver.query.order_by(Deliver.delivers_id.desc()).first()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
             })
-        return new_deliverable
+        return new_delivers_id.delivers_id
 
-    def delete_deliverable(self, deliverable_id, student_id):
+    def delete_delivers_relation(self, delivers_id):
         try:
-            deleted_deliverable = Deliver.query.filter_by(student_id=student_id,
-                                                          deliverable_id=deliverable_id).first()
+            deleted_deliverable = Deliver.query.filter_by(delivers_id=delivers_id).first()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
@@ -51,41 +57,81 @@ class delivers_controller():
             })
         Deliver.delete(deleted_deliverable)
         return True
-
-    def update_deliverable(self, deliverable_id,student_id, new_deliver):
+    
+    def update_delivers_relation(self,delivers_id,updated_delivers):
         try:
-            to_be_updated = Deliver.query.filter_by(deliverable_id=deliverable_id,student_id=student_id).first()
-            to_be_updated.delete()
+            updated_delivers_relation = Deliver(**updated_delivers)
+            updated_delivers_relation.update()
+            return 
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
             })
-        if not to_be_updated:
+
+
+    def upload_deliverable(self, delivers_id, file):
+        try:
+            file_name,file_type = os.path.splitext(file.filename)
+            delivers_relation = Deliver.query.filter_by(delivers_id=delivers_id).first()
+            if delivers_relation is None:
+                raise ErrorHandler({
+                    'description':  "Deliverable not found.",
+                'status_code': 404
+                })
+            deliverable_id = delivers_relation.deliverable_id
+            student_id = delivers_relation.student_id
+            course_code = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().course_deliverables 
+            file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
+                                    f"deliverables\{deliverable_id}",
+                                    f"student-id{student_id}",
+                                    f"{delivers_id}")
+            if not os.path.exists(file_path):
+                os.makedirs(file_path)
+            file_path = os.path.join(file_path, file.filename)
+            file.save(file_path)
+            updated_delivers = {
+                'delivers_id': delivers_id,
+                'file_type': file_type,
+                'file_name': file_name
+            }
+            self.update_delivers_relation(delivers_id,updated_delivers)
+            return
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
             raise ErrorHandler({
-                'description': 'User does not exist.',
+                'description': error,
+                'status_code': 500
+            })
+        except FileNotFoundError:
+            raise ErrorHandler({
+                'description': "File not found.",
                 'status_code': 404
             })
-        to_be_updated = Deliver(**new_deliver)
-        to_be_updated.update()
-        return to_be_updated.serialize()
-
-    def get_one_student_all_deliverables(self, student_id):
-        if not Student.query.filter_by(user_id=student_id).first():
+            
+    def download_deliverable(self,delivers_id):  
+        try:
+            delivers_relation = Deliver.query.filter_by(delivers_id=delivers_id).first()
+            file_name = delivers_relation.file_name
+            file_type = delivers_relation.file_type
+            deliverable_id = delivers_relation.deliverable_id
+            student_id = delivers_relation.student_id
+            course_code = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().course_deliverables 
+            file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
+                                    f"deliverables\{deliverable_id}",
+                                    f"student-id{student_id}",
+                                    f"{delivers_id}")
+                                    
+            return send_from_directory(file_path,filename=f"{file_name}{file_type.lower()}",as_attachment=True)
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
             raise ErrorHandler({
-                "message": "student does not exist",
-                "status code": 404
+                'description': error,
+                'status_code': 500
             })
-        deliverables_list = []
-        all_deliverables = Deliverables.query.join(Deliver).filter(
-            Deliverables.deliverable_id == Deliver.deliverable_id,
-            student_id == Deliver.student_id) \
-            .with_entities(Deliverables.deliverable_id, Deliverables.deliverable_name, Deliverables.course_deliverables,
-                           Deliverables.deadline)
-        deliverable = [deliverable for deliverable in all_deliverables]
-        for i in deliverable:
-            deliverables_list.append(
-                {"deliverable_id": i[0], "deliverable_name": i[1], "course_id": i[2],
-                 "deadline": json.dumps(i[3], default=str).replace("\"", "")})
-        return deliverables_list
+        except FileNotFoundError:
+            raise ErrorHandler({
+                'description': "File not found.",
+                'status_code': 404
+            })

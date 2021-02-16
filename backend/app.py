@@ -1,7 +1,7 @@
 from flask import Flask
 from models.config import app_setup
 from flask_restful import Api
-from flask_mail import Mail, Message
+# from flask_mail import Mail, Message
 import smtplib
 import os
 
@@ -14,6 +14,7 @@ from models.user.professors import Professor
 from models.course.courses import Course
 from models.course.events import Events
 from models.course.deliverables import Deliverables
+from models.course.deliverables_results import Deliverables_Results
 from models.course.materials import Materials
 from models.relations.learns import Learns_Relation
 from models.relations.teaches import Teaches_Relation
@@ -27,6 +28,7 @@ from models.course.exams.answers import Answers
 from models.course.exams.results import Results
 from models.course.exams.student_answers import Student_Answers
 from models.course.exams.student_questions import Student_Questions
+
 
 
 """
@@ -55,12 +57,13 @@ from views.user.students import Students, Student
 from views.course.courses import Course, Courses, My_Courses
 from views.course.events import Event, Events;
 from views.course.materials import material, materials, download_material, upload_material
+from views.course.deliverables_results import Deliverable_Results
 from views.relations.teaches import Professor_Course_Relation, UpdateAndDelete_professor_Courses_Relation
 from views.relations.learns import Student_Course_Relation, Student_Courses_Relation
 from views.relations.messages import Messages_Relation,DeleteMessageById
-from views.relations.delivers import Delivers_Relation, Delete_Deliverable
+from views.relations.delivers import Delivers_Relation, Delete_Delivers_Relation, Upload_Deliverable_File, Download_Deliverable_File, Student_Deliverables
 
-from views.course.deliverables import upload_file, Deliverable_view, All_Deliverables,download_file
+from views.course.deliverables import Deliverable_view, All_Deliverables,Students_Deliverables
 
 from views.course.events import Event, Events
 from views.course.exams.questions import Question,Questions
@@ -139,11 +142,13 @@ api.add_resource(Student_Exam_Results,'/exams/<exam_id>/my_results')
 """
 Each student deliverables
 """
-api.add_resource(Delivers_Relation, '/student/<student_id>/deliverables')
+api.add_resource(Delivers_Relation, '/my_deliverables')
+api.add_resource(Deliverable_Results,'/students/<student_id>/deliverable/<deliverable_id>/results')
+api.add_resource(Students_Deliverables,'/students_deliverables/<deliverable_id>')
 """
 Delete deliverable 
 """
-api.add_resource(Delete_Deliverable, '/deliverables/<deliverable_id>/students/<student_id>')
+api.add_resource(Delete_Delivers_Relation, '/my_deliverables/<delivers_id>')
 
 """
 Each course deliverables
@@ -153,17 +158,18 @@ Each course deliverables
 Upload file (deliverable)
 """
 
-api.add_resource(upload_file, '/students/<student_id>/course/<course_code>/deliverables/upload/<deliverable_id>')
-"""
-Download file (deliverable)
-"""
+api.add_resource(Upload_Deliverable_File, '/my_deliverables/<delivers_id>/upload')
+# """
+# Download file (deliverable)
+# """
 
-api.add_resource(download_file, '/students/<student_id>/course/<course_code>/deliverables/download/<deliverable_id>')
+api.add_resource(Download_Deliverable_File, '/my_deliverables/<delivers_id>/download')
 """
 get Deliverable
 """
 api.add_resource(All_Deliverables, '/deliverables')
 api.add_resource(Deliverable_view, '/deliverables/<deliverable_id>')
+api.add_resource(Student_Deliverables, '/students/<student_id>/deliverables/<deliverable_id>')
 """
 Events
 """
