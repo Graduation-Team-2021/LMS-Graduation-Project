@@ -2,6 +2,7 @@ from models.relations.delivers import Deliver
 from sqlalchemy import or_, and_
 from methods.errors import *
 from models.course.deliverables import Deliverables
+from models.course.deliverables_results import Deliverables_Results
 from models.course.courses import Course
 from flask import json,current_app,send_file, send_from_directory
 from models.user.students import Student
@@ -135,3 +136,21 @@ class delivers_controller():
                 'description': "File not found.",
                 'status_code': 404
             })
+
+    def count_number_of_ungraded_deliverables(self,deliverable_id):
+        try:
+            student_marks = Deliver.query.outerjoin(Deliverables_Results, and_(Deliver.deliverable_id==Deliverables_Results.deliverable_id,Deliver.student_id==Deliverables_Results.user_id)).filter(Deliver.deliverable_id==deliverable_id).group_by(Deliver.deliverable_id,Deliver.student_id).with_entities(Deliverables_Results.mark)
+            count = 0
+            for i in student_marks:
+                if i[0] is None:
+                    count = count+1
+            return count
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+
+
+

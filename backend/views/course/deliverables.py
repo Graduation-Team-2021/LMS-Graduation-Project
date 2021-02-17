@@ -71,11 +71,15 @@ class All_Deliverables(Resource):
 
     def get(self):
         student_id = 1 #change to auth id later
+        role = 'professor'
         try:
-            specific_student_deliverables = controller_object.get_one_student_all_deliverables(student_id)
+            if role == 'student':
+                specific_deliverables = controller_object.get_one_student_all_deliverables(student_id)
+            else:
+                specific_deliverables = controller_object.get_one_professor_all_deliverables(8)
         except ErrorHandler as e:
             return e.error
-        return specific_student_deliverables
+        return specific_deliverables
 
     def post(self):
         args = self.reqparse.parse_args()

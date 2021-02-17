@@ -7,11 +7,15 @@ from models.course.courses import Course
 from models.course.deliverables import Deliverables
 from models.relations.delivers import Deliver
 from models.relations.learns import Learns_Relation
+from models.relations.teaches import Teaches_Relation
 from models.course.deliverables_results import Deliverables_Results
 from models.user.students import Student
+from models.user.professors import Professor
 from models.user.users import User
+from controllers.relations.delivers import delivers_controller
 from flask import json
 
+delivers_controller_object = delivers_controller()
 
 class deliverable_controller:
     def get_deliverable(self, deliverable_id):
@@ -126,4 +130,45 @@ class deliverable_controller:
                 'status_code': 404
             })
         return all_deliverables_list
+    
+    def get_one_professor_all_deliverables(self,professor_id):
+        try:
+            if not Professor.query.filter_by(user_id=professor_id).first():
+                raise ErrorHandler({
+                    "message": "professor does not exist",
+                    "status code": 404
+                })
+            deliverables_list = []
+            all_deliverables = Deliverables.query.join(Course).join(Teaches_Relation).filter(
+                Course.course_code==Deliverables.course_deliverables).filter(
+                    Teaches_Relation.professor_id==professor_id
+                ).filter(Teaches_Relation.course_code == Course.course_code).with_entities(
+                    Deliverables.deliverable_id, Deliverables.deliverable_name, Deliverables.course_deliverables,
+                            Deliverables.deadline,Course.course_name,Deliverables.description,Deliverables.mark)
+            for i in all_deliverables:
+                
+                index = next((index for (index, d) in enumerate(deliverables_list) if d["course_id"] == i[2]), None)
+                unsolved_count = delivers_controller_object.count_number_of_ungraded_deliverables(i[0])
+                if index == None:
+                    deliverables_list.append(
+                        {"course_id": i[2], "course_name":i[4],"deliverables":
+                        [{"deliverable_id": i[0], "deliverable_name": i[1],
+                        "description":i[5],
+                        'unsolved_deliverables':unsolved_count,
+                        "mark":i[6],
+                        "deadline": json.dumps(i[3], default=str).replace("\"", "")}]})
+                else:
+                    deliverables_list[index]['deliverables'].append({"deliverable_id": i[0],
+                        "deliverable_name": i[1],
+                        "description":i[5],
+                        'unsolved_deliverables':unsolved_count,
+                        "mark":i[6],
+                        "deadline": json.dumps(i[3], default=str).replace("\"", "")})
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
+        return {"courses_deliverables":deliverables_list}
 

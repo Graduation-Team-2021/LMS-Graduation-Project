@@ -14,7 +14,7 @@ class Delivers_Relation(Resource):
         self.reqparse.add_argument('deliverable_id', type=int, location='json')
 
     def post(self):
-        student_id = 1 # change to auth id later
+        student_id = 3 # change to auth id later
         args = self.reqparse.parse_args()
         delivers_relation = {
             "deliverable_id": args["deliverable_id"],
