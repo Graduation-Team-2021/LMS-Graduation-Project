@@ -19,10 +19,13 @@ class Student_Course_Relation(Resource):
             student_courses = controller_object.get_courses_by_student_id(student_id)
         except ErrorHandler as e:
             return e.error
-        return jsonify({
-            'courses': student_courses,
-            'status_code': 200
-        })
+        if student_courses:
+            return jsonify({
+                'courses': student_courses,
+                'status_code': 200
+            })
+        else:
+            return jsonify({'message': 'This student does not have any courses.'})
 
     def post(self, student_id):
         args = self.reqparse.parse_args()

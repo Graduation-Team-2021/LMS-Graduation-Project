@@ -104,7 +104,6 @@ class download_material(Resource):
             return e.error
 
 
-
 class upload_material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()

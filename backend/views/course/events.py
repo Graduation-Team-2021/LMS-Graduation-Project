@@ -9,6 +9,7 @@ import werkzeug
 
 controller_object = events_controller()
 
+
 # /course/<course_code>/events/<id>
 class Event(Resource):
     def __init__(self):
@@ -16,8 +17,8 @@ class Event(Resource):
         self.reqparse.add_argument('event_name', type=str, location='json')
         self.reqparse.add_argument('event_date', type=str,
                                    location='json')  # FIXME: need to be checked TODO: Search about converting from UTC string to datetime
-        self.reqparse.add_argument('event_type', type=str,location='json')
-        self.reqparse.add_argument('event_duration', type=int,location='json')
+        self.reqparse.add_argument('event_type', type=str, location='json')
+        self.reqparse.add_argument('event_duration', type=int, location='json')
 
     def get(self, course_code, event_id):
         try:
@@ -55,7 +56,6 @@ class Event(Resource):
         })
 
 
-
 # /courses/<course_code>/events
 class Events(Resource):
     def __init__(self):
@@ -64,10 +64,10 @@ class Events(Resource):
         self.reqparse.add_argument('event_id', type=int, location='json')
         self.reqparse.add_argument('event_name', type=str, location='json')
         self.reqparse.add_argument('event_date', type=str,
-                                   location='json') # FIXME: need to be checked TODO: Search about converting from UTC string to datetime
+                                   location='json')  # FIXME: need to be checked TODO: Search about converting from UTC string to datetime
         self.reqparse.add_argument('course_code', type=str, location='json')
         self.reqparse.add_argument('event_type', type=str, location='json')
-        self.reqparse.add_argument('event_duration', type=int,location='json')
+        self.reqparse.add_argument('event_duration', type=int, location='json')
 
     def get(self, course_code):
         try:
@@ -82,11 +82,11 @@ class Events(Resource):
     def post(self, course_code):
         args = self.reqparse.parse_args()
         event_type = args["event_type"]
-        if event_type not in ["exam","lecture"]:
+        if event_type not in ["exam", "lecture"]:
             return jsonify({
-            'message': 'incorrect event type',
-            'status_code': 404
-        })
+                'message': 'incorrect event type',
+                'status_code': 404
+            })
         event = {
             "event_name": args['event_name'],
             "event_date": args['event_date'],
@@ -103,4 +103,3 @@ class Events(Resource):
             'status_code': 200
         })
 
-       
