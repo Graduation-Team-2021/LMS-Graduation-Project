@@ -14,9 +14,7 @@ class Delivers_Relation(Resource):
         self.reqparse.add_argument('deliverable_id', type=int, location='json')
 
     def post(self):
-
-        student_id = 3 # change to auth id later
-
+        student_id = 3  # change to auth id later
         args = self.reqparse.parse_args()
         delivers_relation = {
             "deliverable_id": args["deliverable_id"],
@@ -45,19 +43,15 @@ class Delete_Delivers_Relation(Resource):
             'status_code': 200
         })
 
-
-
-
     # /my_deliverables/<delivers_id>/upload
+
 
 class Upload_Deliverable_File(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
 
-
-    def post(self,delivers_id):
-
+    def post(self, delivers_id):
         args = self.reqparse.parse_args()
         file_to_be_uploaded = args['file']
         try:
@@ -70,14 +64,12 @@ class Upload_Deliverable_File(Resource):
         })
 
 
-
 # /my_deliverables/<delivers_id>/download
 class Download_Deliverable_File(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
 
-    def post(self,delivers_id):
-
+    def post(self, delivers_id):
         try:
             return controller_object.download_deliverable(delivers_id)
         except ErrorHandler as e:
@@ -85,12 +77,12 @@ class Download_Deliverable_File(Resource):
 
 
 # /students/<student_id>/deliverables/<deliverable_id>
-class Student_Deliverables(Resource):   
+class Student_Deliverables(Resource):
 
-    def get(self,student_id,deliverable_id):
+    def get(self, student_id, deliverable_id):
         try:
-            student_deliverables = controller_object.get_all_delivers_by_user_id_and_deliverable_id(student_id,deliverable_id)
+            student_deliverables = controller_object.get_all_delivers_by_user_id_and_deliverable_id(student_id,
+                                                                                                    deliverable_id)
         except ErrorHandler as e:
             return e.error
         return student_deliverables
-

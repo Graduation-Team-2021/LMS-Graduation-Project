@@ -77,3 +77,9 @@ class Students(Resource):
             'status_code': 200,
             'students': students
         }
+
+
+# students/<student_id>/results/<course_code>
+class Student_result_calculation(Resource):
+    def get(self,student_id,course_code):
+        return controller_object.calculate_student_marks(student_id,course_code)

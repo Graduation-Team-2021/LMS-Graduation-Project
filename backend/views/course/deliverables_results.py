@@ -56,4 +56,3 @@ class Deliverable_Results(Resource):
             'message': 'deliverable added successfully',
             'status_code': 200
         })
-
