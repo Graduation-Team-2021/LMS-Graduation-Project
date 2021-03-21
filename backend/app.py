@@ -55,18 +55,14 @@ import all the endpoints from views
 """
 from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile
 from views.user.professors import Professor, Professors
-from views.user.students import Students, Student
+from views.user.students import Students, Student,Student_result_calculation
 from views.course.courses import Course, Courses, My_Courses
 from views.course.materials import material, materials, download_material, upload_material
-from views.course.deliverables_results import Deliverable_Results
 from views.relations.teaches import Professor_Course_Relation, UpdateAndDelete_professor_Courses_Relation
 from views.relations.learns import Student_Course_Relation, Student_Courses_Relation
-
-from views.relations.messages import Messages_Relation,DeleteMessageById
+from views.relations.messages import Messages_Relation, DeleteMessageById
 from views.relations.delivers import Delivers_Relation, Delete_Delivers_Relation, Upload_Deliverable_File, Download_Deliverable_File, Student_Deliverables
-
-from views.course.deliverables import Deliverable_view, All_Deliverables,Students_Deliverables
-
+from views.course.deliverables_results import Deliverable_Results
 
 from views.course.deliverables import Deliverable_view, All_Deliverables,Students_Deliverables
 from views.course.events import Event, Events
@@ -99,6 +95,7 @@ Student
 """
 api.add_resource(Students, '/students')
 api.add_resource(Student, '/students/<user_id>')
+api.add_resource(Student_result_calculation, '/students/<student_id>/results/<course_code>')
 """
 Professor relation
 """
@@ -128,7 +125,7 @@ Materials
 api.add_resource(material, '/courses/<course_code>/materials/<id>')
 api.add_resource(materials, '/courses/<course_code>/materials')
 api.add_resource(download_material, '/courses/<course_code>/materials/<id>/download')
-api.add_resource(upload_material, '/courses/<course_code>/materials/upload')
+api.add_resource(upload_material, '/courses/<course_code>/materials/<id>/upload')
 
 """
 Exams

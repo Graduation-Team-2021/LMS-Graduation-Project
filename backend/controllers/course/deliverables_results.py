@@ -63,4 +63,3 @@ class deliverable_results_controller:
                 'description': error,
                 'status_code': 404
             })
-

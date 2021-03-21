@@ -18,7 +18,8 @@ class Results(db.Model, Base):
         return {
             "student_id": self.student_id,
             "exam_id": self.exam_id,
-            "mark": f"{self.mark}/{self.out_of_mark}"
+            "mark": self.mark,
+            "out_of_mark":self.out_of_mark
         }
 
     def insert(self):

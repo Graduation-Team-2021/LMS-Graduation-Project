@@ -116,6 +116,7 @@ class users_controller:
                 'description': 'Users do not exist.',
                 'status_code': 404
             })
+        # users = User.query.all()
         data = [user.serialize() for user in users]
         return data
 
