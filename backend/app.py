@@ -148,9 +148,6 @@ api.add_resource(Delivers_Relation, '/my_deliverables')
 api.add_resource(Deliverable_Results,'/students/<student_id>/deliverable/<deliverable_id>/results')
 api.add_resource(Students_Deliverables,'/students_deliverables/<deliverable_id>')
 
-api.add_resource(Delete_Delivers_Relation, '/my_deliverables/<delivers_id>')
-
-
 """
 Delete deliverable
 """
