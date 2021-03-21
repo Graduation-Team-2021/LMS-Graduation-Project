@@ -5,14 +5,12 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-
 class Exams(db.Model, Base):
     __tablename__ = 'exams'
     exam_id = db.Column(db.Integer, primary_key=True)
-    actual_mark = db.Column(db.Float)          
+    actual_mark = db.Column(db.Float)
     event_id = db.Column(db.Integer, ForeignKey('events.event_id', ondelete='CASCADE', onupdate="CASCADE"),
-                            nullable=False,unique=True)
-    
+                         nullable=False, unique=True)
 
     def serialize(self):
         return {

@@ -29,10 +29,12 @@ def generate_hash(password):
 def check_hash(hash, password):
     if check_password_hash(hash, password):
         return True
-    raise ErrorHandler({
-        'status_code': 404,
-        'description': 'Password is incorrect.'
-    })
+    # raise ErrorHandler({
+    #     'status_code': 404,
+    #     'description': 'Password is incorrect.'
+    # })
+    else:
+        return False
 
 
 def get_token_auth_header():
@@ -68,7 +70,7 @@ def get_token_auth_header():
 
 def check_permissions(permission, payload):
     if 'permissions' not in payload.keys():
-        raise ErrodrHanler({
+        raise ErrorHandler({
             'status_code': 401,
             'description': 'Permission parameter missing in payload.'
         })

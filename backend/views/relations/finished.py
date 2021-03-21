@@ -16,6 +16,8 @@ class finished_relation_view(Resource):
     def get(self, student_id):
         try:
             finished_courses = controller_object.get_finished_courses(student_id)
+            if not finished_courses:
+                return jsonify({'message': 'No finished courses for this specific student'})
         except ErrorHandler as e:
             return e.error
         return finished_courses
@@ -75,5 +77,3 @@ class finished_relation_using_the_two_keys(Resource):
 #         self.reqparse = reqparse.RequestParser()
 #         self.reqparse.add_argument('course_code', type=str, location='json')
 #         self.reqparse.add_argument('student_id', type=int, location='json')
-
-

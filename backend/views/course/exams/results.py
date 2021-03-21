@@ -6,27 +6,27 @@ from flask import current_app, jsonify
 
 controller_object = results_controller()
 
-#/students/<student_id>/exams/<exam_id>/results
+
+# /students/<student_id>/exams/<exam_id>/results
 class Results(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('mark', type=float, location='json')
 
-    def post(self,student_id,exam_id):
-        
+    def post(self, student_id, exam_id):
+
         args = self.reqparse.parse_args()
         new_results = {
-            "student_id":student_id,
-            "exam_id":exam_id,
-            "mark":args['mark']
+            "student_id": student_id,
+            "exam_id": exam_id,
+            "mark": args['mark']
         }
         try:
             controller_object.post_results(new_results)
-            
+
         except ErrorHandler as e:
             return e.error
         return jsonify({
             'message': 'Results answer added successfully',
             'status_code': 200
         })
-    

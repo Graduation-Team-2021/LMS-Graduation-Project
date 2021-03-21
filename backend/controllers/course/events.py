@@ -82,7 +82,7 @@ class events_controller():
 
     def post_Event(self, Event):
         try:
-            new_Event= Events(**Event)
+            new_Event = Events(**Event)
             new_Event = Events.insert(new_Event)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])

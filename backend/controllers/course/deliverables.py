@@ -17,6 +17,7 @@ from flask import json
 
 delivers_controller_object = delivers_controller()
 
+
 class deliverable_controller:
     def get_deliverable(self, deliverable_id):
         deliverable = Deliverables.query.filter_by(deliverable_id=deliverable_id).first()
@@ -72,57 +73,59 @@ class deliverable_controller:
                 })
             deliverables_list = []
             all_deliverables = Deliverables.query.join(Course).join(Learns_Relation).filter(
-                Course.course_code==Deliverables.course_deliverables).filter(
-                    Learns_Relation.student_id==student_id
-                ).filter(Learns_Relation.course_code == Course.course_code).with_entities(
-                    Deliverables.deliverable_id, Deliverables.deliverable_name, Deliverables.course_deliverables,
-                            Deliverables.deadline,Course.course_name,Deliverables.description,Deliverables.mark)
+                Course.course_code == Deliverables.course_deliverables).filter(
+                Learns_Relation.student_id == student_id
+            ).filter(Learns_Relation.course_code == Course.course_code).with_entities(
+                Deliverables.deliverable_id, Deliverables.deliverable_name, Deliverables.course_deliverables,
+                Deliverables.deadline, Course.course_name, Deliverables.description, Deliverables.mark)
             for i in all_deliverables:
-                
+
                 index = next((index for (index, d) in enumerate(deliverables_list) if d["course_id"] == i[2]), None)
                 if index == None:
                     deliverables_list.append(
-                        {"course_id": i[2], "course_name":i[4],"deliverables":
-                        [{"deliverable_id": i[0], "deliverable_name": i[1],
-                        "description":i[5],
-                        "mark":i[6],
-                        "deadline": json.dumps(i[3], default=str).replace("\"", "")}]})
+                        {"course_id": i[2], "course_name": i[4], "deliverables":
+                            [{"deliverable_id": i[0], "deliverable_name": i[1],
+                              "description": i[5],
+                              "mark": i[6],
+                              "deadline": json.dumps(i[3], default=str).replace("\"", "")}]})
                 else:
                     deliverables_list[index]['deliverables'].append({"deliverable_id": i[0],
-                        "deliverable_name": i[1],
-                        "description":i[5],
-                        "mark":i[6],
-                        "deadline": json.dumps(i[3], default=str).replace("\"", "")})
+                                                                     "deliverable_name": i[1],
+                                                                     "description": i[5],
+                                                                     "mark": i[6],
+                                                                     "deadline": json.dumps(i[3], default=str).replace(
+                                                                         "\"", "")})
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
             })
-        return {"courses_deliverables":deliverables_list}
-    
-    def get_all_deliverables_by_deliverable_id(self,deliverable_id):
+        return {"courses_deliverables": deliverables_list}
+
+    def get_all_deliverables_by_deliverable_id(self, deliverable_id):
         try:
             all_deliverables = Student.query.join(Deliver).join(User).filter(
-                Deliver.student_id==Student.user_id).filter(
-                    User.user_id==Student.user_id
-                ).filter(Deliver.deliverable_id==deliverable_id).group_by(
-                    User.user_id).with_entities(
-                    User.user_id,User.name,User.email)
+                Deliver.student_id == Student.user_id).filter(
+                User.user_id == Student.user_id
+            ).filter(Deliver.deliverable_id == deliverable_id).group_by(
+                User.user_id).with_entities(
+                User.user_id, User.name, User.email)
             all_deliverables_list = []
             for i in all_deliverables:
-                deliverable_result = Deliverables_Results.query.filter(deliverable_id==deliverable_id).filter(Deliverables_Results.user_id==i[0]).first()
+                deliverable_result = Deliverables_Results.query.filter(deliverable_id == deliverable_id).filter(
+                    Deliverables_Results.user_id == i[0]).first()
                 if not deliverable_result:
                     mark = None
                 else:
                     mark = deliverable_result.mark
                 all_deliverables_list.append({
-                    'user_id':i[0],
-                    'name':i[1],
-                    'email':i[2],
-                    'mark':mark
+                    'user_id': i[0],
+                    'name': i[1],
+                    'email': i[2],
+                    'mark': mark
                 })
-            
+
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
@@ -130,8 +133,8 @@ class deliverable_controller:
                 'status_code': 404
             })
         return all_deliverables_list
-    
-    def get_one_professor_all_deliverables(self,professor_id):
+
+    def get_one_professor_all_deliverables(self, professor_id):
         try:
             if not Professor.query.filter_by(user_id=professor_id).first():
                 raise ErrorHandler({
@@ -140,35 +143,35 @@ class deliverable_controller:
                 })
             deliverables_list = []
             all_deliverables = Deliverables.query.join(Course).join(Teaches_Relation).filter(
-                Course.course_code==Deliverables.course_deliverables).filter(
-                    Teaches_Relation.professor_id==professor_id
-                ).filter(Teaches_Relation.course_code == Course.course_code).with_entities(
-                    Deliverables.deliverable_id, Deliverables.deliverable_name, Deliverables.course_deliverables,
-                            Deliverables.deadline,Course.course_name,Deliverables.description,Deliverables.mark)
+                Course.course_code == Deliverables.course_deliverables).filter(
+                Teaches_Relation.professor_id == professor_id
+            ).filter(Teaches_Relation.course_code == Course.course_code).with_entities(
+                Deliverables.deliverable_id, Deliverables.deliverable_name, Deliverables.course_deliverables,
+                Deliverables.deadline, Course.course_name, Deliverables.description, Deliverables.mark)
             for i in all_deliverables:
-                
+
                 index = next((index for (index, d) in enumerate(deliverables_list) if d["course_id"] == i[2]), None)
                 unsolved_count = delivers_controller_object.count_number_of_ungraded_deliverables(i[0])
                 if index == None:
                     deliverables_list.append(
-                        {"course_id": i[2], "course_name":i[4],"deliverables":
-                        [{"deliverable_id": i[0], "deliverable_name": i[1],
-                        "description":i[5],
-                        'unsolved_deliverables':unsolved_count,
-                        "mark":i[6],
-                        "deadline": json.dumps(i[3], default=str).replace("\"", "")}]})
+                        {"course_id": i[2], "course_name": i[4], "deliverables":
+                            [{"deliverable_id": i[0], "deliverable_name": i[1],
+                              "description": i[5],
+                              'unsolved_deliverables': unsolved_count,
+                              "mark": i[6],
+                              "deadline": json.dumps(i[3], default=str).replace("\"", "")}]})
                 else:
                     deliverables_list[index]['deliverables'].append({"deliverable_id": i[0],
-                        "deliverable_name": i[1],
-                        "description":i[5],
-                        'unsolved_deliverables':unsolved_count,
-                        "mark":i[6],
-                        "deadline": json.dumps(i[3], default=str).replace("\"", "")})
+                                                                     "deliverable_name": i[1],
+                                                                     "description": i[5],
+                                                                     'unsolved_deliverables': unsolved_count,
+                                                                     "mark": i[6],
+                                                                     "deadline": json.dumps(i[3], default=str).replace(
+                                                                         "\"", "")})
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
             })
-        return {"courses_deliverables":deliverables_list}
-
+        return {"courses_deliverables": deliverables_list}

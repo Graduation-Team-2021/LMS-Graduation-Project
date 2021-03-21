@@ -12,7 +12,7 @@ class Deliverable_view(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('deliverable_name', type=str, location='json')
-        self.reqparse.add_argument('deadline', type=str, location='json')
+        self.reqparse.add_argument('deadline', type=str, location='json') #date time not str
         self.reqparse.add_argument('course_deliverables', type=str, location='json')
         self.reqparse.add_argument('students_number', type=int, location='json')
         self.reqparse.add_argument('students_number', type=int, location='json')
@@ -69,8 +69,10 @@ class All_Deliverables(Resource):
         self.reqparse.add_argument('mark', type=int, location='json')
 
     def get(self):
+
         student_id = 11 #change to auth id later
         role = 'teacher'
+
         try:
             if role == 'student':
                 specific_deliverables = controller_object.get_one_student_all_deliverables(student_id)
@@ -99,13 +101,12 @@ class All_Deliverables(Resource):
             'status_code': 200
         })
 
+
 # /students_deliverables/<deliverable_id>
 class Students_Deliverables(Resource):
-        def get(self,deliverable_id):
-            try:
-                student_deliverables = controller_object.get_all_deliverables_by_deliverable_id(deliverable_id)
-            except ErrorHandler as e:
-                return e.error
-            return student_deliverables
-
-    
+    def get(self, deliverable_id):
+        try:
+            student_deliverables = controller_object.get_all_deliverables_by_deliverable_id(deliverable_id)
+        except ErrorHandler as e:
+            return e.error
+        return student_deliverables

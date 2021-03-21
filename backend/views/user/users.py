@@ -5,6 +5,8 @@ from methods.auth import *
 from methods.errors import *
 from flask_restful import Resource, reqparse
 from flask import jsonify
+from models.user.professors import Professor
+from models.user.students import Student
 
 controller_object = users_controller()
 cont_stud = students_controller()
@@ -37,14 +39,54 @@ class User(Resource):
     def put(self, user_id):
         args = self.reqparse.parse_args()
         user = {
-            'user_id': args['user_id'],
+            'user_id':user_id,
             'name': args['name'],
             'email': args['email'],
             'national_id': args['national_id'],
-            'birthday': args['birthday']
+            'birthday': args['birthday'],
         }
         try:
             controller_object.update_user(user_id, user)
+            prof_to_be_updated = Professor.query.filter_by(user_id=user_id).first()
+            student_to_be_updated = Student.query.filter_by(user_id=user_id).first()
+            if prof_to_be_updated:
+                professor = {
+                    'user_id': user_id,
+                    'scientific_degree': args['scientific_degree']
+                }
+                cont_professor.update_professor(user_id, professor)
+                return jsonify({
+                    'Professor': professor,
+                    'message': 'professor updated successfully',
+                    'status code': 200
+                })
+            elif student_to_be_updated:
+                student = {
+                    'user_id': user_id,
+                    'student_year': args['student_year']
+                }
+                cont_stud.update_student(user_id, student)
+                return jsonify({
+                    'Student': student,
+                    'message': 'student updated successfully',
+                    'status code': 200
+                })
+
+
+
+            # if args['scientific_degree']:
+            #     professor = {
+            #         'user_id': user_id,
+            #         'scientific_degree': args['scientific_degree']
+            #     }
+            #     cont_professor.update_professor(user_id,professor)
+            # elif args['student_year']:
+            #     student = {
+            #         'user_id': user_id,
+            #         'student_year': args['student_year']
+            #     }
+            #     cont_stud.update_student(user_id,student)
+
         except ErrorHandler as e:
             return e.error
         # return updated_user
@@ -149,8 +191,8 @@ class Login(Resource):
         except ErrorHandler as e:
             return e.error
         try:
-            if check_hash(user["password"], args["password"]):  # hashed password
-                return encode_auth_token(user["user"]["id"], controller_object.get_user_by_email(args["email"])["role"])
+            if check_hash(user["password"], args["password"]) or user['password']==args['password']:  # hashed password #zawedt el b3d el or 3ashan 7war el reset password by email msh sha3'al
+                return encode_auth_token(user["user"]["user_id"], controller_object.get_user_by_email(args["email"])["role"])
             else:
                 return jsonify({
                     'code': 'Wrong credentials',
@@ -174,10 +216,11 @@ class Reset_password(Resource):
         return jsonify("wrong national id , please re-check your data.")
 
 
+# /users/<user_id>/profile/
 class Profile(Resource):
     method_decorators = {'get': [requires_auth_identity("")]}
 
-    def get(self, user_id, role):
+    def get(self, user_id):
         try:
             user = controller_object.get_user(user_id=user_id)
         except ErrorHandler as e:

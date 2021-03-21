@@ -12,6 +12,7 @@ class Deliverable_Results(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('mark', type=int, location='json')
+
         
     def get(self,deliverable_id,student_id):
         try:
@@ -46,6 +47,7 @@ class Deliverable_Results(Resource):
         args = self.reqparse.parse_args()
         deliverable_result = {
             "deliverable_id":deliverable_id,
+
             "user_id": student_id,
             "mark": args["mark"]
         }
