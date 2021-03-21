@@ -61,7 +61,6 @@ class Deliverable_view(Resource):
 class All_Deliverables(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('deliverable_id', type=str, location='json')
         self.reqparse.add_argument('deliverable_name', type=str, location='json')
         self.reqparse.add_argument('deadline', type=str, location='json')
         self.reqparse.add_argument('course_deliverables', type=str, location='json')
@@ -70,13 +69,15 @@ class All_Deliverables(Resource):
         self.reqparse.add_argument('mark', type=int, location='json')
 
     def get(self):
-        student_id = 1  # change to auth id later
-        role = 'professor'
+
+        student_id = 11 #change to auth id later
+        role = 'teacher'
+
         try:
             if role == 'student':
                 specific_deliverables = controller_object.get_one_student_all_deliverables(student_id)
             else:
-                specific_deliverables = controller_object.get_one_professor_all_deliverables(8)
+                specific_deliverables = controller_object.get_one_professor_all_deliverables(11)
         except ErrorHandler as e:
             return e.error
         return specific_deliverables
@@ -84,7 +85,6 @@ class All_Deliverables(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         deliverable = {
-            "deliverable_id": args['deliverable_id'],
             "deliverable_name": args["deliverable_name"],
             "deadline": args["deadline"],
             "course_deliverables": args["course_deliverables"],

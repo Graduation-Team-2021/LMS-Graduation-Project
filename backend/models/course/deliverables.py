@@ -16,8 +16,10 @@ class Deliverables(db.Model, Base):
     course_deliverables = db.Column(db.String(5),
                                     ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                                     nullable=False)
-    students_number = db.Column(db.Integer, nullable=False)
+
+    students_number = db.Column(db.Integer,nullable=False)
     mark = db.Column(db.Integer, nullable=False)
+
 
     def serialize(self):
         return {
@@ -25,8 +27,9 @@ class Deliverables(db.Model, Base):
             'deliverable_name': self.deliverable_name,
             'deadline': self.deadline,
             'description': self.description,
-            "course_deliverables": self.course_deliverables,
-            # this is the course code foreign key that references course table
+
+            "course_deliverables": self.course_deliverables, # this is the course code foreign key that references course table
+
             "students_number": self.students_number,
             "mark": self.mark
         }
