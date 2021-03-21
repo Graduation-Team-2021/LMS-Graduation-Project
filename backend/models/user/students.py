@@ -11,11 +11,13 @@ class Student(db.Model, Base):
     user_id = db.Column(db.Integer, ForeignKey('user.user_id', ondelete='CASCADE', onupdate="CASCADE"), nullable=False,
                         primary_key=True)
     student_year = db.Column(db.Integer, nullable=False)
+    group_project_id=db.Column(db.Integer,ForeignKey('group_project.group_id',ondelete='SET_NULL',onupdate='CASCADE'))
 
     def serialize(self):
         return {
             'id': self.user_id,
-            'student_year': self.student_year
+            'student_year': self.student_year,
+            'group_project':self.group_project_id
         }
 
     def insert(self):
