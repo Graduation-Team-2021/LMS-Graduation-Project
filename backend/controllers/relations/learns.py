@@ -1,13 +1,14 @@
 from models.relations.learns import Learns_Relation
 from models.course.courses import Course
 from methods.errors import *
+from flask import jsonify
 
 
 # student/courses
 class student_course_relation_controller():
     def get_courses_by_student_id(self, student_id):
         try:
-            courses = Learns_Relation.query.filter_by(student_id=student_id)
+            courses = Learns_Relation.query.filter_by(student_id=student_id).all()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({

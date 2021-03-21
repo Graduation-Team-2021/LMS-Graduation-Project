@@ -4,6 +4,7 @@ from methods.errors import *
 from models.course.deliverables import Deliverables
 from models.course.deliverables_results import Deliverables_Results
 from models.course.courses import Course
+
 from flask import json,current_app,send_file, send_from_directory
 from models.user.students import Student
 import os
@@ -14,6 +15,7 @@ class delivers_controller():
     def get_all_delivers_by_user_id_and_deliverable_id(self, user_id,deliverable_id):
         try:
             delivers_relations = Deliver.query.filter(Deliver.student_id==user_id).filter(Deliver.deliverable_id==deliverable_id)
+
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
@@ -24,11 +26,13 @@ class delivers_controller():
             raise ErrorHandler({'description': 'deliverables do not exist',
                                 'status_code': 500
                                 })
+
         deliver_relations_formatted =[]
         for i in delivers_relations:
             deliver_relations_formatted.append(i.serialize())
         return deliver_relations_formatted
     
+
     def post_delivers_relation(self, delivers_relation):
         new_delivers_relation = Deliver(**delivers_relation)
         try:
@@ -72,6 +76,7 @@ class delivers_controller():
             })
 
 
+
     def upload_deliverable(self, delivers_id, file):
         try:
             file_name,file_type = os.path.splitext(file.filename)
@@ -98,6 +103,7 @@ class delivers_controller():
                 'file_name': file_name
             }
             self.update_delivers_relation(delivers_id,updated_delivers)
+
             return
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
@@ -110,6 +116,7 @@ class delivers_controller():
                 'description': "File not found.",
                 'status_code': 404
             })
+
             
     def download_deliverable(self,delivers_id):  
         try:
@@ -125,6 +132,7 @@ class delivers_controller():
                                     f"{delivers_id}")
                                     
             return send_from_directory(file_path,filename=f"{file_name}{file_type.lower()}",as_attachment=True)
+
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
@@ -137,6 +145,7 @@ class delivers_controller():
                 'status_code': 404
             })
 
+
     def count_number_of_ungraded_deliverables(self,deliverable_id):
         try:
             student_marks = Deliver.query.outerjoin(Deliverables_Results, and_(Deliver.deliverable_id==Deliverables_Results.deliverable_id,Deliver.student_id==Deliverables_Results.user_id)).filter(Deliver.deliverable_id==deliverable_id).group_by(Deliver.deliverable_id,Deliver.student_id).with_entities(Deliverables_Results.mark)
@@ -145,12 +154,15 @@ class delivers_controller():
                 if i[0] is None:
                     count = count+1
             return count
+
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
+
             })
+
 
 
 

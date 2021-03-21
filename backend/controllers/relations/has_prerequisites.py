@@ -26,6 +26,18 @@ class prequisite_controller:
         # +f"prequisite course code:{prequisite_course.serialize()['course_code'] } ,prequisite course name: {prequisite_course.serialize()['course_name']} "
         return prequisite.serialize()
 
+    def get_one_course_all_prequisites(self, course_code):
+        try:
+            prequisites = Prerequiste.query.filter_by(course_code=course_code).all()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        data = [prequisite.serialize() for prequisite in prequisites]
+        return data
+
     def post_prequisite(self, prequisite):
         new_prequisite = Prerequiste(**prequisite)
         try:
@@ -65,7 +77,7 @@ class prequisite_controller:
             raise ErrorHandler({
                 "description": "prerequisite does not exist",
                 "status_code": 404
-                })
+            })
         updated_prerequisite = Prerequiste(**new_prerequisite)
         updated_prerequisite.update()
         return updated_prerequisite.serialize()

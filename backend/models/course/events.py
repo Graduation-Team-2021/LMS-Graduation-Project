@@ -6,7 +6,6 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-
 class Events(db.Model, Base):
     __tablename__ = 'events'
     event_id = db.Column(db.Integer, primary_key=True)
@@ -14,7 +13,7 @@ class Events(db.Model, Base):
     event_date = db.Column(db.DateTime, nullable=False)
     course_code = db.Column(db.String(50), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                             nullable=False)
-    event_type = db.Column(db.String(50),nullable=False)
+    event_type = db.Column(db.String(50), nullable=False)
     event_duration = db.Column(db.Integer, nullable=False)
 
     def serialize(self):

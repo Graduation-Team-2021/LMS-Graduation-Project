@@ -101,6 +101,7 @@ class download_material(Resource):
 
 
 #/courses/<course_code>/materials/upload
+
 class upload_material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
