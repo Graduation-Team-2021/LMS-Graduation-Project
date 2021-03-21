@@ -15,7 +15,7 @@ class materials_controller():
             })
 
         data = [material.serialize() for material in materials]
-        return (data)
+        return data
 
     # def get_Material(self, material_id):
     #     material = Materials.query.filter_by(material_id=material_id).first()
@@ -74,7 +74,7 @@ class materials_controller():
 
     def upload_material(self, data, course_code):
         material_type = data.filename.split(".")
-        return material_type
+        # return material_type
         file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
                                  f"materials\{material_type}")
         if not os.path.exists(file_path):

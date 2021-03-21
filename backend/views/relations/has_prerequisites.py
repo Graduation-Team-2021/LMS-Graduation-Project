@@ -15,7 +15,7 @@ class prerequisite_view(Resource):
 
     def get(self, course_id):
         try:
-            prerequisite = controller_object.get_prequisite(course_id)
+            prerequisite = controller_object.get_one_course_all_prequisites(course_id)
         except ErrorHandler as e:
             return e.error
         return prerequisite

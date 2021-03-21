@@ -48,7 +48,7 @@ class Questions(Resource):
         self.reqparse.add_argument('question', type=str, location='json')
         self.reqparse.add_argument('mark', type=str, location='json')
 
-    def get(self,exam_id):
+    def get(self, exam_id):
         try:
             questions = controller_object.get_all_questions(exam_id)
         except ErrorHandler as e:
@@ -58,17 +58,17 @@ class Questions(Resource):
             'questions': questions
         }
 
-    def post(self,exam_id):
-        
+    def post(self, exam_id):
+
         args = self.reqparse.parse_args()
         new_question = {
-            "question":args["question"],
-            "mark":args["mark"],
+            "question": args["question"],
+            "mark": args["mark"],
             "exam_id": exam_id
         }
         try:
             controller_object.post_question(new_question)
-            
+
         except ErrorHandler as e:
             return e.error
         return jsonify({

@@ -7,7 +7,6 @@ import json
 Base = declarative_base()
 
 
-
 class Course(db.Model, Base):
     __tablename__ = 'course'
     course_code = db.Column(db.String(7), primary_key=True)
@@ -15,7 +14,6 @@ class Course(db.Model, Base):
     weekly_hours = db.Column(db.Integer, nullable=False)
     group_number = db.Column(db.Integer, nullable=False, unique=True)
     max_students = db.Column(db.Integer, nullable=False)
-
 
     def serialize(self):
         return {

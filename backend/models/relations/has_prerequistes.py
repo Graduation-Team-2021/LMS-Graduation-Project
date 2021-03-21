@@ -11,7 +11,7 @@ class Prerequiste(db.Model, Base):
 
     course_code = db.Column(db.String(5), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                             primary_key=True)
-    pre_course_id = db.Column(db.String(5), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"))
+    pre_course_id = db.Column(db.String(5), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),primary_key=True)
 
     def serialize(self):
         return {

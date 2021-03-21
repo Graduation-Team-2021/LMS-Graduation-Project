@@ -70,7 +70,9 @@ class All_Deliverables(Resource):
         self.reqparse.add_argument('mark', type=int, location='json')
 
     def get(self):
+
         student_id = 1 #change to auth id later
+
         role = 'professor'
         try:
             if role == 'student':
@@ -101,6 +103,7 @@ class All_Deliverables(Resource):
             'status_code': 200
         })
 
+
 # /students_deliverables/<deliverable_id>
 class Students_Deliverables(Resource):
         def get(self,deliverable_id):
@@ -111,3 +114,4 @@ class Students_Deliverables(Resource):
             return student_deliverables
 
     
+
