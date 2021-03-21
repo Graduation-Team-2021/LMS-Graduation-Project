@@ -2,67 +2,40 @@ from controllers.relations.delivers import delivers_controller
 from flask_restful import Resource, reqparse
 from methods.auth import *
 from models.course.deliverables import Deliverables
+import werkzeug
 
 controller_object = delivers_controller()
 
 
-# /student/<student_id>/deliverables
+# /my_deliverables
 class Delivers_Relation(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('deliverable_id', type=int, location='json')
-        self.reqparse.add_argument('group_id', type=int, location='json')
-        self.reqparse.add_argument('student_id', type=int, location='json')
 
-    def get(self, student_id):
-        try:
-            specific_student_deliverables = controller_object.get_one_student_all_deliverables(student_id)
-        except ErrorHandler as e:
-            return e.error
-        return specific_student_deliverables
-        # try:
-        #     delivers = controller_object.get_deliverable( student_id)
-        # except ErrorHandler as e:
-        #     return e.error
-        # return Deliverables.query.filter_by(deliverable_id=delivers["deliverable_id"]).first().serialize()
-
-    def post(self, student_id):
+    def post(self):
+        student_id = 3 # change to auth id later
         args = self.reqparse.parse_args()
-        deliverable = {
+        delivers_relation = {
             "deliverable_id": args["deliverable_id"],
             "student_id": student_id
         }
         try:
-            controller_object.post_deliverable(deliverable)
+            delivers_id = controller_object.post_delivers_relation(delivers_relation)
         except ErrorHandler as e:
             return e.error
         return jsonify({
-            'message': 'deliverable added successfully',
+            'message': 'delivers relation added successfully',
+            'delivers_id': delivers_id,
             'status_code': 200
         })
 
 
-# /deliverables/<deliverable_id>/students/<student_id>
-class Delete_Deliverable(Resource):
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('deliverable_id', type=int, location='json')
-        self.reqparse.add_argument('group_id', type=int, location='json')
-        self.reqparse.add_argument('student_id', type=int, location='json')
-
-    def put(self, deliverable_id, student_id):
-        args = self.reqparse.parse_args()
-        deliver = {
-            'deliverable_id': args['deliverable_id'], 'group_id': args['group_id'], 'student_id': args['student_id']}
+# /my_deliverables/<delivers_id>
+class Delete_Delivers_Relation(Resource):
+    def delete(self, delivers_id):
         try:
-            controller_object.update_deliverable(deliverable_id, student_id, deliver)
-        except ErrorHandler as e:
-            return e.error
-        return jsonify({'message': 'deliver updated successfully', 'status_code': 200})
-
-    def delete(self, deliverable_id, student_id):
-        try:
-            controller_object.delete_deliverable(deliverable_id, student_id)
+            controller_object.delete_delivers_relation(delivers_id)
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -70,13 +43,44 @@ class Delete_Deliverable(Resource):
             'status_code': 200
         })
 
-# class upload_file(Resource):
-#     post:
-#         upload_file
-# class EachCourseDeliverables:
-#     def __init__(self):
-#         self.reqparse = reqparse.RequestParser()
-#         self.reqparse.add_argument('course_deliverables', type=int, location='json')
-#         self.reqparse.add_argument('deliverable_id', type=int, location='json')
-#
-#     def get(self):
+
+
+    # /my_deliverables/<delivers_id>/upload
+class Upload_Deliverable_File(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
+
+    def post(self,delivers_id):
+        args = self.reqparse.parse_args()
+        file_to_be_uploaded = args['file']
+        try:
+            controller_object.upload_deliverable(delivers_id, file_to_be_uploaded)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'message': 'Deliverable uploaded successfully',
+            'status_code': 200
+        })
+
+
+# /my_deliverables/<delivers_id>/download
+class Download_Deliverable_File(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+
+    def post(self,delivers_id):
+        try:
+            return controller_object.download_deliverable(delivers_id)
+        except ErrorHandler as e:
+            return e.error
+
+# /students/<student_id>/deliverables/<deliverable_id>
+class Student_Deliverables(Resource):   
+
+    def get(self,student_id,deliverable_id):
+        try:
+            student_deliverables = controller_object.get_all_delivers_by_user_id_and_deliverable_id(student_id,deliverable_id)
+        except ErrorHandler as e:
+            return e.error
+        return student_deliverables

@@ -3,9 +3,19 @@ import os
 
 from flask import current_app, send_file, send_from_directory
 
+from models.course.courses import Course
 from models.course.deliverables import Deliverables
+from models.relations.delivers import Deliver
+from models.relations.learns import Learns_Relation
+from models.relations.teaches import Teaches_Relation
+from models.course.deliverables_results import Deliverables_Results
+from models.user.students import Student
+from models.user.professors import Professor
+from models.user.users import User
+from controllers.relations.delivers import delivers_controller
 from flask import json
 
+delivers_controller_object = delivers_controller()
 
 class deliverable_controller:
     def get_deliverable(self, deliverable_id):
@@ -53,73 +63,112 @@ class deliverable_controller:
         updated_deliverable.update()
         return updated_deliverable.serialize()
 
-    # sha3'ala
-    def upload_file(self, student_id, course_code, deliverable_id, file):
-        # deliverable_name = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_name
-
-        # material_type = file.content_type.split("/")[1]
-        deliverable_name=file.filename.split('.')[0]
-        file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
-                                 f"deliverables\{deliverable_name}",
-                                 f"student\student-id{student_id}",
-                                 f"{file.filename.split('.')[1]}")
-        if not os.path.exists(file_path):
-            os.makedirs(file_path)
-        file_path = os.path.join(file_path, file.filename)
-        file.save(file_path)
-        return
-
-    # msh sha3'ala
-    def download_deliverable(self, student_id, course_code,
-                             deliverable_id):  # deliverable type is the extension of the file , i.e. txt,pdf
+    def get_one_student_all_deliverables(self, student_id):
         try:
-            deliverable_name = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_name
-            deliverable_type = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_type
-            file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
-                                     f"deliverables\{deliverable_name}",
-                                     f"student\student-id{student_id}",
-                                     f"{deliverable_type}")
-            return send_from_directory(file_path, filename=f"{deliverable_name}.{deliverable_type.lower()}",
-                                       as_attachment=True)
-            # return send_file(file_path,attachment_filename=f"{deliverable_name}.{deliverable_type.lower()}",as_attachment=True)
-            # return f"{file_path}" + "\\" + f"{deliverable_name}.{deliverable_type.lower()}"
-            # return send_from_directory(file_path,f"{deliverable_name}.{deliverable_type}",as_attachment=True)
-            # send_from_directory(file_path, filename=f"{material_name}.{material_type}", as_attachment=True)
-            # return send_file(filename_or_fp="C:/Users/tarek/Desktop/LMS-Graduation-Project/backend/static/courses/123/deliverables/MANET_experiment/student/student-id1/JPG/MANET_experiment.jpg",                 attachment_filename=f"{deliverable_name}.{deliverable_type}")
-            # return send_from_directory(file_path, filename=f"{deliverable_name}.{deliverable_type.lower()}",as_attachment=True)
+            if not Student.query.filter_by(user_id=student_id).first():
+                raise ErrorHandler({
+                    "message": "student does not exist",
+                    "status code": 404
+                })
+            deliverables_list = []
+            all_deliverables = Deliverables.query.join(Course).join(Learns_Relation).filter(
+                Course.course_code==Deliverables.course_deliverables).filter(
+                    Learns_Relation.student_id==student_id
+                ).filter(Learns_Relation.course_code == Course.course_code).with_entities(
+                    Deliverables.deliverable_id, Deliverables.deliverable_name, Deliverables.course_deliverables,
+                            Deliverables.deadline,Course.course_name,Deliverables.description,Deliverables.mark)
+            for i in all_deliverables:
+                
+                index = next((index for (index, d) in enumerate(deliverables_list) if d["course_id"] == i[2]), None)
+                if index == None:
+                    deliverables_list.append(
+                        {"course_id": i[2], "course_name":i[4],"deliverables":
+                        [{"deliverable_id": i[0], "deliverable_name": i[1],
+                        "description":i[5],
+                        "mark":i[6],
+                        "deadline": json.dumps(i[3], default=str).replace("\"", "")}]})
+                else:
+                    deliverables_list[index]['deliverables'].append({"deliverable_id": i[0],
+                        "deliverable_name": i[1],
+                        "description":i[5],
+                        "mark":i[6],
+                        "deadline": json.dumps(i[3], default=str).replace("\"", "")})
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
-                'status_code': 500
-            })
-        except FileNotFoundError:
-            raise ErrorHandler({
-                'description': "File not found.",
                 'status_code': 404
             })
-
-    def get_all_deliverables(self):
-        deliverables_list = []
-        deliverables = Deliverables.query.all()
-        if deliverables is None:
+        return {"courses_deliverables":deliverables_list}
+    
+    def get_all_deliverables_by_deliverable_id(self,deliverable_id):
+        try:
+            all_deliverables = Student.query.join(Deliver).join(User).filter(
+                Deliver.student_id==Student.user_id).filter(
+                    User.user_id==Student.user_id
+                ).filter(Deliver.deliverable_id==deliverable_id).group_by(
+                    User.user_id).with_entities(
+                    User.user_id,User.name,User.email)
+            all_deliverables_list = []
+            for i in all_deliverables:
+                deliverable_result = Deliverables_Results.query.filter(deliverable_id==deliverable_id).filter(Deliverables_Results.user_id==i[0]).first()
+                if not deliverable_result:
+                    mark = None
+                else:
+                    mark = deliverable_result.mark
+                all_deliverables_list.append({
+                    'user_id':i[0],
+                    'name':i[1],
+                    'email':i[2],
+                    'mark':mark
+                })
+            
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
             raise ErrorHandler({
-                'description': 'Course does not exist.',
+                'description': error,
                 'status_code': 404
             })
-        for deliverable in deliverables:
-            deliverable.deadline = json.dumps(deliverable.deadline, default=str).replace("\"", "")
-        deliverables = [deliverable.serialize() for deliverable in deliverables]
-        return deliverables
+        return all_deliverables_list
+    
+    def get_one_professor_all_deliverables(self,professor_id):
+        try:
+            if not Professor.query.filter_by(user_id=professor_id).first():
+                raise ErrorHandler({
+                    "message": "professor does not exist",
+                    "status code": 404
+                })
+            deliverables_list = []
+            all_deliverables = Deliverables.query.join(Course).join(Teaches_Relation).filter(
+                Course.course_code==Deliverables.course_deliverables).filter(
+                    Teaches_Relation.professor_id==professor_id
+                ).filter(Teaches_Relation.course_code == Course.course_code).with_entities(
+                    Deliverables.deliverable_id, Deliverables.deliverable_name, Deliverables.course_deliverables,
+                            Deliverables.deadline,Course.course_name,Deliverables.description,Deliverables.mark)
+            for i in all_deliverables:
+                
+                index = next((index for (index, d) in enumerate(deliverables_list) if d["course_id"] == i[2]), None)
+                unsolved_count = delivers_controller_object.count_number_of_ungraded_deliverables(i[0])
+                if index == None:
+                    deliverables_list.append(
+                        {"course_id": i[2], "course_name":i[4],"deliverables":
+                        [{"deliverable_id": i[0], "deliverable_name": i[1],
+                        "description":i[5],
+                        'unsolved_deliverables':unsolved_count,
+                        "mark":i[6],
+                        "deadline": json.dumps(i[3], default=str).replace("\"", "")}]})
+                else:
+                    deliverables_list[index]['deliverables'].append({"deliverable_id": i[0],
+                        "deliverable_name": i[1],
+                        "description":i[5],
+                        'unsolved_deliverables':unsolved_count,
+                        "mark":i[6],
+                        "deadline": json.dumps(i[3], default=str).replace("\"", "")})
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
+        return {"courses_deliverables":deliverables_list}
 
-    def download_deliverable(self, student_id, course_code,deliverable_id):  
-        
-        deliverable_name = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_name
-        deliverable_type = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().deliverable_type
-        file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
-                                    f"deliverables\{deliverable_name}",
-                                    f"student\student-id{student_id}",
-                                    f"{deliverable_type}")
-
-        return send_from_directory(file_path,filename=f"{deliverable_name}.{deliverable_type.lower()}",as_attachment=True)
-      

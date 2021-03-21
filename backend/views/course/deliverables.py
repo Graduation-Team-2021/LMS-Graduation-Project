@@ -15,6 +15,9 @@ class Deliverable_view(Resource):
         self.reqparse.add_argument('deadline', type=str, location='json')
         self.reqparse.add_argument('course_deliverables', type=str, location='json')
         self.reqparse.add_argument('students_number', type=int, location='json')
+        self.reqparse.add_argument('students_number', type=int, location='json')
+        self.reqparse.add_argument('description', type=str, location='json')
+        self.reqparse.add_argument('mark', type=int, location='json')
 
     def get(self, deliverable_id):
         try:
@@ -30,7 +33,9 @@ class Deliverable_view(Resource):
             "deliverable_name": args["deliverable_name"],
             "deadline": args["deadline"],
             "course_deliverables": args["course_deliverables"],
-            "students_number": args["students_number"]
+            "students_number": args["students_number"],
+            "description": args["description"],
+            "mark": args["mark"]
         }
         try:
             controller_object.update_deliverable(deliverable_id, deliverable)
@@ -52,40 +57,6 @@ class Deliverable_view(Resource):
         })
 
 
-# /students/<student_id>/course/<course_code>/deliverables/upload/<deliverable_id>
-class upload_file(Resource):
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
-
-    def post(self, student_id, course_code, deliverable_id):
-        args = self.reqparse.parse_args()
-        file_to_be_uploaded = args['file']
-        try:
-            controller_object.upload_file(student_id, course_code, deliverable_id, file_to_be_uploaded)
-        except ErrorHandler as e:
-            return e.error
-        return jsonify({
-            'message': 'Materials uploaded successfully',
-            'status_code': 200
-        })
-
-
-# /students/<student_id>/course/<course_code>/deliverables/download/<deliverable_id>
-class download_file(Resource):
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('deliverable_type', type=str, location='json')
-
-    def post(self, student_id, course_code, deliverable_id):
-        # args = self.reqparse.parse_args()
-        # deliverable_type = args['deliverable_type']
-        try:
-            return controller_object.download_deliverable(student_id, course_code, deliverable_id)
-        except ErrorHandler as e:
-            return e.error
-
-
 # /deliverables
 class All_Deliverables(Resource):
     def __init__(self):
@@ -95,13 +66,20 @@ class All_Deliverables(Resource):
         self.reqparse.add_argument('deadline', type=str, location='json')
         self.reqparse.add_argument('course_deliverables', type=str, location='json')
         self.reqparse.add_argument('students_number', type=int, location='json')
-        self.reqparse.add_argument('deliverable_type', type=str, location='json')
+        self.reqparse.add_argument('description', type=str, location='json')
+        self.reqparse.add_argument('mark', type=int, location='json')
 
     def get(self):
+        student_id = 1 #change to auth id later
+        role = 'professor'
         try:
-            return controller_object.get_all_deliverables()
+            if role == 'student':
+                specific_deliverables = controller_object.get_one_student_all_deliverables(student_id)
+            else:
+                specific_deliverables = controller_object.get_one_professor_all_deliverables(8)
         except ErrorHandler as e:
             return e.error
+        return specific_deliverables
 
     def post(self):
         args = self.reqparse.parse_args()
@@ -111,7 +89,8 @@ class All_Deliverables(Resource):
             "deadline": args["deadline"],
             "course_deliverables": args["course_deliverables"],
             "students_number": args["students_number"],
-            "deliverable_type": args["deliverable_type"]
+            "description": args['description'],
+            "mark": args["mark"]
         }
         try:
             controller_object.post_deliverable(deliverable)
@@ -121,3 +100,14 @@ class All_Deliverables(Resource):
             'message': 'deliverable added successfully',
             'status_code': 200
         })
+
+# /students_deliverables/<deliverable_id>
+class Students_Deliverables(Resource):
+        def get(self,deliverable_id):
+            try:
+                student_deliverables = controller_object.get_all_deliverables_by_deliverable_id(deliverable_id)
+            except ErrorHandler as e:
+                return e.error
+            return student_deliverables
+
+    

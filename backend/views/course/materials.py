@@ -12,13 +12,12 @@ controller_object = materials_controller()
 class material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('material_name', type=str, location='json')
-        self.reqparse.add_argument('material_type', type=str, location='json')
-        self.reqparse.add_argument('downloadable', type=bool, location='json')
-        self.reqparse.add_argument('file_path', type=str, location='json')
-        self.reqparse.add_argument('course_material', type=str,
-                                   location='json')  # course material is the course code to which the materials belong
-        self.reqparse.add_argument('students_number', type=int, location='json')
+        # self.reqparse.add_argument('material_name', type=str, location='json')
+        # self.reqparse.add_argument('material_type', type=str, location='json')
+        # self.reqparse.add_argument('downloadable', type=bool, location='json')
+        # self.reqparse.add_argument('file_path', type=str, location='json')
+        # self.reqparse.add_argument('course_material', type=str,
+        #                            location='json')  # course material is the course code to which the materials belong
 
     def delete(self, course_code, id):
         try:
@@ -30,65 +29,62 @@ class material(Resource):
             'status_code': 200
         })
 
-    def put(self, course_code, id):
-        args = self.reqparse.parse_args()
-        material = {
-            'material_name': args['material_name'],
-            'course_material': course_code,  # course material is the course code to which the materials belong
-            'material_type': args['material_type'],
-            'downloadable': args['downloadable'],
-            'file_path': args['file_path'],
-            'students_number': args['students_number'],
-            "material_id": id
-        }
-        try:
-            mateiral = controller_object.update_Material(id, material)
-        except ErrorHandler as e:
-            return e.error
-        return jsonify({
-            'message': 'material updated successfully',
-            'status_code': 200
-        })
+    # def put(self, course_code, id):
+    #     args = self.reqparse.parse_args()
+    #     material = {
+    #         'material_name': args['material_name'],
+    #         'course_material': course_code,  # course material is the course code to which the materials belong
+    #         'material_type': args['material_type'],
+    #         'downloadable': args['downloadable'],
+    #         'file_path': args['file_path'],
+    #         "material_id": id
+    #     }
+    #     try:
+    #         mateiral = controller_object.update_Material(id, material)
+    #     except ErrorHandler as e:
+    #         return e.error
+    #     return jsonify({
+    #         'message': 'material updated successfully',
+    #         'status_code': 200
+    #     })
 
 
 # /courses/<course_code>/materials
 class materials(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('material_name', type=str, location='json')
-        self.reqparse.add_argument('material_type', type=str, location='json')
-        self.reqparse.add_argument('downloadable', type=bool, location='json')
-        self.reqparse.add_argument('course_material', type=str,
-                                   location='json')  # course material is the course code to which the materials belong
-        self.reqparse.add_argument('students_number', type=int, location='json')
+        # self.reqparse.add_argument('material_name', type=str, location='json')
+        # self.reqparse.add_argument('material_type', type=str, location='json')
+        # self.reqparse.add_argument('downloadable', type=bool, location='json')
+        # self.reqparse.add_argument('course_material', type=str,
+        #                            location='json') 
 
-    def get(self, course_code):
-        try:
-            materials = controller_object.get_Materials(course_code)
-        except ErrorHandler as e:
-            return e.error
-        return {
-            'status_code': 200,
-            'materials': materials
-        }
+    # def get(self, course_code):
+    #     try:
+    #         materials = controller_object.get_Materials(course_code)
+    #     except ErrorHandler as e:
+    #         return e.error
+    #     return {
+    #         'status_code': 200,
+    #         'materials': materials
+    #     }
 
-    def post(self, course_code):
-        args = self.reqparse.parse_args()
-        materials = {
-            'course_material': course_code,  # course material is the course code to which the materials belong
-            'material_name': args['material_name'],
-            'material_type': args['material_type'],
-            'downloadable': args['downloadable'],
-            'students_number': args['students_number']
-        }
-        try:
-            materials = controller_object.post_Materials(materials)
-        except ErrorHandler as e:
-            return e.error
-        return jsonify({
-            'message': 'Materials created successfully',
-            'status_code': 200
-        })
+    # def post(self, course_code):
+    #     args = self.reqparse.parse_args()
+    #     materials = {
+    #         'course_material': course_code,  
+    #         'material_name': args['material_name'],
+    #         'material_type': args['material_type'],
+    #         'downloadable': args['downloadable']
+    #     }
+    #     try:
+    #         materials = controller_object.post_Materials(materials)
+    #     except ErrorHandler as e:
+    #         return e.error
+    #     return jsonify({
+    #         'message': 'Materials created successfully',
+    #         'status_code': 200
+    #     })
 
 
 # /courses/<course_code>/materials/<id>/download
@@ -104,7 +100,7 @@ class download_material(Resource):
             return e.error
 
 
-
+#/courses/<course_code>/materials/upload
 class upload_material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()

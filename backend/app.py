@@ -14,6 +14,7 @@ from models.user.professors import Professor
 from models.course.courses import Course
 from models.course.events import Events
 from models.course.deliverables import Deliverables
+from models.course.deliverables_results import Deliverables_Results
 from models.course.materials import Materials
 from models.relations.learns import Learns_Relation
 from models.relations.teaches import Teaches_Relation
@@ -120,7 +121,7 @@ Materials
 api.add_resource(material, '/courses/<course_code>/materials/<id>')
 api.add_resource(materials, '/courses/<course_code>/materials')
 api.add_resource(download_material, '/courses/<course_code>/materials/<id>/download')
-api.add_resource(upload_material, '/courses/<course_code>/materials/<id>/upload')
+api.add_resource(upload_material, '/courses/<course_code>/materials/upload')
 
 """
 Exams

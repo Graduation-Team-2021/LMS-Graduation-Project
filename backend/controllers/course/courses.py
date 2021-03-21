@@ -1,11 +1,23 @@
 from models.course.courses import Course
+from models.relations.teaches import Teaches_Relation
+from controllers.user.users import users_controller
 from methods.errors import *
 
+user_controller = users_controller()
 
 class courses_controller():
     def get_course(self, course_code):
         try:
             course = Course.query.filter_by(course_code=course_code).first()
+            teachers = Teaches_Relation.query.filter_by(course_code=course_code).all()
+            teachers = [teacher.serialize() for teacher in teachers]
+            teachers_data = []
+            for teacher in teachers:
+                teacher = user_controller.get_user(teacher['professor_id'])
+                teachers_data.append(teacher)
+
+            course = course.serialize()
+            course['professors']=teachers_data
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
@@ -17,7 +29,7 @@ class courses_controller():
                 'description': 'Course does not exist.',
                 'status_code': 404
             })
-        return course.serialize()
+        return course
 
     def delete_course(self, course_code):
         try:
