@@ -70,7 +70,9 @@ class All_Deliverables(Resource):
         self.reqparse.add_argument('mark', type=int, location='json')
 
     def get(self):
-        student_id = 1  # change to auth id later
+
+        student_id = 1 #change to auth id later
+
         role = 'professor'
         try:
             if role == 'student':
@@ -104,10 +106,12 @@ class All_Deliverables(Resource):
 
 # /students_deliverables/<deliverable_id>
 class Students_Deliverables(Resource):
-    def get(self, deliverable_id):
-        try:
-            student_deliverables = controller_object.get_all_deliverables_by_deliverable_id(deliverable_id)
-        except ErrorHandler as e:
-            return e.error
-        return student_deliverables
+        def get(self,deliverable_id):
+            try:
+                student_deliverables = controller_object.get_all_deliverables_by_deliverable_id(deliverable_id)
+            except ErrorHandler as e:
+                return e.error
+            return student_deliverables
+
+    
 
