@@ -22,12 +22,14 @@ from models.relations.messages import Messages
 from models.relations.has_prerequistes import Prerequiste
 from models.relations.delivers import Deliver
 from models.relations.finished import Finished
+from models.relations.group_deliverable_relation import GroupDeliverableRelation
 from models.course.exams.exam import Exams
 from models.course.exams.questions import Questions
 from models.course.exams.answers import Answers
 from models.course.exams.results import Results
 from models.course.exams.student_answers import Student_Answers
 from models.course.exams.student_questions import Student_Questions
+from models.course.group_project import GroupProject
 
 """
 app and database initilization
@@ -75,6 +77,8 @@ from views.relations.finished import finished_relation_view, finished_relation_u
 from views.relations.has_prerequisites import prerequisite_view
 from views.relations.has_prerequisites import retrieve_all_prequisites
 from views.relations.has_prerequisites import postPrequisites
+from views.course.group_project import GroupProject,InsertGroup
+
 # Answers
 """
 Users
@@ -195,6 +199,12 @@ api.add_resource(retrieve_all_prequisites, '/prerequisites')
 post or update prequisite
 """
 api.add_resource(postPrequisites, '/prerequisites')
+
+'''
+Group_projects
+'''
+api.add_resource(GroupProject, '/project-groups/<group_id>')
+api.add_resource(InsertGroup,'/project-groups')
 
 """
 Run app
