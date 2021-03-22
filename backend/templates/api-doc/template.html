@@ -111,6 +111,32 @@
                                 </div>
                             </div>
                         </li>
+
+                        <li>
+                            <p>
+                                <a class="btn btn-info" data-toggle="collapse" href="#materialcollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                Course Materials
+                                </a>
+                            </p>
+                            <div class="collapse" id="materialcollapse">
+                                <div class="card card-body">
+                                    <ul>
+                                        <li>
+                                            <a href="#uploadmaterial">Upload Course Material</a>
+                                        </li>
+                                        <li>
+                                            <a href="#downloadmaterial">Download Course Material</a>
+                                        </li>
+                                        <li>
+                                            <a href="#deletematerial">Delete Course Material</a>
+                                        </li>
+                                        <li>
+                                            <a href="#getallmaterials">Get All Course Materials</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -217,19 +243,6 @@
                                 "max_students":10
                             }
                         </code></pre>
-                        Request for students:
-                        <pre class="json"><code>
-                            {
-                                "name":"student name",
-                                "email":"email",
-                                "national_id":"4837182373481",
-                                "birthday":"1996-10-10",
-                                "password":"password",
-                                "student_year":4,
-                                "role":"student"   
-                            }
-                        </code></pre>
-  
                     </li>
 
                     <li id='getcourse'>GET COURSE
@@ -464,7 +477,7 @@
                             ]
                         </code></pre>
                     </li>
-                    <li id='postresult'>POST STUDENT DELIVERABLE RESULTS
+                    <li id='postdeliverableresult'>POST STUDENT DELIVERABLE RESULTS
                         <p>POST /students/&ltuser_id&gt/deliverable/&ltdeliverable_id&gt/results</p>
                         <pre class="json"><code>
                             {
@@ -472,11 +485,53 @@
                             }
                         </code></pre>
                     </li>
-                    <li id='updateresult'>UPDATE STUDENT DELIVERABLE RESULTS
+                    <li id='updatedeliverableresult'>UPDATE STUDENT DELIVERABLE RESULTS
                         <p>PUT /students/&ltuser_id&gt/deliverable/&ltdeliverable_id&gt/results</p>
                         <pre class="json"><code>
                             {
                                 "mark":3
+                            }
+                        </code></pre>
+                    </li>
+                </ul>
+                <h4>COURSE MATERIALS</h4>
+                <hr>
+                <ul>
+                    <li id='uploadmaterial'>UPLOAD COURSE MATERIAL
+                        <p>POST /course/&ltcourse_code&gt/materials</p>
+                        Request example:
+                        <pre class="json"><code>
+                            file: text.docx
+                        </code></pre>
+                    </li>
+                    <li id='downloadmaterial'>DOWNLOAD COURSE MATERIAL
+                        <p>POST /materials/&ltmaterial_id&gt</p>
+                    </li>
+                    <li id='deletematerial'>DELETE COURSE MATERIAL
+                        <p>DELETE /materials/&ltmaterial_id&gt</p>
+                    </li>
+                    <li id='getallmaterials'>GET ALL COURSE MATERIALS
+                        <p>GET /courses/&ltcourse_code&gt/materials</p>
+                        <pre class="json"><code>
+                            {
+                                "status_code": 200,
+                                "materials": [
+                                    {
+                                        "material_id": 1,
+                                        "material_name": "Assignment1",
+                                        "material_type": ".docx"
+                                    },
+                                    {
+                                        "material_id": 2,
+                                        "material_name": "Reference",
+                                        "material_type": ".pdf"
+                                    },
+                                    {
+                                        "material_id": 3,
+                                        "material_name": "Docs",
+                                        "material_type": ".txt"
+                                    }
+                                ]
                             }
                         </code></pre>
                     </li>
