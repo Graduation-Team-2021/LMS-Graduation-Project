@@ -118,14 +118,14 @@ Courses
 """
 api.add_resource(Course, '/courses/<course_code>')
 api.add_resource(Courses, '/courses')
-api.add_resource(My_Courses, '/my_courses/<user_id>/<role>')
+api.add_resource(My_Courses, '/my_courses')
 """
 Materials
 """
-api.add_resource(material, '/courses/<course_code>/materials/<id>')
+api.add_resource(material, '/materials/<id>')
 api.add_resource(materials, '/courses/<course_code>/materials')
-api.add_resource(download_material, '/courses/<course_code>/materials/<id>/download')
-api.add_resource(upload_material, '/courses/<course_code>/materials/<id>/upload')
+api.add_resource(download_material, '/materials/<id>/download')
+api.add_resource(upload_material, '/courses/<course_code>/materials/upload')
 
 """
 Exams
