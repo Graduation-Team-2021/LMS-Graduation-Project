@@ -1,0 +1,25 @@
+.Main {
+    display: flex;
+    height: fit-content;
+    padding: 0 5%;
+    width: 100%;
+    align-items: center;
+}
+
+.info {
+    padding: 0 10%;
+    font-size: 200%;
+    font-weight: bold;
+}
+
+.inner {
+    position: absolute;
+    z-index: 2;
+}
+
+.holder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
