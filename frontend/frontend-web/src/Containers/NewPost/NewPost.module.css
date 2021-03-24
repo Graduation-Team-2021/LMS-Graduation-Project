@@ -1,0 +1,28 @@
+.input{
+    margin: 5% 0;
+    width: 90%;
+    height: 20vh;
+    text-align: start;
+    padding-top: 0;
+    font-size: larger;
+    outline: none;
+    border: 0;
+    background-color: transparent;
+}
+
+.dismiss{
+    top: 0;
+    position: absolute;
+    right: 0;
+    padding: 2% 3%;
+    cursor: pointer;
+}
+
+.Post{
+    font-weight: bold;
+    font-size: larger;
+    width: 100%;
+    outline: none;
+    padding: 5% 0;
+    border-radius: 10px;
+}

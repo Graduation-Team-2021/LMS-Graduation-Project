@@ -1,0 +1,6 @@
+.ButtonArea{
+    margin: 30px 0px;
+    display: flex;
+    width:-webkit-fill-available;
+    justify-content: center;
+}

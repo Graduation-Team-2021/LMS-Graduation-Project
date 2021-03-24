@@ -1,0 +1,42 @@
+.ItemContainer {
+  padding: 2%;
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 300px;
+  height: 150px;
+}
+
+.CourseImage {
+  box-sizing: border-box;
+  border-radius: 10%;
+  width: 150px;
+}
+
+.CourseItemContent {
+  height: 82%;
+  box-sizing: border-box;
+  margin-top: 5px;
+  margin-left: 5px;
+  width: 67%;
+}
+
+.selected {
+  background-color: cyan;
+  filter: drop-shadow(0px 0 20px rgba(0,0,0,.5));
+
+
+}
+.Tringle {
+  width: 0;
+  height: 0;
+  border-top: 75px solid transparent;
+  border-left: 90px solid cyan;
+  border-bottom: 75px solid transparent;
+  filter: drop-shadow(21px 0 15px rgba(0,0,0,0.3));
+}
+
+.CourseItemListContainer{
+  display: flex;
+  flex-direction: row;
+}

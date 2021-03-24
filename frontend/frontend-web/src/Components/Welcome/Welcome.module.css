@@ -1,0 +1,13 @@
+.Main{
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    text-align: start;
+    position: absolute;
+}
+
+.Title{
+    font-size: xx-large;
+    font-weight: bold;
+    padding-bottom: 5%;
+}

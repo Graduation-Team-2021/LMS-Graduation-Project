@@ -1,0 +1,61 @@
+.CourseTitle {
+    text-align: start;
+    font-size: x-large;
+    font-weight: bold;
+    padding-bottom: 5%;
+}
+
+.dismiss{
+    position: absolute;
+    right: 0;
+    padding: 2% 3%;
+    cursor: pointer;
+}
+
+.CourseDes {
+    text-align: start;
+    font-size: large;
+}
+
+.Bottom {
+    display: flex;
+    border-top: 2px solid purple;
+    height: 100%;
+    padding: 1vw;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(212, 208, 208);
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.Button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    color: white;
+    font-weight: bold;
+    background-color: blueviolet;
+    border-radius: 10%;
+    width: 100px;
+    height: 40px;
+    z-index: 5;
+    box-shadow: 0px 0px 1px gray;
+    text-align: center;
+    cursor: pointer;
+}
+
+.Joined{
+    display: flex;
+    position: relative;
+    align-items: center;
+    height: 3vw;
+    width: 70%;
+    justify-content: flex-end;
+}
+
+.Circle{
+    position: absolute;
+}
