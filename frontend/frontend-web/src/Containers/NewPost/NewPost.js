@@ -9,10 +9,10 @@ const NewPost = (props) => {
   const [Content, setContent] = useState("");
 
   const enable = (event) => {
-    if (event.target.value !== "") {
-      setContent(event.target.value);
+    setContent(event.target.value);
+    if (event.target.value !== "") 
       setenabled(true);
-    } else setenabled(false);
+     else setenabled(false);
   };
 
   const Submit = () => {
