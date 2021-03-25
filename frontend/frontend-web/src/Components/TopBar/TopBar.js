@@ -18,7 +18,7 @@ const TopBar = (props) => {
 
         setNotif(0)
       }} message={message} onMessageClick={()=>{
-        props.history.push('/messenger')
+        
         setMessage(0)
       }}/>
     </div>

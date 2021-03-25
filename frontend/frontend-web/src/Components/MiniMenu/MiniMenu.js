@@ -44,6 +44,7 @@ const MiniMenu = (props) => {
             setMenu(false);
             setNotif(false);
             setMessages(!Messages);
+            props.history.push('/messenger');
             props.onMessageClick();
           }}
         >

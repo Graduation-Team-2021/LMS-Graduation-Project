@@ -55,12 +55,10 @@ class MarkEdit extends Component {
     }
     render(){
         return(
-            <div>
-                <Router>
-                </Router>
+            <div >
                 <div className="main">
                 <p> COURSE NAME</p>
-                <table>
+                <table className="oo">
                 <tr>
                     <th>Name</th>
                     <th>email</th>

@@ -49,25 +49,7 @@ const HomePage = (props) => {
               ) : (
                 <h1>Loading.....</h1>
               )}
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                {Recommended.size !== 0 ? (
-                  <RecommendedGroups
-                    Joining={props.Joining}
-                    flex="2"
-                    Title="Recommended Groups"
-                    Groups={Recommended}
-                  />
-                ) : (
-                  <h1>Loading.....</h1>
-                )}
                 <PostsArea flex="5" Title="Latest Posts" />
-              </div>
             </Card>
           </div>
           <Upcoming Host="DJ Man" />
