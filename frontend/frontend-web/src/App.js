@@ -16,8 +16,7 @@ import Messenger from "./Components/Messenger/Messenger"
 
 const App = () => {
   const [logged, setLogged] = useState(
-    //localStorage.getItem("token") ? true : false
-    true
+    localStorage.getItem("token") ? true : false
   );
   const [Role, setRole] = useState(
     localStorage.getItem("token")
