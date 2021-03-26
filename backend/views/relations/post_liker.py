@@ -9,7 +9,6 @@ controller_object=Post_Liker_controller()
 #/post/<post_id>/likers
 class Post_liker_view(Resource):
     def get(self,post_id):
-        
         likers= controller_object.get_one_post_all_likers(post_id)
         data_list=[]
         for i in range(len(likers)):

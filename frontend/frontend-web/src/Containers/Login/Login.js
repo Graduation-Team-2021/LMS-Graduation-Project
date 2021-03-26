@@ -21,7 +21,7 @@ class Login extends Component {
           console.log(jwt_decode(res))
           localStorage.setItem('token',res);
           this.props.history.push('/')
-          this.props.Home()
+          this.props.Home(res)
         }
         else
           alert("Login Failed")

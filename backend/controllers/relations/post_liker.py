@@ -8,8 +8,7 @@ class Post_Liker_controller:
             # likes=Post_liker_relation.query.join(User).\
             # filter(User.user_id==user_id).\
             # with_entities(User.name,Post_liker_relation.post_id,Post_liker_relation.liker_id)
-            likes=Post_liker_relation.query.join(Post).filter(Post.post_id==post_id).\
-            join(User).filter(Post_liker_relation.liker_id==User.user_id).\
+            likes=Post_liker_relation.query.filter(Post_liker_relation.post_id).join(User).filter(Post_liker_relation.liker_id==User.user_id).\
             with_entities(User.user_id,User.name)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])

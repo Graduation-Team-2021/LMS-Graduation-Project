@@ -10,7 +10,7 @@ import CoursePage from "./Containers/CoursePage/GroupPage";
 import Vedioplayer from "./Ibrahim/Vedio";
 import Pdf from "./Ibrahim/Pdf_reader";
 import MarkEdit from "./Ibrahim/Mrak_edit";
-import { signup, login, getCurrentCourses } from "./Interface/Interface";
+import { signup, login, getCurrentCourses, getCurrentGroups } from "./Interface/Interface";
 import jwt_decode from "jwt-decode";
 import Messenger from "./Components/Messenger/Messenger"
 
@@ -18,6 +18,7 @@ const App = () => {
   const [logged, setLogged] = useState(
     localStorage.getItem("token") ? true : false
   );
+  
   const [Role, setRole] = useState(
     localStorage.getItem("token")
       ? jwt_decode(localStorage.getItem("token")).permissions
@@ -52,7 +53,7 @@ const App = () => {
         Desc: "Blah Blah Blah",
       });
     }
-    if (logged){
+    if (logged) {
       getCurrentCourses(Token, ID, Role).then((res) => {
         const Courses = new Map();
         res.forEach((element) => {
@@ -64,7 +65,7 @@ const App = () => {
         setCurrentCourses(Courses);
         console.log(Courses);
       });
-    getCurrentGroups(Token, ID, Role).then((res) => {
+      getCurrentGroups(Token, ID, Role).then((res) => {
         const Courses = new Map();
         res.forEach((element) => {
           Courses.set(element["group_id"], {
@@ -79,120 +80,125 @@ const App = () => {
     setRecommended(temp2);
   }, [Token, ID, Role, logged]);
 
-    return (
-      <BrowserRouter>
-        <div className={classes.App}>
-          <Switch>
-            {logged ? (
-              <React.Fragment>
-                <Route
-                  path="/"
-                  exact
-                  render={() => (
-                    <HomePage
-                      Name="David John"
-                      id="5"
-      CurrentCourses={CurrentCourses}
-                      Joined={Joined}
-                      Recommended={Recommended}
-                      Joining={Joining}
-                    />
-                  )}
-                />
-                <Route path="/messenger" exact render={() => <Messenger />} />
-                <Route
-                  path="/profile"
-                  exact
-                  render={() => (
-                    <ProfilePage Name="David John" id="5" Joined={Joined} CurrentCourses={CurrentCourses}/>
-                  )}
-                />
-                <Route
-                  path="/group/:id/:isJoined"
-                  exact
-                  render={(props) => (
-                    <GroupPage
-                      {...props}
-                      Name="David John"
-                      id="5"
-                      Joining={Joining}
-                    />
-                  )}
-                />
-                <Route
-                  exact
-                  path="/Course/:id/:isJoined/Marks"
-                  render={(props) => <MarkEdit {...props} />}
-                />
-                <Route
-                  exact
-                  path="/Course/:id/:isJoined"
-                  render={(props) => (
-                    <CoursePage
-                      {...props}
-                      Name="David John"
-                      id="5"
-                      Joining={Joining}
-                    />
-                  )}
-                />
-                <Route
-                  exact
-                  path="/Courses"
-                  render={(props) => (
-                    <CoursesPage {...props} Name="David John" id="5" />
-                  )}
-                />
-                <Route
-                  exact
-                  path="/Videos"
-                  render={(props) => <Vedioplayer {...props} />}
-                />
-                <Route
-                  path="/Pdfs"
-                  exact
-                  render={(props) => <Pdf {...props} />}
-                />
-                <Route
-                  path="/login"
-                  exact
-                  children={
-                    <LoginPage
-                      SignIn={async (Data) => {
-                        return await login(Data);
-                      }}
-                      Home={() => setLogged(true)}
-                      SignUp={(Data) => {
-                        signup(Data);
-                      }}
-                    />
-                  }
-                />
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <Route
-                  path="/login"
-                  exact
-                  children={
-                    <LoginPage
-                      SignIn={async (Data) => {
-                        return await login(Data);
-                      }}
-                      Home={() => setLogged(true)}
-                      SignUp={(Data) => {
-                        signup(Data);
-                      }}
-                    />
-                  }
-                />
-                <Redirect to="login" />
-              </React.Fragment>
-            )}
-          </Switch>
-        </div>
-      </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <div className={classes.App}>
+        <Switch>
+          {logged ? (
+            <React.Fragment>
+              <Route
+                path="/"
+                exact
+                render={() => (
+                  <HomePage
+                    Name="David John"
+                    id="5"
+                    CurrentCourses={CurrentCourses}
+                    Joined={Joined}
+                    Recommended={Recommended}
+                    Joining={Joining}
+                  />
+                )}
+              />
+              <Route path="/messenger" exact render={() => <Messenger />} />
+              <Route
+                path="/profile"
+                exact
+                render={() => (
+                  <ProfilePage Name="David John" id="5" Joined={Joined} CurrentCourses={CurrentCourses} />
+                )}
+              />
+              <Route
+                path="/group/:id/:isJoined"
+                exact
+                render={(props) => (
+                  <GroupPage
+                    {...props}
+                    Name="David John"
+                    id="5"
+                    Joining={Joining}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path="/Course/:id/:isJoined/Marks"
+                render={(props) => <MarkEdit {...props} />}
+              />
+              <Route
+                exact
+                path="/Course/:id/:isJoined"
+                render={(props) => (
+                  <CoursePage
+                    {...props}
+                    Name="David John"
+                    id="5"
+                    Joining={Joining}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path="/Courses"
+                render={(props) => (
+                  <CoursesPage {...props} Name="David John" id="5" />
+                )}
+              />
+              <Route
+                exact
+                path="/Videos"
+                render={(props) => <Vedioplayer {...props} />}
+              />
+              <Route
+                path="/Pdfs"
+                exact
+                render={(props) => <Pdf {...props} />}
+              />
+              <Route
+                path="/login"
+                exact
+                children={
+                  <LoginPage
+                    SignIn={async (Data) => {
+                      return await login(Data);
+                    }}
+                    Home={(Token) => { 
+                      setToken(Token)
+                      setID(jwt_decode(Token).id)
+                      setRole(jwt_decode(Token).permissions)
+                      setLogged(true)
+                     }}
+                    SignUp={(Data) => {
+                      signup(Data);
+                    }}
+                  />
+                }
+              />
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Route
+                path="/login"
+                exact
+                children={
+                  <LoginPage
+                    SignIn={async (Data) => {
+                      return await login(Data);
+                    }}
+                    Home={() => setLogged(true)}
+                    SignUp={(Data) => {
+                      signup(Data);
+                    }}
+                  />
+                }
+              />
+              <Redirect to="login" />
+            </React.Fragment>
+          )}
+        </Switch>
+      </div>
+    </BrowserRouter>
+  );
 };
 
 export default App;

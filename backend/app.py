@@ -239,7 +239,7 @@ api.add_resource(OwnerView,'/post_owner/delete/<owner_id>')
 Post comments and likes
 '''
 api.add_resource(Post_commenter_view,'/users/<user_id>/all_comments')
-api.add_resource(Post_liker_view,'/post/<post_id>/likers')
+api.add_resource(Post_liker_view,'/post/<post_id>/likers') #there is a problem here
 api.add_resource(CommentView_Update_Delete,'/comments/<commenter_id>/<post_id>')
 
 
