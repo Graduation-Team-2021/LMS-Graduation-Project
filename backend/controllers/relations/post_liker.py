@@ -8,7 +8,8 @@ class Post_Liker_controller:
             # likes=Post_liker_relation.query.join(User).\
             # filter(User.user_id==user_id).\
             # with_entities(User.name,Post_liker_relation.post_id,Post_liker_relation.liker_id)
-            likes=Post_liker_relation.query.filter(Post_liker_relation.post_id).join(User).filter(Post_liker_relation.liker_id==User.user_id).\
+            likes=Post_liker_relation.query.filter(Post_liker_relation.post_id==post_id).join(User).\
+            filter(Post_liker_relation.liker_id==User.user_id).\
             with_entities(User.user_id,User.name)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
@@ -19,4 +20,19 @@ class Post_Liker_controller:
         data=[c for c in likes]
         return data
     
+
+    def get_one_liker_all_posts(self,liker_id):
+        try:
+            posts=Post_liker_relation.query.filter(Post_liker_relation.liker_id==liker_id).\
+            join(User).filter(Post_liker_relation.liker_id==User.user_id).\
+            with_entities(User.user_id,User.name,Post_liker_relation.post_id)
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        data=[c for c in posts]
+        return data
+
     

@@ -86,7 +86,7 @@ from views.relations.student_group_relation import StudentGroupView,EachGroupStu
 from views.course.post import Post_view,Post_the_post
 from views.course.post_owner import PostOwner_view,OwnerView
 from views.relations.post_commenter import Post_commenter_view,CommentView_Update_Delete
-from views.relations.post_liker import Post_liker_view
+from views.relations.post_liker import Post_liker_view,Liker_all_posts
 
 # Answers
 """
@@ -239,9 +239,9 @@ api.add_resource(OwnerView,'/post_owner/delete/<owner_id>')
 Post comments and likes
 '''
 api.add_resource(Post_commenter_view,'/users/<user_id>/all_comments')
-api.add_resource(Post_liker_view,'/post/<post_id>/likers') #there is a problem here
+api.add_resource(Post_liker_view,'/post/<post_id>/likers') 
 api.add_resource(CommentView_Update_Delete,'/comments/<commenter_id>/<post_id>')
-
+api.add_resource(Liker_all_posts,'/liker/<liker_id>/posts')
 
 
 """

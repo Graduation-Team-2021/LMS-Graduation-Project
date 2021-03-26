@@ -34,6 +34,22 @@ class CommentView_Update_Delete(Resource):
         self.reqparse.add_argument('post_id', type=int, location='json')
         self.reqparse.add_argument('comment_text', type=str, location='json')
 
+    def post(self,commenter_id,post_id):
+        args = self.reqparse.parse_args()
+        new_comment={
+            'commenter_id':commenter_id,
+            'post_id':post_id,
+            'comment_text':args['comment_text']
+        }
+        try:
+            controller_object.insert_comment(new_comment)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'message': 'Comment added successfully',
+            'status_code': 200
+        })
+
     def put(self,commenter_id,post_id):
         args = self.reqparse.parse_args()
         new_comment={
