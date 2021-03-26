@@ -9,13 +9,13 @@ const CoursePreview = (props) => {
     return (
         <div className={classes.holder} onClick={
           ()=>{
-            props.history.push(`/Course/1/true`)
+            props.history.push(`/Course/${props.id}/true`)
           }
         }>
           <Card shadow>
-            <div className={classes.CourseTitle}>Course Name</div>
+            <div className={classes.CourseTitle}>{props.Course.Title}</div>
             <div className={classes.CourseDes}>
-              Describe the contents of the course
+             {props.Course.Desc}
             </div>
             <ImageHolder filler={filler}/>
           </Card>
