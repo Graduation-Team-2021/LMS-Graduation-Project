@@ -43,7 +43,7 @@ const HomePage = (props) => {
                 height: "fit-content",
               }}
             >
-              <CoursesArea />
+                  {CurrentCourses.size!==0?<CoursesArea Courses={CurrentCourses} />:<h1>Loading.....</h1>}
               {Joined.size !== 0 ? (
                 <GroupsArea Groups={Joined} />
               ) : (
