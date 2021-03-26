@@ -9,18 +9,26 @@ import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
 
 const HomePage = (props) => {
-  const [Recommended, setRecommended] = useState(props.Recommended);
-  const [Joined, setJoined] = useState(props.Joined);
+  const [Recommended, setRecommended] = useState(new Map());
+  const [Joined, setJoined] = useState(new Map());
+  const [CurrentCourses, setCurrentCourses] = useState(new Map());
+
+  const {CurrentCourses: CC, Joined: J, Recommended: R } = props
+
 
   useEffect(() => {
-    if (props.Recommended.size !== 0) {
-      setRecommended(props.Recommended);
+    console.log(props)
+    if (R && R.size !== 0) {
+      setRecommended(R);
     }
-    if (props.Joined.size !== 0) {
-      setJoined(props.Joined);
+    if (J && J.size !== 0) {
+      setJoined(J);
     }
-  }, [props]);
-
+    if (CC && CC.size !== 0) {
+      setCurrentCourses(CC);
+    }
+  }, [CC, J, R, props]);
+  
   return (
     <div className={classes.Main}>
       <Card
