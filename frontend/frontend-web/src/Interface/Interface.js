@@ -40,3 +40,14 @@ export const getCurrentCourses = async (Token, id, role) => {
     console.log(res)
     return res.data
 }
+
+export const getCurrentGroups = async (Token, id, role) => {
+    const res = await instance.get(`/${role}/${id}/groups`,{
+        headers: {
+        "Content-Type": "application/json",
+        "Authorization": Token,
+    },
+    })
+    console.log(res)
+    return res.data
+}
