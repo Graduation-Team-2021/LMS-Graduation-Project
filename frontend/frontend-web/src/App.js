@@ -44,7 +44,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    let temp1 = new Map();
+
     let temp2 = new Map();
     for (let index = 0; index < 10; index++) {
       temp1.set(index, {
@@ -58,7 +58,7 @@ const App = () => {
         Desc: "Blah Blah Blah",
       });
     }
-    if (logged)
+    if (logged){
       getCurrentCourses(Token, ID, Role).then((res) => {
         console.log(res);
         const Courses = new Map();
@@ -69,9 +69,20 @@ const App = () => {
           });
         });
       });
-
+    }
+    getCurrentGroups(Token, ID, Role).then((res) => {
+        const Courses = new Map();
+        res.forEach((element) => {
+          Courses.set(element["group_id"], {
+            Title: element["group_name"],
+            Desc: element["group_description"],
+          });
+        });
+        setJoined(Courses);
+        console.log(Courses)
+      });
+    }
     setRecommended(temp2);
-    setJoined(temp1);
   }, [Token, ID, Role, logged]);
 
     return (
