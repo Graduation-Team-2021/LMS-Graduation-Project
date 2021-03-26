@@ -35,9 +35,9 @@ const App = () => {
   const [Joined, setJoined] = useState(new Map());
   const [CurrentCourses, setCurrentCourses] = useState(null);
   const Joining = (index) => {
-    let group = Recommended.get(Number(index));
-    Joined.set(Number(index), group);
-    Recommended.delete(Number(index));
+    let group = Recommended.get(index);
+    Joined.set(index, group);
+    Recommended.delete(index);
     console.log(Joined);
     let t = new Map(Joined.entries());
     setJoined(t);
@@ -46,21 +46,14 @@ const App = () => {
   useEffect(() => {
 
     let temp2 = new Map();
-    for (let index = 0; index < 10; index++) {
-      temp1.set(index, {
-        Title: `Group ${index + 1}`,
-        Desc: "Blah Blah Blah",
-      });
-    }
     for (let index = 10; index < 20; index++) {
-      temp2.set(index, {
+      temp2.set(index.toString(), {
         Title: `Group ${index + 1}`,
         Desc: "Blah Blah Blah",
       });
     }
     if (logged){
       getCurrentCourses(Token, ID, Role).then((res) => {
-        console.log(res);
         const Courses = new Map();
         res.forEach((element) => {
           Courses.set(element["course_code"], {
@@ -68,8 +61,9 @@ const App = () => {
             Desc: element["course_description"],
           });
         });
+        setCurrentCourses(Courses);
+        console.log(Courses);
       });
-    }
     getCurrentGroups(Token, ID, Role).then((res) => {
         const Courses = new Map();
         res.forEach((element) => {
