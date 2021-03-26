@@ -17,8 +17,9 @@ class StudentGroupView(Resource):
         for i in range(len(groups)):
            data_array.append(
                {
-                   "student_name":groups[i][0],
-                   "group_id":groups[i][1]
+                   "group_id":groups[i][2],
+                   "group_name":groups[i][1],
+                   "group_description":groups[i][3]
                }
            )
         return data_array

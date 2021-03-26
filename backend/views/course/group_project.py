@@ -25,7 +25,9 @@ class GroupProject(Resource):
         args = self.reqparse.parse_args()
         group = {
             "group_id": group_id,
-            "group_name": args['group_name']
+            "group_name": args['group_name'],
+            'group_description':args['group_description'],
+            'post_owner_id':args['post_owner_id']
         }
         try:
             controller_object.update_group(group_id, group)
@@ -62,7 +64,9 @@ class InsertGroup(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         group = {
-            'group_name': args['group_name']
+            'group_name': args['group_name'],
+            'group_description':args['group_description'],
+            'post_owner_id':args['post_owner_id']
         }
         try:
             controller_object.insert_group(group)

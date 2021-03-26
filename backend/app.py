@@ -31,7 +31,10 @@ from models.course.exams.results import Results
 from models.course.exams.student_answers import Student_Answers
 from models.course.exams.student_questions import Student_Questions
 from models.course.group_project import GroupProject
-
+from models.course.post_owner import PostOwner
+from models.course.post import Post
+from models.relations.post_commenter import Post_Commenter_relation
+from models.relations.post_liker import Post_liker_relation
 """
 app and database initilization
 """
@@ -80,6 +83,10 @@ from views.relations.has_prerequisites import retrieve_all_prequisites
 from views.relations.has_prerequisites import postPrequisites
 from views.course.group_project import GroupProject,InsertGroup
 from views.relations.student_group_relation import StudentGroupView,EachGroupStudents
+from views.course.post import Post_view,Post_the_post
+from views.course.post_owner import PostOwner_view,OwnerView
+from views.relations.post_commenter import Post_commenter_view,CommentView_Update_Delete
+from views.relations.post_liker import Post_liker_view
 
 # Answers
 """
@@ -124,7 +131,7 @@ api.add_resource(DeleteMessageById, '/users/messages/delete/<message_id>')
 
 
 """
-Courses
+Courses 
 """
 api.add_resource(Course, '/courses/<course_code>')
 api.add_resource(Courses, '/courses')
@@ -213,6 +220,29 @@ Group_projects
 '''
 api.add_resource(GroupProject, '/project-groups/<group_id>')
 api.add_resource(InsertGroup,'/project-groups')
+
+
+'''
+Posts
+'''
+api.add_resource(Post_view,'/posts/<post_id>')
+api.add_resource(Post_the_post,'/posts/add_post')
+
+
+'''
+Post owners
+'''
+api.add_resource(PostOwner_view,'/post_owner/add_owner')
+api.add_resource(OwnerView,'/post_owner/delete/<owner_id>')
+
+'''
+Post comments and likes
+'''
+api.add_resource(Post_commenter_view,'/users/<user_id>/all_comments')
+api.add_resource(Post_liker_view,'/post/<post_id>/likers')
+api.add_resource(CommentView_Update_Delete,'/comments/<commenter_id>/<post_id>')
+
+
 
 """
 Run app

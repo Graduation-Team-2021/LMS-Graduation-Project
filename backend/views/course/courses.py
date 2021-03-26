@@ -50,6 +50,9 @@ class Course(Resource):
             'weekly_hours': args['weekly_hours'],
             'group_number': args['group_number'],
             'max_students': args['max_students'],
+            'course_description':args['course_description'],
+            'post_owner_id':args['post_owner_id']
+
         }
         try:
             course = controller_object.update_course(course_code, course)
@@ -91,6 +94,8 @@ class Courses(Resource):
             'weekly_hours': args['weekly_hours'],
             'group_number': args['group_number'],
             'max_students': args['max_students'],
+            'course_description':args['course_description'],
+            'post_owner_id':args['post_owner_id']
         }
         try:
             course = controller_object.post_course(course)

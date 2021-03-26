@@ -1,8 +1,8 @@
 from models.course.courses import Course
 from methods.errors import *
 
-
 class courses_controller():
+
     def get_course(self, course_code):
         try:
             course = Course.query.filter_by(course_code=course_code).first()
@@ -38,7 +38,7 @@ class courses_controller():
 
     def update_course(self, course_code, course):
         try:
-            updated_course = Course.query.filter_by(course_code=course_code)
+            updated_course = Course.query.filter_by(course_code=course_code).first()
             if updated_course is None:
                 raise ErrorHandler({
                     'description': 'Course does not exist.',
