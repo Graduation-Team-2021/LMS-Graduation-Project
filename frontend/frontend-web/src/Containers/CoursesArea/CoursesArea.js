@@ -8,6 +8,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {withRouter} from 'react-router-dom'
 class CoursesArea extends Component {
+  state={
+    Courses:this.props.Courses
+  }
+  
   constructor(props) {
     super(props);
     this.CoursesArea = React.createRef();
@@ -15,9 +19,10 @@ class CoursesArea extends Component {
 
   render() {
     let courses = [];
+    let ids = Array.from(this.state.Courses.keys());
 
-    for (let index = 0; index < 15; index++) {
-      courses.push(<CoursePreview key={index} />);
+    for (let index = 0; index < ids.length; index++) {
+      courses.push(<CoursePreview key={index} Course={this.state.Courses.get(ids[index])} id={ids[index]}/>);
     }
 
     return (
