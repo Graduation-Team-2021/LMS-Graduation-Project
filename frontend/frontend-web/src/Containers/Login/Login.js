@@ -18,8 +18,9 @@ class Login extends Component {
 
       this.props.SignIn(Data).then((res) => {
         if (res) {
-          console.log(jwt_decode(res))
-          localStorage.setItem('token',res);
+          console.log(jwt_decode(res.Token))
+          localStorage.setItem('token',res.Token);
+          localStorage.setItem('name',res.name);
           this.props.history.push('/')
           this.props.Home(res)
         }

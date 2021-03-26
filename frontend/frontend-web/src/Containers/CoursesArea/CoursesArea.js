@@ -6,7 +6,9 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-import {withRouter} from 'react-router-dom'
+import {withRouter} from 'react-router-dom';
+import {getCourses} from '../../Interface/Interface'
+
 class CoursesArea extends Component {
   state={
     Courses:this.props.Courses
@@ -15,6 +17,15 @@ class CoursesArea extends Component {
   constructor(props) {
     super(props);
     this.CoursesArea = React.createRef();
+  }
+
+  loadCourses=()=>{
+    getCourses(this.props.Token).then((res)=>{
+      console.log(res);
+      this.props.setCourses(res)
+
+      this.props.history.push('/Courses')
+    });
   }
 
   render() {
@@ -34,7 +45,10 @@ class CoursesArea extends Component {
         }}>
           <div className={classes.Title}>Courses You're Taking</div>
           <button onClick={
-            ()=> this.props.history.push('/Courses')
+            ()=> {
+              this.loadCourses()
+              
+            }
           }>See All Courses</button>
         </div>
         <div className={classes.SwipeList}>

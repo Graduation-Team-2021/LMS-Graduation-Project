@@ -23,7 +23,7 @@ export const login = async (Data) => {
         "Content-Type": "application/json"}
     })
     if(res.data['status_code']===200){
-        return res.data['token']
+        return {Token:res.data['token'],name:res.data['name']}
     }
     else{
         return null;
@@ -37,7 +37,6 @@ export const getCurrentCourses = async (Token, id, role) => {
         "Authorization": Token,
     },
     })
-    console.log(res)
     return res.data
 }
 
@@ -48,6 +47,16 @@ export const getCurrentGroups = async (Token, id, role) => {
         "Authorization": Token,
     },
     })
-    console.log(res)
     return res.data
 }
+export const getCourses = async (Token) => {
+    const res = await instance.get(`/courses`,{
+        headers: 
+        {
+        "Content-Type": "application/json",
+        "Authorization": Token,
+    },
+    })
+    return res.data
+}
+

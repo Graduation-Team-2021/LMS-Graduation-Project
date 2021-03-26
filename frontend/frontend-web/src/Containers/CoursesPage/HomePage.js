@@ -29,7 +29,7 @@ const HomePage = (props) => {
                 height: "fit-content",
               }}
             >
-              <CoursesPags/>
+              <CoursesPags Courses={props.Courses}/>
             </Card>
           </div>
         </div>

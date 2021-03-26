@@ -6,26 +6,22 @@ import CourseOverView from "../../Components/CoursesPageComponents/CourseOvervie
 import classes from "./CoursesPage.module.css";
 
 class CoursesPags extends Component {
+  
   constructor(props) {
     super(props);
-    this.state = {
-      loadedCourses: {
-        1: {
-          CourseName: "Distributed Systems",
-          DoctorName: "Not Dr. Gamal Abd El-Shafy",
-          CoursePicture: "https://miro.medium.com/max/2560/1*tYxWuyksovxA1Thu8PggPQ.jpeg"
-        },
-        2: {
-          CourseName: "Physics 2",
-          DoctorName: "Dr. Wael Fekry",
-          CoursePicture:"https://cdn.britannica.com/w:1100/50/190450-131-527BAEF7/series-Elementary-Particles-subject-forms-nuclear-physics.jpg"
-        },
-        3: {
-          CourseName: "Math 3",
-          DoctorName: "Dr. Makram",
-          CoursePicture:"https://i.pinimg.com/736x/c8/e5/75/c8e5753370bad54c7977d485e0a0e29d.jpg"
-        },
-      },
+    let ids = this.props.Courses
+    let Courses = new Map()
+    ids.forEach(
+      (id, index) => {
+        Courses.set(id['course_code'], { 
+          CourseName: id['course_name'], 
+          DoctorName: id['course_teacher'], 
+          CourseDescription: id['course_description'],
+          CoursePicture: index % 3 === 0 ? "https://miro.medium.com/max/2560/1*tYxWuyksovxA1Thu8PggPQ.jpeg" : index % 3 === 1 ? "https://cdn.britannica.com/w:1100/50/190450-131-527BAEF7/series-Elementary-Particles-subject-forms-nuclear-physics.jpg" : "https://i.pinimg.com/736x/c8/e5/75/c8e5753370bad54c7977d485e0a0e29d.jpg", })
+      }
+    )
+    this.state={
+      loadedCourses: Courses,
       displayedCourse: null,
     };
   }
@@ -35,15 +31,19 @@ class CoursesPags extends Component {
   };
   removingFromTheStageHandler = () => {
     this.setState({
-      displayedCourse:null
+      displayedCourse: null
     })
   }
 
   render() {
-    let loadedCourses = Object.keys(this.state.loadedCourses).map((key) => {
-      return (
+    
+    let loadedCourses = []
+     Array.from(this.state.loadedCourses.keys()).forEach((key) => {
+      console.log(key)
+      loadedCourses.push (
         <CourseListItem
-          {...this.state.loadedCourses[key]}
+          {...this.state.loadedCourses.get(key)}
+          key={key}
           id={key}
           getSelected={this.selectingCourseHandler}
           displayedCourse={this.state.displayedCourse}
@@ -54,8 +54,8 @@ class CoursesPags extends Component {
     let stage = (
       <div className={classes.CourseOverview}>
         <CourseOverView
-          {...this.state.loadedCourses[this.state.displayedCourse]}
-          removeHandler = {this.removingFromTheStageHandler}
+          {...this.state.loadedCourses.get(this.state.displayedCourse)}
+          removeHandler={this.removingFromTheStageHandler}
         />
       </div>
     );

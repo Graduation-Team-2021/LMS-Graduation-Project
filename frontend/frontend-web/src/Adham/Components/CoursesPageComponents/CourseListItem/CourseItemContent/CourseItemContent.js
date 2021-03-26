@@ -6,7 +6,7 @@ const courseItemContent = (props) => {
   return (
     <div className={classes.CourseItemContentContainer}>
         <h5 className={classes.CourseName} >{props.CourseName}</h5>
-        <subtitle className={classes.DoctorName} >{props.DoctorName}</subtitle>
+        <div className={classes.DoctorName} >{props.DoctorName}</div>
     </div>
   );
 };

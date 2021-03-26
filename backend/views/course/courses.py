@@ -80,12 +80,15 @@ class Courses(Resource):
             courses = controller_object.get_all_courses()
         except ErrorHandler as e:
             return e.error
-        return {
-            'total_courses': len(courses),
-            'status_code': 200,
-            'course': courses
-        }
-
+        data=[]
+        for i in range(len(courses)):
+            data.append({
+                'course_code':courses[i][0],
+                'course_name':courses[i][1],
+                'course_teacher':courses[i][2],
+                'course_description':courses[i][3]
+            })
+        return data
     def post(self):
         args = self.reqparse.parse_args()
         course = {

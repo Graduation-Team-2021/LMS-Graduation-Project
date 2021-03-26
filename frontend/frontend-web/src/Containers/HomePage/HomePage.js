@@ -17,7 +17,6 @@ const HomePage = (props) => {
 
 
   useEffect(() => {
-    console.log(props)
     if (R && R.size !== 0) {
       setRecommended(R);
     }
@@ -51,7 +50,7 @@ const HomePage = (props) => {
                 height: "fit-content",
               }}
             >
-                  {CurrentCourses.size!==0?<CoursesArea Courses={CurrentCourses} />:<h1>Loading.....</h1>}
+                  {CurrentCourses.size!==0?<CoursesArea Courses={CurrentCourses} Token={props.Token} setCourses={props.Courses} />:<h1>Loading.....</h1>}
               {Joined.size !== 0 ? (
                 <GroupsArea Groups={Joined} />
               ) : (

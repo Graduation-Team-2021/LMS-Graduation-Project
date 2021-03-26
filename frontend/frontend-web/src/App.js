@@ -18,7 +18,9 @@ const App = () => {
   const [logged, setLogged] = useState(
     localStorage.getItem("token") ? true : false
   );
-  
+  const [name, setName] = useState(
+    localStorage.getItem("name")
+  );
   const [Role, setRole] = useState(
     localStorage.getItem("token")
       ? jwt_decode(localStorage.getItem("token")).permissions
@@ -34,7 +36,8 @@ const App = () => {
   );
   const [Recommended, setRecommended] = useState(new Map());
   const [Joined, setJoined] = useState(new Map());
-  const [CurrentCourses, setCurrentCourses] = useState(null);
+  const [CurrentCourses, setCurrentCourses] = useState(new Map());
+  const [Courses, setCourses] = useState(new Map());
   const Joining = (index) => {
     let group = Recommended.get(index);
     Joined.set(index, group);
@@ -63,7 +66,6 @@ const App = () => {
           });
         });
         setCurrentCourses(Courses);
-        console.log(Courses);
       });
       getCurrentGroups(Token, ID, Role).then((res) => {
         const Courses = new Map();
@@ -74,7 +76,6 @@ const App = () => {
           });
         });
         setJoined(Courses);
-        console.log(Courses)
       });
     }
     setRecommended(temp2);
@@ -91,12 +92,17 @@ const App = () => {
                 exact
                 render={() => (
                   <HomePage
-                    Name="David John"
-                    id="5"
+                    Name={name}
+                    Token={Token}
+                    id={ID}
                     CurrentCourses={CurrentCourses}
                     Joined={Joined}
                     Recommended={Recommended}
                     Joining={Joining}
+                    Courses={(data)=>{
+                      setCourses(data)
+                      console.log(Courses)
+                    }}
                   />
                 )}
               />
@@ -141,7 +147,7 @@ const App = () => {
                 exact
                 path="/Courses"
                 render={(props) => (
-                  <CoursesPage {...props} Name="David John" id="5" />
+                  <CoursesPage {...props} Name="David John" id="5" Courses={Courses} />
                 )}
               />
               <Route
@@ -162,7 +168,9 @@ const App = () => {
                     SignIn={async (Data) => {
                       return await login(Data);
                     }}
-                    Home={(Token) => { 
+                    Home={(data) => { 
+                      let Token=data.Token
+                      setName(data.name)
                       setToken(Token)
                       setID(jwt_decode(Token).id)
                       setRole(jwt_decode(Token).permissions)

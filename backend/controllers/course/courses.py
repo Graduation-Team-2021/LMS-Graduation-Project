@@ -1,4 +1,7 @@
 from models.course.courses import Course
+from models.user.professors import Professor
+from models.relations.teaches import Teaches_Relation
+from models.user.users import User
 from methods.errors import *
 
 class courses_controller():
@@ -67,18 +70,13 @@ class courses_controller():
         return new_course
 
     def get_all_courses(self):
-        try:
-            courses = Course.query.all()
-        except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
-            raise ErrorHandler({
-                'description': error,
-                'status_code': 500
-            })
+        courses = Course.query.join(Teaches_Relation).\
+        filter(Teaches_Relation.course_code==Course.course_code).join(Professor).filter(Professor.user_id==Teaches_Relation.professor_id).join(User).filter(User.user_id==Professor.user_id).\
+        with_entities(Course.course_code,Course.course_name,User.name,Course.course_description)
         if courses is None:
             raise ErrorHandler({
                 'description': 'Course does not exist.',
                 'status_code': 404
             })
-        data = [course.serialize() for course in courses]
+        data = [course for course in courses]
         return data
