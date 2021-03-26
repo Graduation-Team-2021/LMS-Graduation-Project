@@ -98,6 +98,7 @@ const App = () => {
                     <HomePage
                       Name="David John"
                       id="5"
+      CurrentCourses={CurrentCourses}
                       Joined={Joined}
                       Recommended={Recommended}
                       Joining={Joining}
@@ -109,7 +110,7 @@ const App = () => {
                   path="/profile"
                   exact
                   render={() => (
-                    <ProfilePage Name="David John" id="5" Joined={Joined} />
+                    <ProfilePage Name="David John" id="5" Joined={Joined} CurrentCourses={CurrentCourses}/>
                   )}
                 />
                 <Route
