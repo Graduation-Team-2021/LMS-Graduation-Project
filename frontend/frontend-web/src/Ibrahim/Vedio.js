@@ -2,61 +2,60 @@ import React, { Component } from "react";
 import ReactPlayer from "react-player";
 //import Navbar from '../navbar/Navbar';
 import './Vedio.css';
+import { withRouter } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import CoursePage from "../Containers/CoursePage/GroupPage"
 
 class Vedioplayer extends Component {
   // axios.get()
 
   state = {
-    url: "https://youtu.be/OrDzu_xveDo"
+    url: "https://www.youtube.com/watch?v=A3Ffwsnad0k&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=1"
     
   };
 
   mathurl = () => {
-    this.nulling();
     this.setState({
       url:
         // "https://youtu.be/8zuE3Rtm1Eo?list=PLQkyODvJ8ywuGxYwN0BfMSvembIJkNQH1"
-        "https://youtu.be/OrDzu_xveDo"
+        "https://www.youtube.com/watch?v=rAxXcX_w5fE&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=2"
     });
     alert("math");
     console.log(this.state.url);
   };
   Phyurl = () => {
-    this.nulling();
     this.setState({
       url:
-         "https://youtube.com/playlist?list=PLtFbQRDJ11kGc2dWpGMLJjPADeHPAFVA9"
+         "https://www.youtube.com/watch?v=hWEZsyF3ZZc&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=3"
         
     });
     alert("phy");
     console.log(this.state.url);
   };
   compurl = () => {
-    this.nulling();
     this.setState({
       url:
-         "https://youtube.com/playlist?list=PLQkyODvJ8ywuGxYwN0BfMSvembIJkNQH1"
+         "https://www.youtube.com/watch?v=A2k3ulOJ3u4&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=4"
     });
     alert("comp");
     console.log(this.state.url);
   };
   softwre = () => {
-    this.nulling();
     setTimeout(this.setState({
       url:
-        "https://youtube.com/playlist?list=PLDoPjvoNmBAzH72MTPuAAaYfReraNlQgM"
+        "https://www.youtube.com/watch?v=N2YHianzseI&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=5"
     }),3000)
 
     alert("software");
     console.log(this.state.url);
   };
   nulling = () => {
-    this.setState({
-      url:
-       null
-    });
-    alert("erroorrrrrr");
-    console.log(this.state.url);
+    // props.history.push('/Courses')
+    <BrowserRouter>
+    <Route path="/Courses">
+    <CoursePage/>
+    </Route>
+    </BrowserRouter>
   };
 
   start=()=>{
@@ -101,7 +100,7 @@ class Vedioplayer extends Component {
               <p onClick={this.softwre}> Software</p>
             </li>
             <li>
-              <p onClick={this.nulling}> refresh</p>
+              <p onClick={this.nulling}> Back to courese page</p>
             </li>
           </ul>
         </div>
@@ -111,4 +110,4 @@ class Vedioplayer extends Component {
   }
 }
 
-export default Vedioplayer;
+export default withRouter(Vedioplayer);

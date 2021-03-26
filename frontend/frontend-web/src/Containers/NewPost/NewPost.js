@@ -11,8 +11,8 @@ const NewPost = (props) => {
   const enable = (event) => {
     setContent(event.target.value);
     if (event.target.value !== "") 
-      setenabled(true);
-     else setenabled(false);
+    {setenabled(true);}
+     else {setenabled(false);}
   };
 
   const Submit = () => {
