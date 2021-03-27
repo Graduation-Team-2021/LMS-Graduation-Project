@@ -67,5 +67,6 @@ export const getRecentPosts = async (Token, id) => {
         "Authorization": Token,
     },
     })
+    console.log(res.data)
     return res.data
 }

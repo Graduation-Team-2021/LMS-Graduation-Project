@@ -119,12 +119,12 @@ class Post_Controller:
         courses_post_owner_ids=[]
         courses_names=[]
         for i in range(len(desired_courses)):
-            courses_post_owner_ids.append(desired_courses[i]["post_owner_id"])
+            courses_post_owner_ids.append((desired_courses[i]["post_owner_id"],desired_courses[i]["course_name"]))
 
         groups_post_owner_id=[]
         groups_names=[]
         for i in range(len(desired_groups)):
-            courses_post_owner_ids.append(desired_groups[i]["post_owner_id"])
+            courses_post_owner_ids.append((desired_groups[i]["post_owner_id"], desired_groups[i]["group_name"]))
 
         
         # for i in range(len(courses_post_owner_ids)):
@@ -139,7 +139,8 @@ class Post_Controller:
         for i in range(len(courses_post_owner_ids)):
             if courses_post_owner_ids[i] is not None:
                 print(courses_post_owner_ids[i])
-                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i]).first().serialize()
+                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0]).first().serialize()
+                posts['owner_name']=courses_post_owner_ids[i][1]
                 desired_posts.append(posts)
 
         post_writers_ids=[]

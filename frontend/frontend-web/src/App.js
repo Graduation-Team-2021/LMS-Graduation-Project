@@ -86,7 +86,7 @@ const App = () => {
         res.forEach((ele)=>{
           Posts.push(
             {
-              Title: `Post by ${ele['name']}, in ${ele['post_owner']}`,
+              Title: `Post by ${ele['name']}, in ${ele['owner_name']}`,
               Desc: ele['post_text']
             }
           )
