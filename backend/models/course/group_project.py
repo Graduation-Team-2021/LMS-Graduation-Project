@@ -10,7 +10,7 @@ class GroupProject(db.Model, Base):
     group_id = db.Column(db.Integer, primary_key=True)
     group_name = db.Column(db.String(50))
     group_description = db.Column(db.Text(20000))
-    post_owner_id=db.Column(db.Integer,ForeignKey('post_owner.id', onupdate="CASCADE",ondelete='SET_NULL'))
+    post_owner_id=db.Column(db.Integer,ForeignKey('post_owner.id', onupdate="CASCADE",ondelete='SET NULL'))
 
     def serialize(self):
         return {

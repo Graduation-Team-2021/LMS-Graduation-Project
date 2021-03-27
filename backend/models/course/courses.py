@@ -15,7 +15,7 @@ class Course(db.Model, Base):
     group_number = db.Column(db.Integer, nullable=False, unique=True)
     max_students = db.Column(db.Integer, nullable=False)
     course_description = db.Column(db.Text(30000))
-    post_owner_id=db.Column(db.Integer,ForeignKey('post_owner.id', onupdate="CASCADE",ondelete='SET_NULL'))
+    post_owner_id=db.Column(db.Integer,ForeignKey('post_owner.id', onupdate="CASCADE",ondelete='SET NULL'))
 
     def serialize(self):
         return {
