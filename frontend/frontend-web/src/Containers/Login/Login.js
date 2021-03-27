@@ -3,7 +3,6 @@ import classes from "./Login.module.css";
 import LoginField from "../../Components/LoginField/LoginField";
 import ButtonArray from "../../Components/ButtonArray/ButtonArray";
 import { withRouter } from "react-router-dom";
-import jwt_decode from "jwt-decode";
 
 class Login extends Component {
   state = {
@@ -18,7 +17,6 @@ class Login extends Component {
 
       this.props.SignIn(Data).then((res) => {
         if (res) {
-          console.log(jwt_decode(res.Token))
           localStorage.setItem('token',res.Token);
           localStorage.setItem('name',res.name);
           this.props.history.push('/')

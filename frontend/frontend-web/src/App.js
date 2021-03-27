@@ -10,17 +10,20 @@ import CoursePage from "./Containers/CoursePage/GroupPage";
 import Vedioplayer from "./Ibrahim/Vedio";
 import Pdf from "./Ibrahim/Pdf_reader";
 import MarkEdit from "./Ibrahim/Mrak_edit";
-import { signup, login, getCurrentCourses, getCurrentGroups } from "./Interface/Interface";
+import {
+  signup,
+  login,
+  getCurrentCourses,
+  getCurrentGroups,
+} from "./Interface/Interface";
 import jwt_decode from "jwt-decode";
-import Messenger from "./Components/Messenger/Messenger"
+import Messenger from "./Components/Messenger/Messenger";
 
 const App = () => {
   const [logged, setLogged] = useState(
     localStorage.getItem("token") ? true : false
   );
-  const [name, setName] = useState(
-    localStorage.getItem("name")
-  );
+  const [name, setName] = useState(localStorage.getItem("name"));
   const [Role, setRole] = useState(
     localStorage.getItem("token")
       ? jwt_decode(localStorage.getItem("token")).permissions
@@ -48,7 +51,6 @@ const App = () => {
   };
 
   useEffect(() => {
-
     let temp2 = new Map();
     for (let index = 10; index < 20; index++) {
       temp2.set(index.toString(), {
@@ -99,9 +101,9 @@ const App = () => {
                     Joined={Joined}
                     Recommended={Recommended}
                     Joining={Joining}
-                    Courses={(data)=>{
-                      setCourses(data)
-                      console.log(Courses)
+                    Courses={(data) => {
+                      setCourses(data);
+                      console.log(Courses);
                     }}
                   />
                 )}
@@ -111,7 +113,12 @@ const App = () => {
                 path="/profile"
                 exact
                 render={() => (
-                  <ProfilePage Name="David John" id="5" Joined={Joined} CurrentCourses={CurrentCourses} />
+                  <ProfilePage
+                    Name="David John"
+                    id="5"
+                    Joined={Joined}
+                    CurrentCourses={CurrentCourses}
+                  />
                 )}
               />
               <Route
@@ -147,7 +154,12 @@ const App = () => {
                 exact
                 path="/Courses"
                 render={(props) => (
-                  <CoursesPage {...props} Name="David John" id="5" Courses={Courses} />
+                  <CoursesPage
+                    {...props}
+                    Name="David John"
+                    id="5"
+                    Courses={Courses}
+                  />
                 )}
               />
               <Route
@@ -168,14 +180,14 @@ const App = () => {
                     SignIn={async (Data) => {
                       return await login(Data);
                     }}
-                    Home={(data) => { 
-                      let Token=data.Token
-                      setName(data.name)
-                      setToken(Token)
-                      setID(jwt_decode(Token).id)
-                      setRole(jwt_decode(Token).permissions)
+                    Home={(data) => {
+                      let TempToken = data.Token;
+                      setName(data.name);
+                      setToken(TempToken);
+                      setID(jwt_decode(TempToken).id);
+                      setRole(jwt_decode(TempToken).permissions);
                       setLogged(true)
-                     }}
+                    }}
                     SignUp={(Data) => {
                       signup(Data);
                     }}
@@ -185,24 +197,32 @@ const App = () => {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Route
-                path="/login"
-                exact
-                children={
-                  <LoginPage
-                    SignIn={async (Data) => {
-                      return await login(Data);
-                    }}
-                    Home={() => setLogged(true)}
-                    SignUp={(Data) => {
-                      signup(Data);
-                    }}
-                  />
-                }
+            <Route
+            path="/login"
+            exact
+            children={
+              <LoginPage
+                SignIn={async (Data) => {
+                  return await login(Data);
+                }}
+                Home={(data) => {
+                  let TempToken = data.Token;
+                  setName(data.name);
+                  setToken(TempToken);
+                  setID(jwt_decode(TempToken).id);
+                  setRole(jwt_decode(TempToken).permissions);
+                  setLogged(true)
+                }}
+                SignUp={(Data) => {
+                  signup(Data);
+                }}
               />
+            }
+          />
               <Redirect to="login" />
             </React.Fragment>
           )}
+          
         </Switch>
       </div>
     </BrowserRouter>
