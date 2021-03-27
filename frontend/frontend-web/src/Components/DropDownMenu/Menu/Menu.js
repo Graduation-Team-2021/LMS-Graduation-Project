@@ -14,7 +14,8 @@ const Menu = (props) => {
       <h2>Enroll in Courses</h2>
       <h2 onClick={
         () => {
-          localStorage.removeItem('token')
+          localStorage.removeItem('token');
+          props.setLogged(false)
           props.history.push("/login");
         }}>Sign Out</h2>
     </React.Fragment>

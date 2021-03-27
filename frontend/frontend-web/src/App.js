@@ -89,6 +89,7 @@ const App = () => {
         <Switch>
           {logged ? (
             <React.Fragment>
+              <Redirect path="/login" to="" />
               <Route
                 path="/"
                 exact
@@ -103,8 +104,8 @@ const App = () => {
                     Joining={Joining}
                     Courses={(data) => {
                       setCourses(data);
-                      console.log(Courses);
                     }}
+                    setLogged={(data) => setLogged(data)}
                   />
                 )}
               />
@@ -118,6 +119,7 @@ const App = () => {
                     id="5"
                     Joined={Joined}
                     CurrentCourses={CurrentCourses}
+                    setLogged={(data) => setLogged(data)}
                   />
                 )}
               />
@@ -172,6 +174,9 @@ const App = () => {
                 exact
                 render={(props) => <Pdf {...props} />}
               />
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
               <Route
                 path="/login"
                 exact
@@ -186,7 +191,7 @@ const App = () => {
                       setToken(TempToken);
                       setID(jwt_decode(TempToken).id);
                       setRole(jwt_decode(TempToken).permissions);
-                      setLogged(true)
+                      setLogged(true);
                     }}
                     SignUp={(Data) => {
                       signup(Data);
@@ -194,35 +199,9 @@ const App = () => {
                   />
                 }
               />
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-            <Route
-            path="/login"
-            exact
-            children={
-              <LoginPage
-                SignIn={async (Data) => {
-                  return await login(Data);
-                }}
-                Home={(data) => {
-                  let TempToken = data.Token;
-                  setName(data.name);
-                  setToken(TempToken);
-                  setID(jwt_decode(TempToken).id);
-                  setRole(jwt_decode(TempToken).permissions);
-                  setLogged(true)
-                }}
-                SignUp={(Data) => {
-                  signup(Data);
-                }}
-              />
-            }
-          />
               <Redirect to="login" />
             </React.Fragment>
           )}
-          
         </Switch>
       </div>
     </BrowserRouter>

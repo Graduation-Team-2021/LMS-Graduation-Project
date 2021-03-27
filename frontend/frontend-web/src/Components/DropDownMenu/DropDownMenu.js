@@ -16,7 +16,7 @@ const DropDownMenu = (props) => {
         border: "1px solid black",
       }}
     >
-    <InMenu/>
+    <InMenu setLogged={props.setLogged}/>
     </Card>
   );
 

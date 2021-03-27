@@ -14,11 +14,9 @@ const TopBar = (props) => {
     <div className={classes.Main}>
       <Welcome Name={props.Name} />
       <Search />
-      <MiniMenu id={props.id} notif={notif} onNotifClick={()=>{
-
+      <MiniMenu id={props.id} setLogged={props.setLogged} notif={notif} onNotifClick={()=>{
         setNotif(0)
       }} message={message} onMessageClick={()=>{
-        
         setMessage(0)
       }}/>
     </div>
