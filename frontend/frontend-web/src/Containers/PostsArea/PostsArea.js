@@ -4,17 +4,7 @@ import PostPreview from "../../Components/PostPreview/PostPreview";
 import Card from "../../Components/Card/Card";
 import Post from "../../Components/Post/Post";
 class PostsArea extends Component {
-  state = { Posts: [], dismissed: false, clicked: false };
-
-  constructor() {
-    super();
-    for (let index = 0; index < 5; index++) {
-      this.state.Posts.push({
-        Title: `Post ${index + 1}`,
-        Desc: "Blah Blah Blah",
-      });
-    }
-  }
+  state = { Posts: this.props.Posts, dismissed: false, clicked: false };
 
   hide = () => {
     this.setState({

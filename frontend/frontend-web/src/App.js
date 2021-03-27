@@ -15,6 +15,7 @@ import {
   login,
   getCurrentCourses,
   getCurrentGroups,
+  getRecentPosts,
 } from "./Interface/Interface";
 import jwt_decode from "jwt-decode";
 import Messenger from "./Components/Messenger/Messenger";
@@ -41,6 +42,7 @@ const App = () => {
   const [Joined, setJoined] = useState(new Map());
   const [CurrentCourses, setCurrentCourses] = useState(new Map());
   const [Courses, setCourses] = useState(new Map());
+  const [posts, setposts] = useState([]);
   const Joining = (index) => {
     let group = Recommended.get(index);
     Joined.set(index, group);
@@ -79,6 +81,19 @@ const App = () => {
         });
         setJoined(Courses);
       });
+      getRecentPosts(Token, ID).then((res)=>{
+        const Posts = [];
+        res.forEach((ele)=>{
+          Posts.push(
+            {
+              Title: `Post by ${ele['name']}, in ${ele['post_owner']}`,
+              Desc: ele['post_text']
+            }
+          )
+        });
+        console.log(Posts)
+        setposts(Posts)
+      })
     }
     setRecommended(temp2);
   }, [Token, ID, Role, logged]);
@@ -106,6 +121,7 @@ const App = () => {
                       setCourses(data);
                     }}
                     setLogged={(data) => setLogged(data)}
+                    Posts={posts}
                   />
                 )}
               />

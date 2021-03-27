@@ -1,4 +1,13 @@
 from models.course.post import Post
+from models.relations.learns import Learns_Relation
+from models.relations.student_group_relation import StudentGroupRelation
+from models.user.users import User
+from models.user.students import Student
+from models.course.courses import Course
+from models.course.group_project import GroupProject
+from models.relations.student_group_relation import StudentGroupRelation
+from models.course.post_owner import PostOwner
+from models.user.users import User
 from methods.errors import *
 
 class Post_Controller:
@@ -81,3 +90,68 @@ class Post_Controller:
             })
         data = [post.serialize() for post in posts]
         return data
+
+    def get_one_student_first_ten_courses(self,student_id):
+        courses=Course.query.join(Learns_Relation).\
+        filter(Course.course_code==Learns_Relation.course_code).join(Student).\
+        filter(Learns_Relation.student_id==Student.user_id==student_id).\
+        with_entities(Course.course_code)
+        
+        groups=GroupProject.query.join(StudentGroupRelation).\
+        filter(GroupProject.group_id==StudentGroupRelation.group_id).\
+        join(Student).filter(Student.user_id==StudentGroupRelation.student_id).\
+            with_entities(GroupProject.group_id)
+
+        group_ids=[g for g in groups]
+        course_codes=[c for c in courses]
+
+        desired_courses=[]
+        desired_groups=[]
+        for i in range(len(course_codes)):
+            # course=Course.query.filter_by(Course.course_code==i).first()
+            course=Course.query.filter(Course.course_code==course_codes[i][0]).first().serialize()
+            desired_courses.append(course)
+
+        for i in range(len(group_ids)):
+            group=GroupProject.query.filter(GroupProject.group_id==group_ids[i][0]).first().serialize()
+            desired_groups.append(group)
+
+        courses_post_owner_ids=[]
+        courses_names=[]
+        for i in range(len(desired_courses)):
+            courses_post_owner_ids.append(desired_courses[i]["post_owner_id"])
+
+        groups_post_owner_id=[]
+        groups_names=[]
+        for i in range(len(desired_groups)):
+            courses_post_owner_ids.append(desired_groups[i]["post_owner_id"])
+
+        
+        # for i in range(len(courses_post_owner_ids)):
+        #     desired_post_owner_ids=PostOwner.query.filter(PostOwner.id==courses_post_owner_ids[i][0]).all()
+        
+        # desired_posts=[]
+        # for i in range(len(courses_post_owner_ids)):
+        #     posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i]).all()
+        #     desired_posts.append(p.serialize() for p in posts)
+
+        desired_posts=[]
+        for i in range(len(courses_post_owner_ids)):
+            if courses_post_owner_ids[i] is not None:
+                print(courses_post_owner_ids[i])
+                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i]).first().serialize()
+                desired_posts.append(posts)
+
+        post_writers_ids=[]
+        for i in desired_posts:
+            post_writers_ids.append(i["post_writer"])
+
+        post_writers=[]
+        for i in range(len(post_writers_ids)):
+            users=User.query.filter(User.user_id==post_writers_ids[i]).first().serialize()
+            post_writers.append(users['name'])
+        
+
+        for i in range(len(desired_posts)):
+            desired_posts[i]['name']=post_writers[i]
+        return desired_posts

@@ -59,4 +59,13 @@ export const getCourses = async (Token) => {
     })
     return res.data
 }
-
+export const getRecentPosts = async (Token, id) => {
+    const res = await instance.get(`/${id}/first_10_posts`,{
+        headers: 
+        {
+        "Content-Type": "application/json",
+        "Authorization": Token,
+    },
+    })
+    return res.data
+}

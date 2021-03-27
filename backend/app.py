@@ -35,6 +35,7 @@ from models.course.post_owner import PostOwner
 from models.course.post import Post
 from models.relations.post_commenter import Post_Commenter_relation
 from models.relations.post_liker import Post_liker_relation
+
 """
 app and database initilization
 """
@@ -87,6 +88,7 @@ from views.course.post import Post_view,Post_the_post
 from views.course.post_owner import PostOwner_view,OwnerView
 from views.relations.post_commenter import Post_commenter_view,CommentView_Update_Delete
 from views.relations.post_liker import Post_liker_view,Liker_all_posts
+from views.course.post import FirstTenPosts
 
 # Answers
 """
@@ -227,7 +229,7 @@ Posts
 '''
 api.add_resource(Post_view,'/posts/<post_id>')
 api.add_resource(Post_the_post,'/posts/add_post')
-
+api.add_resource(FirstTenPosts,'/<student_id>/first_10_posts')
 
 '''
 Post owners

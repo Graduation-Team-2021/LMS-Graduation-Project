@@ -12,9 +12,9 @@ const HomePage = (props) => {
   const [Recommended, setRecommended] = useState(new Map());
   const [Joined, setJoined] = useState(new Map());
   const [CurrentCourses, setCurrentCourses] = useState(new Map());
+  const [Posts, setPosts] = useState([]);
 
-  const {CurrentCourses: CC, Joined: J, Recommended: R } = props
-
+  const { CurrentCourses: CC, Joined: J, Recommended: R, Posts: P } = props;
 
   useEffect(() => {
     if (R && R.size !== 0) {
@@ -26,8 +26,11 @@ const HomePage = (props) => {
     if (CC && CC.size !== 0) {
       setCurrentCourses(CC);
     }
-  }, [CC, J, R, props]);
-  
+    if (P && P.length !== 0) {
+      setPosts(P);
+    }
+  }, [CC, J, R, P]);
+
   return (
     <div className={classes.Main}>
       <Card
@@ -36,7 +39,7 @@ const HomePage = (props) => {
           height: "fit-content",
         }}
       >
-        <TopBar Name={props.Name} id={props.id} setLogged={props.setLogged}/>
+        <TopBar Name={props.Name} id={props.id} setLogged={props.setLogged} />
         <div className={classes.Center}>
           <div
             style={{
@@ -50,13 +53,26 @@ const HomePage = (props) => {
                 height: "fit-content",
               }}
             >
-                  {CurrentCourses.size!==0?<CoursesArea Courses={CurrentCourses} Token={props.Token} setCourses={props.Courses} />:<h1>Loading.....</h1>}
+              {CurrentCourses.size !== 0 ? (
+                <CoursesArea
+                  Courses={CurrentCourses}
+                  Token={props.Token}
+                  setCourses={props.Courses}
+                />
+              ) : (
+                <h1>Loading.....</h1>
+              )}
               {Joined.size !== 0 ? (
                 <GroupsArea Groups={Joined} />
               ) : (
                 <h1>Loading.....</h1>
               )}
-                <PostsArea flex="5" Title="Latest Posts" />
+              {console.log(props.Posts)}
+              {Posts.length !== 0 ? (
+                <PostsArea flex="5" Title="Latest Posts" Posts={props.Posts} />
+              ) : (
+                <h1>Loading.....</h1>
+              )}
             </Card>
           </div>
           <Upcoming Host="DJ Man" />

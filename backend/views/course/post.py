@@ -77,5 +77,13 @@ class Post_the_post(Resource):
             'message': 'Post created successfully',
             'status_code': 200
         })
+
+#/<student_id>/first_10_posts
+class FirstTenPosts(Resource):
+    def get(self,student_id):
+        try:
+            return controller_object.get_one_student_first_ten_courses(student_id)
+        except ErrorHandler as e :
+            return e.error
     
 
