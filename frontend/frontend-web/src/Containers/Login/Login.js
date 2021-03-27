@@ -41,7 +41,6 @@ class Login extends Component {
   };
 
   changeInput = (event) => {
-    console.log(event.target.value);
     this.setState({
       [event.target.name]: event.target.value,
     });
