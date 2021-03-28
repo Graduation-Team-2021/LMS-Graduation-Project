@@ -81,19 +81,17 @@ const App = () => {
         });
         setJoined(Courses);
       });
-      getRecentPosts(Token, ID).then((res)=>{
+      getRecentPosts(Token, ID).then((res) => {
         const Posts = [];
-        res.forEach((ele)=>{
-          Posts.push(
-            {
-              Title: `Post by ${ele['name']}, in ${ele['owner_name']}`,
-              Desc: ele['post_text']
-            }
-          )
+        res.forEach((ele) => {
+          Posts.push({
+            Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
+            Desc: ele["post_text"],
+          });
         });
-        console.log(Posts)
-        setposts(Posts)
-      })
+        console.log(Posts);
+        setposts(Posts);
+      });
     }
     setRecommended(temp2);
   }, [Token, ID, Role, logged]);
@@ -131,8 +129,10 @@ const App = () => {
                 exact
                 render={() => (
                   <ProfilePage
-                    Name="David John"
-                    id="5"
+                    Name={name}
+                    Token={Token}
+                    id={ID}
+                    Posts={posts}
                     Joined={Joined}
                     CurrentCourses={CurrentCourses}
                     setLogged={(data) => setLogged(data)}

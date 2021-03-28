@@ -9,17 +9,13 @@ import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
 
 const HomePage = (props) => {
-  const [Recommended, setRecommended] = useState(new Map());
   const [Joined, setJoined] = useState(new Map());
   const [CurrentCourses, setCurrentCourses] = useState(new Map());
   const [Posts, setPosts] = useState([]);
 
-  const { CurrentCourses: CC, Joined: J, Recommended: R, Posts: P } = props;
+  const { CurrentCourses: CC, Joined: J, Posts: P } = props;
 
   useEffect(() => {
-    if (R && R.size !== 0) {
-      setRecommended(R);
-    }
     if (J && J.size !== 0) {
       setJoined(J);
     }
@@ -29,7 +25,7 @@ const HomePage = (props) => {
     if (P && P.length !== 0) {
       setPosts(P);
     }
-  }, [CC, J, R, P]);
+  }, [CC, J, P]);
 
   return (
     <div className={classes.Main}>
@@ -67,9 +63,9 @@ const HomePage = (props) => {
               ) : (
                 <h1>Loading.....</h1>
               )}
-              {console.log(props.Posts)}
+
               {Posts.length !== 0 ? (
-                <PostsArea flex="5" Title="Latest Posts" Posts={props.Posts} />
+                <PostsArea flex="5" Title="Latest Posts" Posts={Posts} />
               ) : (
                 <h1>Loading.....</h1>
               )}

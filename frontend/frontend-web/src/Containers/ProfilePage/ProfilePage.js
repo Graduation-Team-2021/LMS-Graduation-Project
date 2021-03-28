@@ -1,5 +1,5 @@
 import classes from "./ProfilePage.module.css";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Card from "../../Components/Card/Card";
 import TopBar from "../../Components/TopBar/TopBar";
 import CoursesArea from "../CoursesArea/CoursesArea";
@@ -9,6 +9,23 @@ import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
 
 const HomePage = (props) => {
+  const [Joined, setJoined] = useState(new Map());
+  const [CurrentCourses, setCurrentCourses] = useState(new Map());
+  const [Posts, setPosts] = useState([]);
+
+  const { CurrentCourses: CC, Joined: J, Posts:P } = props;
+
+  useEffect(() => {
+    if (J && J.size !== 0) {
+      setJoined(J);
+    }
+    if (CC && CC.size !== 0) {
+      setCurrentCourses(CC);
+    }
+    if (P && P.length !== 0) {
+      setPosts(P);
+    }
+  }, [CC, J, P]);
 
   return (
     <div className={classes.Main}>
@@ -32,8 +49,20 @@ const HomePage = (props) => {
                 height: "fit-content",
               }}
             >
-              <CoursesArea />
-              <GroupsArea Groups={props.Joined} />
+            {CurrentCourses.size !== 0 ? (
+              <CoursesArea
+                Courses={CurrentCourses}
+                Token={props.Token}
+                setCourses={props.Courses}
+              />
+            ) : (
+              <h1>Loading.....</h1>
+            )}
+            {Joined.size !== 0 ? (
+              <GroupsArea Groups={Joined} />
+            ) : (
+              <h1>Loading.....</h1>
+            )}
               <div
                 style={{
                   display: "flex",
@@ -41,9 +70,12 @@ const HomePage = (props) => {
                   height: "100%",
                 }}
               >
-              
                 <OldCourses flex="2" Title="Your Passed Courses" />
-                <PostsArea flex="5" Title="Your Posts" />
+                {Posts.length !== 0 ? (
+                  <PostsArea flex="5" Title="Latest Posts" Posts={Posts} />
+                ) : (
+                  <h1>Loading.....</h1>
+                )}
               </div>
             </Card>
           </div>
