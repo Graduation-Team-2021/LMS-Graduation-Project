@@ -4,7 +4,6 @@ import Card from "../../Components/Card/Card";
 import TopBar from "../../Components/TopBar/TopBar";
 import CoursesArea from "../CoursesArea/CoursesArea";
 import GroupsArea from "../GroupsArea/GroupsArea";
-import RecommendedGroups from "../RecommendedGroups/GroupsArea";
 import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
 
@@ -13,7 +12,7 @@ const HomePage = (props) => {
   const [CurrentCourses, setCurrentCourses] = useState(new Map());
   const [Posts, setPosts] = useState([]);
 
-  const { CurrentCourses: CC, Joined: J, Posts: P } = props;
+  const { CurrentCourses: CC, Joined: J, Posts: P, Event } = props;
 
   useEffect(() => {
     if (J && J.size !== 0) {
@@ -35,7 +34,7 @@ const HomePage = (props) => {
           height: "fit-content",
         }}
       >
-        <TopBar Name={props.Name} id={props.id} setLogged={props.setLogged} />
+        <TopBar Name={props.Name} id={props.id} setLogged={props.setLogged} Notif={Posts} />
         <div className={classes.Center}>
           <div
             style={{
@@ -71,7 +70,7 @@ const HomePage = (props) => {
               )}
             </Card>
           </div>
-          <Upcoming Host="DJ Man" />
+          {Event ? <Upcoming Event={Event} /> : <h1>Loading.....</h1>}
         </div>
       </Card>
     </div>

@@ -1,5 +1,6 @@
 .upcoming {
-    max-width: 20vw;
+    width: 100%;
+    max-width: 17vw;
     padding: 0 0 0 1vw;
     justify-self: end;
 }

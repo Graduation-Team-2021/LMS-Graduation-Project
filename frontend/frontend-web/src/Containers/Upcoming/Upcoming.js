@@ -47,32 +47,34 @@ class Upcoming extends Component {
         </div>
       );
     }
+    console.log(this.props.Event)
+    const Event = this.props.Event
 
     return (
       <div className={classes.upcoming}>
     {/*TODO: Add Add Event Button Here*/}
         <div className={classes.Title}>Upcoming Event</div>
         <div className={classes.EventTitle}>
-          This Paragraph is for the Title of the Upcoming Event
+          {Event.Title}
         </div>
         <div className={classes.Host}>
-          Hosted By:{" "}
+          Hosted By:
           <span
             style={{
               fontWeight: "bold",
             }}
           >
-            {this.props.Host}
+            {Event.Host}
           </span>
         </div>
         <div className={classes.Invited}>Invited Members</div>
         <div className={classes.Joined}>{Joined}</div>
-        <Minibar icon={faCalendarAlt} color="red" info="Date" />
-        <Minibar icon={faClock} color="purple" info="Time" />
+        <Minibar icon={faCalendarAlt} color="red" info={Event.Date}/>
+        <Minibar icon={faClock} color="purple" info={Event.Time}/>
         <Minibar icon={faVideo} color=" rgb(0, 102, 255)" info="Method" />
-        <div className={classes.DesTitle}>Description</div>
+        <div className={classes.DesTitle}>Event Type: {Event.Type}</div>
         <div className={classes.Des}>
-          sadasnlasmimas; lmfasmd; asmfas;dm;asmd ;asf;kasmd;mas; ldma;slmd;.as md;oas m;d.mas dmas;mf;asmf;lasmf;asmd;asmp
+          {Event.Desc}
         </div>
       </div>
     );

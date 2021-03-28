@@ -89,7 +89,7 @@ from views.course.post_owner import PostOwner_view,OwnerView
 from views.relations.post_commenter import Post_commenter_view,CommentView_Update_Delete
 from views.relations.post_liker import Post_liker_view,Liker_all_posts
 from views.course.post import FirstTenPosts
-
+from views.course.events import Events_most_recent
 # Answers
 """
 Users
@@ -191,6 +191,7 @@ Events
 """
 api.add_resource(Event, '/courses/<course_code>/events/<event_id>')
 api.add_resource(Events, '/courses/<course_code>/events')
+api.add_resource(Events_most_recent,'/student/<student_id>/recent_events')
 
 """
 Finished courses relation

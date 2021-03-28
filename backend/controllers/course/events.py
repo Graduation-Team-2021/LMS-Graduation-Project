@@ -5,6 +5,7 @@ from models.course.courses import Course
 from methods.errors import *
 from flask import current_app, send_from_directory, json
 import os
+from datetime import datetime
 
 
 class events_controller():
@@ -105,10 +106,27 @@ class events_controller():
         return
 
     def get_most_recent_event(self,student_id):
-        
         course_codes=Student.query.join(Learns_Relation).filter(Student.user_id==Learns_Relation.student_id).\
         join(Course).filter(Learns_Relation.course_code==Course.course_code).\
         with_entities(Course.course_code)
 
-        data=[c for c in course_codes]
-        return data
+        desired_course_codes=[c for c in course_codes]
+
+        desired_events=[]
+        for i in range(len(desired_course_codes)):
+            events=Events.query.filter(Events.course_code==desired_course_codes[i][0],str(Events.event_date)>str(datetime.now())).first().serialize()
+            desired_events.append(events)
+            # desired_events.sort(reverse=True)
+        # for i in range(len(desired_events)):
+            # x=(sorted(desired_events[i]))
+            # sorted_by_date={k:v for k,v in sorted(desired_events[i].items(),key=lambda v:v[1])}
+        # one_last_event=Events.query.filter(str(Events.event_date)==(desired_events[0])).first().serialize()
+        # return one_last_event
+        # # return desired_events[0].replace)
+        # return Events.query.filter(Events.event_id==1).first().serialize()
+            # sorted_by_date=sorted(desired_events[i])
+
+            # print(desired_events[i]["event_date"])
+        newlist = sorted(desired_events, key=lambda k: k['event_date']) 
+
+        return desired_events[0]

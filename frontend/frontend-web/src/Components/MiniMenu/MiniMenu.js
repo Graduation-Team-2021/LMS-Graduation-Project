@@ -87,7 +87,7 @@ const MiniMenu = (props) => {
       </div>
       <div>
         {Notif || Messages || Menu ? (
-          <DropDownMenu setLogged={props.setLogged}
+          <DropDownMenu setLogged={props.setLogged} Notif={props.Notif}
             choice={Notif ? "Notif" : Messages ? "Messages" : "Menu"}
           />
         ) : null}

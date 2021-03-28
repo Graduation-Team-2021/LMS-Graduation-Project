@@ -25,7 +25,6 @@ const GroupPreview = (props) => {
         }}
       >
         <div className={classes.CourseTitle}>{props.Title}</div>
-        <div className={classes.CourseDes}>{props.Desc}</div>
         <ImageHolder filler={filler} />
       </div>
       <div className={classes.Bottom}>

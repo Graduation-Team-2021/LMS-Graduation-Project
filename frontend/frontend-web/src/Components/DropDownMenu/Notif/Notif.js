@@ -1,16 +1,17 @@
 import React from "react";
 
 const Notif = (props) => {
+  const Notif  = [];
+
+  props.Notif.forEach(
+    (value)=> Notif.push(
+      <h2>{value.Name} has Posted in {value.Location}</h2>
+    )
+  )
+
   return (
     <React.Fragment>
-      <h1>{"Notification"}</h1>
-      <h1>{"Notification"}</h1>
-      <h1>{"Notification"}</h1>
-      <h1>{"Notification"}</h1>
-      <h1>{"Notification"}</h1>
-      <h1>{"Notification"}</h1>
-      <h1>{"Notification"}</h1>
-      <h1>{"Notification"}</h1>
+      {Notif}
     </React.Fragment>
   );
 };

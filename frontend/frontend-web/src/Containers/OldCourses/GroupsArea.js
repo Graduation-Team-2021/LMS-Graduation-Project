@@ -3,18 +3,7 @@ import React, { Component } from "react";
 import OldCourse from "../../Components/OldCourse/GroupPreview";
 import Card from "../../Components/Card/Card";
 class GroupsArea extends Component {
-  state = { Courses: [], dismissed: false };
-
-  constructor() {
-    super();
-    for (let index = 0; index < 6; index++) {
-      this.state.Courses.push({
-        Title: `Course ${index + 1}`,
-        Desc: "Blah Blah Blah",
-        grade: "A+"
-      });
-    }
-  }
+  state = { Courses: this.props.Courses, dismissed: false };
 
   dismiss = () => {
     this.setState(() => {
@@ -60,7 +49,6 @@ class GroupsArea extends Component {
                     Title={
                       this.state.Courses[this.state.Courses.length - 1].Title
                     }
-                    Desc={this.state.Courses[this.state.Courses.length - 1].Desc}
                     dismiss={this.dismiss}
                     grade={this.state.Courses[this.state.Courses.length - 1].grade}
                   />

@@ -31,7 +31,7 @@ const DropDownMenu = (props) => {
         border: "1px solid black",
       }}
     >
-    <InNotif/>
+    <InNotif Notif={props.Notif}/>
     </Card>
   );
 

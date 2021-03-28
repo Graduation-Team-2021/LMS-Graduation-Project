@@ -1,18 +1,20 @@
 from models.relations.finished import Finished
+from models.course.courses import Course
 from methods.errors import *
 
 
 class finished_relation_controller():
     def get_finished_courses(self, student_id):
         try:
-            finished_courses = Finished.query.filter_by(student_id=student_id).all()
+            # finished_courses = Finished.query.filter_by(student_id=student_id).all()
+            finished_courses=Finished.query.join(Course).filter(Finished.course_code==Course.course_code).with_entities(Course.course_code,Course.course_name,Finished.total_mark_in_the_course)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
             })
-        data = [course.serialize() for course in finished_courses]
+        data = [course for course in finished_courses]
         return data
 
     def post_finished_course(self, course):

@@ -2,7 +2,7 @@ from models.config import db
 from sqlalchemy import Column, String, Integer, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-
+import json
 Base = declarative_base()
 
 
@@ -21,7 +21,7 @@ class Events(db.Model, Base):
         return {
             "event_id": self.event_id,
             "event_name": self.event_name,
-            "event_date": self.event_date,
+            "event_date": json.dumps(self.event_date,indent=4, sort_keys=True,default=str).replace("\"",""),
             "course_code": self.course_code,
             "event_duration": self.event_duration,
             "event_type": self.event_type,

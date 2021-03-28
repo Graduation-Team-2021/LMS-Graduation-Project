@@ -13,11 +13,13 @@ class Finished(db.Model, Base):
                             primary_key=True)
     student_id = db.Column(db.Integer, ForeignKey('student.user_id', ondelete='CASCADE', onupdate="CASCADE"),
                            primary_key=True)
+    total_mark_in_the_course=db.Column(db.Float)
 
     def serialize(self):
         return {
             'course_code': self.course_code,
-            'student_id': self.student_id
+            'student_id': self.student_id,
+            'total_mark_in_the_course':self.total_mark_in_the_course
         }
 
     def insert(self):

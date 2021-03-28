@@ -16,11 +16,20 @@ class finished_relation_view(Resource):
     def get(self, student_id):
         try:
             finished_courses = controller_object.get_finished_courses(student_id)
+            data_list=[]
+            for i in range(len(finished_courses)):
+                data_list.append(
+                    {
+                        'course_code':finished_courses[i][0],
+                        'course_name':finished_courses[i][1],
+                        'course_mark':finished_courses[i][2],
+                    }
+                )
             if not finished_courses:
                 return jsonify({'message': 'No finished courses for this specific student'})
         except ErrorHandler as e:
             return e.error
-        return finished_courses
+        return data_list
 
     def post(self, student_id):
         args = self.reqparse.parse_args()

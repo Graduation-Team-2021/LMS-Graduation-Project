@@ -16,6 +16,7 @@ import {
   getCurrentCourses,
   getCurrentGroups,
   getRecentPosts,
+  getRecentEvent,
 } from "./Interface/Interface";
 import jwt_decode from "jwt-decode";
 import Messenger from "./Components/Messenger/Messenger";
@@ -43,6 +44,8 @@ const App = () => {
   const [CurrentCourses, setCurrentCourses] = useState(new Map());
   const [Courses, setCourses] = useState(new Map());
   const [posts, setposts] = useState([]);
+  const [RecentEvent, setRecentEvent] = useState(null);
+
   const Joining = (index) => {
     let group = Recommended.get(index);
     Joined.set(index, group);
@@ -85,6 +88,8 @@ const App = () => {
         const Posts = [];
         res.forEach((ele) => {
           Posts.push({
+            Name:ele["name"],
+            Location: ele["owner_name"],
             Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
             Desc: ele["post_text"],
           });
@@ -93,6 +98,20 @@ const App = () => {
         setposts(Posts);
       });
     }
+    getRecentEvent(Token, ID, Role).then(
+      (res)=>{
+        console.log(res)
+        setRecentEvent({
+          Title: res["event_name"],
+          Desc: res["event_description"],
+          Type: res["event_type"],
+          Duration: res["event_duration"],
+          Date:res["event_date"].slice(0,10),
+          Host: res["course_code"],
+          Time: res['event_date'].slice(11)
+        })
+      }
+    )
     setRecommended(temp2);
   }, [Token, ID, Role, logged]);
 
@@ -110,7 +129,8 @@ const App = () => {
                   <HomePage
                     Name={name}
                     Token={Token}
-                    id={ID}
+                    ID={ID}
+                    Role={Role}
                     CurrentCourses={CurrentCourses}
                     Joined={Joined}
                     Recommended={Recommended}
@@ -118,6 +138,7 @@ const App = () => {
                     Courses={(data) => {
                       setCourses(data);
                     }}
+                    Event={RecentEvent}
                     setLogged={(data) => setLogged(data)}
                     Posts={posts}
                   />
@@ -129,9 +150,11 @@ const App = () => {
                 exact
                 render={() => (
                   <ProfilePage
+                  Event={RecentEvent}
                     Name={name}
                     Token={Token}
-                    id={ID}
+                    ID={ID}
+                    Role={Role}
                     Posts={posts}
                     Joined={Joined}
                     CurrentCourses={CurrentCourses}
