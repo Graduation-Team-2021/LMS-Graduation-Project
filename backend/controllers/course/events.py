@@ -1,4 +1,7 @@
 from models.course.events import Events
+from models.user.students import Student
+from models.relations.learns import Learns_Relation
+from models.course.courses import Course
 from methods.errors import *
 from flask import current_app, send_from_directory, json
 import os
@@ -100,3 +103,12 @@ class events_controller():
         file_path = os.path.join(file_path, data.filename)
         data.save(file_path)
         return
+
+    def get_most_recent_event(self,student_id):
+        
+        course_codes=Student.query.join(Learns_Relation).filter(Student.user_id==Learns_Relation.student_id).\
+        join(Course).filter(Learns_Relation.course_code==Course.course_code).\
+        with_entities(Course.course_code)
+
+        data=[c for c in course_codes]
+        return data

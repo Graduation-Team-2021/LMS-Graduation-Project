@@ -15,6 +15,7 @@ class Events(db.Model, Base):
                             nullable=False)
     event_type = db.Column(db.String(50), nullable=False)
     event_duration = db.Column(db.Integer, nullable=False)
+    event_description = db.Column(db.String(30000))
 
     def serialize(self):
         return {
@@ -23,7 +24,8 @@ class Events(db.Model, Base):
             "event_date": self.event_date,
             "course_code": self.course_code,
             "event_duration": self.event_duration,
-            "event_type": self.event_type
+            "event_type": self.event_type,
+            "event_description":self.event_description
         }
 
     def insert(self):
