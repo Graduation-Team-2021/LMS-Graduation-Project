@@ -66,10 +66,12 @@ const App = () => {
     if (logged) {
       getCurrentCourses(Token, ID, Role).then((res) => {
         const Courses = new Map();
+        console.log(res)
         res.forEach((element) => {
           Courses.set(element["course_code"], {
             Title: element["course_name"],
             Desc: element["course_description"],
+            Post: element["post_owner_id"] 
           });
         });
         setCurrentCourses(Courses);
@@ -80,6 +82,7 @@ const App = () => {
           Courses.set(element["group_id"], {
             Title: element["group_name"],
             Desc: element["group_description"],
+            Post: element["post_owner_id"] 
           });
         });
         setJoined(Courses);
@@ -88,7 +91,7 @@ const App = () => {
         const Posts = [];
         res.forEach((ele) => {
           Posts.push({
-            Name:ele["name"],
+            Name: ele["name"],
             Location: ele["owner_name"],
             Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
             Desc: ele["post_text"],
@@ -98,20 +101,18 @@ const App = () => {
         setposts(Posts);
       });
     }
-    getRecentEvent(Token, ID, Role).then(
-      (res)=>{
-        console.log(res)
-        setRecentEvent({
-          Title: res["event_name"],
-          Desc: res["event_description"],
-          Type: res["event_type"],
-          Duration: res["event_duration"],
-          Date:res["event_date"].slice(0,10),
-          Host: res["course_code"],
-          Time: res['event_date'].slice(11)
-        })
-      }
-    )
+    getRecentEvent(Token, ID, Role).then((res) => {
+      console.log(res);
+      setRecentEvent({
+        Title: res["event_name"],
+        Desc: res["event_description"],
+        Type: res["event_type"],
+        Duration: res["event_duration"],
+        Date: res["event_date"].slice(0, 10),
+        Host: res["course_code"],
+        Time: res["event_date"].slice(11),
+      });
+    });
     setRecommended(temp2);
   }, [Token, ID, Role, logged]);
 
@@ -150,7 +151,7 @@ const App = () => {
                 exact
                 render={() => (
                   <ProfilePage
-                  Event={RecentEvent}
+                    Event={RecentEvent}
                     Name={name}
                     Token={Token}
                     ID={ID}
@@ -163,13 +164,16 @@ const App = () => {
                 )}
               />
               <Route
-                path="/group/:id/:isJoined"
+                path="/group/:id/:isJoined/:post"
                 exact
                 render={(props) => (
                   <GroupPage
                     {...props}
-                    Name="David John"
-                    id="5"
+                    Name={name}
+                    Token={Token}
+                    ID={ID}
+                    Role={Role}
+                    Posts={posts}
                     Joining={Joining}
                   />
                 )}
@@ -185,8 +189,11 @@ const App = () => {
                 render={(props) => (
                   <CoursePage
                     {...props}
-                    Name="David John"
-                    id="5"
+                    Name={name}
+                    Token={Token}
+                    ID={ID}
+                    Role={Role}
+                    Posts={posts}
                     Joining={Joining}
                   />
                 )}
@@ -197,8 +204,11 @@ const App = () => {
                 render={(props) => (
                   <CoursesPage
                     {...props}
-                    Name="David John"
-                    id="5"
+                    Name={name}
+                    Token={Token}
+                    ID={ID}
+                    Role={Role}
+                    Posts={posts}
                     Courses={Courses}
                   />
                 )}

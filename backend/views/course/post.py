@@ -87,3 +87,15 @@ class FirstTenPosts(Resource):
             return e.error
     
 
+#student/<student_id>/my_posts
+class MyPosts(Resource):
+    def get(self,student_id):
+        try:
+            return controller_object.get_the_student_first_posts(student_id)
+        except ErrorHandler as e :
+            return e.error
+    
+#posts/<owner_id>
+class GetPostByOwnerID(Resource):
+    def get(self,owner_id):
+        return controller_object.get_posts_by_owner_id(owner_id)

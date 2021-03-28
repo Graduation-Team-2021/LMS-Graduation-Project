@@ -88,7 +88,7 @@ from views.course.post import Post_view,Post_the_post
 from views.course.post_owner import PostOwner_view,OwnerView
 from views.relations.post_commenter import Post_commenter_view,CommentView_Update_Delete
 from views.relations.post_liker import Post_liker_view,Liker_all_posts
-from views.course.post import FirstTenPosts
+from views.course.post import FirstTenPosts,MyPosts,GetPostByOwnerID
 from views.course.events import Events_most_recent
 # Answers
 """
@@ -231,7 +231,8 @@ Posts
 api.add_resource(Post_view,'/posts/<post_id>')
 api.add_resource(Post_the_post,'/posts/add_post')
 api.add_resource(FirstTenPosts,'/<student_id>/first_10_posts')
-
+api.add_resource(MyPosts,'/student/<student_id>/my_posts')
+api.add_resource(GetPostByOwnerID,'/posts/by_owner_id/<owner_id>')
 '''
 Post owners
 '''

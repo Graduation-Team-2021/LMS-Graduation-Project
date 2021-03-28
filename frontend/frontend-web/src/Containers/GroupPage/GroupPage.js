@@ -6,10 +6,10 @@ import Modal from "../../Components/Modal/Modal";
 import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
 import GroupDescription from "../GroupDesc/GroupDesc.js";
-import {withRouter} from 'react-router-dom'
-
+import { withRouter } from "react-router-dom";
+import { getAllPosts, uploadPost } from "../../Interface/Interface";
 const HomePage = (props) => {
-  const [id, isJoined] = [props.match.params.id, props.match.params.isJoined];
+  const [id, isJoined, postID] = [props.match.params.id, props.match.params.isJoined, props.match.params.post];
   const [Title, setTitle] = useState("");
   const [Desc, setDesc] = useState("");
   const [Main, setMain] = useState(classes.otherMain);
@@ -30,39 +30,36 @@ const HomePage = (props) => {
 
   useEffect(() => {
     //Loading Data from Server
-    const groupData = [];
-    const posts = [];
-    for (let index = 0; index < 20; index++) {
-      posts.push(
-        <Post
-          key={index}
-          Title={`Post ${20 - index}`}
-          Content={`Blah Blah Blah .....`}
-        />
-      );
-      groupData.push({
-        id: index,
-        Title: `Group ${index + 1}`,
-        Desc: "Blah Blah Blah",
-      });
-      if (Number(id) === index) {
-        setTitle(groupData[id].Title);
-        setDesc(groupData[id].Desc);
+    getAllPosts(props.Token, postID).then(
+      (value)=>{
+        console.log(value)
+        const posts = [];
+        for (let index = 0; index < value.length; index++) {
+          posts.push(
+            <Post
+              key={index}
+              Title={`by ${value[index]['name']}`}
+              Content={value[index]['post_text']}
+            />
+          );
+        }
+        setPosts(posts);
       }
-    }
-    setPosts(posts);
-  }, [id]);
+    )
+    
+  }, [props.Token, postID]);
 
   const SubmitPost = (post) => {
     console.log(post);
     let temp = [
       <Post
         key={Posts.length}
-        Title={`Post ${Posts.length + 1}`}
+        Title={`by ${props.Name}`}
         Content={post}
       />,
       ...Posts,
     ];
+    uploadPost(props.Token, props.ID, postID, post)
     setPosts(temp);
     hide();
   };
@@ -78,7 +75,12 @@ const HomePage = (props) => {
           height: "fit-content",
         }}
       >
-        <TopBar Name={props.Name} id={props.id} />
+        <TopBar
+          Name={props.Name}
+          id={props.id}
+          setLogged={props.setLogged}
+          Notif={props.Posts}
+        />
         <div className={classes.Center}>
           <div
             style={{
@@ -108,7 +110,7 @@ const HomePage = (props) => {
                     className={classes.Join}
                     onClick={() => {
                       props.Joining(id);
-                      props.history.push('/')
+                      props.history.push("/");
                     }}
                   />
                 ) : null}

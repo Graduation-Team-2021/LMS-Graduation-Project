@@ -9,7 +9,7 @@ const CoursePreview = (props) => {
     return (
         <div className={classes.holder} onClick={
           ()=>{
-            props.history.push(`/Course/${props.id}/true`)
+            props.history.push(`/Course/${props.id}/true/${props.Course.Post}`)
           }
         }>
           <Card shadow>

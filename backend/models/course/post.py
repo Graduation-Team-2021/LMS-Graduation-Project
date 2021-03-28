@@ -9,7 +9,7 @@ class Post(db.Model, Base):
     __tablename__ = 'post'
     post_id=db.Column(db.Integer,primary_key=True)
     post_writer = db.Column(db.Integer, ForeignKey('user.user_id', onupdate="CASCADE"))
-    post_owner = db.Column(db.Integer, ForeignKey('post_owner.id', onupdate="CASCADE"))
+    post_owner = db.Column(db.Integer, ForeignKey('post_owner.owner_id', onupdate="CASCADE"))
     post_text=db.Column(db.Text(20000))
 
     def serialize(self):

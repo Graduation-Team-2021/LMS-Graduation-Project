@@ -32,7 +32,7 @@ class CoursesArea extends Component {
     let ids = Array.from(this.state.Courses.keys());
 
     for (let index = 0; index < ids.length; index++) {
-      courses.push(<CoursePreview key={index} Course={this.state.Courses.get(ids[index])} id={ids[index]}/>);
+      courses.push(<CoursePreview key={index} Course={this.state.Courses.get(ids[index])} id={ids[index]} />);
     }
 
     return (

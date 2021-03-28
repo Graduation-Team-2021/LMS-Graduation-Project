@@ -91,3 +91,31 @@ export const getFinishedCourses = async (Token, id, role) => {
   });
   return res.data;
 };
+
+export const getAllPosts = async (Token, owner) => {
+  const res = await instance.get(`/posts/by_owner_id/${owner}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: Token,
+    },
+  });
+  return res.data;
+};
+
+export const uploadPost = async (Token, writer, owner, post) => {
+  const res = await instance.post(
+    `/posts/add_post`,
+    {
+      "post_writer": writer,
+      "post_owner": owner,
+      "post_text": post,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: Token,
+      },
+    }
+  );
+  return res.data;
+};

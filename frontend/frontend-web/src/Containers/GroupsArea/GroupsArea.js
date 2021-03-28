@@ -23,8 +23,7 @@ class GroupsArea extends Component {
         <GroupPreview
         id={ids[index]}
           key={index}
-          Title={this.props.Groups.get(ids[index]).Title}
-          Desc={this.props.Groups.get(ids[index]).Desc}
+          Group={this.props.Groups.get(ids[index])}
         />
       );
     }

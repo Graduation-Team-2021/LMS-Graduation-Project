@@ -128,6 +128,8 @@ class My_Courses(Resource):
                     'course_code': student_courses[i][0],
                     'course_name': student_courses[i][1],
                     'course_description': student_courses[i][2],
+                    'post_owner_id':student_courses[i][3]
+
                 })
             return data_array
         elif role == 'professor':

@@ -8,12 +8,12 @@ import { withRouter } from "react-router-dom";
 const CoursePreview = (props) => {
   return (
     <div
-      onClick={() => props.history.push(`/group/${props.id}/true`)}
+      onClick={() => props.history.push(`/group/${props.id}/true/${props.Group.Post}`)}
       className={classes.holder}
     >
       <Card shadow>
-        <div className={classes.CourseTitle}>{props.Title}</div>
-        <div className={classes.CourseDes}>{props.Desc}</div>
+        <div className={classes.CourseTitle}>{props.Group.Title}</div>
+        <div className={classes.CourseDes}>{props.Group.Desc}</div>
         <ImageHolder filler={filler} />
       </Card>
     </div>

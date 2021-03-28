@@ -1,5 +1,5 @@
 import classes from "./HomePage.module.css";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Card from "../../Components/Card/Card";
 import TopBar from "../../Components/TopBar/TopBar";
 import CoursesPags from "../../Adham/Containers/CoursesPage/CoursesPage";

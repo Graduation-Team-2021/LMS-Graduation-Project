@@ -11,7 +11,7 @@ class student_course_relation_controller():
             # courses = Learns_Relation.query.filter_by(student_id=student_id).all()
             courses = Learns_Relation.query.join(Student).filter(Student.user_id==student_id)\
                 .join(Course).filter(Course.course_code==Learns_Relation.course_code).\
-                with_entities(Course.course_code,Course.course_name,Course.course_description)
+                with_entities(Course.course_code,Course.course_name,Course.course_description,Course.post_owner_id)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
