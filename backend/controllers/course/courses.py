@@ -1,9 +1,11 @@
 from models.course.courses import Course
 from models.user.professors import Professor
 from models.relations.teaches import Teaches_Relation
+from controllers.course.post_owner import Post_owner_controller
 from models.user.users import User
 from methods.errors import *
 
+post_owner_controller = Post_owner_controller()
 class courses_controller():
 
     def get_course(self, course_code):
@@ -59,6 +61,9 @@ class courses_controller():
 
     def post_course(self, course):
         try:
+            post_owner_controller.post_owner()
+            post_owner_id = post_owner_controller.get_newest_owner_id()
+            course['post_owner_id']=post_owner_id
             new_course = Course(**course)
             new_course = Course.insert(new_course)
         except SQLAlchemyError as e:

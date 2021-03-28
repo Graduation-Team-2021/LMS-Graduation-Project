@@ -7,12 +7,12 @@ Base = declarative_base()
 
 class PostOwner(db.Model, Base):
     __tablename__ = 'post_owner'
-    id = db.Column(db.Integer,primary_key=True)
+    owner_id = db.Column(db.Integer,primary_key=True)
 
 
     def serialize(self):
         return {
-            'id': self.id,
+            'owner_id': self.owner_id,
         }
 
     def insert(self):

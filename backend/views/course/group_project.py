@@ -54,7 +54,7 @@ class InsertGroup(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('group_name', type=str, location='json')
-
+        self.reqparse.add_argument('group_description', type=str, location='json')
     def get(self):
         try:
             return controller_object.get_all_groups()
@@ -66,7 +66,6 @@ class InsertGroup(Resource):
         group = {
             'group_name': args['group_name'],
             'group_description':args['group_description'],
-            'post_owner_id':args['post_owner_id']
         }
         try:
             controller_object.insert_group(group)

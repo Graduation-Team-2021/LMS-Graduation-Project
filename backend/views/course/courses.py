@@ -74,6 +74,8 @@ class Courses(Resource):
         self.reqparse.add_argument('weekly_hours', type=int, location='json')
         self.reqparse.add_argument('group_number', type=int, location='json')
         self.reqparse.add_argument('max_students', type=int, location='json')
+        self.reqparse.add_argument('course_description', type=str, location='json')
+
 
     def get(self):
         try:
@@ -97,8 +99,7 @@ class Courses(Resource):
             'weekly_hours': args['weekly_hours'],
             'group_number': args['group_number'],
             'max_students': args['max_students'],
-            'course_description':args['course_description'],
-            'post_owner_id':args['post_owner_id']
+            'course_description':args['course_description']
         }
         try:
             course = controller_object.post_course(course)

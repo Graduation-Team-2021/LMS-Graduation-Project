@@ -1,9 +1,10 @@
 from models.course.group_project import GroupProject
 from methods.errors import *
 from flask import current_app, send_from_directory, json
+from controllers.course.post_owner import Post_owner_controller
 import os
 
-
+post_owner_controller = Post_owner_controller()
 class GroupProjectController:
     def get_group(self, group_id):
         try:
@@ -22,6 +23,9 @@ class GroupProjectController:
         return group.serialize()
 
     def insert_group(self, group):
+        post_owner_controller.post_owner()
+        post_owner_id = post_owner_controller.get_newest_owner_id()
+        group['post_owner_id']=post_owner_id
         new_group = GroupProject(**group)
         GroupProject.insert(new_group)
         return new_group
