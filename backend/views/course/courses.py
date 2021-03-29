@@ -88,7 +88,7 @@ class Courses(Resource):
                 'course_code':courses[i][0],
                 'course_name':courses[i][1],
                 'course_teacher':courses[i][2],
-                'course_description':courses[i][3]
+                'course_description':courses[i][3] 
             })
         return data
     def post(self):

@@ -1,16 +1,18 @@
 from controllers.relations.student_group_relation import StudentGroupRelationController
 from methods.errors import *
+from methods.auth import *
 from flask_restful import Resource, reqparse
 from flask import jsonify
 
 controller_object=StudentGroupRelationController()
 
 
-#student/<student_id>/groups
+#/my_groups
 class StudentGroupView(Resource):
-    def get(self,student_id):
+    method_decorators = {'get': [requires_auth_identity("")]}
+    def get(self, user_id, role):
         try:
-            groups= controller_object.get_one_student_all_groups(student_id)    
+            groups= controller_object.get_one_student_all_groups(user_id)    
         except ErrorHandler as e:
             return e.error
         data_array=[]
