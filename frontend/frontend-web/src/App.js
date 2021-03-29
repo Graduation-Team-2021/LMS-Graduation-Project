@@ -98,18 +98,18 @@ const App = () => {
         });
         setposts(Posts);
       });
-    }
-    getRecentEvent(Token, ID, Role).then((res) => {
-      setRecentEvent({
-        Title: res["event_name"],
-        Desc: res["event_description"],
-        Type: res["event_type"],
-        Duration: res["event_duration"],
-        Date: res["event_date"].slice(0, 10),
-        Host: res["course_code"],
-        Time: res["event_date"].slice(11),
+      getRecentEvent(Token, ID, Role).then((res) => {
+        setRecentEvent({
+          Title: res["event_name"],
+          Desc: res["event_description"],
+          Type: res["event_type"],
+          Duration: res["event_duration"],
+          Date: res["event_date"].slice(0, 10),
+          Host: res["course_code"],
+          Time: res["event_date"].slice(11),
+        });
       });
-    });
+    }
     setRecommended(temp2);
   }, [Token, ID, Role, logged]);
 
