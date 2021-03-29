@@ -34,7 +34,7 @@ const HomePage = (props) => {
           height: "fit-content",
         }}
       >
-        <TopBar Name={props.Name} id={props.id} setLogged={props.setLogged} Notif={Posts} />
+        <TopBar Name={props.Name} id={props.ID} setLogged={props.setLogged} Notif={Posts} />
         <div className={classes.Center}>
           <div
             style={{

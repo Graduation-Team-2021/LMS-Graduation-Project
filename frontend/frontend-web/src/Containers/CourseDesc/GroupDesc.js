@@ -58,7 +58,9 @@ class Upcoming extends Component {
             this.props.history.push('/Videos')
           }}
         >
-          <Card shadow>
+          <Card shadow style={{
+            padding: '5% 0'
+          }}>
             <Minibar icon={faVideo} color=" rgb(0, 102, 255)" info="Videos" />
           </Card>
         </div>
@@ -69,7 +71,9 @@ class Upcoming extends Component {
             this.props.history.push('/Pdfs')
           }}
         >
-          <Card shadow>
+          <Card shadow style={{
+            padding: '5% 0'
+          }}>
             <Minibar icon={faFilePdf} color=" red" info="Pdfs" />
           </Card>
         </div>
@@ -79,7 +83,9 @@ class Upcoming extends Component {
             padding: '0 0 10% 0'
           }}
           >
-            <Card shadow>
+            <Card shadow style={{
+              padding: '5% 0'
+            }}>
               <Minibar icon={faFilePdf} color=" red" info="test" />
             </Card>
           </div>

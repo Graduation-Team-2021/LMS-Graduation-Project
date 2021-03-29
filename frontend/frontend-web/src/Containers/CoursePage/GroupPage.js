@@ -5,14 +5,23 @@ import TopBar from "../../Components/TopBar/TopBar";
 import Modal from "../../Components/Modal/Modal";
 import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
-import GroupDescription from "../GroupDesc/GroupDesc.js";
-import { getAllPosts,uploadPost } from "../../Interface/Interface";
+import CourseDescription from "../CourseDesc/GroupDesc.js";
+import {
+  getAllPosts,
+  uploadPost,
+  getCourseByID,
+} from "../../Interface/Interface";
 
 const HomePage = (props) => {
-  const [id, isJoined, postID] = [props.match.params.id, props.match.params.isJoined, props.match.params.post];
-  const [Title, setTitle] = useState("");
+  const [courseID, isJoined, postID, Token, userID] = [
+    props.match.params.id,
+    props.match.params.isJoined,
+    props.match.params.post,
+    props.Token,
+    props.ID
+  ];
+  const [Course, setCourse] = useState(null);
   const [Desc, setDesc] = useState("");
-  const [Main, setMain] = useState(classes.otherMain);
   const [clicked, setclicked] = useState(false);
   const [Posts, setPosts] = useState([]);
 
@@ -30,24 +39,21 @@ const HomePage = (props) => {
 
   useEffect(() => {
     //Loading Data from Server
-    getAllPosts(props.Token, postID).then(
-      (value)=>{
-        console.log(value)
-        const posts = [];
-        for (let index = 0; index < value.length; index++) {
-          posts.push(
-            <Post
-              key={index}
-              Title={`by ${value[index]['name']}`}
-              Content={value[index]['post_text']}
-            />
-          );
-        }
-        setPosts(posts);
+    getCourseByID(Token, courseID).then((res)=>setCourse(res));
+    getAllPosts(Token, postID).then((value) => {
+      const posts = [];
+      for (let index = 0; index < value.length; index++) {
+        posts.push(
+          <Post
+            key={index}
+            Title={`by ${value[index]["name"]}`}
+            Content={value[index]["post_text"]}
+          />
+        );
       }
-    )
-    
-  }, [props.Token, postID]);
+      setPosts(posts);
+    });
+  }, [Token, postID, courseID]);
 
   const SubmitPost = (post) => {
     console.log(post);
@@ -59,7 +65,7 @@ const HomePage = (props) => {
       />,
       ...Posts,
     ];
-    uploadPost(props.Token, props.ID, postID, post)
+    uploadPost(Token, userID, postID, post);
     setPosts(temp);
     hide();
   };
@@ -75,13 +81,13 @@ const HomePage = (props) => {
           height: "fit-content",
         }}
       >
-      <TopBar
-      Name={props.Name}
-      id={props.id}
-      setLogged={props.setLogged}
-      Notif={props.Posts}
-    />
-        <div className={classes.Center}>
+        <TopBar
+          Name={props.Name}
+          id={userID}
+          setLogged={props.setLogged}
+          Notif={props.Posts}
+        />
+        {Course?<div className={classes.Center}>
           <div
             style={{
               width: "75%",
@@ -102,20 +108,26 @@ const HomePage = (props) => {
                   width: "100%",
                 }}
               >
-                <h1>{Title}</h1>
+                <h1>{Course['course_name']}</h1>
                 {isJoined === "true" ? (
                   <input
                     type="button"
                     value="See Grades"
                     className={classes.Join}
-                    onClick={()=>props.history.push(`/Course/${id}/${isJoined}/Marks`)}
+                    onClick={() =>
+                      props.history.push(
+                        `/Course/${courseID}/${isJoined}/Marks`
+                      )
+                    }
                   />
-                ) : <input
-                type="button"
-                value="Enroll"
-                className={classes.Join}
-                onClick={props.Joining.bind(this, id)}
-              />}
+                ) : (
+                  <input
+                    type="button"
+                    value="Enroll"
+                    className={classes.Join}
+                    onClick={props.Joining.bind(this, courseID)}
+                  />
+                )}
               </div>
               <div
                 style={{
@@ -141,7 +153,7 @@ const HomePage = (props) => {
                       >
                         Write a new Post Here
                       </label>
-                      <div className={Main}>
+                      <div className={classes.otherMain}>
                         <input
                           style={{
                             cursor: "pointer",
@@ -170,8 +182,8 @@ const HomePage = (props) => {
               </div>
             </Card>
           </div>
-          <GroupDescription desc={Desc} />
-        </div>
+          <CourseDescription desc={Course['course_description']} />
+        </div>:<h1>Loading.......</h1>}
       </Card>
     </div>
   );

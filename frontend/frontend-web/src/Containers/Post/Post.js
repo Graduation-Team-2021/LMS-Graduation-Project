@@ -1,11 +1,13 @@
 import React,{useState} from "react";
 import Card from "../../Components/Card/Card";
-import classes from './Post.module.css'
-
+import classes from './Post.module.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp as base } from "@fortawesome/free-regular-svg-icons";
+import { faThumbsUp as liked } from "@fortawesome/free-solid-svg-icons";
 
 const Post = (props) => {
   
-  const [likeButtonColor,setLikeButtonColor] = useState(classes.whiteButton);
+  const [likeButtonColor,setLikeButtonColor] = useState(true);
   const [postComments,setPostComments] = useState([]);
   const [currentTypingComment,setCurrentTypingComment] = useState("");
   let onTypingComment = (event) =>{
@@ -24,12 +26,7 @@ const Post = (props) => {
   }
 
   const likePressHandler = () => {
-    if(likeButtonColor === classes.whiteButton){
-      setLikeButtonColor(classes.blackButton)
-    }
-    else if(likeButtonColor === classes.blackButton){
-      setLikeButtonColor(classes.whiteButton)
-    }
+    setLikeButtonColor((value)=>!value)
     // TODO: set liked in the database (send the request)
   };
 
@@ -59,9 +56,8 @@ const Post = (props) => {
           style={{
             width: "45%",
           }}
-          className={likeButtonColor}
         >
-          <i class="fas fa-thumbs-up">like</i>
+          {likeButtonColor?<FontAwesomeIcon icon={base}/>:<FontAwesomeIcon icon={liked} color='blue'/>}
         </button>
         <button
           onClick ={commentPressHandler}

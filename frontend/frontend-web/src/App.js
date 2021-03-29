@@ -66,7 +66,6 @@ const App = () => {
     if (logged) {
       getCurrentCourses(Token, ID, Role).then((res) => {
         const Courses = new Map();
-        console.log(res)
         res.forEach((element) => {
           Courses.set(element["course_code"], {
             Title: element["course_name"],
@@ -97,12 +96,10 @@ const App = () => {
             Desc: ele["post_text"],
           });
         });
-        console.log(Posts);
         setposts(Posts);
       });
     }
     getRecentEvent(Token, ID, Role).then((res) => {
-      console.log(res);
       setRecentEvent({
         Title: res["event_name"],
         Desc: res["event_description"],
@@ -122,7 +119,6 @@ const App = () => {
         <Switch>
           {logged ? (
             <React.Fragment>
-              <Redirect path="/login" to="" />
               <Route
                 path="/"
                 exact
@@ -180,12 +176,12 @@ const App = () => {
               />
               <Route
                 exact
-                path="/Course/:id/:isJoined/Marks"
+                path="/Course/:id/:isJoined/:post/Marks"
                 render={(props) => <MarkEdit {...props} />}
               />
               <Route
                 exact
-                path="/Course/:id/:isJoined"
+                path="/Course/:id/:isJoined/:post"
                 render={(props) => (
                   <CoursePage
                     {...props}

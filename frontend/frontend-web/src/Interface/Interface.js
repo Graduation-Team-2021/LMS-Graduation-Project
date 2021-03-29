@@ -67,7 +67,6 @@ export const getRecentPosts = async (Token, id) => {
       Authorization: Token,
     },
   });
-  console.log(res.data);
   return res.data;
 };
 
@@ -78,7 +77,6 @@ export const getRecentEvent = async (Token, id, role) => {
       Authorization: Token,
     },
   });
-  console.log(res.data);
   return res.data;
 };
 
@@ -119,3 +117,13 @@ export const uploadPost = async (Token, writer, owner, post) => {
   );
   return res.data;
 };
+
+export const getCourseByID = async (Token, CourseID)=>{
+  const res = await instance.get(`/courses/${CourseID}`,{
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: Token,
+    },
+  });
+  return res.data['course']
+}
