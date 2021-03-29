@@ -111,7 +111,7 @@ Student
 api.add_resource(Students, '/students')
 api.add_resource(Student, '/students/<user_id>')
 api.add_resource(Student_result_calculation, '/students/<student_id>/results/<course_code>')
-api.add_resource(StudentGroupView,'/student/<student_id>/groups')
+api.add_resource(StudentGroupView,'/my_groups')
 api.add_resource(EachGroupStudents,'/group/<group_id>/students')
 
 """
@@ -137,7 +137,7 @@ Courses
 """
 api.add_resource(Course, '/courses/<course_code>')
 api.add_resource(Courses, '/courses')
-api.add_resource(My_Courses, '/my_courses/<user_id>/<role>')
+api.add_resource(My_Courses, '/my_courses')
 """
 Materials
 """

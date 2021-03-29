@@ -88,7 +88,7 @@ class Courses(Resource):
                 'course_code':courses[i][0],
                 'course_name':courses[i][1],
                 'course_teacher':courses[i][2],
-                'course_description':courses[i][3]
+                'course_description':courses[i][3] 
             })
         return data
     def post(self):
@@ -111,9 +111,9 @@ class Courses(Resource):
         })
 
 
-# /my_courses/<user_id>/<role>
+# /my_courses
 class My_Courses(Resource):
-    # method_decorators = {'get': [requires_auth_identity("")]}
+    method_decorators = {'get': [requires_auth_identity("")]}
 
     def get(self, user_id, role):
         if role == 'student':
