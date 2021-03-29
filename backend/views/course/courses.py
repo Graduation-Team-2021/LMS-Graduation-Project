@@ -111,9 +111,9 @@ class Courses(Resource):
         })
 
 
-# /my_courses/<user_id>/<role>
+# /my_courses
 class My_Courses(Resource):
-    # method_decorators = {'get': [requires_auth_identity("")]}
+    method_decorators = {'get': [requires_auth_identity("")]}
 
     def get(self, user_id, role):
         if role == 'student':
