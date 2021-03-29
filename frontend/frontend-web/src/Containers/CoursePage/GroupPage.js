@@ -13,12 +13,13 @@ import {
 } from "../../Interface/Interface";
 
 const HomePage = (props) => {
-  const [courseID, isJoined, postID, Token, userID] = [
+  const [courseID, isJoined, postID, Token, userID, Role] = [
     props.match.params.id,
     props.location.state.isJoined,
     props.location.state.postID,
     props.Token,
-    props.ID
+    props.ID,
+    props.Role,
   ];
   const [Course, setCourse] = useState(null);
   const [clicked, setclicked] = useState(false);
@@ -38,15 +39,15 @@ const HomePage = (props) => {
 
   useEffect(() => {
     //Loading Data from Server
-    getCourseByID(Token, courseID).then((res)=>setCourse(res));
+    getCourseByID(Token, courseID).then((res) => setCourse(res));
     getAllPosts(Token, postID).then((value) => {
       const posts = [];
       for (let index = 0; index < value.length; index++) {
         posts.push(
           <Post
             key={index}
-            Title={`by ${value[value.length-index-1]["name"]}`}
-            Content={value[value.length-index-1]["post_text"]}
+            Title={`by ${value[value.length - index - 1]["name"]}`}
+            Content={value[value.length - index - 1]["post_text"]}
           />
         );
       }
@@ -57,11 +58,7 @@ const HomePage = (props) => {
   const SubmitPost = (post) => {
     console.log(post);
     let temp = [
-      <Post
-        key={Posts.length}
-        Title={`by ${props.Name}`}
-        Content={post}
-      />,
+      <Post key={Posts.length} Title={`by ${props.Name}`} Content={post} />,
       ...Posts,
     ];
     uploadPost(Token, userID, postID, post);
@@ -86,108 +83,112 @@ const HomePage = (props) => {
           setLogged={props.setLogged}
           Notif={props.Posts}
         />
-        {Course?<div className={classes.Center}>
-          <div
-            style={{
-              width: "75%",
-            }}
-          >
-            <Card
+        {Course ? (
+          <div className={classes.Center}>
+            <div
               style={{
-                width: "100%",
-                alignItems: "flex-start",
-                height: "fit-content",
+                width: "75%",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
-                }}
-              >
-                <h1>{Course['course_name']}</h1>
-                {isJoined === "true" ? (
-                  <input
-                    type="button"
-                    value="See Grades"
-                    className={classes.Join}
-                    onClick={() =>
-                      props.history.push(
-                        {
-                          pathname:`/Course/${courseID}/Marks`,
-                          state:{
-                            name: Course['course_name']
-                          }
-                      }
-                      )
-                    }
-                  />
-                ) : (
-                  <input
-                    type="button"
-                    value="Enroll"
-                    className={classes.Join}
-                    onClick={props.Joining.bind(this, courseID)}
-                  />
-                )}
-              </div>
-              <div
+              <Card
                 style={{
                   width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  height: "fit-content",
                 }}
               >
-                {isJoined === "true" ? (
-                  <Card shadow>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <label
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <h1>{Course["course_name"]}</h1>
+                  {isJoined === "true" ? (
+                    Role === "professor" ? (
+                      <input
+                        type="button"
+                        value="See Grades"
+                        className={classes.Join}
+                        onClick={() =>
+                          props.history.push({
+                            pathname: `/Course/${courseID}/Marks`,
+                            state: {
+                              name: Course["course_name"],
+                            },
+                          })
+                        }
+                      />
+                    ) : null
+                  ) : (
+                    <input
+                      type="button"
+                      value="Enroll"
+                      className={classes.Join}
+                      onClick={props.Joining.bind(this, courseID)}
+                    />
+                  )}
+                </div>
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  {isJoined === "true" ? (
+                    <Card shadow>
+                      <div
                         style={{
-                          flex: "1",
-                          fontSize: "20px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
                         }}
                       >
-                        Write a new Post Here
-                      </label>
-                      <div className={classes.otherMain}>
-                        <input
+                        <label
                           style={{
-                            cursor: "pointer",
-                            textAlign: "start",
-                            color: "rgb(78, 78, 78)",
+                            flex: "1",
+                            fontSize: "20px",
                           }}
-                          value="What's on Your Mind?"
-                          type="button"
-                          className={classes.input}
-                          onClick={Focus}
-                        />
+                        >
+                          Write a new Post Here
+                        </label>
+                        <div className={classes.otherMain}>
+                          <input
+                            style={{
+                              cursor: "pointer",
+                              textAlign: "start",
+                              color: "rgb(78, 78, 78)",
+                            }}
+                            value="What's on Your Mind?"
+                            type="button"
+                            className={classes.input}
+                            onClick={Focus}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </Card>
-                ) : null}
-              </div>
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexFlow: "column",
-                  alignItems: "center",
-                }}
-              >
-                <div className={classes.posts}>{Posts}</div>
-              </div>
-            </Card>
+                    </Card>
+                  ) : null}
+                </div>
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexFlow: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <div className={classes.posts}>{Posts}</div>
+                </div>
+              </Card>
+            </div>
+            <CourseDescription desc={Course["course_description"]} Role={Role}/>
           </div>
-          <CourseDescription desc={Course['course_description']} />
-        </div>:<h1>Loading.......</h1>}
+        ) : (
+          <h1>Loading.......</h1>
+        )}
       </Card>
     </div>
   );

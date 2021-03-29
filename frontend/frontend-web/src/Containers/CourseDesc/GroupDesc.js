@@ -5,11 +5,35 @@ import CircularNumber from "../../Components/CircularNumber/CircularAvatar";
 import filler from "../../assets/Filler.png";
 import Card from "../../Components/Card/Card";
 import Minibar from "../../Components/Minibar/Minibar";
-import { faVideo, faFilePdf, } from "@fortawesome/free-solid-svg-icons";
-import { withRouter } from 'react-router-dom';
-import AddEvent from "../../Adham/Containers/AddEventPage/AddEvent"
+import { faVideo, faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { withRouter } from "react-router-dom";
+import AddEvent from "../../Adham/Containers/AddEventPage/AddEvent";
 
 class Upcoming extends Component {
+
+  state={
+    file: null
+  }
+
+  handleFIleUpload=(event)=>{
+    this.setState(/* (state, props)=>{
+      let temp = [...state.file]
+      temp.push(event.target.value)
+      return {
+        file: temp
+      }
+    } */
+    {
+      file: event.target.files
+    })
+    console.log(this.state.file)
+    
+    }
+
+  Submit=()=>{
+
+  }
+
   render() {
     let Joined = [];
 
@@ -51,45 +75,68 @@ class Upcoming extends Component {
       <div className={classes.upcoming}>
         <div className={classes.Title}>About</div>
         <div className={classes.EventTitle}>{this.props.desc}</div>
-        <div style={{
-          padding: '0 0 10% 0'
-        }}
+        <div
+          style={{
+            padding: "0 0 10% 0",
+          }}
           onClick={() => {
-            this.props.history.push('/Videos')
+            this.props.history.push("/Videos");
           }}
         >
-          <Card shadow style={{
-            padding: '5% 0'
-          }}>
+          <Card
+            shadow
+            style={{
+              padding: "5% 0",
+            }}
+          >
             <Minibar icon={faVideo} color=" rgb(0, 102, 255)" info="Videos" />
           </Card>
         </div>
-        <div style={{
-          padding: '0 0 10% 0'
-        }}
+        <div
+          style={{
+            padding: "0 0 10% 0",
+          }}
           onClick={() => {
-            this.props.history.push('/Pdfs')
+            this.props.history.push("/Pdfs");
           }}
         >
-          <Card shadow style={{
-            padding: '5% 0'
-          }}>
+          <Card
+            shadow
+            style={{
+              padding: "5% 0",
+            }}
+          >
             <Minibar icon={faFilePdf} color=" red" info="Pdfs" />
           </Card>
         </div>
-        <AddEvent>
-
-          <div style={{
-            padding: '0 0 10% 0'
-          }}
-          >
-            <Card shadow style={{
-              padding: '5% 0'
-            }}>
-              <Minibar icon={faFilePdf} color=" red" info="test" />
+        {this.props.Role === "student" ? (
+          <React.Fragment>
+            <AddEvent>
+              <div
+                style={{
+                  padding: "0 0 10% 0",
+                }}
+              >
+                <Card
+                  shadow
+                  style={{
+                    padding: "5% 0",
+                  }}
+                >
+                  <Minibar icon={faFilePdf} color=" red" info="test" />
+                </Card>
+              </div>
+            </AddEvent>
+            <Card>
+              <form>
+                <label for="myfile">Select files:</label>
+                <input type="file" id="myfile" name="myfile" multiple onChange={this.handleFIleUpload}/>
+                <br></br>
+                <input type="submit" />
+              </form>
             </Card>
-          </div>
-        </AddEvent>
+          </React.Fragment>
+        ) : null}
       </div>
     );
   }
