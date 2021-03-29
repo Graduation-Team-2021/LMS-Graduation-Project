@@ -8,6 +8,7 @@ html{
 #nav-left{
   height: 100%;
   position: fixed;
+  overflow: auto;
   top: 0; 
   left: 0;
   padding-top: 15px;
@@ -31,6 +32,7 @@ html{
 #left-menu{
   background-color: #F4F5F8;
 }
+
 #left-menu h3{
   padding-left:20px ;
   padding-bottom: 10px;
@@ -40,6 +42,12 @@ html{
 }
 #nav-left .card a{
   color:#323F4C;
+}
+#nav-left .card .btn{
+  color:white;
+}
+.second-collapse li{
+  list-style-type: circle;
 }
 .btn{
   list-style-type: none;
