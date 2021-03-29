@@ -556,14 +556,14 @@
                 <hr>
                 <ul>
                     <li id='uploadmaterial'>UPLOAD COURSE MATERIAL
-                        <p>POST /course/&ltcourse_code&gt/materials</p>
+                        <p>POST /courses/&ltcourse_code&gt/materials/upload</p>
                         Request example:
                         <pre class="json"><code>
                             file: text.docx
                         </code></pre>
                     </li>
                     <li id='downloadmaterial'>DOWNLOAD COURSE MATERIAL
-                        <p>POST /materials/&ltmaterial_id&gt</p>
+                        <p>POST /materials/&ltmaterial_id&gt/download</p>
                     </li>
                     <li id='deletematerial'>DELETE COURSE MATERIAL
                         <p>DELETE /materials/&ltmaterial_id&gt</p>
@@ -573,20 +573,21 @@
                         <pre class="json"><code>
                             {
                                 "status_code": 200,
+                                "course_code": "1",
                                 "materials": [
                                     {
-                                        "material_id": 1,
-                                        "material_name": "Assignment1",
-                                        "material_type": ".docx"
-                                    },
-                                    {
-                                        "material_id": 2,
-                                        "material_name": "Reference",
-                                        "material_type": ".pdf"
-                                    },
-                                    {
                                         "material_id": 3,
-                                        "material_name": "Docs",
+                                        "material_name": "text",
+                                        "material_type": ".txt"
+                                    },
+                                    {
+                                        "material_id": 4,
+                                        "material_name": "text",
+                                        "material_type": ".txt"
+                                    },
+                                    {
+                                        "material_id": 5,
+                                        "material_name": "text",
                                         "material_type": ".txt"
                                     }
                                 ]
