@@ -8,7 +8,17 @@ import { withRouter } from "react-router-dom";
 const CoursePreview = (props) => {
   return (
     <div
-      onClick={() => props.history.push(`/group/${props.id}/true/${props.Group.Post}`)}
+      onClick={() =>
+        props.history.push({
+          pathname: `/group/${props.id}`,
+          state: {
+            isJoined: 'true',
+            postID: props.Group.Post,
+            name: props.Group.Title,
+            Desc: props.Group.Desc
+          }
+        })
+      }
       className={classes.holder}
     >
       <Card shadow>

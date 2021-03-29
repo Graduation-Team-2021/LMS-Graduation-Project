@@ -21,7 +21,6 @@ const HomePage = (props) => {
     props.ID
   ];
   const [Course, setCourse] = useState(null);
-  const [Desc, setDesc] = useState("");
   const [clicked, setclicked] = useState(false);
   const [Posts, setPosts] = useState([]);
 
@@ -46,8 +45,8 @@ const HomePage = (props) => {
         posts.push(
           <Post
             key={index}
-            Title={`by ${value[index]["name"]}`}
-            Content={value[index]["post_text"]}
+            Title={`by ${value[value.length-index-1]["name"]}`}
+            Content={value[value.length-index-1]["post_text"]}
           />
         );
       }
@@ -60,7 +59,7 @@ const HomePage = (props) => {
     let temp = [
       <Post
         key={Posts.length}
-        Title={`Post ${Posts.length + 1}`}
+        Title={`by ${props.Name}`}
         Content={post}
       />,
       ...Posts,

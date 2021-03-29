@@ -160,7 +160,7 @@ const App = () => {
                 )}
               />
               <Route
-                path="/group/:id/:isJoined/:post"
+                path="/group/:id"
                 exact
                 render={(props) => (
                   <GroupPage

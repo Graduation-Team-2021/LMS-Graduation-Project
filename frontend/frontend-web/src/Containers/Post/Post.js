@@ -1,41 +1,47 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import Card from "../../Components/Card/Card";
-import classes from './Post.module.css';
+import classes from "./Post.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp as base } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as liked } from "@fortawesome/free-solid-svg-icons";
 
 const Post = (props) => {
-  
-  const [likeButtonColor,setLikeButtonColor] = useState(true);
-  const [postComments,setPostComments] = useState([]);
-  const [currentTypingComment,setCurrentTypingComment] = useState("");
-  let onTypingComment = (event) =>{
+  const [likeButtonColor, setLikeButtonColor] = useState(true);
+  const [postComments, setPostComments] = useState([]);
+  const [currentTypingComment, setCurrentTypingComment] = useState("");
+  let onTypingComment = (event) => {
     setCurrentTypingComment(event.target.value);
-  }
-  const commentPressHandler  = () =>{
-    if(currentTypingComment===""){
-      console.log("empty comment")
-      alert("this is an empty comment")
+  };
+  const commentPressHandler = () => {
+    if (currentTypingComment === "") {
+      console.log("empty comment");
+      alert("this is an empty comment");
       return;
     }
-    setPostComments([...postComments,currentTypingComment]);
+    setPostComments([...postComments, currentTypingComment]);
     //FIXME: The first Comment is always empty due to some dark magic
-    console.log(postComments)
-    setCurrentTypingComment("")
-  }
+    console.log(postComments);
+    setCurrentTypingComment("");
+  };
 
   const likePressHandler = () => {
-    setLikeButtonColor((value)=>!value)
+    setLikeButtonColor((value) => !value);
     // TODO: set liked in the database (send the request)
   };
 
-  let comments = postComments.map((e,i)=><li style={{
-    border:"1px solid black",
-        padding:"10px",
-        margin:"10px 10px 10px 0",
-        fontFamily:"cursive"
-  }}key={i} >{e} </li>)
+  let comments = postComments.map((e, i) => (
+    <li
+      style={{
+        border: "1px solid black",
+        padding: "10px",
+        margin: "10px 10px 10px 0",
+        fontFamily: "cursive",
+      }}
+      key={i}
+    >
+      {e}{" "}
+    </li>
+  ));
   //  TODO : set comments from database
 
   return (
@@ -57,10 +63,14 @@ const Post = (props) => {
             width: "45%",
           }}
         >
-          {likeButtonColor?<FontAwesomeIcon icon={base}/>:<FontAwesomeIcon icon={liked} color='blue'/>}
+          {likeButtonColor ? (
+            <FontAwesomeIcon icon={base} />
+          ) : (
+            <FontAwesomeIcon icon={liked} color="blue" />
+          )}
         </button>
         <button
-          onClick ={commentPressHandler}
+          onClick={commentPressHandler}
           style={{
             width: "45%",
           }}
@@ -68,23 +78,36 @@ const Post = (props) => {
           comment
         </button>
       </div>
-      <textarea
-        name="comment"
+      <div
         style={{
-          overflow: "auto",
-          resize: "both",
-          width: "70%",
-          height: "50px",
-          marginLeft: "40px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-        placeholder="enter your comment"
-        onChange= {onTypingComment}
-        value ={currentTypingComment}
-      ></textarea>
-      <ul style={{
-        listStyleType:'none',
-        textAlign:"left",
-      }}>
+      >
+        <div style={{
+          width: "70%",
+        }}>
+          <textarea
+            name="comment"
+            style={{
+              overflow: "auto",
+              resize: "none",
+              width: '100%',
+              height: "60px",
+            }}
+            placeholder="enter your comment"
+            onChange={onTypingComment}
+            value={currentTypingComment}
+          ></textarea>
+        </div>
+      </div>
+      <ul
+        style={{
+          listStyleType: "none",
+          textAlign: "left",
+        }}
+      >
         {comments}
       </ul>
     </Card>

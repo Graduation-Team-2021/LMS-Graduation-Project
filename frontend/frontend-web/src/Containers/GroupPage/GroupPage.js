@@ -9,10 +9,15 @@ import GroupDescription from "../GroupDesc/GroupDesc.js";
 import { withRouter } from "react-router-dom";
 import { getAllPosts, uploadPost } from "../../Interface/Interface";
 const HomePage = (props) => {
-  const [id, isJoined, postID] = [props.match.params.id, props.match.params.isJoined, props.match.params.post];
-  const [Title, setTitle] = useState("");
-  const [Desc, setDesc] = useState("");
-  const [Main, setMain] = useState(classes.otherMain);
+  const [groupID, isJoined, postID, Title, Token, userID, Desc] = [
+    props.match.params.id,
+    props.location.state.isJoined,
+    props.location.state.postID,
+    props.location.state.name,
+    props.Token,
+    props.ID,
+    props.location.state.Desc
+  ];
   const [clicked, setclicked] = useState(false);
   const [Posts, setPosts] = useState([]);
 
@@ -30,36 +35,29 @@ const HomePage = (props) => {
 
   useEffect(() => {
     //Loading Data from Server
-    getAllPosts(props.Token, postID).then(
-      (value)=>{
-        console.log(value)
-        const posts = [];
-        for (let index = 0; index < value.length; index++) {
-          posts.push(
-            <Post
-              key={index}
-              Title={`by ${value[index]['name']}`}
-              Content={value[index]['post_text']}
-            />
-          );
-        }
-        setPosts(posts);
+    getAllPosts(Token, postID).then((value) => {
+      console.log(value);
+      const posts = [];
+      for (let index = 0; index < value.length; index++) {
+        posts.push(
+          <Post
+            key={index}
+            Title={`by ${value[value.length-index-1]["name"]}`}
+            Content={value[value.length-index-1]["post_text"]}
+          />
+        );
       }
-    )
-    
-  }, [props.Token, postID]);
+      setPosts(posts);
+    });
+  }, [Token, postID]);
 
   const SubmitPost = (post) => {
     console.log(post);
     let temp = [
-      <Post
-        key={Posts.length}
-        Title={`by ${props.Name}`}
-        Content={post}
-      />,
+      <Post key={Posts.length} Title={`by ${props.Name}`} Content={post} />,
       ...Posts,
     ];
-    uploadPost(props.Token, props.ID, postID, post)
+    uploadPost(Token, userID, postID, post);
     setPosts(temp);
     hide();
   };
@@ -109,7 +107,7 @@ const HomePage = (props) => {
                     value="Join Group"
                     className={classes.Join}
                     onClick={() => {
-                      props.Joining(id);
+                      props.Joining(groupID);
                       props.history.push("/");
                     }}
                   />
@@ -139,7 +137,7 @@ const HomePage = (props) => {
                       >
                         Write a new Post Here
                       </label>
-                      <div className={Main}>
+                      <div className={classes.otherMain}>
                         <input
                           style={{
                             cursor: "pointer",
