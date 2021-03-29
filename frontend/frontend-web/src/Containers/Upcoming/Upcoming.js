@@ -47,7 +47,6 @@ class Upcoming extends Component {
         </div>
       );
     }
-    console.log(this.props.Event)
     const Event = this.props.Event
 
     return (

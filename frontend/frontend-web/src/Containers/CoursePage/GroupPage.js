@@ -15,8 +15,8 @@ import {
 const HomePage = (props) => {
   const [courseID, isJoined, postID, Token, userID] = [
     props.match.params.id,
-    props.match.params.isJoined,
-    props.match.params.post,
+    props.location.state.isJoined,
+    props.location.state.postID,
     props.Token,
     props.ID
   ];
@@ -115,7 +115,12 @@ const HomePage = (props) => {
                     className={classes.Join}
                     onClick={() =>
                       props.history.push(
-                        `/Course/${courseID}/${isJoined}/Marks`
+                        {
+                          pathname:`/Course/${courseID}/Marks`,
+                          state:{
+                            name: Course['course_name']
+                          }
+                      }
                       )
                     }
                   />

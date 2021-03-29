@@ -176,12 +176,12 @@ const App = () => {
               />
               <Route
                 exact
-                path="/Course/:id/:isJoined/:post/Marks"
+                path="/Course/:id/Marks"
                 render={(props) => <MarkEdit {...props} />}
               />
               <Route
                 exact
-                path="/Course/:id/:isJoined/:post"
+                path="/Course/:id"
                 render={(props) => (
                   <CoursePage
                     {...props}
