@@ -80,8 +80,8 @@ class materials_controller():
             }
             self.post_Materials(material)
             material_id = Materials.query.order_by(Materials.material_id.desc()).first()
-            file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
-                                     f"materials\{material_id.material_id}")
+            file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses/{course_code}",
+                                     f"materials/{material_id.material_id}")
             if not os.path.exists(file_path):
                 os.makedirs(file_path)
             file_path = os.path.join(file_path, file.filename)
