@@ -15,7 +15,7 @@ class Events(db.Model, Base):
                             nullable=False)
     event_type = db.Column(db.String(50), nullable=False)
     event_duration = db.Column(db.Integer, nullable=False)
-    event_description = db.Column(db.String(30000))
+    event_description = db.Column(db.Text)
 
     def serialize(self):
         return {
