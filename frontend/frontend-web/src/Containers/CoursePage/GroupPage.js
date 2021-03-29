@@ -184,7 +184,7 @@ const HomePage = (props) => {
                 </div>
               </Card>
             </div>
-            <CourseDescription desc={Course["course_description"]} Role={Role}/>
+            <CourseDescription desc={Course["course_description"]} Role={Role} Token={Token} CourseID={courseID}/>
           </div>
         ) : (
           <h1>Loading.......</h1>

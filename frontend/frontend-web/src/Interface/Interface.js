@@ -104,9 +104,9 @@ export const uploadPost = async (Token, writer, owner, post) => {
   const res = await instance.post(
     `/posts/add_post`,
     {
-      "post_writer": writer,
-      "post_owner": owner,
-      "post_text": post,
+      post_writer: writer,
+      post_owner: owner,
+      post_text: post,
     },
     {
       headers: {
@@ -118,12 +118,29 @@ export const uploadPost = async (Token, writer, owner, post) => {
   return res.data;
 };
 
-export const getCourseByID = async (Token, CourseID)=>{
-  const res = await instance.get(`/courses/${CourseID}`,{
+export const getCourseByID = async (Token, CourseID) => {
+  const res = await instance.get(`/courses/${CourseID}`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: Token,
+      "Authorization": Token,
     },
   });
-  return res.data['course']
-}
+  return res.data["course"];
+};
+
+export const uploadFile = async (Token, file, CourseID) => {
+  console.log(file)
+  let data = new FormData();
+  data.append('file',file)
+  const res = await instance.post(
+    `/courses/${CourseID}/materials/upload`,
+    data,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "Authorization": Token,
+      },
+    }
+  );
+  console.log(res);
+};

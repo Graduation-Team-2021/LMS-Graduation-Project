@@ -8,31 +8,32 @@ import Minibar from "../../Components/Minibar/Minibar";
 import { faVideo, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
 import AddEvent from "../../Adham/Containers/AddEventPage/AddEvent";
+import { uploadFile } from "../../Interface/Interface";
 
 class Upcoming extends Component {
+  state = {
+    file: null,
+  };
 
-  state={
-    file: null
-  }
-
-  handleFIleUpload=(event)=>{
-    this.setState(/* (state, props)=>{
+  handleFIleUpload = (event) => {
+    this.setState(
+      /* (state, props)=>{
       let temp = [...state.file]
       temp.push(event.target.value)
       return {
         file: temp
       }
     } */
-    {
-      file: event.target.files
-    })
+      {
+        file: event.target.files[0],
+      }
+    );
+  };
+
+  Submit = () => {
     console.log(this.state.file)
-    
-    }
-
-  Submit=()=>{
-
-  }
+    uploadFile(this.props.Token, this.state.file, this.props.CourseID);
+  };
 
   render() {
     let Joined = [];
@@ -128,12 +129,16 @@ class Upcoming extends Component {
               </div>
             </AddEvent>
             <Card>
-              <form>
-                <label for="myfile">Select files:</label>
-                <input type="file" id="myfile" name="myfile" multiple onChange={this.handleFIleUpload}/>
-                <br></br>
-                <input type="submit" />
-              </form>
+              <label>Select files:</label>
+              <input
+                type="file"
+                id="myfile"
+                name="myfile"
+                multiple
+                onChange={this.handleFIleUpload}
+              />
+              <br></br>
+              <input type="submit" onClick={this.Submit} />
             </Card>
           </React.Fragment>
         ) : null}
