@@ -128,18 +128,27 @@ class Upcoming extends Component {
                 </Card>
               </div>
             </AddEvent>
-            <Card>
-              <label>Select files:</label>
-              <input
-                type="file"
-                id="myfile"
-                name="myfile"
-                multiple
-                onChange={this.handleFIleUpload}
-              />
-              <br></br>
-              <input type="submit" onClick={this.Submit} />
-            </Card>
+            <div style={{
+              padding: '10% 0'
+            }}>
+              <Card shadow 
+              style={{
+                padding: '10%'
+              }}>
+                <label style={{
+                  padding: '0 0 10% 0'
+                }}>Select files:</label>
+                <input
+                  type="file"
+                  id="myfile"
+                  name="myfile"
+                  multiple
+                  onChange={this.handleFIleUpload}
+                />
+                <br></br>
+                <input type="submit" onClick={this.Submit} />
+              </Card>
+            </div>
           </React.Fragment>
         ) : null}
       </div>

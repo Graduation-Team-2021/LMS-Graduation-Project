@@ -22,7 +22,7 @@ class CoursesArea extends Component {
   loadCourses=()=>{
     getCourses(this.props.Token).then((res)=>{
       this.props.setCourses(res)
-
+      console.log(res)
       this.props.history.push('/Courses')
     });
   }
@@ -43,10 +43,9 @@ class CoursesArea extends Component {
           justifyContent: "space-between",
         }}>
           <div className={classes.Title}>Courses You're Taking</div>
-          <button onClick={
+          <button className={classes.Join} onClick={
             ()=> {
               this.loadCourses()
-              
             }
           }>See All Courses</button>
         </div>

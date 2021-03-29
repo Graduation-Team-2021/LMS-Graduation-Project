@@ -40,6 +40,7 @@ const HomePage = (props) => {
   useEffect(() => {
     //Loading Data from Server
     getCourseByID(Token, courseID).then((res) => setCourse(res));
+    console.log(postID)
     getAllPosts(Token, postID).then((value) => {
       const posts = [];
       for (let index = 0; index < value.length; index++) {
