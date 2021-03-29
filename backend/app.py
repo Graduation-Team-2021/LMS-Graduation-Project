@@ -137,7 +137,7 @@ Courses
 """
 api.add_resource(Course, '/courses/<course_code>')
 api.add_resource(Courses, '/courses')
-api.add_resource(My_Courses, '/my_courses/<user_id>/<role>')
+api.add_resource(My_Courses, '/my_courses')
 """
 Materials
 """
