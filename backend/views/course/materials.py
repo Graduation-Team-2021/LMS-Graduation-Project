@@ -41,10 +41,10 @@ class materials(Resource):
             materials = controller_object.get_Materials(course_code)
         except ErrorHandler as e:
             return e.error
-        return {
+        return {**{
             'status_code': 200,
-            'materials': materials
-        }
+             
+        },**materials}
 
 
 
