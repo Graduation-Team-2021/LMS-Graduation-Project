@@ -9,7 +9,7 @@ const Input = (props) => {
       <Grid container spacing={1} alignItems="flex-end">
         <Grid item>{props.icon}</Grid>
         <Grid item>
-          <TextField id="input-with-icon-grid" label="With a grid" />
+          <TextField {...props} />
         </Grid>
       </Grid>
     </div>

@@ -8,18 +8,18 @@ import Input from '../../../Components/Input/Input'
 const InputPart = (props) => {
   return (
     <div  >
-      <Input icon ={<Event/>} />
+      <Input icon ={<Event/> } id="event_name" label = "The Name of the Event"/>
       <div className={classes.row}>
-        <Input icon ={<Today/>} />
-        <Input icon ={<Event/>} />
+        <Input icon ={<Today/>} id="starting_date" label ="starting date" />
+        <Input icon ={<Event/>} id="ending_date" label ="ending date" />
 
       </div>
       <div className={classes.row}>
-        <Input icon ={<Schedule/>} />
-        <Input icon ={<Schedule/>} />
+        <Input icon ={<Schedule/> } id="starting_from" label ="starting from"/>
+        <Input icon ={<Schedule/>} id="ending_in" label ="ending in" />
 
       </div>
-      <Input icon ={<Event/>} />
+      
     </div>
   );
 };
