@@ -33,20 +33,20 @@ export const login = async (Data) => {
 };
 
 export const getCurrentCourses = async (Token, id, role) => {
-  const res = await instance.get(`/my_courses/${id}/${role}`, {
+  const res = await instance.get(`/my_courses`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: Token,
+      Authorization: 'Bearer '+Token,
     },
   });
   return res.data;
 };
 
 export const getCurrentGroups = async (Token, id, role) => {
-  const res = await instance.get(`/${role}/${id}/groups`, {
+  const res = await instance.get(`/my_groups`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: Token,
+      Authorization: 'Bearer '+Token,
     },
   });
   return res.data;

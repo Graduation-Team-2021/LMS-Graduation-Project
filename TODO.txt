@@ -1,0 +1,24 @@
+1. Text Font increase
+2. Search Capabilities
+3. Sign Up Update/Integrate
+4. Reset Password
+5. Materials get/update
+6. Add Event integration
+7. Pdfs page making/integration
+8. Messenger integration
+9. Redux (هنعيط كلنا)
+10. Deliverables
+11. Drag and Drop
+12. Comments
+13. Add Course
+14. Add Group
+15. Edit profile Pic
+16. get users of Course/Group
+17. Join Courses
+18. Quizzes
+19. Course Area/Group Area
+20. Adaptive view
+21. Mobile app
+*************************************************
+1. Online Courses
+2. QR Code (By Adham)
