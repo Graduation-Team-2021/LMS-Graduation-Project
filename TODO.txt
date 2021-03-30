@@ -19,6 +19,7 @@
 19. Course Area/Group Area
 20. Adaptive view
 21. Mobile app
+22. Authentication/Security
 *************************************************
 1. Online Courses
 2. QR Code (By Adham)

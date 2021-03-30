@@ -55,7 +55,7 @@ export const getCourses = async (Token) => {
   const res = await instance.get(`/courses`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: Token,
+      Authorization: 'Bearer '+Token,
     },
   });
   return res.data;
@@ -64,7 +64,7 @@ export const getRecentPosts = async (Token, id) => {
   const res = await instance.get(`/${id}/first_10_posts`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: Token,
+      Authorization: 'Bearer '+Token,
     },
   });
   return res.data;
@@ -74,7 +74,7 @@ export const getRecentEvent = async (Token, id, role) => {
   const res = await instance.get(`/${role}/${id}/recent_events`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: Token,
+      Authorization: 'Bearer '+Token,
     },
   });
   return res.data;
@@ -84,7 +84,7 @@ export const getFinishedCourses = async (Token, id, role) => {
   const res = await instance.get(`/${role}/${id}/finishedCourses`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: Token,
+      Authorization: 'Bearer '+Token,
     },
   });
   return res.data;
@@ -94,7 +94,7 @@ export const getAllPosts = async (Token, owner) => {
   const res = await instance.get(`/posts/by_owner_id/${owner}`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: Token,
+      Authorization: 'Bearer '+Token,
     },
   });
   return res.data;
@@ -111,7 +111,7 @@ export const uploadPost = async (Token, writer, owner, post) => {
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: Token,
+        Authorization: 'Bearer '+Token,
       },
     }
   );
@@ -122,7 +122,7 @@ export const getCourseByID = async (Token, CourseID) => {
   const res = await instance.get(`/courses/${CourseID}`, {
     headers: {
       "Content-Type": "application/json",
-      "Authorization": Token,
+      "Authorization": 'Bearer '+Token,
     },
   });
   return res.data["course"];
@@ -138,7 +138,7 @@ export const uploadFile = async (Token, file, CourseID) => {
     {
       headers: {
         "Content-Type": "multipart/form-data",
-        "Authorization": Token,
+        "Authorization": 'Bearer '+Token,
       },
     }
   );
