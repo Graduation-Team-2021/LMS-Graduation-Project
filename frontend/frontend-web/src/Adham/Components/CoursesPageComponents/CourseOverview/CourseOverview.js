@@ -18,7 +18,6 @@ const courseOverview = (props) => {
           color="primary"
           className={classes.Button}
           onClick={() => {
-            console.log(props)
             props.history.push({
               pathname: `/Course/${props.CourseID}`,
               state: {

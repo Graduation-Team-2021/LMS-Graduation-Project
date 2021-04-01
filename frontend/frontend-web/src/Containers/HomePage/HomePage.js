@@ -6,25 +6,85 @@ import CoursesArea from "../CoursesArea/CoursesArea";
 import GroupsArea from "../GroupsArea/GroupsArea";
 import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
+import {
+  getCurrentCourses,
+  getCurrentGroups,
+  getRecentPosts,
+  getRecentEvent,
+} from "../../Interface/Interface";
+import { withRouter } from "react-router-dom";
 
 const HomePage = (props) => {
-  const [Joined, setJoined] = useState(new Map());
-  const [CurrentCourses, setCurrentCourses] = useState(new Map());
-  const [Posts, setPosts] = useState([]);
+  const [Joined, setJoined] = useState(null);
+  const [CurrentCourses, setCurrentCourses] = useState(null);
+  const [Posts, setPosts] = useState(null);
+  const [RecentEvent, setRecentEvent] = useState(null);
 
-  const { CurrentCourses: CC, Joined: J, Posts: P, Event } = props;
+  const { Token, ID, Role, Name, TokenError } = props;
 
   useEffect(() => {
-    if (J && J.size !== 0) {
-      setJoined(J);
+    getCurrentCourses(Token).then((res) => {
+      const Courses = new Map();
+      if (res) {
+        res.forEach((element) => {
+          Courses.set(element["course_code"], {
+            Title: element["course_name"],
+            Desc: element["course_description"],
+            Post: element["post_owner_id"],
+          });
+        });
+        setCurrentCourses(Courses);
+      } else {
+        TokenError();
+      }
+    });
+    getCurrentGroups(Token).then((res) => {
+      const Courses = new Map();
+      if (res) {
+        res.forEach((element) => {
+          Courses.set(element["group_id"], {
+            Title: element["group_name"],
+            Desc: element["group_description"],
+            Post: element["post_owner_id"],
+          });
+        });
+        setJoined(Courses);
+      } else {
+        TokenError();
+      }
+    });
+    getRecentPosts(Token, ID).then((res) => {
+      const Posts = [];
+      if (res) {
+        res.forEach((ele) => {
+          Posts.push({
+            Name: ele["name"],
+            Location: ele["owner_name"],
+            Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
+            Desc: ele["post_text"],
+          });
+        });
+        setPosts(Posts);
+      } else {
+        TokenError();
+      }
+    });
+    getRecentEvent(Token, ID, Role).then((res) => {
+      if(res){
+      setRecentEvent({
+        Title: res["event_name"],
+        Desc: res["event_description"],
+        Type: res["event_type"],
+        Duration: res["event_duration"],
+        Date: res["event_date"].slice(0, 10),
+        Host: res["course_code"],
+        Time: res["event_date"].slice(11),
+      });
+    }else{
+      TokenError()
     }
-    if (CC && CC.size !== 0) {
-      setCurrentCourses(CC);
-    }
-    if (P && P.length !== 0) {
-      setPosts(P);
-    }
-  }, [CC, J, P]);
+    });
+  }, [Token, ID, Role, TokenError]);
 
   return (
     <div className={classes.Main}>
@@ -34,7 +94,16 @@ const HomePage = (props) => {
           height: "fit-content",
         }}
       >
-        <TopBar Name={props.Name} id={props.ID} setLogged={props.setLogged} Notif={Posts} />
+        {Posts ? (
+          <TopBar
+            Name={Name}
+            id={ID}
+            setLogged={props.setLogged}
+            Notif={Posts}
+          />
+        ) : (
+          <h1>Loading.....</h1>
+        )}
         <div className={classes.Center}>
           <div
             style={{
@@ -48,33 +117,28 @@ const HomePage = (props) => {
                 height: "fit-content",
               }}
             >
-              {CurrentCourses.size !== 0 ? (
+              {CurrentCourses ? (
                 <CoursesArea
                   Courses={CurrentCourses}
-                  Token={props.Token}
-                  setCourses={props.Courses}
+                  Token={Token}
                 />
               ) : (
                 <h1>Loading.....</h1>
               )}
-              {Joined.size !== 0 ? (
-                <GroupsArea Groups={Joined} />
-              ) : (
-                <h1>Loading.....</h1>
-              )}
+              {Joined ? <GroupsArea Groups={Joined} /> : <h1>Loading.....</h1>}
 
-              {Posts.length !== 0 ? (
+              {Posts ? (
                 <PostsArea flex="5" Title="Latest Posts" Posts={Posts} />
               ) : (
                 <h1>Loading.....</h1>
               )}
             </Card>
           </div>
-          {Event ? <Upcoming Event={Event} /> : <h1>Loading.....</h1>}
+          {RecentEvent ? <Upcoming Event={RecentEvent} /> : <h1>Loading.....</h1>}
         </div>
       </Card>
     </div>
   );
 };
 
-export default HomePage;
+export default withRouter(HomePage);

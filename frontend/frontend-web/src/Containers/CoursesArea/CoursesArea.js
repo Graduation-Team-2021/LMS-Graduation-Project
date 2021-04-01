@@ -20,11 +20,7 @@ class CoursesArea extends Component {
   }
 
   loadCourses=()=>{
-    getCourses(this.props.Token).then((res)=>{
-      this.props.setCourses(res)
-      console.log(res)
-      this.props.history.push('/Courses')
-    });
+    this.props.history.push('/Courses')
   }
 
   render() {

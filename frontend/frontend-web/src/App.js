@@ -22,6 +22,10 @@ import jwt_decode from "jwt-decode";
 import Messenger from "./Components/Messenger/Messenger";
 
 const App = () => {
+  const TokenError = () => { //TODO: Make this Global
+    setToken(null);
+  };
+
   const [logged, setLogged] = useState(
     localStorage.getItem("token") ? true : false
   );
@@ -42,7 +46,6 @@ const App = () => {
   const [Recommended, setRecommended] = useState(new Map());
   const [Joined, setJoined] = useState(new Map());
   const [CurrentCourses, setCurrentCourses] = useState(new Map());
-  const [Courses, setCourses] = useState(new Map());
   const [posts, setposts] = useState([]);
   const [RecentEvent, setRecentEvent] = useState(null);
 
@@ -64,51 +67,6 @@ const App = () => {
       });
     }
     if (logged) {
-      getCurrentCourses(Token, ID, Role).then((res) => {
-        const Courses = new Map();
-        res.forEach((element) => {
-          Courses.set(element["course_code"], {
-            Title: element["course_name"],
-            Desc: element["course_description"],
-            Post: element["post_owner_id"] 
-          });
-        });
-        setCurrentCourses(Courses);
-      });
-      getCurrentGroups(Token, ID, Role).then((res) => {
-        const Courses = new Map();
-        res.forEach((element) => {
-          Courses.set(element["group_id"], {
-            Title: element["group_name"],
-            Desc: element["group_description"],
-            Post: element["post_owner_id"] 
-          });
-        });
-        setJoined(Courses);
-      });
-      getRecentPosts(Token, ID).then((res) => {
-        const Posts = [];
-        res.forEach((ele) => {
-          Posts.push({
-            Name: ele["name"],
-            Location: ele["owner_name"],
-            Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
-            Desc: ele["post_text"],
-          });
-        });
-        setposts(Posts);
-      });
-      getRecentEvent(Token, ID, Role).then((res) => {
-        setRecentEvent({
-          Title: res["event_name"],
-          Desc: res["event_description"],
-          Type: res["event_type"],
-          Duration: res["event_duration"],
-          Date: res["event_date"].slice(0, 10),
-          Host: res["course_code"],
-          Time: res["event_date"].slice(11),
-        });
-      });
     }
     setRecommended(temp2);
   }, [Token, ID, Role, logged]);
@@ -117,27 +75,19 @@ const App = () => {
     <BrowserRouter>
       <div className={classes.App}>
         <Switch>
-          {logged ? (
+          {Token ? (
             <React.Fragment>
               <Route
                 path="/"
                 exact
                 render={() => (
                   <HomePage
-                    Name={name}
-                    Token={Token}
-                    ID={ID}
-                    Role={Role}
-                    CurrentCourses={CurrentCourses}
-                    Joined={Joined}
-                    Recommended={Recommended}
-                    Joining={Joining}
-                    Courses={(data) => {
-                      setCourses(data);
-                    }}
-                    Event={RecentEvent}
+                    Name={name} //TODO: Make this Global
+                    Token={Token} //TODO: Make this Global
+                    ID={ID} //TODO: Make this Global
+                    Role={Role} //TODO: Make this Global
+                    TokenError={TokenError}
                     setLogged={(data) => setLogged(data)}
-                    Posts={posts}
                   />
                 )}
               />
@@ -205,7 +155,6 @@ const App = () => {
                     ID={ID}
                     Role={Role}
                     Posts={posts}
-                    Courses={Courses}
                   />
                 )}
               />

@@ -32,13 +32,17 @@ export const login = async (Data) => {
   }
 };
 
-export const getCurrentCourses = async (Token, id, role) => {
+export const getCurrentCourses = async (Token) => {
   const res = await instance.get(`/my_courses`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: 'Bearer '+Token,
     },
   });
+  if (res['status']!==200) {
+    //TODO: Better Check
+    return null;
+  }
   return res.data;
 };
 
@@ -49,6 +53,10 @@ export const getCurrentGroups = async (Token, id, role) => {
       Authorization: 'Bearer '+Token,
     },
   });
+  if (res['status']!==200) {
+    //TODO: Better Check
+    return null;
+  }
   return res.data;
 };
 export const getCourses = async (Token) => {
@@ -58,6 +66,10 @@ export const getCourses = async (Token) => {
       Authorization: 'Bearer '+Token,
     },
   });
+  if (res['status']!==200) {
+    //TODO: Better Check
+    return null;
+  }
   return res.data;
 };
 export const getRecentPosts = async (Token, id) => {
@@ -67,6 +79,10 @@ export const getRecentPosts = async (Token, id) => {
       Authorization: 'Bearer '+Token,
     },
   });
+  if (res['status']!==200) {
+    //TODO: Better Check
+    return null;
+  }
   return res.data;
 };
 
@@ -77,6 +93,10 @@ export const getRecentEvent = async (Token, id, role) => {
       Authorization: 'Bearer '+Token,
     },
   });
+  if (res['status']!==200) {
+    //TODO: Better Check
+    return null;
+  }
   return res.data;
 };
 
@@ -87,6 +107,10 @@ export const getFinishedCourses = async (Token, id, role) => {
       Authorization: 'Bearer '+Token,
     },
   });
+  if (res['status']!==200) {
+    //TODO: Better Check
+    return null;
+  }
   return res.data;
 };
 
@@ -97,6 +121,10 @@ export const getAllPosts = async (Token, owner) => {
       Authorization: 'Bearer '+Token,
     },
   });
+  if (res['status']!==200) {
+    //TODO: Better Check
+    return null;
+  }
   return res.data;
 };
 
@@ -115,6 +143,10 @@ export const uploadPost = async (Token, writer, owner, post) => {
       },
     }
   );
+  if (res['status']!==200) {
+    //TODO: Better Check
+    return null;
+  }
   return res.data;
 };
 
@@ -125,6 +157,10 @@ export const getCourseByID = async (Token, CourseID) => {
       "Authorization": 'Bearer '+Token,
     },
   });
+  if (res['status']!==200) {
+    //TODO: Better Check
+    return null;
+  }
   return res.data["course"];
 };
 

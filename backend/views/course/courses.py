@@ -84,11 +84,13 @@ class Courses(Resource):
             return e.error
         data=[]
         for i in range(len(courses)):
+            print(courses)
             data.append({
                 'course_code':courses[i][0],
                 'course_name':courses[i][1],
                 'course_teacher':courses[i][2],
-                'course_description':courses[i][3] 
+                'course_description':courses[i][3],
+                'post_owner_id':courses[i][4]
             })
         return data
     def post(self):

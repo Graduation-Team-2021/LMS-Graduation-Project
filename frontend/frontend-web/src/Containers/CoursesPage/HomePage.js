@@ -1,11 +1,24 @@
 import classes from "./HomePage.module.css";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Card from "../../Components/Card/Card";
 import TopBar from "../../Components/TopBar/TopBar";
 import CoursesPags from "../../Adham/Containers/CoursesPage/CoursesPage";
+import { getCourses } from "../../Interface/Interface";
 
 const HomePage = (props) => {
-  
+
+  const [Courses, setCourses] = useState(new Map());
+
+  const {Token}=props
+
+  useEffect(() => {
+    getCourses(Token).then(
+      (res)=>{
+        setCourses(res)
+      }
+    )
+  }, [Token])
+
 
   return (
     <div className={classes.Main}>
@@ -29,7 +42,7 @@ const HomePage = (props) => {
                 height: "fit-content",
               }}
             >
-              <CoursesPags Courses={props.Courses}/>
+              {Courses.size!==0?<CoursesPags Courses={Courses}/>:<h1>Loading.....</h1>}
             </Card>
           </div>
         </div>

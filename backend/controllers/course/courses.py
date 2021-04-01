@@ -77,7 +77,7 @@ class courses_controller():
     def get_all_courses(self):
         courses = Course.query.join(Teaches_Relation).\
         filter(Teaches_Relation.course_code==Course.course_code).join(Professor).filter(Professor.user_id==Teaches_Relation.professor_id).join(User).filter(User.user_id==Professor.user_id).\
-        with_entities(Course.course_code,Course.course_name,User.name,Course.course_description)
+        with_entities(Course.course_code,Course.course_name,User.name,Course.course_description,Course.post_owner_id)
         if courses is None:
             raise ErrorHandler({
                 'description': 'Course does not exist.',

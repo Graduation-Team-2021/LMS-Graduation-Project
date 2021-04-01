@@ -15,7 +15,7 @@ const Menu = (props) => {
       <h2 onClick={
         () => {
           localStorage.removeItem('token');
-          props.setLogged(false)
+          localStorage.removeItem('name');
           props.history.push("/login");
         }}>Sign Out</h2>
     </React.Fragment>

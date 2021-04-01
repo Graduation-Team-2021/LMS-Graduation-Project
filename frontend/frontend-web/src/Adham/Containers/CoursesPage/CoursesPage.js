@@ -13,7 +13,6 @@ class CoursesPags extends Component {
     let Courses = new Map()
     ids.forEach(
       (id, index) => {
-        console.log(id);
         Courses.set(id['course_code'], { 
           CourseID: id['course_code'],
           CourseName: id['course_name'], 
@@ -42,7 +41,6 @@ class CoursesPags extends Component {
     
     let loadedCourses = []
      Array.from(this.state.loadedCourses.keys()).forEach((key) => {
-      console.log(key)
       loadedCourses.push (
         <CourseListItem
           {...this.state.loadedCourses.get(key)}
