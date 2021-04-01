@@ -1,0 +1,53 @@
+.input {
+    outline: none;
+    background-color: transparent;
+    border: 0;
+    font-size: medium;
+    font-weight: bold;
+    height: 100%;
+    width: 100%;
+}
+
+.full {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    z-index: 100;
+}
+
+.suggest {
+    width: 20%;
+    position: relative;
+}
+
+.Main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 5%;
+    width: 20%;
+    border: 2px solid rgba(158, 157, 157, 0.541);
+    border-radius: 10px;
+    padding: 0.5% 1%;
+    transition: 200ms;
+    position: relative;
+    z-index: 100;
+
+}
+
+.Focus {
+    border: 5px solid rgb(19, 3, 245);
+}
+
+.image {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.holder {
+    max-height: 10%;
+    height: 40%;
+    width: 13%;
+}
