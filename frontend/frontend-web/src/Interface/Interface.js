@@ -39,7 +39,8 @@ export const getCurrentCourses = async (Token) => {
       Authorization: 'Bearer '+Token,
     },
   });
-  if (res['status']!==200) {
+  console.log('[Interface.js]',res);
+  if (res.data['description']) {
     //TODO: Better Check
     return null;
   }

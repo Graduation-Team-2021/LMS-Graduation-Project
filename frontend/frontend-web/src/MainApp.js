@@ -1,4 +1,3 @@
-import classes from "./App.module.css";
 import LoginPage from "./Containers/Login Full Page/LoginPage";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import HomePage from "./Containers/HomePage/HomePage";
@@ -73,7 +72,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div className={classes.App}>
+      <div >
         <Switch>
           {Token ? (
             <React.Fragment>

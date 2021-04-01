@@ -5,7 +5,10 @@ import GroupsArea from "../GroupsArea/GroupsArea";
 import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
 import Card from "../../Components/Card/Card";
-import classes from './HomePage.module.css';
+import classes from "./HomePage.module.css";
+import {setToken} from '../../store/actions/userDataActions'
+
+import { connect } from "react-redux";
 
 import {
   getCurrentCourses,
@@ -14,19 +17,20 @@ import {
   getRecentEvent,
 } from "../../Interface/Interface";
 
-
 const HomePage = (props) => {
   const [Joined, setJoined] = useState(null);
   const [CurrentCourses, setCurrentCourses] = useState(null);
   const [Posts, setPosts] = useState(null);
   const [RecentEvent, setRecentEvent] = useState(null);
 
-  const { Token, ID, Role, TokenError } = props;
+  const { Token, ID, Role } = props.userData;
+  const TokenError = props.tokenError; //FIXME: the shady bug would live inside this strange line;
 
   useEffect(() => {
     getCurrentCourses(Token).then((res) => {
       const Courses = new Map();
       if (res) {
+        console.log(res);
         res.forEach((element) => {
           Courses.set(element["course_code"], {
             Title: element["course_name"],
@@ -120,4 +124,19 @@ const HomePage = (props) => {
   );
 };
 
-export default HomePage;
+const mapStateToProps = (state) => {
+  return {
+    userData: state.userDataReducer,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    userDataActions: {
+      onSetToken: (newToken) => dispatch(setToken(newToken)),
+      tokenError: () => dispatch(setToken(null)),
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
