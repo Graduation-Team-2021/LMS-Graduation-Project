@@ -6,41 +6,6 @@
     padding: 1vw 0vw 1vw 1vw;
 }
 
-.front {
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    transition: 0ms;
-    z-index: 50;
-}
-
-
-.behind {
-    position: absolute;
-    z-index: 0;
-    bottom: 0;
-    width: 70%;
-    height: 100%;
-    transition: 0ms;
-    transform: translateY(20px);
-}
-
-.appear {
-    position: absolute;
-    padding: 0;
-    width: inherit;
-    height: 100%;
-    transition: 500ms;
-    z-index: 100;
-    transform: translateY(0px);
-}
-
-.dismiss {
-    transform: translate3d(100px, 0px, 0px);
-    opacity: 0;
-    transition: 500ms;
-}
-
 .Main {
     height: 100%;
     display: flex;

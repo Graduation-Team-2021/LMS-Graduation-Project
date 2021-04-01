@@ -1,5 +1,9 @@
-import classes from "./ProfilePage.module.css";
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+
+import classes from "./ProfilePage.module.css";
+
 import Card from "../../Components/Card/Card";
 import TopBar from "../../Components/TopBar/TopBar";
 import CoursesArea from "../CoursesArea/CoursesArea";
@@ -7,35 +11,21 @@ import GroupsArea from "../GroupsArea/GroupsArea";
 import OldCourses from "../OldCourses/GroupsArea";
 import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
+
+import { mapStateToProps,mapDispatchToProps } from "../../store/reduxMaps";
 import { getFinishedCourses } from "../../Interface/Interface";
 
-const HomePage = (props) => {
+const ProfilePage = (props) => {
   const [Joined, setJoined] = useState(new Map());
   const [CurrentCourses, setCurrentCourses] = useState(new Map());
   const [Posts, setPosts] = useState([]);
   const [Finished, setFinished] = useState([]);
 
   const {
-    CurrentCourses: CC,
-    Joined: J,
-    Posts: P,
-    Event,
     Token,
     ID,
     Role,
-  } = props;
-
-  useEffect(() => {
-    if (J && J.size !== 0) {
-      setJoined(J);
-    }
-    if (CC && CC.size !== 0) {
-      setCurrentCourses(CC);
-    }
-    if (P && P.length !== 0) {
-      setPosts(P);
-    }
-  }, [CC, J, P]);
+  } = props.userData;
 
   useEffect(() => {
     getFinishedCourses(Token, ID, Role).then((res) => {
@@ -122,4 +112,4 @@ const HomePage = (props) => {
   );
 };
 
-export default HomePage;
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(ProfilePage));

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import PostPreview from "../../Components/PostPreview/PostPreview";
 import Card from "../../Components/Card/Card";
 import Post from "../../Components/Post/Post";
+import Dismiss from "../../Components/DismissComponent/Dismiss";
 class PostsArea extends Component {
   state = { Posts: this.props.Posts, dismissed: false, clicked: false };
 
@@ -40,6 +41,18 @@ class PostsArea extends Component {
   };
 
   render() {
+    const Posts = this.state.Posts.map((value, index) => {
+      return (
+        <PostPreview
+          key={index}
+          Title={value.Title}
+          Desc={value.Desc}
+          dismiss={this.dismiss}
+          show={this.show}
+        />
+      );
+    });
+
     return (
       <div
         className={classes.Main}
@@ -49,7 +62,7 @@ class PostsArea extends Component {
       >
         <div className={classes.Title}>{this.props.Title}</div>
         <div className={classes.holder}>
-          <div
+          {/* <div
             className={
               classes.front +
               " " +
@@ -108,14 +121,9 @@ class PostsArea extends Component {
                 <h1>No More Posts</h1>
               </Card>
             ) : null}
-          </div>
+          </div> */}
+          <Dismiss Title='Posts'>{Posts}</Dismiss>
         </div>
-        {this.state.Posts.length!==0?<Post
-          clicked={this.state.clicked}
-          hide={this.hide}
-          Title={this.state.Posts[this.state.Posts.length - 1].Title}
-          Desc={this.state.Posts[this.state.Posts.length - 1].Desc}
-        />:null}
       </div>
     );
   }

@@ -1,7 +1,9 @@
 import React from "react";
 import MainPage from "./Containers/MainPage/MainPage";
-import HomePage from "./Containers/HomePage/HomePage";
+import Home from "./Containers/HomePage/HomePage";
 import Login from "./Containers/LoginPage/LoginPage";
+import Profile from './Containers/ProfilePage/ProfilePage'
+
 import {mapStateToProps,mapDispatchToProps} from "./store/reduxMaps"
 import {connect} from "react-redux"
 
@@ -13,7 +15,8 @@ const App = (props) => {
       {props.userData.Token ? (
         <MainPage>
           <Switch>
-            <Route path="/" exact component={HomePage} />
+            <Route path="/" exact component={Home} />
+            <Route path="/profile" exact component={Home} />
           </Switch>
         </MainPage>
       ) : (
