@@ -1,0 +1,8 @@
+.Main {
+    background-image: linear-gradient(to top right, rgb(255, 193, 255), rgb(237, 163, 255));
+    padding: 4%;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}

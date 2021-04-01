@@ -5,7 +5,6 @@ import { faBell, faCommentDots } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faSquare, faHome } from "@fortawesome/free-solid-svg-icons";
 import filler from "../../assets/Filler.png";
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
-import { withRouter } from "react-router-dom";
 
 
 const MiniMenu = (props) => {
@@ -96,4 +95,4 @@ const MiniMenu = (props) => {
   );
 };
 
-export default withRouter(MiniMenu);
+export default MiniMenu;

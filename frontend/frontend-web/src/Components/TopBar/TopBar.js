@@ -6,13 +6,12 @@ import MiniMenu from '../MiniMenu/MiniMenu'
 
 const TopBar = (props) => {
 
-  const {Notif} = props
-
+  
   useEffect(()=>{
-    setNotif(Notif.length)
-  },[Notif] )
+    setNotif(2)
+  },[] )
 
-  const [notif, setNotif] = useState(Notif.length);
+  const [notif, setNotif] = useState(2);
 
   const [message, setMessage] =useState(5);
 

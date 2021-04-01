@@ -1,18 +1,19 @@
-import classes from "./HomePage.module.css";
 import React, { useState, useEffect } from "react";
-import Card from "../../Components/Card/Card";
-import TopBar from "../../Components/TopBar/TopBar";
+
 import CoursesArea from "../CoursesArea/CoursesArea";
 import GroupsArea from "../GroupsArea/GroupsArea";
 import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
+import Card from "../../Components/Card/Card";
+import classes from './HomePage.module.css';
+
 import {
   getCurrentCourses,
   getCurrentGroups,
   getRecentPosts,
   getRecentEvent,
 } from "../../Interface/Interface";
-import { withRouter } from "react-router-dom";
+
 
 const HomePage = (props) => {
   const [Joined, setJoined] = useState(null);
@@ -20,7 +21,7 @@ const HomePage = (props) => {
   const [Posts, setPosts] = useState(null);
   const [RecentEvent, setRecentEvent] = useState(null);
 
-  const { Token, ID, Role, Name, TokenError } = props;
+  const { Token, ID, Role, TokenError } = props;
 
   useEffect(() => {
     getCurrentCourses(Token).then((res) => {
@@ -70,75 +71,53 @@ const HomePage = (props) => {
       }
     });
     getRecentEvent(Token, ID, Role).then((res) => {
-      if(res){
-      setRecentEvent({
-        Title: res["event_name"],
-        Desc: res["event_description"],
-        Type: res["event_type"],
-        Duration: res["event_duration"],
-        Date: res["event_date"].slice(0, 10),
-        Host: res["course_code"],
-        Time: res["event_date"].slice(11),
-      });
-    }else{
-      TokenError()
-    }
+      if (res) {
+        setRecentEvent({
+          Title: res["event_name"],
+          Desc: res["event_description"],
+          Type: res["event_type"],
+          Duration: res["event_duration"],
+          Date: res["event_date"].slice(0, 10),
+          Host: res["course_code"],
+          Time: res["event_date"].slice(11),
+        });
+      } else {
+        TokenError();
+      }
     });
   }, [Token, ID, Role, TokenError]);
 
   return (
-    <div className={classes.Main}>
-      <Card
+    <div className={classes.Center}>
+      <div
         style={{
-          backgroundColor: "rgba(243, 238, 238, 0.9)",
-          height: "fit-content",
+          width: "80%",
         }}
       >
-        {Posts ? (
-          <TopBar
-            Name={Name}
-            id={ID}
-            setLogged={props.setLogged}
-            Notif={Posts}
-          />
-        ) : (
-          <h1>Loading.....</h1>
-        )}
-        <div className={classes.Center}>
-          <div
-            style={{
-              width: "80%",
-            }}
-          >
-            <Card
-              style={{
-                alignItems: "flex-start",
-                flex: "3",
-                height: "fit-content",
-              }}
-            >
-              {CurrentCourses ? (
-                <CoursesArea
-                  Courses={CurrentCourses}
-                  Token={Token}
-                />
-              ) : (
-                <h1>Loading.....</h1>
-              )}
-              {Joined ? <GroupsArea Groups={Joined} /> : <h1>Loading.....</h1>}
+        <Card
+          style={{
+            alignItems: "flex-start",
+            flex: "3",
+            height: "fit-content",
+          }}
+        >
+          {CurrentCourses ? (
+            <CoursesArea Courses={CurrentCourses} Token={Token} />
+          ) : (
+            <h1>Loading.....</h1>
+          )}
+          {Joined ? <GroupsArea Groups={Joined} /> : <h1>Loading.....</h1>}
 
-              {Posts ? (
-                <PostsArea flex="5" Title="Latest Posts" Posts={Posts} />
-              ) : (
-                <h1>Loading.....</h1>
-              )}
-            </Card>
-          </div>
-          {RecentEvent ? <Upcoming Event={RecentEvent} /> : <h1>Loading.....</h1>}
-        </div>
-      </Card>
+          {Posts ? (
+            <PostsArea flex="5" Title="Latest Posts" Posts={Posts} />
+          ) : (
+            <h1>Loading.....</h1>
+          )}
+        </Card>
+      </div>
+      {RecentEvent ? <Upcoming Event={RecentEvent} /> : <h1>Loading.....</h1>}
     </div>
   );
 };
 
-export default withRouter(HomePage);
+export default HomePage;
