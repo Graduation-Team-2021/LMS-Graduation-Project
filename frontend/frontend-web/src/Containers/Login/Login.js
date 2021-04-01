@@ -2,8 +2,13 @@ import React, { Component } from "react";
 import classes from "./Login.module.css";
 import LoginField from "../../Components/LoginField/LoginField";
 import ButtonArray from "../../Components/ButtonArray/ButtonArray";
+
 import { withRouter } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+
 import { login } from "../../Interface/Interface";
+import { connect } from "react-redux";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 class Login extends Component {
   state = {
@@ -15,26 +20,25 @@ class Login extends Component {
 
   signin = () =>
     this.handleSigninCLicked((Data) => {
-
       login(Data).then((res) => {
         if (res) {
-          localStorage.setItem('token',res.Token);
-          localStorage.setItem('name',res.name);
-          this.props.history.push('/')
-          this.props.Home(res)
-        }
-        else
-          alert("Login Failed")
-      })
-
+          localStorage.setItem("token", res.Token);
+          localStorage.setItem("name", res.name);
+          this.props.userDataActions.onSetToken(res.Token);
+          this.props.userDataActions.onSetName(res.name);
+          this.props.userDataActions.onSetId(jwt_decode(res.Token).id);
+          this.props.userDataActions.onSetRole(jwt_decode(res.Token).permissions);
+          this.props.history.push("/");
+        } else alert("Login Failed");
+      });
     });
 
   handleSigninCLicked = (callBack) => {
     if (this.state.Email !== "" && this.state.Password !== "") {
       //This is where you add the Sign in Logic
       callBack({
-        "email": this.state.Email,
-        "password": this.state.Password
+        email: this.state.Email,
+        password: this.state.Password,
       });
     } else {
       this.HandleSigninError();
@@ -102,4 +106,4 @@ class Login extends Component {
   }
 }
 
-export default withRouter(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
