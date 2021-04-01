@@ -7,9 +7,16 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import userDataReducer from "./store/reducers/userDataReducer";
-
+import currentCoursesReducer from './store/reducers/currentCoursesReducer'
+import currentGroupsReducer from './store/reducers/currentGroupsReducer'
+import recentEventsReducer from './store/reducers/recentEventsReducer'
+import finishedCoursesReducer from './store/reducers/finishedCoursesReducer'
 const rootReducer = combineReducers({
   userDataReducer: userDataReducer,
+  currentCoursesReducer: currentCoursesReducer,
+  currentGroupsReducer: currentGroupsReducer,
+  recentEventsReducer: recentEventsReducer,
+  finishedCoursesReducer: finishedCoursesReducer,
 });
 
 const store = createStore(rootReducer);
