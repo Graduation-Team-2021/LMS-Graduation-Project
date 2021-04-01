@@ -1,38 +1,43 @@
-import React, { useState, useEffect } from "react";
-import {connect} from 'react-redux'
-import {setToken} from './store/actions/userDataActions'
+import React from "react";
+import { connect } from "react-redux";
+import { setToken } from "./store/actions/userDataActions";
 
 import MainPage from "./Containers/MainPage/MainPage";
 import HomePage from "./Containers/HomePage/HomePage";
+import Login from "./Containers/Login Full Page/LoginPage";
 
-import jwt_decode from "jwt-decode";
-import { Switch, BrowserRouter } from "react-router-dom";
+import { Switch, BrowserRouter, Route } from "react-router-dom";
 
 const App = (props) => {
-
   return (
     <BrowserRouter>
-      <MainPage >
+      {props.userData.Token ? (
+        <MainPage>
+          <Switch>
+            <Route path="/" exact component={HomePage} />
+          </Switch>
+        </MainPage>
+      ) : (
         <Switch>
-          <HomePage  />
+        <Route path="/login" exact component={Login} />
         </Switch>
-      </MainPage>
+      )}
     </BrowserRouter>
   );
 };
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
   return {
-    userData: state.userDataReducer
-  }
-}
+    userData: state.userDataReducer,
+  };
+};
 
-const mapDispatchToProps = (dispatch) =>{
+const mapDispatchToProps = (dispatch) => {
   return {
-    userDataActions :{
-      onSetToken: (newToken) => dispatch(setToken(newToken))
-    }
-  }
-}
+    userDataActions: {
+      onSetToken: (newToken) => dispatch(setToken(newToken)),
+    },
+  };
+};
 
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

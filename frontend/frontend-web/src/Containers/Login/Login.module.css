@@ -1,11 +1,11 @@
 .Login{
     text-align: start;
     flex: 2;
-    width: -webkit-fill-available;
     display: flex;
     flex-flow: column;
     justify-content: space-between;
-    height: -webkit-fill-available;
+    height: 100%;
+    padding: 0 5% 0 0;
 }
 
 .MainTitle{
@@ -16,9 +16,6 @@
 .Main{
     display: block;
     justify-content: center;
-    height: -webkit-fill-available;
-    min-height: 75%;
-    width: -webkit-fill-available;
     overflow: auto;
     transition: all 200ms;
 }

@@ -9,8 +9,7 @@ const ImageHolder = (props) => {
         border: "1px solid black",
         width: "100%",
         overflow: "hidden",
-        margin: "1vh 0",
-        height: '70%',
+        height: '100%',
       }}
     >
       <img

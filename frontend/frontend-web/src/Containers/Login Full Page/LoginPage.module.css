@@ -1,17 +1,14 @@
 .Main {
     background-color: gainsboro;
     padding: 50px;
-    height: -webkit-fill-available;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
 }
 
 .Blue {
-    padding: 15px;
     flex: 5;
-    height: -webkit-fill-available;
+    height: 100%;
 
-}
-
-.Image {
-    max-height: -webkit-fill-available;
-    max-width: 100%;
 }

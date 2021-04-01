@@ -22,7 +22,7 @@ const CoursePreview = (props) => {
       className={classes.holder}
     >
       <Card shadow style={{
-        width: '20vw',
+        width: '25vw',
         height: '40vh',
         display: 'flex',
         flexFlow: 'column',
@@ -30,7 +30,6 @@ const CoursePreview = (props) => {
         padding: '10%',
       }}>
         <div className={classes.CourseTitle}>{props.Group.Title}</div>
-        <div className={classes.CourseDes}>{props.Group.Desc}</div>
         <ImageHolder filler={filler} />
       </Card>
     </div>
