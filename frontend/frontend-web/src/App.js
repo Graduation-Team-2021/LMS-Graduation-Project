@@ -1,7 +1,7 @@
 import React from "react";
 import MainPage from "./Containers/MainPage/MainPage";
 import HomePage from "./Containers/HomePage/HomePage";
-import Login from "./Containers/Login Full Page/LoginPage";
+import Login from "./Containers/LoginPage/LoginPage";
 import {mapStateToProps,mapDispatchToProps} from "./store/reduxMaps"
 import {connect} from "react-redux"
 
