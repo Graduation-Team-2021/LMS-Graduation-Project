@@ -18,7 +18,14 @@ const CoursePreview = (props) => {
             })
           }
         }>
-          <Card shadow>
+          <Card shadow style={{
+            width: '20vw',
+            height: '40vh',
+            display: 'flex',
+            flexFlow: 'column',
+            justifyContent: 'space-between',
+            padding: '10%',
+          }}>
             <div className={classes.CourseTitle}>{props.Course.Title}</div>
             <div className={classes.CourseDes}>
              {props.Course.Desc}

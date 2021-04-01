@@ -107,7 +107,7 @@ const HomePage = (props) => {
         <div className={classes.Center}>
           <div
             style={{
-              maxWidth: "80%",
+              width: "80%",
             }}
           >
             <Card

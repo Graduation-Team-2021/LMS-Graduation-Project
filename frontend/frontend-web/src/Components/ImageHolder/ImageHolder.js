@@ -10,15 +10,16 @@ const ImageHolder = (props) => {
         width: "100%",
         overflow: "hidden",
         margin: "1vh 0",
+        height: '70%',
       }}
     >
       <img
         src={props.filler}
         alt=""
         style={{
-          objectFit: "contain",
+          objectFit: "fill",
           width: "100%",
-          maxHeight: "100%",
+          height: "100%",
           alignSelf: "center",
           justifySelf: "center",
         }}

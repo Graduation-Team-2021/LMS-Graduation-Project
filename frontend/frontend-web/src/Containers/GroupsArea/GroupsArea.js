@@ -9,10 +9,21 @@ import {
 
 class GroupsArea extends Component {
   
+  state={
+    overflowActive: false,
+  }
 
   constructor(props) {
     super(props);
     this.GroupsArea = React.createRef();
+  }
+
+  isEllipsisActive(e) {
+    return e.offsetWidth < e.scrollWidth;
+  }
+
+  componentDidMount() {
+    this.setState({ overflowActive: this.isEllipsisActive(this.GroupsArea.current) });
   }
 
   render() {
@@ -32,25 +43,25 @@ class GroupsArea extends Component {
       <div className={classes.GroupsArea}>
         <div className={classes.Title}>Groups You're In</div>
         <div className={classes.SwipeList}>
-          <div
+          {this.state.overflowActive?<div
             className={classes.Right}
             onClick={() => {
               this.GroupsArea.current.scrollLeft -= 250;
             }}
           >
             <FontAwesomeIcon icon={faChevronLeft} size="4x" />
-          </div>
-          <div className={classes.InnerSwipeList} ref={this.GroupsArea}>
+          </div>:null}
+          <div className={classes.InnerSwipeList+(!this.state.overflowActive?'':' '+classes.overFlow)} ref={this.GroupsArea}>
             {Groups}
           </div>
-          <div
+          {this.state.overflowActive?<div
             className={classes.Left}
             onClick={() => {
               this.GroupsArea.current.scrollLeft += 250;
             }}
           >
             <FontAwesomeIcon icon={faChevronRight} size="4x" />
-          </div>
+          </div>:null}
         </div>
       </div>
     );

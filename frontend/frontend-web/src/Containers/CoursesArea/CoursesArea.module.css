@@ -1,11 +1,11 @@
 .SwipeList {
     display: flex;
-    max-width: 100%;
+    width: 100%;
     position: relative;
     align-items: center;
 }
 
-.Join{
+.Join {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -26,12 +26,17 @@
     display: flex;
     overflow: hidden;
     justify-content: space-between;
-    max-width: 100%;
+    width: 100%;
     margin: 0 5%;
     padding: 1% 1%;
     position: relative;
     scroll-behavior: smooth;
     align-items: center;
+    justify-content: center;
+}
+
+.overFlow{
+    justify-content: flex-start;
 }
 
 .Left {
@@ -77,5 +82,5 @@
 }
 
 .CoursesArea {
-    max-width: 100%;
+    width: 100%;
 }

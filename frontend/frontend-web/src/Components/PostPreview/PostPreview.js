@@ -10,7 +10,7 @@ const GroupPreview = (props) => {
   return (
     <Card
       style={{
-        padding: "0",
+        padding: "5% 0",
         border: "2px solid purple",
         overflow: "hidden",
         zIndex: "10",
