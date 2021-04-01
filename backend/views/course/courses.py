@@ -63,7 +63,7 @@ class Course(Resource):
             'message': 'Course updated successfully',
             'status_code': 200
         })
-
+        
 
 # /courses
 class Courses(Resource):
@@ -92,7 +92,10 @@ class Courses(Resource):
                 'course_description':courses[i][3],
                 'post_owner_id':courses[i][4]
             })
-        return data
+        return jsonify({
+            'status_code':200,
+            'courses':data
+        })
     def post(self):
         args = self.reqparse.parse_args()
         course = {
@@ -133,7 +136,10 @@ class My_Courses(Resource):
                     'post_owner_id':student_courses[i][3]
 
                 })
-            return data_array
+            return jsonify({
+            'status_code':200,
+            'courses':data_array
+        })
         elif role == 'professor':
             try:
                 professor_courses = professor_controller_object.get_courses_by_professor_id(user_id)
@@ -147,4 +153,7 @@ class My_Courses(Resource):
                     'course_name': professor_courses[i][1],
                     'course_description': professor_courses[i][2],
                 })
-            return data_array
+            return jsonify({
+            'status_code':200,
+            'courses':data_array
+        })

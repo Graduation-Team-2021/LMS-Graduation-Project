@@ -57,7 +57,11 @@ class InsertGroup(Resource):
         self.reqparse.add_argument('group_description', type=str, location='json')
     def get(self):
         try:
-            return controller_object.get_all_groups()
+            project_groups = controller_object.get_all_groups()
+            return jsonify({
+                'project_groups':project_groups,
+                'status_code':200
+            })
         except ErrorHandler as e:
             return e.error
 

@@ -82,7 +82,11 @@ class Post_the_post(Resource):
 class FirstTenPosts(Resource):
     def get(self,student_id):
         try:
-            return controller_object.get_one_student_first_ten_courses(student_id)
+            ten_posts = controller_object.get_one_student_first_ten_courses(student_id)
+            return jsonify({
+                'posts':ten_posts,
+                'status_code':200
+            })
         except ErrorHandler as e :
             return e.error
     
@@ -91,11 +95,19 @@ class FirstTenPosts(Resource):
 class MyPosts(Resource):
     def get(self,student_id):
         try:
-            return controller_object.get_the_student_first_posts(student_id)
+            posts = controller_object.get_the_student_first_posts(student_id)
+            return jsonify({
+                'posts':posts,
+                'status_code':200
+            })
         except ErrorHandler as e :
             return e.error
     
 #posts/<owner_id>
 class GetPostByOwnerID(Resource):
     def get(self,owner_id):
-        return controller_object.get_posts_by_owner_id(owner_id)
+        posts = controller_object.get_posts_by_owner_id(owner_id)
+        return jsonify({
+                'posts':posts,
+                'status_code':200
+            })
