@@ -14,7 +14,6 @@ const intialState = {
 };
 
 const reducer = (state = intialState, action) => {
-  console.log(action);
   if (action.type === SET_TOKEN) {
     return {
       ...state,

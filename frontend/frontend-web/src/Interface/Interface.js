@@ -39,7 +39,6 @@ export const getCurrentCourses = async (Token) => {
       Authorization: 'Bearer '+Token,
     },
   });
-  console.log('[Interface.js]',res);
   if (res.data['description']) {
     //TODO: Better Check
     return null;
@@ -54,7 +53,7 @@ export const getCurrentGroups = async (Token, id, role) => {
       Authorization: 'Bearer '+Token,
     },
   });
-  if (res['status']!==200) {
+  if (res.data['description']) {
     //TODO: Better Check
     return null;
   }
@@ -67,7 +66,7 @@ export const getCourses = async (Token) => {
       Authorization: 'Bearer '+Token,
     },
   });
-  if (res['status']!==200) {
+  if (res.data['description']) {
     //TODO: Better Check
     return null;
   }
@@ -80,7 +79,7 @@ export const getRecentPosts = async (Token, id) => {
       Authorization: 'Bearer '+Token,
     },
   });
-  if (res['status']!==200) {
+  if (res.data['description']) {
     //TODO: Better Check
     return null;
   }
@@ -94,7 +93,7 @@ export const getRecentEvent = async (Token, id, role) => {
       Authorization: 'Bearer '+Token,
     },
   });
-  if (res['status']!==200) {
+  if (res.data['description']) {
     //TODO: Better Check
     return null;
   }
@@ -108,7 +107,7 @@ export const getFinishedCourses = async (Token, id, role) => {
       Authorization: 'Bearer '+Token,
     },
   });
-  if (res['status']!==200) {
+  if (res.data['description']) {
     //TODO: Better Check
     return null;
   }
@@ -122,7 +121,7 @@ export const getAllPosts = async (Token, owner) => {
       Authorization: 'Bearer '+Token,
     },
   });
-  if (res['status']!==200) {
+  if (res.data['description']) {
     //TODO: Better Check
     return null;
   }
@@ -144,7 +143,7 @@ export const uploadPost = async (Token, writer, owner, post) => {
       },
     }
   );
-  if (res['status']!==200) {
+  if (res.data['description']) {
     //TODO: Better Check
     return null;
   }
@@ -158,7 +157,7 @@ export const getCourseByID = async (Token, CourseID) => {
       "Authorization": 'Bearer '+Token,
     },
   });
-  if (res['status']!==200) {
+  if (res.data['description']) {
     //TODO: Better Check
     return null;
   }

@@ -30,7 +30,6 @@ const HomePage = (props) => {
     getCurrentCourses(Token).then((res) => {
       const Courses = new Map();
       if (res) {
-        console.log(res);
         res.forEach((element) => {
           Courses.set(element["course_code"], {
             Title: element["course_name"],

@@ -8,7 +8,6 @@ import {connect} from "react-redux"
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 
 const App = (props) => {
-  console.log('[App.js]', props)
   return (
     <BrowserRouter>
       {props.userData.Token ? (
