@@ -1,14 +1,14 @@
 import React from "react";
-import { connect } from "react-redux";
-import { setToken } from "./store/actions/userDataActions";
-
 import MainPage from "./Containers/MainPage/MainPage";
 import HomePage from "./Containers/HomePage/HomePage";
 import Login from "./Containers/Login Full Page/LoginPage";
+import {mapStateToProps,mapDispatchToProps} from "./store/reduxMaps"
+import {connect} from "react-redux"
 
-import { Switch, BrowserRouter, Route } from "react-router-dom";
+import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 
 const App = (props) => {
+  console.log('[App.js]', props)
   return (
     <BrowserRouter>
       {props.userData.Token ? (
@@ -20,24 +20,13 @@ const App = (props) => {
       ) : (
         <Switch>
         <Route path="/login" exact component={Login} />
+        <Redirect to='/login' />
         </Switch>
       )}
     </BrowserRouter>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    userData: state.userDataReducer,
-  };
-};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    userDataActions: {
-      onSetToken: (newToken) => dispatch(setToken(newToken)),
-    },
-  };
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

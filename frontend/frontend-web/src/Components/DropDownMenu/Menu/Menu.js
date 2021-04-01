@@ -1,5 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import { connect } from 'react-redux'
+import { mapStateToProps,mapDispatchToProps } from '../../../store/reduxMaps'
 import './Menu.module.css'
 
 const Menu = (props) => {
@@ -23,4 +25,6 @@ const Menu = (props) => {
   );
 };
 
-export default withRouter(Menu);
+
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Menu));
