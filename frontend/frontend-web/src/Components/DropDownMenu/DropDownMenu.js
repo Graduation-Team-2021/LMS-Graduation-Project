@@ -10,6 +10,7 @@ const DropDownMenu = (props) => {
     shadow
     key={1}
       style={{
+        textAlign: 'center',
         padding: "0",
         maxHeight: "40vh",
         overflow: "auto",
@@ -25,6 +26,7 @@ const DropDownMenu = (props) => {
     shadow
     key={2}
       style={{
+        textAlign: 'center',
         padding: "0",
         maxHeight: "40vh",
         overflow: "auto",
@@ -40,9 +42,9 @@ const DropDownMenu = (props) => {
     shadow
     key={3}
       style={{
+        textAlign: 'center',
         padding: "0",
         maxHeight: "40vh",
-        overflow: "auto",
         border: "1px solid black",
       }}
     >

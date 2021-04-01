@@ -18,7 +18,7 @@ const Menu = (props) => {
         () => {
           localStorage.removeItem('token');
           localStorage.removeItem('name');
-          
+          props.userDataActions.onSetToken(null);
           props.history.push("/login");
         }}>Sign Out</h2>
     </React.Fragment>
