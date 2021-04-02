@@ -1,10 +1,8 @@
 import React from "react";
 import classes from "./PostPreview.module.css";
-import Card from "../Card/Card";
 import filler from "../../assets/Filler.png";
 import ImageHolder from "../ImageHolder/ImageHolder";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
+
 
 const GroupPreview = (props) => {
   return (
@@ -18,8 +16,8 @@ const GroupPreview = (props) => {
           <ImageHolder filler={filler} />
         </div>
         <div className={classes.Bottom}>
-          <div className={classes.CourseTitle}>{props.Title}</div>
-          <div className={classes.CourseDes}>{props.Desc}</div>
+          <div className={classes.CourseTitle}>{props.Post.Title}</div>
+          <div className={classes.CourseDes}>{props.Post.Desc}</div>
         </div>
       </div>
     </React.Fragment>

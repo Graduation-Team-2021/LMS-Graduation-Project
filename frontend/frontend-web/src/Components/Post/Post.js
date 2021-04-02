@@ -1,21 +1,14 @@
 import React, { Component } from "react";
 import Modal from "../Modal/Modal";
-class Post extends Component {
-
+import Post from "../../Containers/Post/Post";
+class PopupPost extends Component {
   render() {
-    const Post = (
-      <div>
-        <h1>{this.props.Title}</h1>
-        <div>{this.props.Desc}</div>
-      </div>
-    );
-
     return (
       <Modal show={this.props.clicked} onClick={this.props.hide}>
-        {Post}
+        <Post {...this.props.Post}/>
       </Modal>
     );
   }
 }
 
-export default Post;
+export default PopupPost;

@@ -55,7 +55,7 @@ const Post = (props) => {
       }}
     >
       <h2>{props.Title}</h2>
-      <p>{props.Content}</p>
+      <p>{props.Desc}</p>
       <div>
         <button
           onClick={likePressHandler}

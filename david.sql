@@ -166,16 +166,13 @@ CREATE TABLE `learns` (
 DROP TABLE IF EXISTS `material`;
 CREATE TABLE `material` (
   `material_id` int NOT NULL AUTO_INCREMENT,
-  `material_name` varchar(50) NOT NULL,
   `material_type` varchar(50) NOT NULL,
-  `downloadable` tinyint(1) NOT NULL,
+  `material_name` varchar(50) DEFAULT NULL,
   `course_material` varchar(5) NOT NULL,
-  `students_number` int NOT NULL,
   PRIMARY KEY (`material_id`),
   KEY `course_material` (`course_material`),
-  CONSTRAINT `material_ibfk_1` FOREIGN KEY (`course_material`) REFERENCES `course` (`course_code`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `material_chk_1` CHECK ((`downloadable` in (0,1)))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `material_ibfk_1` FOREIGN KEY (`course_material`) REFERENCES `course` (`course_code`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 DROP TABLE IF EXISTS `message`;
@@ -204,7 +201,7 @@ CREATE TABLE `post` (
   KEY `post_owner` (`post_owner`),
   CONSTRAINT `post_ibfk_1` FOREIGN KEY (`post_writer`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE,
   CONSTRAINT `post_ibfk_2` FOREIGN KEY (`post_owner`) REFERENCES `post_owner` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 DROP TABLE IF EXISTS `post_commenter`;
@@ -361,9 +358,10 @@ INSERT INTO `group_project` (`group_id`,`group_name`,`group_description`,`post_o
 
 INSERT INTO `learns` (`student_id`,`course_code`) VALUES (44,'CS88');
 
+INSERT INTO `material` (`material_id`,`material_type`,`material_name`,`course_material`) VALUES (1,'.png','Screenshot_20210327_180947','CS88'),(2,'.png','Screenshot_20210327_180947','CS88'),(3,'.png','Screenshot_20210327_180947','CS88'),(4,'.png','Screenshot_20210327_180947','CS88'),(5,'.png','Screenshot_20200317_223147','CS88'),(6,'.jpeg','1610321429147','CS88'),(7,'.pdf','Technical Writing','CS88');
 
 
-INSERT INTO `post` (`post_id`,`post_writer`,`post_owner`,`post_text`) VALUES (1,2,4,'1sst post'),(2,33,4,'2nd post'),(3,44,4,'test post'),(4,44,4,'Hey-O'),(5,44,4,'David'),(6,44,4,'DJ Man\n'),(7,44,2,'Hiiiii'),(8,44,2,'Hey-O'),(9,44,2,'What\'s Up???');
+INSERT INTO `post` (`post_id`,`post_writer`,`post_owner`,`post_text`) VALUES (1,2,4,'1sst post'),(2,33,4,'2nd post'),(3,44,4,'test post'),(4,44,4,'Hey-O'),(5,44,4,'David'),(6,44,4,'DJ Man\n'),(7,44,2,'Hiiiii'),(8,44,2,'Hey-O'),(9,44,2,'What\'s Up???'),(10,44,NULL,'David');
 
 INSERT INTO `post_commenter` (`commenter_id`,`post_id`,`comment_text`) VALUES (5,1,'1st comment'),(5,2,'2nd comment for 1st user'),(33,1,'an added comment through post method');
 

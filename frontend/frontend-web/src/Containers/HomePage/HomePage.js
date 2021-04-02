@@ -66,6 +66,7 @@ const HomePage = (props) => {
             Location: ele["owner_name"],
             Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
             Desc: ele["post_text"],
+            PostId:ele['post_id']
           });
         });
         setPosts(Posts);

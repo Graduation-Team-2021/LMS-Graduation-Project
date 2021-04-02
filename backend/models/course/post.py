@@ -16,7 +16,8 @@ class Post(db.Model, Base):
         return {
             'post_writer': self.post_writer,
             'post_owner': self.post_owner,
-            'post_text':self.post_text
+            'post_text':self.post_text,
+            'post_id':self.post_id
         }
 
     def insert(self):
