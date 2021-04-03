@@ -34,7 +34,7 @@ export const mapDispatchToProps = (dispatch) => {
         onSetRecentEvents:(newEvents)=> dispatch(recentEventActionFunctions.setRecentEvent(newEvents))
       },
       finishedCoursesActions:{
-        onSetFinshedCourses : (newCourses) => dispatch(finishedCoursesActionFunctions.setFinishedCourses(newCourses))
+        onSetFinishedCourses : (newCourses) => dispatch(finishedCoursesActionFunctions.setFinishedCourses(newCourses))
       }
     };
   };
