@@ -1,13 +1,13 @@
-import {SET_RECENT_EVENTS} from '../actions/recentEventActions'
+import {SET_RECENT_EVENT} from '../actions/recentEventActions'
 
 const initialState = {
-    recentEvents:[],
+    recentEvent:null,
 }
 const reducer = (state= initialState, action) => {
-    if (action.type ===SET_RECENT_EVENTS){
+    if (action.type ===SET_RECENT_EVENT){
         return{
             ...state,
-            recentEvents: action.value
+            recentEvent: action.value
         }
     }
     return state
