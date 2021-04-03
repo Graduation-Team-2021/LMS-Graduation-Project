@@ -69,7 +69,6 @@ const MiniMenu = (props) => {
             <div className={classes.status} />
             <FontAwesomeIcon
               icon={faSquare}
-              size="5x"
               fixedWidth
               color="purple"
             />

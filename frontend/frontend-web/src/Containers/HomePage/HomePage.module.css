@@ -5,3 +5,12 @@
 .Home{
     flex:3;
 }
+
+.contanier {
+    width: 80%;
+}
+@media (max-width : 668px) {
+    .contanier{
+        width: 100%;
+    }
+}

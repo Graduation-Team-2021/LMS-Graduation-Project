@@ -63,3 +63,18 @@
 .Circle {
     position: absolute;
 }
+
+@media (max-width : 1300px) {
+    .Invited {
+        display: none;
+    }
+    .Joined {
+        display: none;
+    }
+}
+
+ @media (max-width : 668px) {
+    .upcoming {
+        display: none;
+    }
+} 

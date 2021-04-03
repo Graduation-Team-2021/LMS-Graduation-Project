@@ -51,3 +51,9 @@
     height: 40%;
     width: 13%;
 }
+
+@media (max-width : 500px) {
+    .Main {
+        width:40%;
+    }
+}

@@ -9,5 +9,14 @@
 .Title{
     font-size: xx-large;
     font-weight: bold;
-    padding-bottom: 5%;
+    padding-bottom: 2%;
+}
+
+@media (max-width : 500px) {
+    .Title {
+        font-size: medium;
+    }
+    .Main div {
+        padding-top: 5px;
+    }
 }

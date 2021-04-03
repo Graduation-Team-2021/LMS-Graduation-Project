@@ -62,7 +62,8 @@ class CoursesArea extends Component {
           }}
         >
           <div className={classes.Title}>Courses You're Taking</div>
-          <button
+        </div>
+        <button
             className={classes.Join}
             onClick={() => {
               this.loadCourses();
@@ -70,7 +71,6 @@ class CoursesArea extends Component {
           >
             See All Courses
           </button>
-        </div>
         <div className={classes.SwipeList}>
           {this.state.overflowActive ? (
             <div

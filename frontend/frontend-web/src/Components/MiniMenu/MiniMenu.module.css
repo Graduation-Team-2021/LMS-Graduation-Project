@@ -30,6 +30,8 @@
     height: 4vw;
     width: 4vw;
     position: relative;
+    font-size: 5px;
+    padding-right: 7px;
 }
 
 .holder:hover {
@@ -59,5 +61,4 @@
     position: absolute;
     right: 0;
     top: 0;
-
 }
