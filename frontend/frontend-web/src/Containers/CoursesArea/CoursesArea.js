@@ -23,7 +23,7 @@ class CoursesArea extends Component {
     this.props.history.push("/Courses");
   };
 
-  isEllipsisActive(e) {
+  isEllipsisActive(e) {//This is for checking the overflow
     return e.offsetHeight < e.scrollHeight || e.offsetWidth < e.scrollWidth;
   }
 

@@ -23,7 +23,10 @@ class Event(Resource):
             event = controller_object.get_Event(course_code, event_id)
         except ErrorHandler as e:
             return e.error
-        return event
+        return jsonify({
+            'status_code':200,
+            'event':event
+        })
 
     def delete(self, course_code, event_id):
         try:
@@ -107,6 +110,10 @@ class Events(Resource):
 class Events_most_recent(Resource):
     def get(self, student_id):
         try:
-            return controller_object.get_most_recent_event(student_id)
+            event = controller_object.get_most_recent_event(student_id)
+            return jsonify({
+            'event':event,
+            'status_code': 200
+        })
         except ErrorHandler as e:
             return e.error

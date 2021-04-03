@@ -95,7 +95,7 @@ def verify_decode_jwt(token):
 
     except jwt.ExpiredSignatureError:
         raise ErrorHandler({
-            'status_code': 401,
+            'status_code': 402,
             'description': 'Token expired.'
         })
 
