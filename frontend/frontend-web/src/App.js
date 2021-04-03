@@ -4,7 +4,7 @@ import Home from "./Containers/HomePage/HomePage";
 import Login from "./Containers/LoginPage/LoginPage";
 import Profile from './Containers/ProfilePage/ProfilePage'
 import Courses from './Containers/CoursesPage/CoursesPage'
-
+import Course from './Containers/CoursePage/CoursePage'
 
 import {mapStateToProps,mapDispatchToProps} from "./store/reduxMaps"
 import {connect} from "react-redux"
@@ -21,6 +21,7 @@ const App = (props) => {
             <Route path="/" exact component={Home} />
             <Route path="/profile" exact component={Profile} />
             <Route path="/Courses" exact component={Courses} />
+            <Route path="/Course/:id" exact component={Course} />
           </Switch>
         </MainPage>
       ) : (

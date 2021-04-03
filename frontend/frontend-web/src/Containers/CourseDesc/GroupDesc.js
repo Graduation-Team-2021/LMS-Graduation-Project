@@ -7,7 +7,7 @@ import Card from "../../Components/Card/Card";
 import Minibar from "../../Components/Minibar/Minibar";
 import { faVideo, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
-import AddEvent from "../../Adham/Containers/AddEventPage/AddEvent";
+import AddEvent from "../../Containers/AddEventPage/AddEvent";
 import { uploadFile } from "../../Interface/Interface";
 
 class Upcoming extends Component {

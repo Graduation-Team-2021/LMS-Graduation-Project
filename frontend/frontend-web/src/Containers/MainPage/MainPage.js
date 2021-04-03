@@ -3,7 +3,7 @@ import React from "react";
 import Card from "../../Components/Card/Card";
 import TopBar from "../../Components/TopBar/TopBar";
 
-const HomePage = (props) => {
+const MainPage = (props) => {
   return (
     <div className={classes.Main}>
       <Card
@@ -19,4 +19,4 @@ const HomePage = (props) => {
   );
 };
 
-export default HomePage;
+export default MainPage;

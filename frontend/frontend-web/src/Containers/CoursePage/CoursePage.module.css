@@ -1,12 +1,8 @@
-.Main {
-    background-image: linear-gradient(to top right, rgb(255, 193, 255), rgb(237, 163, 255));
-    height: -webkit-fill-available;
-    width: -webkit-fill-available;
-    padding: 5%;
-    overflow: auto;
+.Card {
+    background-color: rgba(243, 238, 238, 0.9);
 }
 
-.posts{
+.posts {
     position: relative;
     width: 70%;
     display: flex;
@@ -14,7 +10,7 @@
     align-items: center;
 }
 
-.Join{
+.Join {
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,4 +1,4 @@
-.CourseTitle{
+.CourseTitle {
     text-align: start;
     font-size: x-large;
     font-weight: bold;
@@ -6,13 +6,22 @@
     color: red
 }
 
-.CourseDes{
+.CourseDes {
     text-align: start;
     font-size: large;
     padding: 0 0 5%;
 }
 
-.holder{
+.holder {
     padding: 0 2%;
     transition: 500ms;
+}
+
+.Card {
+    width: 25vw;
+    height: 40vh;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    padding: 10%;
 }
