@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import Card from "../../Components/Card/Card";
-import CourseListItem from "../../Adham/Components/CoursesPageComponents/CourseListItem/CourseListItem";
-import CourseOverView from "../../Adham/Components/CoursesPageComponents/CourseOverview/CourseOverview";
+import CourseListItem from "../../Components/CoursesPageComponents/CourseListItem/CourseListItem";
+import CourseOverView from "../../Components/CoursesPageComponents/CourseOverview/CourseOverview";
 
 import { getCourses } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";

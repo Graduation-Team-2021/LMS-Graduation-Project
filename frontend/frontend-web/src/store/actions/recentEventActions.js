@@ -1,8 +1,8 @@
-export const SET_RECENT_EVENTS ='SET_RECENT_EVENTS';
+export const SET_RECENT_EVENT ='SET_RECENT_EVENT';
 
 export const setRecentEvent = (newEvents) =>{
     return{
-        type: SET_RECENT_EVENTS,
+        type: SET_RECENT_EVENT,
         value:newEvents
     }
 }

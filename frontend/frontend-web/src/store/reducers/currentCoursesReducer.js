@@ -1,7 +1,7 @@
 import {SET_CURRENT_COURSES} from '../actions/currentCoursesActions'
 
 const initialState ={
-    currentCourses: [],
+    currentCourses: new Map(),
 }
 
 const reducer = (state= initialState, action) => {

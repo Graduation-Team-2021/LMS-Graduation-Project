@@ -64,7 +64,7 @@ const HomePage = (props) => {
         TokenError();
       }
     });
-  }, [TokenError, Token, ID, Role]);
+  }, [TokenError, Token, ID, Role, setJoined]);
 
   useEffect(() => {
     getRecentPosts(Token, ID).then((res) => {
@@ -102,7 +102,7 @@ const HomePage = (props) => {
         TokenError();
       }
     });
-  }, [Token, ID, Role, TokenError]);
+  }, [Token, ID, Role, TokenError, setRecentEvent]);
 
   return (
     <div className={classes.Center}>
