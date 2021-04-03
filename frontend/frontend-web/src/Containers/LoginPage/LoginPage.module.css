@@ -37,6 +37,36 @@
 .LoginMain{
     display: block;
     justify-content: center;
-    overflow: auto;
+    /* overflow: auto; */
     transition: all 200ms;
+}
+
+.Card {
+    height: fit-content;
+    border: red solid 1px;
+}
+
+@media (max-width : 1049px) {
+
+    .Blue {
+        height: 25%;
+    }
+    .Card {
+        flex-direction: column-reverse;
+        height: 100%;   
+        padding-top: 18vh;
+    }
+    .ButtonArea {
+        margin: 10px 0;
+    }
+    
+}
+
+@media (max-width : 600px) {
+    .Main {
+        padding: 0;
+    }
+    .Card {
+        border-radius: 0;
+    }
 }

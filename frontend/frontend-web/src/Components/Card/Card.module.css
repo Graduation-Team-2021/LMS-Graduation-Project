@@ -1,11 +1,12 @@
 .Main {
     background-color: white;
-    padding: 50px;
+    padding: 40px;
     width: 100%;
     min-width: 20vw;
     border-radius: 15px;
     box-sizing: border-box;
     display: flex;
+    height: fit-content;
 }
 
 .Row{

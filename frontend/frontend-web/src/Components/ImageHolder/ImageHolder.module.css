@@ -1,0 +1,14 @@
+.handler {
+    display: flex;
+        border-radius : 40px;
+        border: 1px solid black;
+        width: 100%;
+        overflow: hidden;
+        height: 100%;
+}
+@media (max-width : 1049px) {
+    .handler {
+        height: 100%;
+        /* margin-top: 5vh; */
+    }
+}
