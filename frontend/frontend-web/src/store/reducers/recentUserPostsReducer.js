@@ -10,5 +10,6 @@ const reducer = (state=initialState, action) => {
             current: action.value
         }
     }
+    return state
 }
 export default reducer;

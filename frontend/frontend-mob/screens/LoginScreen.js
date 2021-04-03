@@ -8,6 +8,7 @@ const LoginScren = (props) => {
       <View style={styles.buttonContainer}>
         <Button title="SIGN IN" onPress={() => {}} />
       </View>
+      
     </View>
   );
 };
