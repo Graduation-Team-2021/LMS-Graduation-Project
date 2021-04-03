@@ -67,12 +67,12 @@ export const getCourses = async (Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-
-  if (res["status"] !== 200) {
+  console.log(res);
+  if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
-  return res.data;
+  return res.data['courses'];
 };
 export const getRecentPosts = async (Token, id) => {
   const res = await instance.get(`/${id}/first_10_posts`, {
@@ -112,7 +112,7 @@ export const getFinishedCourses = async (Token, id, role) => {
     },
   });
 
-  if (res["status"] !== 200) {
+  if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
@@ -127,7 +127,7 @@ export const getAllPosts = async (Token, owner) => {
     },
   });
 
-  if (res["status"] !== 200) {
+  if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
@@ -150,7 +150,7 @@ export const uploadPost = async (Token, writer, owner, post) => {
     }
   );
 
-  if (res["status"] !== 200) {
+  if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }

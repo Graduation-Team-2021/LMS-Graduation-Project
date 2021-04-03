@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import classes from "./MiniMenu.module.css";
+import filler from "../../assets/Filler.png";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCommentDots } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faSquare, faHome } from "@fortawesome/free-solid-svg-icons";
-import filler from "../../assets/Filler.png";
+import { withRouter } from "react-router-dom";
+
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
 
 
@@ -94,4 +97,4 @@ const MiniMenu = (props) => {
   );
 };
 
-export default MiniMenu;
+export default withRouter(MiniMenu);
