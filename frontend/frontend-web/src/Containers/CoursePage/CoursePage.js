@@ -2,7 +2,6 @@ import classes from "./CoursePage.module.css";
 import React, { useEffect, useState } from "react";
 
 import Card from "../../Components/Card/Card";
-import TopBar from "../../Components/TopBar/TopBar";
 import Modal from "../../Components/Modal/Modal";
 import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
@@ -14,7 +13,7 @@ import {
   getCourseByID,
 } from "../../Interface/Interface";
 
-const HomePage = (props) => {
+const CoursePage = (props) => {
   const [courseID, isJoined, postID, Token, userID, Role] = [
     props.match.params.id,
     props.location.state.isJoined,
@@ -48,7 +47,7 @@ const HomePage = (props) => {
         posts.push(
           <Post
             key={index}
-            Title={`by ${value[value.length - index - 1]["name"]}`}
+            Title={value[value.length - index - 1]["name"]}
             Content={value[value.length - index - 1]["post_text"]}
           />
         );
@@ -60,7 +59,7 @@ const HomePage = (props) => {
   const SubmitPost = (post) => {
     console.log(post);
     let temp = [
-      <Post key={Posts.length} Title={`by ${props.Name}`} Content={post} />,
+      <Post key={Posts.length} Title={props.Name} Content={post} />,
       ...Posts,
     ];
     uploadPost(Token, userID, postID, post);
@@ -75,105 +74,54 @@ const HomePage = (props) => {
       </Modal>
       {Course ? (
         <div className={classes.Center}>
-          <div
-            style={{
-              width: "75%",
-            }}
-          >
-            <Card
-              style={{
-                width: "100%",
-                alignItems: "flex-start",
-                height: "fit-content",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
-                }}
-              >
-                <h1>{Course["course_name"]}</h1>
-                {isJoined === "true" ? (
-                  Role === "professor" ? (
-                    <input
-                      type="button"
-                      value="See Grades"
-                      className={classes.Join}
-                      onClick={() =>
-                        props.history.push({
-                          pathname: `/Course/${courseID}/Marks`,
-                          state: {
-                            name: Course["course_name"],
-                          },
-                        })
-                      }
-                    />
-                  ) : null
-                ) : (
-                  <input
-                    type="button"
-                    value="Enroll"
-                    className={classes.Join}
-                    onClick={props.Joining.bind(this, courseID)}
-                  />
-                )}
-              </div>
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                {isJoined === "true" ? (
-                  <Card shadow>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
+          <Card className={classes.Course}>
+            <h1>{Course["course_name"]}</h1>
+            {isJoined === "true" ? (
+              Role === "professor" ? (
+                <input
+                  type="button"
+                  value="See Grades"
+                  className={classes.Join}
+                  onClick={() =>
+                    props.history.push({
+                      pathname: `/Course/${courseID}/Marks`,
+                      state: {
+                        name: Course["course_name"],
+                      },
+                    })
+                  }
+                />
+              ) : null
+            ) : (
+              <input
+                type="button"
+                value="Enroll"
+                className={classes.Join}
+                onClick={props.Joining.bind(this, courseID)}
+              />
+            )}
+            {isJoined === "true" ? (
+              <Card shadow>
+                <div className={classes.newPostHolder}>
+                  <label className={classes.newPostLabel}>
+                    Write a new Post Here
+                  </label>
+                  <div className={classes.otherMain}>
+                    <button
+                      className={classes.PostButton}
+                      title=""
+                      onClick={Focus}
                     >
-                      <label
-                        style={{
-                          flex: "1",
-                          fontSize: "20px",
-                        }}
-                      >
-                        Write a new Post Here
-                      </label>
-                      <div className={classes.otherMain}>
-                        <input
-                          style={{
-                            cursor: "pointer",
-                            textAlign: "start",
-                            color: "rgb(78, 78, 78)",
-                          }}
-                          value="What's on Your Mind?"
-                          type="button"
-                          className={classes.input}
-                          onClick={Focus}
-                        />
-                      </div>
-                    </div>
-                  </Card>
-                ) : null}
-              </div>
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexFlow: "column",
-                  alignItems: "center",
-                }}
-              >
-                <div className={classes.posts}>{Posts}</div>
-              </div>
-            </Card>
-          </div>
+                      What's on Your Mind?
+                    </button>
+                  </div>
+                </div>
+              </Card>
+            ) : null}
+            <div className={classes.PostsHolder}>
+              <div className={classes.posts}>{Posts}</div>
+            </div>
+          </Card>
           <CourseDescription
             desc={Course["course_description"]}
             Role={Role}
@@ -188,4 +136,4 @@ const HomePage = (props) => {
   );
 };
 
-export default HomePage;
+export default CoursePage;

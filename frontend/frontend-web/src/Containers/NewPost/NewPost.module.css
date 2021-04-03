@@ -10,6 +10,14 @@
     background-color: transparent;
 }
 
+.Title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-bottom: 2px solid black;
+}
+
 .dismiss{
     top: 0;
     position: absolute;

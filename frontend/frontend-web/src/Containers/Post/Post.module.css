@@ -1,9 +1,62 @@
-.blackButton{
-    background-color: blue;
-    color: white;
-  }
-  
-.whiteButton{
-    background-color: white;
-    color: black;
-  }
+.black {
+  color: black;
+}
+
+.blue {
+  color: blue;
+}
+
+.Temp {
+  width: 75%;
+}
+
+.Temp .PostHolder {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  position: relative;
+  margin: 10% 0 0 0;
+  padding: 0 5%;
+}
+
+.Button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: x-large;
+  font-weight: bold;
+  padding: 2% 0;
+  width: 30%;
+  background-color: transparent;
+  outline: none;
+  box-sizing: border-box;
+  border: 0;
+}
+
+.Button label {
+  margin-left: 10%;
+}
+
+.ButtonArea {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  width: 100%;
+  justify-content: space-evenly;
+  display: flex;
+  margin-bottom: 2%;
+}
+
+.BottomHalf {
+  width: 100%;
+}
+
+.userComment {
+  padding: 1% 4%;
+  font-size: x-large;
+  outline: none;
+  border-radius: 2.5em;
+  resize: none;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+}

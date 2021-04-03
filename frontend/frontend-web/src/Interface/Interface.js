@@ -131,7 +131,7 @@ export const getAllPosts = async (Token, owner) => {
     //TODO: Better Check
     return null;
   }
-  return res.data;
+  return res.data['posts'];
 };
 
 export const uploadPost = async (Token, writer, owner, post) => {

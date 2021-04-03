@@ -10,9 +10,11 @@ const NewPost = (props) => {
 
   const enable = (event) => {
     setContent(event.target.value);
-    if (event.target.value !== "") 
-    {setenabled(true);}
-     else {setenabled(false);}
+    if (event.target.value !== "") {
+      setenabled(true);
+    } else {
+      setenabled(false);
+    }
   };
 
   const Submit = () => {
@@ -23,11 +25,12 @@ const NewPost = (props) => {
 
   return (
     <div>
-      <h2 style={{}}>Create Post</h2>
-      <div onClick={props.dismiss} className={classes.dismiss}>
-        <FontAwesomeIcon icon={faTimesCircle} size="4x" />
+      <div className={classes.Title}>
+        <h2>Create Post</h2>
+        <div onClick={props.dismiss} className={classes.dismiss}>
+          <FontAwesomeIcon icon={faTimesCircle} size="3x" />
+        </div>
       </div>
-
       <textarea
         value={Content}
         onChange={enable}

@@ -6,13 +6,8 @@ import TopBar from "../../Components/TopBar/TopBar";
 const MainPage = (props) => {
   return (
     <div className={classes.Main}>
-      <Card
-        style={{
-          backgroundColor: "rgba(243, 238, 238, 0.9)",
-          height: "fit-content",
-        }}
-      >
-        <TopBar Name={props.Name}/>
+      <Card className={classes.David}>
+        <TopBar Name={props.Name} />
         {props.children}
       </Card>
     </div>

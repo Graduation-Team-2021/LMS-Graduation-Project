@@ -16,7 +16,7 @@ const App = (props) => {
   return (
     <BrowserRouter>
       {props.userData.Token ? (
-        <MainPage>
+        <MainPage Name={props.userData.Name}>
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/profile" exact component={Profile} />

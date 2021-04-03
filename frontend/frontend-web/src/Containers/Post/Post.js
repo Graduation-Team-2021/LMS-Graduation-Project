@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import Card from "../../Components/Card/Card";
 import classes from "./Post.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp as base } from "@fortawesome/free-regular-svg-icons";
+import {
+  faThumbsUp as base,
+  faCommentAlt,
+} from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as liked } from "@fortawesome/free-solid-svg-icons";
 
 const Post = (props) => {
@@ -19,8 +22,6 @@ const Post = (props) => {
       return;
     }
     setPostComments([...postComments, currentTypingComment]);
-    //FIXME: The first Comment is always empty due to some dark magic
-    console.log(postComments);
     setCurrentTypingComment("");
   };
 
@@ -45,72 +46,44 @@ const Post = (props) => {
   //  TODO : set comments from database
 
   return (
-    <Card
-      shadow
-      style={{
-        position: "relative",
-        margin: "10% 0 0 0",
-        width: "100%",
-        padding: "2% 2%",
-      }}
-    >
-      <h2>{props.Title}</h2>
-      <p>{props.Desc}</p>
-      <div>
-        <button
-          onClick={likePressHandler}
-          style={{
-            width: "45%",
-          }}
-        >
-          {likeButtonColor ? (
-            <FontAwesomeIcon icon={base} />
-          ) : (
-            <FontAwesomeIcon icon={liked} color="blue" />
-          )}
-        </button>
-        <button
-          onClick={commentPressHandler}
-          style={{
-            width: "45%",
-          }}
-        >
-          comment
-        </button>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div style={{
-          width: "70%",
-        }}>
+    <span className={classes.Temp}>
+      <Card className={classes.PostHolder} shadow>
+        <h2>{props.Title}</h2>
+        <p>{props.Content}</p>
+        <div className={classes.BottomHalf}>
+          <div className={classes.ButtonArea}>
+            <button onClick={likePressHandler} className={classes.Button}>
+              {likeButtonColor ? (
+                <FontAwesomeIcon icon={base} />
+              ) : (
+                <FontAwesomeIcon icon={liked} color="blue" />
+              )}
+              <label className={likeButtonColor?classes.black:classes.blue}>Like</label>
+            </button>
+            <button onClick={commentPressHandler} className={classes.Button}>
+              <FontAwesomeIcon icon={faCommentAlt} />
+              <label>Comment</label>
+            </button>
+          </div>
           <textarea
+            className={classes.userComment}
             name="comment"
-            style={{
-              overflow: "auto",
-              resize: "none",
-              width: '100%',
-              height: "60px",
-            }}
             placeholder="enter your comment"
             onChange={onTypingComment}
             value={currentTypingComment}
-          ></textarea>
+            rows={4}
+          />
+          <ul
+            style={{
+              listStyleType: "none",
+              textAlign: "left",
+            }}
+          >
+            {comments}
+          </ul>
         </div>
-      </div>
-      <ul
-        style={{
-          listStyleType: "none",
-          textAlign: "left",
-        }}
-      >
-        {comments}
-      </ul>
-    </Card>
+      </Card>
+    </span>
   );
 };
 
