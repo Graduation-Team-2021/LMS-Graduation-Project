@@ -4,8 +4,10 @@ import Home from "./Containers/HomePage/HomePage";
 import Login from "./Containers/LoginPage/LoginPage";
 import Profile from './Containers/ProfilePage/ProfilePage'
 
+
 import {mapStateToProps,mapDispatchToProps} from "./store/reduxMaps"
 import {connect} from "react-redux"
+
 
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 

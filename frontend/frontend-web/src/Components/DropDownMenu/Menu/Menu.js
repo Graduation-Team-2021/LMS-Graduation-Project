@@ -25,6 +25,5 @@ const Menu = (props) => {
   );
 };
 
-
-
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Menu));
+
