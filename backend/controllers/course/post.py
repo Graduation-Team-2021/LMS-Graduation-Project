@@ -141,6 +141,7 @@ class Post_Controller:
                 posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0]).first().serialize()
                 posts['owner_name']=courses_post_owner_ids[i][1]
                 desired_posts.append(posts)
+                print(posts)
 
         post_writers_ids=[]
         for i in desired_posts:
