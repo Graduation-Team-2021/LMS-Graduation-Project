@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
+import FormInputField from "../components/FormInputField"
 
 const LoginScren = (props) => {
   return (
     <View style={styles.screen}>
       <Text>Getting Started</Text>
+      <FormInputField title="E-mail" />
+      <FormInputField title="Password" />
       <View style={styles.buttonContainer}>
         <Button title="SIGN IN" onPress={() => {}} />
       </View>
