@@ -6,8 +6,6 @@ import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
 import Card from "../../Components/Card/Card";
 import classes from "./HomePage.module.css";
-import {setToken} from '../../store/actions/userDataActions'
-
 import { connect } from "react-redux";
 
 import {
@@ -16,32 +14,41 @@ import {
   getRecentPosts,
   getRecentEvent,
 } from "../../Interface/Interface";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 const HomePage = (props) => {
-  const [Joined, setJoined] = useState(null);
-  const [CurrentCourses, setCurrentCourses] = useState(null);
-  const [Posts, setPosts] = useState(null);
-  const [RecentEvent, setRecentEvent] = useState(null);
-
+  const [Posts, setPosts] = useState([]);
   const { Token, ID, Role } = props.userData;
-  const TokenError = props.userDataActions.tokenError; //FIXME: the shady bug would live inside this strange line;
+  const { tokenError: TokenError } = props.userDataActions;
+  const {
+    currentCourses: CurrentCourses,
+    recentEvents: RecentEvent,
+    currentGroups: Joined,
+  } = props;
+  const setCurrentCourses = props.currentCoursesActions.onSetCurrentCourses;
+  const setJoined = props.currentGroupsActions.onSetCurrentGroups;
+  const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
 
   useEffect(() => {
-    getCurrentCourses(Token).then((res) => {
-      const Courses = new Map();
-      if (res) {
-        res.forEach((element) => {
-          Courses.set(element["course_code"], {
-            Title: element["course_name"],
-            Desc: element["course_description"],
-            Post: element["post_owner_id"],
+    if (CurrentCourses.length === 0)
+      getCurrentCourses(Token).then((res) => {
+        const Courses = new Map();
+        if (res) {
+          res.forEach((element) => {
+            Courses.set(element["course_code"], {
+              Title: element["course_name"],
+              Desc: element["course_description"],
+              Post: element["post_owner_id"],
+            });
           });
-        });
-        setCurrentCourses(Courses);
-      } else {
-        TokenError();
-      }
-    });
+          setCurrentCourses(Courses);
+        } else {
+          TokenError();
+        }
+      });
+  }, [Token, TokenError, CurrentCourses, setCurrentCourses]);
+
+  useEffect(() => {
     getCurrentGroups(Token).then((res) => {
       const Courses = new Map();
       if (res) {
@@ -57,6 +64,9 @@ const HomePage = (props) => {
         TokenError();
       }
     });
+  }, [TokenError, Token, ID, Role]);
+
+  useEffect(() => {
     getRecentPosts(Token, ID).then((res) => {
       const Posts = [];
       if (res) {
@@ -66,7 +76,7 @@ const HomePage = (props) => {
             Location: ele["owner_name"],
             Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
             Desc: ele["post_text"],
-            PostId:ele['post_id']
+            PostId: ele["post_id"],
           });
         });
         setPosts(Posts);
@@ -74,6 +84,9 @@ const HomePage = (props) => {
         TokenError();
       }
     });
+  }, [Token, ID, Role, TokenError]);
+
+  useEffect(() => {
     getRecentEvent(Token, ID, Role).then((res) => {
       if (res) {
         setRecentEvent({
@@ -122,21 +135,6 @@ const HomePage = (props) => {
       {RecentEvent ? <Upcoming Event={RecentEvent} /> : <h1>Loading.....</h1>}
     </div>
   );
-};
-
-const mapStateToProps = (state) => {
-  return {
-    userData: state.userDataReducer,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    userDataActions: {
-      onSetToken: (newToken) => dispatch(setToken(newToken)),
-      tokenError: () => dispatch(setToken(null)),
-    },
-  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

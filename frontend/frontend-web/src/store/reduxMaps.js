@@ -39,7 +39,7 @@ export const mapDispatchToProps = (dispatch) => {
         onSetFinshedCourses : (newCourses) => dispatch(finishedCoursesActionFunctions.setFinishedCourses(newCourses))
       },
       recentUserPostsActions:{
-        onSetRecentUserPosts:(newUserPosts)=> dispatch(recentUserPostsActions.setUserRecentPosts(newUserPosts))
+        onSetRecentUserPosts:(newUserPosts)=> dispatch(recentUserPostsActions.setUserRecentPosts(newUserPosts)),
       }
     };
   };
