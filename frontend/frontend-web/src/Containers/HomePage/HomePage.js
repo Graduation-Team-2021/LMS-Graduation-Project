@@ -24,7 +24,7 @@ const HomePage = (props) => {
   const [RecentEvent, setRecentEvent] = useState(null);
 
   const { Token, ID, Role } = props.userData;
-  const TokenError = props.tokenError; //FIXME: the shady bug would live inside this strange line;
+  const TokenError = props.userDataActions.tokenError; //FIXME: the shady bug would live inside this strange line;
 
   useEffect(() => {
     getCurrentCourses(Token).then((res) => {
