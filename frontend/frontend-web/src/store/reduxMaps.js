@@ -3,7 +3,7 @@ import * as currentCoursesActionFunctions from './actions/currentCoursesActions'
 import * as currentGroupsActionFunctions from './actions/currentGroupsActions'
 import * as recentEventActionFunctions from './actions/recentEventActions'
 import * as finishedCoursesActionFunctions from './actions/finishedCoursesActions'
-import * as recentUserPostsActions from './actions/recentUserPostsActions'
+import * as recentUserPostsActionsFunctions from './actions/recentUserPostsActions'
 
 
 export const mapStateToProps = (state) => {
@@ -39,7 +39,7 @@ export const mapDispatchToProps = (dispatch) => {
         onSetFinshedCourses : (newCourses) => dispatch(finishedCoursesActionFunctions.setFinishedCourses(newCourses))
       },
       recentUserPostsActions:{
-        onSetRecentUserPosts:(newUserPosts)=> dispatch(recentUserPostsActions.setUserRecentPosts(newUserPosts)),
+        onSetRecentUserPosts:(newUserPosts)=> dispatch(recentUserPostsActionsFunctions.setUserRecentPosts(newUserPosts)),
       }
     };
   };

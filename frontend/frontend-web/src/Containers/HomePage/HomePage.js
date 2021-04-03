@@ -33,26 +33,22 @@ const HomePage = (props) => {
   const setPosts = props.recentUserPostsActions.onSetRecentUserPosts;
 
   useEffect(() => {
-    if (CurrentCourses.size === 0) {
-      getCurrentCourses(Token).then((res) => {
-        const Courses = new Map();
-        if (res) {
-          res.forEach((element) => {
-            Courses.set(element["course_code"], {
-              Title: element["course_name"],
-              Desc: element["course_description"],
-              Post: element["post_owner_id"],
-            });
+    getCurrentCourses(Token).then((res) => {
+      const Courses = new Map();
+      if (res) {
+        res.forEach((element) => {
+          Courses.set(element["course_code"], {
+            Title: element["course_name"],
+            Desc: element["course_description"],
+            Post: element["post_owner_id"],
           });
-          setCurrentCourses(Courses);
-        } else {
-          TokenError();
-        }
-      });
-    } else {
-      console.log(CurrentCourses);
-    }
-  }, [Token, TokenError, CurrentCourses, setCurrentCourses]);
+        });
+        setCurrentCourses(Courses);
+      } else {
+        TokenError();
+      }
+    });
+  }, [Token, TokenError, setCurrentCourses]);
 
   useEffect(() => {
     getCurrentGroups(Token).then((res) => {
@@ -85,7 +81,6 @@ const HomePage = (props) => {
             PostId: ele["post_id"],
           });
         });
-        console.log(Posts);
         setPosts(Posts);
       } else {
         TokenError();
@@ -135,7 +130,6 @@ const HomePage = (props) => {
           ) : (
             <h1>Loading.....</h1>
           )}
-          {console.log(Posts)}
           {Posts.length !== 0 ? (
             <PostsArea flex="5" Title="Latest Posts" Posts={Posts} />
           ) : (

@@ -13,7 +13,6 @@ import { login } from "../../Interface/Interface";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
-import Radium, { StyleRoot } from 'radium';
 
 class LoginPage extends Component {
   state = {
@@ -93,11 +92,7 @@ class LoginPage extends Component {
   render() {
     return (
       <div className={classes.Main}>
-        <Card 
-          className={classes.Card}
-          row
-          shadow
-        >
+        <Card className={classes.Card} row shadow>
           <div className={classes.Login}>
             <h1 className={classes.MainTitle}>Get Started</h1>
             <div className={classes.LoginMain}>
@@ -120,6 +115,6 @@ class LoginPage extends Component {
   }
 }
 
-export default (withRouter(
+export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(LoginPage)
-));
+);

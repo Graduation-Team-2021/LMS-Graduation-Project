@@ -7,13 +7,7 @@ const ImageHolder = (props) => {
       <img
         src={props.filler}
         alt=""
-        style={{
-          objectFit: "fill",
-          width: "100%",
-          height: "100%",
-          alignSelf: "center",
-          justifySelf: "center",
-        }}
+        className={classes.img}
       />
     </div>
   );

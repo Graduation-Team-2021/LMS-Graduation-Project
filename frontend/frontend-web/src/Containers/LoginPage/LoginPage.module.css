@@ -1,6 +1,6 @@
 .Main {
     background-color: gainsboro;
-    padding: 50px;
+    padding: 100px 7vw;
     height: 100vh;
     box-sizing: border-box;
     display: flex;
@@ -8,8 +8,10 @@
 }
 
 .Blue {
-    flex: 5;
     height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
 }
 
 .ButtonArea{
@@ -21,11 +23,10 @@
 
 .Login{
     text-align: start;
-    flex: 2;
+    width: 30vw;
     display: flex;
     flex-flow: column;
     justify-content: space-between;
-    height: 100%;
     padding: 0 5% 0 0;
 }
 
@@ -37,29 +38,33 @@
 .LoginMain{
     display: block;
     justify-content: center;
-    /* overflow: auto; */
     transition: all 200ms;
 }
 
 .Card {
-    height: fit-content;
+    height: 100%;
+    width: 100%;
     border: red solid 1px;
+    display: flex;
+    align-items: center;
 }
 
 @media (max-width : 1049px) {
 
-    .Blue {
-        height: 25%;
-    }
     .Card {
         flex-direction: column-reverse;
         height: 100%;   
-        padding-top: 18vh;
     }
     .ButtonArea {
         margin: 10px 0;
     }
-    
+    .Login{
+        width: 100%;
+        padding: 0;
+    }
+    .Card{
+        height: auto;
+    }
 }
 
 @media (max-width : 600px) {
@@ -67,6 +72,7 @@
         padding: 0;
     }
     .Card {
+        height: 100%;
         border-radius: 0;
     }
 }
