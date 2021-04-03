@@ -25,7 +25,7 @@ class StudentGroupView(Resource):
                    'post_owner_id':groups[i][4]
                }
            )
-        return data_array
+        return {'groups':data_array,'status_code':200}
 
 #group/<group_id>/students
 class EachGroupStudents(Resource):
