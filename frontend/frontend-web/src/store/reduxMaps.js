@@ -11,7 +11,7 @@ export const mapStateToProps = (state) => {
       userData: state.userDataReducer,
       currentCourses:state.currentCoursesReducer,
       finishedCourses:state.finishedCoursesReducer,
-      recentEvent:state.recentEventReducer,
+      recentEvent:state.recentEventsReducer,
       currentGroups:state.currentGroupsReducer,
       recentUserPosts:state.recentUserPostsReducer
     };

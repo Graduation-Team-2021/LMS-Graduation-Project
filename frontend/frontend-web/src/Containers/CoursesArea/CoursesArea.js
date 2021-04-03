@@ -1,12 +1,16 @@
 import classes from "./CoursesArea.module.css";
 import React, { Component } from "react";
-import CoursePreview from "../../Components/CoursePreview/CoursePreview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+
+import CoursePreview from "../../Components/CoursePreview/CoursePreview";
+
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 class CoursesArea extends Component {
   state = {
@@ -23,7 +27,8 @@ class CoursesArea extends Component {
     this.props.history.push("/Courses");
   };
 
-  isEllipsisActive(e) {//This is for checking the overflow
+  isEllipsisActive(e) {
+    //This is for checking the overflow
     return e.offsetHeight < e.scrollHeight || e.offsetWidth < e.scrollWidth;
   }
 
@@ -102,4 +107,4 @@ class CoursesArea extends Component {
   }
 }
 
-export default withRouter(CoursesArea);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(CoursesArea));

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import CoursesArea from "../CoursesArea/CoursesArea";
 import GroupsArea from "../GroupsArea/GroupsArea";
@@ -17,20 +17,23 @@ import {
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 const HomePage = (props) => {
-  const [Posts, setPosts] = useState([]);
   const { Token, ID, Role } = props.userData;
   const { tokenError: TokenError } = props.userDataActions;
-  const {
-    currentCourses: CurrentCourses,
-    recentEvents: RecentEvent,
-    currentGroups: Joined,
-  } = props;
+
+  const { currentCourses, recentEvent, currentGroups, recentUserPosts } = props;
+
+  const CurrentCourses = currentCourses.currentCourses;
+  const RecentEvent = recentEvent.recentEvent;
+  const Joined = currentGroups.currentGroups;
+  const Posts = recentUserPosts.userRecentPosts;
+
   const setCurrentCourses = props.currentCoursesActions.onSetCurrentCourses;
   const setJoined = props.currentGroupsActions.onSetCurrentGroups;
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
+  const setPosts = props.recentUserPostsActions.onSetRecentUserPosts;
 
   useEffect(() => {
-    if (CurrentCourses.length === 0)
+    if (CurrentCourses.size === 0) {
       getCurrentCourses(Token).then((res) => {
         const Courses = new Map();
         if (res) {
@@ -46,6 +49,9 @@ const HomePage = (props) => {
           TokenError();
         }
       });
+    } else {
+      console.log(CurrentCourses);
+    }
   }, [Token, TokenError, CurrentCourses, setCurrentCourses]);
 
   useEffect(() => {
@@ -79,12 +85,13 @@ const HomePage = (props) => {
             PostId: ele["post_id"],
           });
         });
+        console.log(Posts);
         setPosts(Posts);
       } else {
         TokenError();
       }
     });
-  }, [Token, ID, Role, TokenError]);
+  }, [Token, ID, Role, setPosts, TokenError]);
 
   useEffect(() => {
     getRecentEvent(Token, ID, Role).then((res) => {
@@ -118,14 +125,18 @@ const HomePage = (props) => {
             height: "fit-content",
           }}
         >
-          {CurrentCourses ? (
-            <CoursesArea Courses={CurrentCourses} Token={Token} />
+          {CurrentCourses.size !== 0 ? (
+            <CoursesArea Courses={CurrentCourses} />
           ) : (
             <h1>Loading.....</h1>
           )}
-          {Joined ? <GroupsArea Groups={Joined} /> : <h1>Loading.....</h1>}
-
-          {Posts ? (
+          {Joined.size !== 0 ? (
+            <GroupsArea Groups={Joined} />
+          ) : (
+            <h1>Loading.....</h1>
+          )}
+          {console.log(Posts)}
+          {Posts.length !== 0 ? (
             <PostsArea flex="5" Title="Latest Posts" Posts={Posts} />
           ) : (
             <h1>Loading.....</h1>
