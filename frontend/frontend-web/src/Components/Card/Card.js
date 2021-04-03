@@ -2,15 +2,26 @@ import React from "react";
 import classes from "./Card.module.css";
 
 const Card = (props) => {
+  let className = [classes.Main];
+
+  if (props.className) {
+    className.push(props.className);
+  }
+
+  if (props.row) {
+    className.push(classes.Row);
+  } else {
+    className.push(classes.Column);
+  }
+
+  if (props.shadow) {
+    className.push(classes.shadow);
+  }
+
+
   return (
     <div
-      className={
-        classes.Main +
-        " " +
-        (props.row ? classes.Row : classes.Column) +
-        " " +
-        (props.shadow ? classes.shadow : "")
-      }
+      className={className.join(" ")}
       style={props.style}
     >
       {props.children}
