@@ -16,10 +16,10 @@ const Menu = (props) => {
         () => {
           localStorage.removeItem('token');
           localStorage.removeItem('name');
-          props.history.push("/login");
+          props.TokenError()
         }}>Sign Out</h2>
     </React.Fragment>
   );
 };
 
-export default withRouter(Menu);
+  export default withRouter(Menu);

@@ -100,6 +100,7 @@ const HomePage = (props) => {
             id={ID}
             setLogged={props.setLogged}
             Notif={Posts}
+            TokenError={TokenError}
           />
         ) : (
           <h1>Loading.....</h1>

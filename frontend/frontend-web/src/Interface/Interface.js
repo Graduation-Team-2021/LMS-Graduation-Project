@@ -36,37 +36,39 @@ export const getCurrentCourses = async (Token) => {
   const res = await instance.get(`/my_courses`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: 'Bearer '+Token,
+      Authorization: "Bearer " + Token,
     },
   });
-  if (res['status']!==200) {
+  if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
-  return res.data;
+  return res.data["courses"];
 };
 
 export const getCurrentGroups = async (Token, id, role) => {
   const res = await instance.get(`/my_groups`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: 'Bearer '+Token,
+      Authorization: "Bearer " + Token,
     },
   });
-  if (res['status']!==200) {
+
+  if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
-  return res.data;
+  return res.data["groups"];
 };
 export const getCourses = async (Token) => {
   const res = await instance.get(`/courses`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: 'Bearer '+Token,
+      Authorization: "Bearer " + Token,
     },
   });
-  if (res['status']!==200) {
+
+  if (res["status"] !== 200) {
     //TODO: Better Check
     return null;
   }
@@ -76,38 +78,41 @@ export const getRecentPosts = async (Token, id) => {
   const res = await instance.get(`/${id}/first_10_posts`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: 'Bearer '+Token,
+      Authorization: "Bearer " + Token,
     },
   });
-  if (res['status']!==200) {
+
+  if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
-  return res.data;
+  return res.data["posts"];
 };
 
 export const getRecentEvent = async (Token, id, role) => {
   const res = await instance.get(`/${role}/${id}/recent_events`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: 'Bearer '+Token,
+      Authorization: "Bearer " + Token,
     },
   });
-  if (res['status']!==200) {
+
+  if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
-  return res.data;
+  return res.data["event"];
 };
 
 export const getFinishedCourses = async (Token, id, role) => {
   const res = await instance.get(`/${role}/${id}/finishedCourses`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: 'Bearer '+Token,
+      Authorization: "Bearer " + Token,
     },
   });
-  if (res['status']!==200) {
+
+  if (res["status"] !== 200) {
     //TODO: Better Check
     return null;
   }
@@ -118,10 +123,11 @@ export const getAllPosts = async (Token, owner) => {
   const res = await instance.get(`/posts/by_owner_id/${owner}`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: 'Bearer '+Token,
+      Authorization: "Bearer " + Token,
     },
   });
-  if (res['status']!==200) {
+
+  if (res["status"] !== 200) {
     //TODO: Better Check
     return null;
   }
@@ -139,11 +145,12 @@ export const uploadPost = async (Token, writer, owner, post) => {
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: 'Bearer '+Token,
+        Authorization: "Bearer " + Token,
       },
     }
   );
-  if (res['status']!==200) {
+
+  if (res["status"] !== 200) {
     //TODO: Better Check
     return null;
   }
@@ -154,10 +161,11 @@ export const getCourseByID = async (Token, CourseID) => {
   const res = await instance.get(`/courses/${CourseID}`, {
     headers: {
       "Content-Type": "application/json",
-      "Authorization": 'Bearer '+Token,
+      Authorization: "Bearer " + Token,
     },
   });
-  if (res['status']!==200) {
+
+  if (res["status"] !== 200) {
     //TODO: Better Check
     return null;
   }
@@ -165,18 +173,17 @@ export const getCourseByID = async (Token, CourseID) => {
 };
 
 export const uploadFile = async (Token, file, CourseID) => {
-  console.log(file)
+  console.log(file);
   let data = new FormData();
-  data.append('file',file)
+  data.append("file", file);
   const res = await instance.post(
     `/courses/${CourseID}/materials/upload`,
     data,
     {
       headers: {
         "Content-Type": "multipart/form-data",
-        "Authorization": 'Bearer '+Token,
+        Authorization: "Bearer " + Token,
       },
     }
   );
-  console.log(res);
 };

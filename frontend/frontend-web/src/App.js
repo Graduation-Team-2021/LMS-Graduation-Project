@@ -22,7 +22,8 @@ import jwt_decode from "jwt-decode";
 import Messenger from "./Components/Messenger/Messenger";
 
 const App = () => {
-  const TokenError = () => { //TODO: Make this Global
+  const TokenError = () => {
+    //TODO: Make this Global
     setToken(null);
   };
 
