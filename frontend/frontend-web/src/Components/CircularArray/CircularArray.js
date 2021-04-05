@@ -81,12 +81,21 @@ class CircularArray extends Component {
     return (
       <div
         style={{
-          border: "1px solid blue",
+          padding: "0 0 5%",
+          width: "100%",
           display: "flex",
-          width: `${Joined.length * 7 - shift * 3 + 3}vh`,
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        {Joined}
+        <div
+          style={{
+            display: "flex",
+            width: `${Joined.length * 7 - shift * 3 + 3}vh`,
+          }}
+        >
+          {Joined}
+        </div>
       </div>
     );
   }

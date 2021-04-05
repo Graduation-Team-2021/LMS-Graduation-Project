@@ -54,11 +54,13 @@ class CoursesArea extends Component {
 
     return (
       <div className={classes.CoursesArea}>
-        <div style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: 'center'
-        }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <div className={classes.Title}>Courses You're Taking</div>
           <button
             className={classes.Join}
@@ -102,13 +104,13 @@ class CoursesArea extends Component {
           ) : null}
         </div>
         <button
-            className={classes.Join}
-            onClick={() => {
-              this.loadCourses();
-            }}
-          >
-            See All Courses
-          </button>
+          className={classes.Join}
+          onClick={() => {
+            this.loadCourses();
+          }}
+        >
+          See All Courses
+        </button>
       </div>
     );
   }

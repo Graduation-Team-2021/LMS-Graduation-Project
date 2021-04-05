@@ -11,9 +11,7 @@ class GroupDesc extends Component {
         <div className={classes.Title}>About</div>
         <div className={classes.Desc}>{this.props.desc}</div>
         <div className={classes.Invited}>Joined Members</div>
-        <div className={classes.Joined}>
-          <CircularArray />
-        </div>
+        <CircularArray />
       </div>
     );
   }
