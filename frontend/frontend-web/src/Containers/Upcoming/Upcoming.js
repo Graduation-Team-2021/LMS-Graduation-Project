@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classes from "./Upcoming.module.css";
 import CircularAvatar from "../../Components/CircularAvatar/CircularAvatar";
-import CircularNumber from "../../Components/CircularNumber/CircularAvatar";
+import CircularNumber from "../../Components/CircularNumber/CircularNumber";
 import filler from "../../assets/Filler.png";
 import Minibar from "../../Components/Minibar/Minibar";
 import {
@@ -51,7 +51,7 @@ class Upcoming extends Component {
 
     return (
       <div className={classes.upcoming}>
-    {/*TODO: Add Add Event Button Here*/}
+    {/*TODO: Add "Add Event" Button Here*/}
         <div className={classes.Title}>Upcoming Event</div>
         <div className={classes.EventTitle}>
           {Event.Title}

@@ -1,13 +1,16 @@
 import classes from "./GroupPage.module.css";
-import React, { useEffect, useState } from "react";
+
 import Card from "../../Components/Card/Card";
-import TopBar from "../../Components/TopBar/TopBar";
 import Modal from "../../Components/Modal/Modal";
 import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
 import GroupDescription from "../GroupDesc/GroupDesc.js";
+import NewPostCard from "../../Components/New Post/NewPost";
+
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { getAllPosts, uploadPost } from "../../Interface/Interface";
+
 const HomePage = (props) => {
   const [groupID, isJoined, postID, Title, Token, userID, Desc] = [
     props.match.params.id,
@@ -16,7 +19,7 @@ const HomePage = (props) => {
     props.location.state.name,
     props.Token,
     props.ID,
-    props.location.state.Desc
+    props.location.state.Desc,
   ];
   const [clicked, setclicked] = useState(false);
   const [Posts, setPosts] = useState([]);
@@ -42,8 +45,8 @@ const HomePage = (props) => {
         posts.push(
           <Post
             key={index}
-            Title={`by ${value[value.length-index-1]["name"]}`}
-            Content={value[value.length-index-1]["post_text"]}
+            Title={value[value.length - index - 1]["name"]}
+            Content={value[value.length - index - 1]["post_text"]}
           />
         );
       }
@@ -63,113 +66,36 @@ const HomePage = (props) => {
   };
 
   return (
-    <div className={classes.Main}>
+    <React.Fragment>
       <Modal show={clicked} onClick={hide}>
         <NewPost submit={SubmitPost} dismiss={hide} />
       </Modal>
-      <Card
-        style={{
-          backgroundColor: "rgba(243, 238, 238, 0.9)",
-          height: "fit-content",
-        }}
-      >
-        <TopBar
-          Name={props.Name}
-          id={props.id}
-          setLogged={props.setLogged}
-          Notif={props.Posts}
-        />
-        <div className={classes.Center}>
-          <div
-            style={{
-              width: "75%",
-            }}
-          >
-            <Card
-              style={{
-                width: "100%",
-                alignItems: "flex-start",
-                height: "fit-content",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
-                }}
-              >
-                <h1>{Title}</h1>
-                {isJoined === "false" ? (
-                  <input
-                    type="button"
-                    value="Join Group"
-                    className={classes.Join}
-                    onClick={() => {
-                      props.Joining(groupID);
-                      props.history.push("/");
-                    }}
-                  />
-                ) : null}
-              </div>
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                {isJoined === "true" ? (
-                  <Card shadow>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <label
-                        style={{
-                          flex: "1",
-                          fontSize: "20px",
-                        }}
-                      >
-                        Write a new Post Here
-                      </label>
-                      <div className={classes.otherMain}>
-                        <input
-                          style={{
-                            cursor: "pointer",
-                            textAlign: "start",
-                            color: "rgb(78, 78, 78)",
-                          }}
-                          value="What's on Your Mind?"
-                          type="button"
-                          className={classes.input}
-                          onClick={Focus}
-                        />
-                      </div>
-                    </div>
-                  </Card>
-                ) : null}
-              </div>
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexFlow: "column",
-                  alignItems: "center",
-                }}
-              >
-                <div className={classes.posts}>{Posts}</div>
-              </div>
-            </Card>
-          </div>
-          <GroupDescription desc={Desc} />
+      <div className={classes.Center}>
+        <div className={classes.MainArea}>
+          <Card className={classes.Card}>
+            <div className={classes.Title}>
+              <h1>{Title}</h1>
+              {isJoined === "false" ? (
+                <input
+                  type="button"
+                  value="Join Group"
+                  className={classes.Join}
+                  onClick={() => {
+                    props.Joining(groupID);
+                    props.history.push("/");
+                  }}
+                />
+              ) : null}
+            </div>
+            {isJoined === "true" ? <NewPostCard Focus={Focus} /> : null}
+            <div className={classes.PostsHolder}>
+              <div className={classes.posts}>{Posts}</div>
+            </div>
+          </Card>
         </div>
-      </Card>
-    </div>
+        <GroupDescription desc={Desc}/>
+      </div>
+    </React.Fragment>
   );
 };
 

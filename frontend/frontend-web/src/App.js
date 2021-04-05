@@ -5,6 +5,7 @@ import Login from "./Containers/SignUp Full Page/SignUpPage";
 import Profile from "./Containers/ProfilePage/ProfilePage";
 import Courses from "./Containers/CoursesPage/CoursesPage";
 import Course from "./Containers/CoursePage/CoursePage";
+import Group from './Containers/GroupPage/GroupPage.js'
 
 import { mapStateToProps, mapDispatchToProps } from "./store/reduxMaps";
 import { connect } from "react-redux";
@@ -21,6 +22,8 @@ const App = (props) => {
             <Route path="/profile" exact component={Profile} />
             <Route path="/Courses" exact component={Courses} />
             <Route path="/Course/:id" exact component={Course} />
+            <Route path="/Group/:id" exact component={Group} />
+            <Redirect path='/login' to='/'/>
           </Switch>
         </MainPage>
       ) : (
