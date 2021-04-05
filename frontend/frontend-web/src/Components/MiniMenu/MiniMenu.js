@@ -161,7 +161,7 @@ const MiniMenu = (props) => {
           </div>
           <div>
             {Notif || Messages || Menu ? (
-              <DropDownMenu TokenError={props.TokenError} setLogged={props.setLogged} Notif={props.Notif}
+              <DropDownMenu TokenError={props.TokenError} Notif={props.Notif}
                 choice={Notif ? "Notif" : Messages ? "Messages" : "Menu"}
               />
             ) : null}
