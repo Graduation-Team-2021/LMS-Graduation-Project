@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import classes from "./CourseDesc.module.css";
-import CircularAvatar from "../../Components/CircularAvatar/CircularAvatar";
-import CircularNumber from "../../Components/CircularNumber/CircularNumber";
-import filler from "../../assets/Filler.png";
 import Card from "../../Components/Card/Card";
 import Minibar from "../../Components/Minibar/Minibar";
 import { faVideo, faFilePdf } from "@fortawesome/free-solid-svg-icons";
@@ -31,47 +28,11 @@ class CourseDesc extends Component {
   };
 
   Submit = () => {
-    console.log(this.state.file)
+    console.log(this.state.file);
     uploadFile(this.props.Token, this.state.file, this.props.CourseID);
   };
 
   render() {
-    let Joined = [];
-
-    const Number = 21;
-
-    if (Number > 6) {
-      Joined.push(
-        <div
-          key={0}
-          className={classes.Circle}
-          style={{
-            zIndex: Number,
-          }}
-        >
-          <CircularNumber
-            filler={"+" + (Number - 5 <= 999 ? Number - 5 : 999)}
-          />
-        </div>
-      );
-    }
-
-    for (let index = 0; index < (Number <= 6 ? Number : 5); index++) {
-      Joined.push(
-        <div
-          key={index + 1}
-          className={classes.Circle}
-          style={{
-            zIndex: Number - index - (Number > 6 ? 1 : 0),
-            transform:
-              "translateX(" + (-index - (Number > 4 ? 1 : 0)) * 40 + "px)",
-          }}
-        >
-          <CircularAvatar filler={filler} />
-        </div>
-      );
-    }
-
     return (
       <div className={classes.upcoming}>
         <div className={classes.Title}>About</div>
@@ -128,16 +89,24 @@ class CourseDesc extends Component {
                 </Card>
               </div>
             </AddEvent>
-            <div style={{
-              padding: '10% 0'
-            }}>
-              <Card shadow 
+            <div
               style={{
-                padding: '10%'
-              }}>
-                <label style={{
-                  padding: '0 0 10% 0'
-                }}>Select files:</label>
+                padding: "10% 0",
+              }}
+            >
+              <Card
+                shadow
+                style={{
+                  padding: "10%",
+                }}
+              >
+                <label
+                  style={{
+                    padding: "0 0 10% 0",
+                  }}
+                >
+                  Select files:
+                </label>
                 <input
                   type="file"
                   id="myfile"

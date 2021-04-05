@@ -62,8 +62,7 @@ class CoursesArea extends Component {
           }}
         >
           <div className={classes.Title}>Courses You're Taking</div>
-        </div>
-        <button
+          <button
             className={classes.Join}
             onClick={() => {
               this.loadCourses();
@@ -71,6 +70,8 @@ class CoursesArea extends Component {
           >
             See All Courses
           </button>
+        </div>
+
         <div className={classes.SwipeList}>
           {this.state.overflowActive ? (
             <div
@@ -107,4 +108,6 @@ class CoursesArea extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(CoursesArea));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(CoursesArea)
+);

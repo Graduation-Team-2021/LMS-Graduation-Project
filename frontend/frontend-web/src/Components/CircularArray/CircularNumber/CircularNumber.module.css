@@ -1,9 +1,12 @@
-.Main {
+.Main{
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 100%;
     border: 2px solid white;
-    width: 3vw;
-    height: 3vw;
+    width: 7vh;
+    height: 7vh;
+    background-color: purple;
+    text-overflow: clip;
+    box-sizing: border-box;
 }

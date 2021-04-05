@@ -1,11 +1,10 @@
 .Main {
     display: flex;
     justify-content: space-between;
-    width: 25vw;
+    width: 20vw;
     padding-bottom: 1%;
     align-items: center;
     height: 4vw;
-    border: 1px solid black;
 }
 
 .full {
@@ -155,5 +154,5 @@
 }
 
 .Icon {
-    font-size: 5vw;
+    font-size: 4vw;
 }

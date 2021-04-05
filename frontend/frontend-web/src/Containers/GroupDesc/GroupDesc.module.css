@@ -33,10 +33,9 @@
  }
 
  .Joined {
-     border: 1px solid black;
      display: flex;
+     justify-content: center;
      position: relative;
      align-items: center;
-     height: 3vw;
-     justify-content: flex-end;
+     width: 100%;
  }

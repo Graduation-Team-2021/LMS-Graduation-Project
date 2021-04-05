@@ -1,7 +1,7 @@
 import React from "react";
 
 import classes from "./CircularAvatar.module.css";
-import ImageHolder from '../ImageHolder/ImageHolder'
+import ImageHolder from '../../ImageHolder/ImageHolder'
 
 const CircularAvatar = (props) => {
   return (

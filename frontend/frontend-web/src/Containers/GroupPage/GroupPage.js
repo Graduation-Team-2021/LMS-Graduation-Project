@@ -39,7 +39,6 @@ const HomePage = (props) => {
   useEffect(() => {
     //Loading Data from Server
     getAllPosts(Token, postID).then((value) => {
-      console.log(value);
       const posts = [];
       for (let index = 0; index < value.length; index++) {
         posts.push(
