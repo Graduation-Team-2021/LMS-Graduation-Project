@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import SignUpField from "../../Components/SignUpField/SignUpField";
 import classes from "./SignUp.module.css";
-import ButtonArray from "../../Components/ButtonArray/ButtonArray";
+import Button from '../../Components/Button/Button'
 
 class SignUp extends Component {
   state = {
@@ -148,11 +148,7 @@ class SignUp extends Component {
     return <div className={classes.Login}>
       <h1 className={classes.MainTitle}>Get Started</h1>
       <div className={classes.Main}>{signupField}</div>
-      <ButtonArray
-        logging_in={this.state.logging_in}
-        SigninCLicked={this.signin}
-        SignupCLicked={this.signup}
-      />
+      <Button value='Add User' onClick={this.props.SignUp}/>
     </div>;
   }
 }
