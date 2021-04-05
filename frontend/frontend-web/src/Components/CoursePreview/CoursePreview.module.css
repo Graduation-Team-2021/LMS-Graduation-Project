@@ -17,7 +17,7 @@
     transition: 500ms;
 }
 
-.Card {
+.holder .Card {
     width: 25vw;
     height: 40vh;
     display: flex;
@@ -25,3 +25,4 @@
     justify-content: space-between;
     padding: 10%;
 }
+
