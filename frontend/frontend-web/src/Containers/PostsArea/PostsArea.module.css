@@ -27,6 +27,6 @@
 
 @media (max-width :668px) {
     .holder {
-        width: 100vw;
+        width: 50vw;
     }
 }
