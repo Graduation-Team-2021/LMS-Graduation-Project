@@ -89,7 +89,6 @@ const MiniMenu = (props) => {
       <div className={classes.drowpdown}>
         <button className={classes.dropbtn}>Dropdown</button>
         <div className={classes.dropdown_content}>
-
           <div className={classes.Main2}>
             <div
               className={classes.holder}
