@@ -90,8 +90,7 @@ const MiniMenu = (props) => {
       <div className={classes.drowpdown}>
         <button className={classes.dropbtn} onClick={()=>setCLicked(!CLicked)}>Dropdown</button>
         <div className={classes.dropdown_content}>
-
-          <div className={/* CLicked?classes.Main2:classes.showen */classes.Main2}>
+          <div className={classes.Main2}>
             <div
               className={classes.holder}
               onClick={() => {

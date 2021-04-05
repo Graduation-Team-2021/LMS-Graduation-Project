@@ -1,7 +1,7 @@
 import React from "react";
 import MainPage from "./Containers/MainPage/MainPage";
 import Home from "./Containers/HomePage/HomePage";
-import Login from "./Containers/SignUp Full Page/SignUpPage";
+import Login from "./Containers/LoginPage/LoginPage";
 import Profile from "./Containers/ProfilePage/ProfilePage";
 import Courses from "./Containers/CoursesPage/CoursesPage";
 import Course from "./Containers/CoursePage/CoursePage";
