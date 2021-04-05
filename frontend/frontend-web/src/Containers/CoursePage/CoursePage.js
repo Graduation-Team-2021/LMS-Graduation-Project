@@ -5,7 +5,8 @@ import Card from "../../Components/Card/Card";
 import Modal from "../../Components/Modal/Modal";
 import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
-import CourseDescription from "../CourseDesc/GroupDesc.js";
+import CourseDescription from "../CourseDesc/CourseDesc.js";
+import NewPostCard from "../../Components/New Post/NewPost";
 
 import {
   getAllPosts,
@@ -100,32 +101,13 @@ const CoursePage = (props) => {
                 onClick={props.Joining.bind(this, courseID)}
               />
             )}
-            {isJoined === "true" ? (
-              <Card shadow>
-                <div className={classes.newPostHolder}>
-                  <label className={classes.newPostLabel}>
-                    Write a new Post Here
-                  </label>
-                  <div className={classes.otherMain}>
-                    <button
-                      className={classes.PostButton}
-                      title=""
-                      onClick={Focus}
-                    >
-                      What's on Your Mind?
-                    </button>
-                  </div>
-                </div>
-              </Card>
-            ) : null}
+            {isJoined === "true" ? <NewPostCard Focus={Focus} /> : null}
             <div className={classes.PostsHolder}>
               <div className={classes.posts}>{Posts}</div>
             </div>
           </Card>
           <CourseDescription
             desc={Course["course_description"]}
-            Role={Role}
-            Token={Token}
             CourseID={courseID}
           />
         </div>

@@ -1,18 +1,12 @@
-import classes from "./CircularAvatar.module.css";
 import React from "react";
+
+import classes from "./CircularAvatar.module.css";
+import ImageHolder from '../ImageHolder/ImageHolder'
 
 const CircularAvatar = (props) => {
   return (
     <div className={classes.Main} style={props.style}>
-      <img
-        src={props.filler}
-        alt=""
-        style={{
-          objectFit: "cover",
-          maxHeight: "100%",
-          maxWidth: "100%",
-        }}
-      />
+      <ImageHolder filler={props.filler}/>
     </div>
   );
 };

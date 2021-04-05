@@ -1,4 +1,4 @@
-.Main{
+.Main {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,6 +6,4 @@
     border: 2px solid white;
     width: 3vw;
     height: 3vw;
-    background-color: purple;
-    overflow: hidden;
 }
