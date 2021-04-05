@@ -4,11 +4,15 @@ import filler from "../../assets/Filler.png";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCommentDots } from "@fortawesome/free-regular-svg-icons";
-import { faChevronDown, faSquare, faHome } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faSquare,
+  faHome,
+} from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
 
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
-
+import ImageHolder from "../ImageHolder/ImageHolder";
 
 const MiniMenu = (props) => {
   const [Notif, setNotif] = useState(false);
@@ -21,14 +25,16 @@ const MiniMenu = (props) => {
         <div
           className={classes.holder}
           onClick={() => {
-            props.history.push('/');
+            props.history.push("/");
           }}
         >
           <FontAwesomeIcon icon={faHome} size="4x" fixedWidth />
         </div>
         <div
+          tabIndex="0"
+          onBlur={() => setNotif(false)}
           className={classes.holder}
-          onClick={() => {
+          onFocus={() => {
             setMenu(false);
             setMessages(false);
             setNotif(!Notif);
@@ -41,8 +47,10 @@ const MiniMenu = (props) => {
           <FontAwesomeIcon icon={faBell} size="4x" fixedWidth />
         </div>
         <div
+          tabIndex="0"
+          onBlur={() => setMessages(false)}
           className={classes.holder}
-          onClick={() => {
+          onFocus={() => {
             setMenu(false);
             setNotif(false);
             setMessages(!Messages);
@@ -55,39 +63,25 @@ const MiniMenu = (props) => {
           <FontAwesomeIcon icon={faCommentDots} size="4x" fixedWidth />
         </div>
         <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-          onClick={() => {
+          className={classes.holder}
+          tabIndex="0"
+          onBlur={() => setMenu(false)}
+          onFocus={() => {
             setMessages(false);
             setNotif(false);
             setMenu(!Menu);
           }}
         >
-          <div className={classes.holder}>
-            <div className={classes.status} />
-            <FontAwesomeIcon
-              icon={faSquare}
-              fixedWidth
-              color="purple"
-            />
-            <img
-              src={filler}
-              alt=""
-              style={{
-                maxWidth: "80%",
-                position: "absolute",
-                zIndex: "10",
-              }}
-            />
-          </div>
-          <FontAwesomeIcon icon={faChevronDown} />
+          <div className={classes.status} />
+          <div className={classes.Back} />
+          <ImageHolder className={classes.UserImage} filler={filler} />
         </div>
       </div>
       <div>
         {Notif || Messages || Menu ? (
-          <DropDownMenu TokenError={props.TokenError} setLogged={props.setLogged} Notif={props.Notif}
+          <DropDownMenu
+            TokenError={props.TokenError}
+            Notif={props.Notif}
             choice={Notif ? "Notif" : Messages ? "Messages" : "Menu"}
           />
         ) : null}

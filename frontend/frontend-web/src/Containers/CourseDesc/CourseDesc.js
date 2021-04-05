@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import classes from "./GroupDesc.module.css";
+import classes from "./CourseDesc.module.css";
 import CircularAvatar from "../../Components/CircularAvatar/CircularAvatar";
-import CircularNumber from "../../Components/CircularNumber/CircularAvatar";
+import CircularNumber from "../../Components/CircularNumber/CircularNumber";
 import filler from "../../assets/Filler.png";
 import Card from "../../Components/Card/Card";
 import Minibar from "../../Components/Minibar/Minibar";
 import { faVideo, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
-import AddEvent from "../../Containers/AddEventPage/AddEvent";
+import AddEvent from "../AddEventPage/AddEvent";
 import { uploadFile } from "../../Interface/Interface";
 
-class Upcoming extends Component {
+class CourseDesc extends Component {
   state = {
     file: null,
   };
@@ -156,4 +156,4 @@ class Upcoming extends Component {
   }
 }
 
-export default withRouter(Upcoming);
+export default withRouter(CourseDesc);

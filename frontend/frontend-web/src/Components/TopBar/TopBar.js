@@ -19,7 +19,7 @@ const TopBar = (props) => {
     <div className={classes.Main}>
       <Welcome Name={props.Name} />
       <Search />
-      <MiniMenu TokenError={props.TokenError} id={props.id} setLogged={props.setLogged} notif={notif} Notif={props.Notif} onNotifClick={()=>{
+      <MiniMenu TokenError={props.TokenError} id={props.id} notif={notif} Notif={props.Notif} onNotifClick={()=>{
         setNotif(0)
       }} message={message} onMessageClick={()=>{
         setMessage(0)
