@@ -1,11 +1,12 @@
-import React , { useState }from "react";
+import React, { useState } from "react";
 import NormalTextField from "../NormalTextField/NormalTextField";
 import PasswordTextField from "../PasswordField/PasswordField";
 import Terms from "../TermsAndConditions/Terms";
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import DatePicker from "react-date-picker";
 
-
+// import CalendarInput from 'react-calendar-date-picker'
 
 const SignUpField = (props) => {
   const [value, onChange] = useState(new Date());
@@ -32,10 +33,7 @@ const SignUpField = (props) => {
         Name="Birthday"
         onChange={props.onChange}
       >
-        <Calendar
-        onChange={onChange}
-        value={value}
-      />
+        <DatePicker onChange={onChange} value={value} />
       </NormalTextField>
       <NormalTextField
         Error={props.RoleError}
