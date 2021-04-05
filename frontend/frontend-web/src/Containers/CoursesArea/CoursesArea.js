@@ -54,15 +54,21 @@ class CoursesArea extends Component {
 
     return (
       <div className={classes.CoursesArea}>
-        <div className={classes.Title}>Courses You're Taking</div>
-        <button
-          className={classes.Join}
-          onClick={() => {
-            this.loadCourses();
-          }}
-        >
-          See All Courses
-        </button>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: 'center'
+        }}>
+          <div className={classes.Title}>Courses You're Taking</div>
+          <button
+            className={classes.Join}
+            onClick={() => {
+              this.loadCourses();
+            }}
+          >
+            See All Courses
+          </button>
+        </div>
 
         <div className={classes.SwipeList}>
           {this.state.overflowActive ? (
@@ -95,6 +101,14 @@ class CoursesArea extends Component {
             </div>
           ) : null}
         </div>
+        <button
+            className={classes.Join}
+            onClick={() => {
+              this.loadCourses();
+            }}
+          >
+            See All Courses
+          </button>
       </div>
     );
   }
