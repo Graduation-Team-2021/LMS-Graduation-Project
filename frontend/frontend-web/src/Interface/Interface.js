@@ -111,12 +111,11 @@ export const getFinishedCourses = async (Token, id, role) => {
       Authorization: "Bearer " + Token,
     },
   });
-
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
-  return res.data;
+  return res.data['courses'];
 };
 
 export const getAllPosts = async (Token, owner) => {

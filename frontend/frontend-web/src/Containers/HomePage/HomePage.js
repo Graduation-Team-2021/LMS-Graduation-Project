@@ -32,84 +32,89 @@ const HomePage = (props) => {
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
   const setPosts = props.recentUserPostsActions.onSetRecentUserPosts;
 
-  useEffect(() => {
-    getCurrentCourses(Token).then((res) => {
-      const Courses = new Map();
-      if (res) {
-        res.forEach((element) => {
-          Courses.set(element["course_code"], {
-            Title: element["course_name"],
-            Desc: element["course_description"],
-            Post: element["post_owner_id"],
-          });
-        });
-        setCurrentCourses(Courses);
-      } else {
-        TokenError();
-      }
-    });
-  }, [Token, TokenError, setCurrentCourses]);
+  console.log(CurrentCourses);
 
   useEffect(() => {
-    getCurrentGroups(Token).then((res) => {
-      const Courses = new Map();
-      if (res) {
-        res.forEach((element) => {
-          Courses.set(element["group_id"], {
-            Title: element["group_name"],
-            Desc: element["group_description"],
-            Post: element["post_owner_id"],
+    if (CurrentCourses.size === 0)
+      getCurrentCourses(Token).then((res) => {
+        const Courses = new Map();
+        if (res) {
+          res.forEach((element) => {
+            Courses.set(element["course_code"], {
+              Title: element["course_name"],
+              Desc: element["course_description"],
+              Post: element["post_owner_id"],
+            });
           });
-        });
-        setJoined(Courses);
-      } else {
-        TokenError();
-      }
-    });
-  }, [TokenError, Token, ID, Role, setJoined]);
+          setCurrentCourses(Courses);
+        } else {
+          TokenError();
+        }
+      });
+  }, [Token, TokenError, setCurrentCourses, CurrentCourses]);
 
   useEffect(() => {
-    getRecentPosts(Token, ID).then((res) => {
-      const Posts = [];
-      if (res) {
-        res.forEach((ele) => {
-          Posts.push({
-            Name: ele["name"],
-            Location: ele["owner_name"],
-            Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
-            Desc: ele["post_text"],
-            PostId: ele["post_id"],
+    if (Joined.size === 0)
+      getCurrentGroups(Token).then((res) => {
+        const Courses = new Map();
+        if (res) {
+          res.forEach((element) => {
+            Courses.set(element["group_id"], {
+              Title: element["group_name"],
+              Desc: element["group_description"],
+              Post: element["post_owner_id"],
+            });
           });
-        });
-        setPosts(Posts);
-      } else {
-        TokenError();
-      }
-    });
-  }, [Token, ID, Role, setPosts, TokenError]);
+          setJoined(Courses);
+        } else {
+          TokenError();
+        }
+      });
+  }, [TokenError, Token, ID, Role, setJoined, Joined]);
 
   useEffect(() => {
-    getRecentEvent(Token, ID, Role).then((res) => {
-      if (res) {
-        setRecentEvent({
-          Title: res["event_name"],
-          Desc: res["event_description"],
-          Type: res["event_type"],
-          Duration: res["event_duration"],
-          Date: res["event_date"].slice(0, 10),
-          Host: res["course_code"],
-          Time: res["event_date"].slice(11),
-        });
-      } else {
-        TokenError();
-      }
-    });
-  }, [Token, ID, Role, TokenError, setRecentEvent]);
+    if (Posts.length === 0)
+      getRecentPosts(Token, ID).then((res) => {
+        const Posts = [];
+        if (res) {
+          res.forEach((ele) => {
+            Posts.push({
+              Name: ele["name"],
+              Location: ele["owner_name"],
+              Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
+              Desc: ele["post_text"],
+              PostId: ele["post_id"],
+            });
+          });
+          setPosts(Posts);
+        } else {
+          TokenError();
+        }
+      });
+  }, [Token, ID, Role, setPosts, Posts, TokenError]);
+
+  useEffect(() => {
+    if (!RecentEvent)
+      getRecentEvent(Token, ID, Role).then((res) => {
+        if (res) {
+          setRecentEvent({
+            Title: res["event_name"],
+            Desc: res["event_description"],
+            Type: res["event_type"],
+            Duration: res["event_duration"],
+            Date: res["event_date"].slice(0, 10),
+            Host: res["course_code"],
+            Time: res["event_date"].slice(11),
+          });
+        } else {
+          TokenError();
+        }
+      });
+  }, [Token, ID, Role, TokenError, RecentEvent, setRecentEvent]);
 
   return (
     <div className={classes.Center}>
-      <div className={classes.contanier}
-      >
+      <div className={classes.contanier}>
         <Card
           style={{
             alignItems: "flex-start",

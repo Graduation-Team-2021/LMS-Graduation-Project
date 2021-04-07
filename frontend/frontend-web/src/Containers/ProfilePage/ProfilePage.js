@@ -5,27 +5,117 @@ import { withRouter } from "react-router-dom";
 import classes from "./ProfilePage.module.css";
 
 import Card from "../../Components/Card/Card";
-import TopBar from "../../Components/TopBar/TopBar";
 import CoursesArea from "../CoursesArea/CoursesArea";
 import GroupsArea from "../GroupsArea/GroupsArea";
-import OldCourses from "../OldCourses/GroupsArea";
+import OldCourses from "../OldCourses/OldCourses";
 import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
 
-import { mapStateToProps,mapDispatchToProps } from "../../store/reduxMaps";
-import { getFinishedCourses } from "../../Interface/Interface";
+import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
+import {
+  getFinishedCourses,
+  getCurrentCourses,
+  getCurrentGroups,
+  getRecentPosts,
+  getRecentEvent,
+} from "../../Interface/Interface";
 
 const ProfilePage = (props) => {
-  const [Joined, setJoined] = useState(new Map());
-  const [CurrentCourses, setCurrentCourses] = useState(new Map());
-  const [Posts, setPosts] = useState([]);
   const [Finished, setFinished] = useState([]);
 
-  const {
-    Token,
-    ID,
-    Role,
-  } = props.userData;
+  const { Token, ID, Role } = props.userData;
+
+  const { tokenError: TokenError } = props.userDataActions;
+
+  const { currentCourses, recentEvent, currentGroups, recentUserPosts } = props;
+
+  const CurrentCourses = currentCourses.currentCourses;
+  const RecentEvent = recentEvent.recentEvent;
+  const Joined = currentGroups.currentGroups;
+  const Posts = recentUserPosts.userRecentPosts;
+
+  const setCurrentCourses = props.currentCoursesActions.onSetCurrentCourses;
+  const setJoined = props.currentGroupsActions.onSetCurrentGroups;
+  const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
+  const setPosts = props.recentUserPostsActions.onSetRecentUserPosts;
+
+  useEffect(() => {
+    if (CurrentCourses.size === 0)
+      getCurrentCourses(Token).then((res) => {
+        const Courses = new Map();
+        if (res) {
+          res.forEach((element) => {
+            Courses.set(element["course_code"], {
+              Title: element["course_name"],
+              Desc: element["course_description"],
+              Post: element["post_owner_id"],
+            });
+          });
+          setCurrentCourses(Courses);
+        } else {
+          TokenError();
+        }
+      });
+  }, [Token, TokenError, setCurrentCourses, CurrentCourses]);
+
+  useEffect(() => {
+    if (Joined.size === 0)
+      getCurrentGroups(Token).then((res) => {
+        const Courses = new Map();
+        if (res) {
+          res.forEach((element) => {
+            Courses.set(element["group_id"], {
+              Title: element["group_name"],
+              Desc: element["group_description"],
+              Post: element["post_owner_id"],
+            });
+          });
+          setJoined(Courses);
+        } else {
+          TokenError();
+        }
+      });
+  }, [TokenError, Token, ID, Role, setJoined, Joined]);
+
+  useEffect(() => {
+    if (Posts.length === 0)
+      getRecentPosts(Token, ID).then((res) => {
+        const Posts = [];
+        if (res) {
+          res.forEach((ele) => {
+            Posts.push({
+              Name: ele["name"],
+              Location: ele["owner_name"],
+              Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
+              Desc: ele["post_text"],
+              PostId: ele["post_id"],
+            });
+          });
+          setPosts(Posts);
+        } else {
+          TokenError();
+        }
+      });
+  }, [Token, ID, Role, setPosts, Posts, TokenError]);
+
+  useEffect(() => {
+    if (!RecentEvent)
+      getRecentEvent(Token, ID, Role).then((res) => {
+        if (res) {
+          setRecentEvent({
+            Title: res["event_name"],
+            Desc: res["event_description"],
+            Type: res["event_type"],
+            Duration: res["event_duration"],
+            Date: res["event_date"].slice(0, 10),
+            Host: res["course_code"],
+            Time: res["event_date"].slice(11),
+          });
+        } else {
+          TokenError();
+        }
+      });
+  }, [Token, ID, Role, TokenError, RecentEvent, setRecentEvent]);
 
   useEffect(() => {
     getFinishedCourses(Token, ID, Role).then((res) => {
@@ -41,75 +131,40 @@ const ProfilePage = (props) => {
   }, [Token, ID, Role]);
 
   return (
-    <div className={classes.Main}>
-      <Card
-        style={{
-          backgroundColor: "rgba(243, 238, 238, 0.9)",
-          height: "fit-content",
-        }}
-      >
-        <TopBar
-          Name={props.Name}
-          id={props.id}
-          setLogged={props.setLogged}
-          Notif={Posts}
-        />
-        <div className={classes.Center}>
-          <div
-            style={{
-              maxWidth: "80%",
-            }}
-          >
-            <Card
-              style={{
-                alignItems: "flex-start",
-                flex: "3",
-                height: "fit-content",
-              }}
-            >
-              {CurrentCourses.size !== 0 ? (
-                <CoursesArea
-                  Courses={CurrentCourses}
-                  Token={props.Token}
-                  setCourses={props.Courses}
-                />
-              ) : (
-                <h1>Loading.....</h1>
-              )}
-              {Joined.size !== 0 ? (
-                <GroupsArea Groups={Joined} />
-              ) : (
-                <h1>Loading.....</h1>
-              )}
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                {Finished.length !== 0 ? (
-                  <OldCourses
-                    flex="2"
-                    Title="Your Passed Courses"
-                    Courses={Finished}
-                  />
-                ) : (
-                  <h1>Loading.....</h1>
-                )}
-                {Posts.length !== 0 ? (
-                  <PostsArea flex="5" Title="Your Posts" Posts={Posts} />
-                ) : (
-                  <h1>Loading.....</h1>
-                )}
-              </div>
-            </Card>
-          </div>
-          {Event ? <Upcoming Event={Event} /> : <h1>Loading.....</h1>}
+    <div className={classes.Center}>
+      <Card className={classes.Container}>
+        {CurrentCourses.size !== 0 ? (
+          <CoursesArea Courses={CurrentCourses} />
+        ) : (
+          <h1>Loading.....</h1>
+        )}
+        {Joined.size !== 0 ? (
+          <GroupsArea Groups={Joined} />
+        ) : (
+          <h1>Loading.....</h1>
+        )}
+        <div className={classes.Bottom}
+        >
+          {Finished.length !== 0 ? (
+            <OldCourses
+              Title="Your Passed Courses"
+              Courses={Finished}
+            />
+          ) : (
+            <h1>Loading.....</h1>
+          )}
+          {Posts.length !== 0 ? (
+            <PostsArea Title="Your Posts" Posts={Posts} />
+          ) : (
+            <h1>Loading.....</h1>
+          )}
         </div>
       </Card>
+      {RecentEvent ? <Upcoming Event={RecentEvent} /> : <h1>Loading.....</h1>}
     </div>
   );
 };
 
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(ProfilePage));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ProfilePage)
+);

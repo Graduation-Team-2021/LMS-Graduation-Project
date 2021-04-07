@@ -5,7 +5,6 @@ const TextField = (props) => {
     const Field = !props.Error
       ? classes.Field
       : classes.Field + " " + classes.ErrorField;
-    console.log(`${props.Name}`,props.children)
     let inputField = (<input
       type="text"
       name={props.Name}
