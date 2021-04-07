@@ -104,13 +104,13 @@ class CoursesArea extends Component {
           ) : null}
         </div>
         <button
-          className={classes.Join}
-          onClick={() => {
-            this.loadCourses();
-          }}
-        >
-          See All Courses
-        </button>
+            className={classes.Join2}
+            onClick={() => {
+              this.loadCourses();
+            }}
+          >
+            See All Courses
+          </button>
       </div>
     );
   }

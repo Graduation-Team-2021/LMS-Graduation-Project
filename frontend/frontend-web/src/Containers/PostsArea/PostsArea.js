@@ -3,8 +3,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import PostPreview from "../../Components/PostPreview/PostPreview";
-import Post from "../../Components/Post/Post";
+import Post from "../../Containers/Post/Post";
 import Dismiss from "../../Components/DismissComponent/Dismiss";
+import Modal from "../../Components/Modal/Modal";
 
 import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
 
@@ -44,17 +45,10 @@ class PostsArea extends Component {
     });
 
     return (
-      <div
-        className={classes.Main}
-        style={{
-          flex: this.props.flex,
-        }}
-      >
-        <Post
-          clicked={this.state.clicked}
-          hide={this.hide}
-          Post={this.state.Posts[this.state.Posts.length - 1]}
-        />
+      <div className={classes.Main}>
+        <Modal show={this.state.clicked} onClick={this.hide}>
+          <Post {...this.state.Posts[this.state.Posts.length - 1]} />
+        </Modal>
         <div className={classes.Title}>{this.props.Title}</div>
         <div className={classes.holder}>
           <Dismiss Title="Posts" ref={this.myRef} onDismiss={this.onDismiss}>

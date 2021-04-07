@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+import filler from "../../assets/Filler.png";
 import classes from "./ProfilePage.module.css";
 
 import Card from "../../Components/Card/Card";
-import CoursesArea from "../CoursesArea/CoursesArea";
-import GroupsArea from "../GroupsArea/GroupsArea";
 import OldCourses from "../OldCourses/OldCourses";
 import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
@@ -19,6 +18,7 @@ import {
   getRecentPosts,
   getRecentEvent,
 } from "../../Interface/Interface";
+import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 
 const ProfilePage = (props) => {
   const [Finished, setFinished] = useState([]);
@@ -38,8 +38,6 @@ const ProfilePage = (props) => {
   const setJoined = props.currentGroupsActions.onSetCurrentGroups;
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
   const setPosts = props.recentUserPostsActions.onSetRecentUserPosts;
-
-  console.log(CurrentCourses);
 
   useEffect(() => {
     if (CurrentCourses.size === 0)
@@ -135,34 +133,22 @@ const ProfilePage = (props) => {
   return (
     <div className={classes.Center}>
       <Card className={classes.Container}>
-        {CurrentCourses.size !== 0 ? (
-          <CoursesArea Courses={CurrentCourses} />
-        ) : (
-          <h1>Loading.....</h1>
-        )}
-        {Joined.size !== 0 ? (
-          <GroupsArea Groups={Joined} />
-        ) : (
-          <h1>Loading.....</h1>
-        )}
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            height: "100%",
-          }}
-        >
+        <Card className={classes.User} shadow>
+          <ImageHolder className={classes.Pic} filler={filler} />
+          <div className={classes.Details}>
+            <h2>{props.userData.Name}</h2>
+            <div>Third Year Student</div>
+            <div>Computer Engineering</div>
+          </div>
+        </Card>
+        <div className={classes.Bottom}>
           {Finished.length !== 0 ? (
-            <OldCourses
-              flex="2"
-              Title="Your Passed Courses"
-              Courses={Finished}
-            />
+            <OldCourses Title="Your Passed Courses" Courses={Finished} />
           ) : (
             <h1>Loading.....</h1>
           )}
           {Posts.length !== 0 ? (
-            <PostsArea flex="5" Title="Your Posts" Posts={Posts} />
+            <PostsArea Title="Your Posts" Posts={Posts} />
           ) : (
             <h1>Loading.....</h1>
           )}

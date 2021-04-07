@@ -45,7 +45,8 @@ const HomePage = (props) => {
           <Post
             key={index}
             Title={value[value.length - index - 1]["name"]}
-            Content={value[value.length - index - 1]["post_text"]}
+            Desc={value[value.length - index - 1]["post_text"]}
+            ID={value[value.length - index - 1]["post_id"]}
           />
         );
       }

@@ -16,3 +16,19 @@
     padding: 0 2%;
     transition: 500ms;
 }
+
+.Card {
+    width: 30vw;
+    height: 40vh;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    padding: 10%;
+}
+
+@media (max-width : 768px) {
+    .holder .Card {
+        /*width: 35vw;*/
+         height: 20vh; 
+    }
+}

@@ -49,7 +49,7 @@ const Post = (props) => {
     <span className={classes.Temp}>
       <Card className={classes.PostHolder} shadow>
         <h2>{props.Title}</h2>
-        <p>{props.Content}</p>
+        <p>{props.Desc}</p>
         <div className={classes.BottomHalf}>
           <div className={classes.ButtonArea}>
             <button onClick={likePressHandler} className={classes.Button}>
