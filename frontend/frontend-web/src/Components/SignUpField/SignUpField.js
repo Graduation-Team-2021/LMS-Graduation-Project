@@ -9,6 +9,7 @@ import { Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 
 const SignUpField = (props) => {
   const [value, onChange] = useState(new Date());
+  console.log('the valus of the date piker is ', value.getUTCDate().toString());
 
   return (
     <React.Fragment>
@@ -44,8 +45,8 @@ const SignUpField = (props) => {
           value={props.Role}
           onChange={props.onChange}
         >
-          <FormControlLabel value="female" control={<Radio />} label="Female" />
-          <FormControlLabel value="male" control={<Radio />} label="Male" />
+          <FormControlLabel value="Professor" control={<Radio />} label="Professor" />
+          <FormControlLabel value="Student" control={<Radio />} label="stundent" />
           
         </RadioGroup>
       </NormalTextField>
