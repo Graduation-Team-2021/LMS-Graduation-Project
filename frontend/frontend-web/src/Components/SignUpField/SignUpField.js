@@ -8,16 +8,13 @@ import { Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 // import CalendarInput from 'react-calendar-date-picker'
 
 const SignUpField = (props) => {
-  const [Birthday, setBirthday] = useState('');
   const [value, onChange] = useState(new Date());
 
   const onCalenderChange = (value) => {
-    value.setHours(2)
-    setBirthday(value.toISOString().slice(0,10));
+    value.setHours(2);
+    props.onBirthdayChange(value.toISOString().slice(0, 10));
     onChange(value);
   };
-
-  console.log('the valus of the date piker is ', (Birthday));
 
   return (
     <React.Fragment>

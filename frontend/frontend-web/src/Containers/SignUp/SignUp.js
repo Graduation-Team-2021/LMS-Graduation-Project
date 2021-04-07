@@ -27,6 +27,15 @@ class SignUp extends Component {
     },
   };
 
+  onBirthdayChange = (value) => {
+    this.setState((prevState) => {
+      return {
+        errors: { ...prevState.errors },
+        data: { ...prevState.data, Birthday: value },
+      };
+    });
+  };
+
   changeInput = (event) => {
     let x = false;
     if (event.target.name === "Email") {
@@ -39,11 +48,15 @@ class SignUp extends Component {
     } else {
       x = validator.isEmpty(event.target.value);
     }
-    
+
     this.setState((prevState) => {
       return {
         errors: { ...prevState.errors, [event.target.name + "Error"]: x },
-        data: { ...prevState.data, [event.target.name]: event.target.name!=='Birthday'?event.target.value:null },
+        data: {
+          ...prevState.data,
+          [event.target.name]:
+            event.target.name !== "Birthday" ? event.target.value : null,
+        },
       };
     });
     // if (this.state.errors[event.target.name + "Error"]) {
@@ -74,6 +87,7 @@ class SignUp extends Component {
         onChange={this.changeInput}
         checked={this.state.data.Agreed}
         changeAgreed={this.changeAgreed}
+        onBirthdayChange={this.onBirthdayChange}
       />
     );
 
