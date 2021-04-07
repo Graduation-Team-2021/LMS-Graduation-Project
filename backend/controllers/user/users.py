@@ -1,6 +1,8 @@
 from models.user.users import User
 from models.user.professors import Professor
 from models.user.students import Student
+from controllers.user.students import students_controller
+from controllers.user.professors import professors_controller
 from methods.errors import *
 from flask_mail import Mail, Message
 import smtplib
@@ -8,6 +10,8 @@ from methods.auth import *
 import os
 from models.config import db
 
+cont_stud = students_controller()
+cont_professor = professors_controller()
 
 class users_controller:
     def get_user(self, user_id):
@@ -101,6 +105,22 @@ class users_controller:
                 'status_code': 404
             })
         return User.query.filter_by(national_id=user["national_id"]).first().user_id
+    
+    def add_new_user(self,user,student_year,scientific_degree,role):
+        id = self.post_user(user)
+        if role == "student":
+            student = {
+                'user_id': id,
+                'student_year': student_year
+            }
+            cont_stud.post_student(student)
+
+        elif role == 'professor':
+            professor = {
+                'user_id': id,
+                'scientific_degree': scientific_degree
+            }
+            cont_professor.post_professor(professor)
 
     def get_all_users(self):
         try:
