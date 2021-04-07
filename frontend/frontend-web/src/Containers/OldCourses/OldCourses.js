@@ -16,21 +16,19 @@ class OldCourses extends Component {
     });
 
   render() {
-
-    const Courses = this.state.Courses.map(
-      (value, index)=> <OldCourse key={index} {...value} />
-    )
+    const Courses = this.state.Courses.map((value, index) => (
+      <OldCourse key={index} {...value} />
+    ));
 
     return (
-      <div
-        className={classes.Main}
-        style={{
-          flex: this.props.flex,
-        }}
-      >
+      <div className={classes.Main}>
         <div className={classes.Title}>{this.props.Title}</div>
         <div className={classes.holder}>
-          <Dismiss Title="Finished Courses" onDismiss={this.onDismiss} ref={this.myRef}>
+          <Dismiss
+            Title="Finished Courses"
+            onDismiss={this.onDismiss}
+            ref={this.myRef}
+          >
             {Courses}
           </Dismiss>
         </div>

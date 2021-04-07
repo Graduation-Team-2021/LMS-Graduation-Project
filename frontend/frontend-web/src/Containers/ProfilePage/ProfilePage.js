@@ -39,8 +39,6 @@ const ProfilePage = (props) => {
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
   const setPosts = props.recentUserPostsActions.onSetRecentUserPosts;
 
-  console.log(CurrentCourses);
-
   useEffect(() => {
     if (CurrentCourses.size === 0)
       getCurrentCourses(Token).then((res) => {
@@ -145,16 +143,10 @@ const ProfilePage = (props) => {
         ) : (
           <h1>Loading.....</h1>
         )}
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            height: "100%",
-          }}
+        <div className={classes.Bottom}
         >
           {Finished.length !== 0 ? (
             <OldCourses
-              flex="2"
               Title="Your Passed Courses"
               Courses={Finished}
             />
@@ -162,7 +154,7 @@ const ProfilePage = (props) => {
             <h1>Loading.....</h1>
           )}
           {Posts.length !== 0 ? (
-            <PostsArea flex="5" Title="Your Posts" Posts={Posts} />
+            <PostsArea Title="Your Posts" Posts={Posts} />
           ) : (
             <h1>Loading.....</h1>
           )}

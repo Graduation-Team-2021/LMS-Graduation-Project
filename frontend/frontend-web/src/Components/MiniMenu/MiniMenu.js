@@ -87,7 +87,13 @@ const MiniMenu = (props) => {
           <ImageHolder className={classes.UserImage} filler={filler} />
         </div>
       </div>
-      <div>
+      <div
+        onClick={() => {
+          setMenu(false);
+          setMessages(false);
+          setNotif(false);
+        }}
+      >
         {Notif || Messages || Menu ? (
           <DropDownMenu
             TokenError={props.TokenError}
