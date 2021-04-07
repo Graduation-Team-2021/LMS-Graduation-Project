@@ -27,27 +27,38 @@
     align-items: center;
     height: 27vh;
     width: 100%;
-    margin: 2% 2%;
 }
 
 .Details {
-    margin: 5% 5% 0;
+    height: 100%;
+    margin: 0 2% 0;
     font-size: x-large;
+}
+
+.Name{
+    font-weight: bold;
+    font-size: xx-large;
+    padding: 5% 0;
+}
+
+.filler{
+    height: 40%;
+    width: 100%;
 }
 
 .User .Pic {
     border-radius: 100%;
-    width: 25vh;
-    height: 25vh;
-    border: 2px solid purple;
+    width: 200px;
+    height: 200px;
+    border: 6px solid purple;
     box-sizing: border-box;
-    box-shadow: 0 0 10px 2px grey;
+    margin: 3%;
 }
 
 .User .Note{
     padding: 0;
-    margin-left: 3%;
-    height: 100%;
+    margin: 0 3%;
+    height: 85%;
     width: 21%;
     min-width: 0;
     align-items: center;

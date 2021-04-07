@@ -78,6 +78,7 @@ const ProfilePage = (props) => {
   }, [TokenError, Token, ID, Role, setJoined, Joined]);
 
   useEffect(() => {
+    //TODO: Get the User Posts
     if (Posts.length === 0)
       getRecentPosts(Token, ID).then((res) => {
         const Posts = [];
@@ -138,8 +139,9 @@ const ProfilePage = (props) => {
           <div className={classes.User}>
             <ImageHolder className={classes.Pic} filler={filler} />
             <div className={classes.Details}>
-              <h2>{props.userData.Name}</h2>
-              <div>Third Year Student</div>
+            <div className={classes.filler}/>
+              <div className={classes.Name}>{props.userData.Name}</div>
+              <div>Third Year</div>
               <div>Computer Engineering</div>
             </div>
             <Card shadow className={classes.Note}>

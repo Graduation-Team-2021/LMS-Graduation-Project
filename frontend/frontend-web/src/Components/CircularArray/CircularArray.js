@@ -49,7 +49,7 @@ class CircularArray extends Component {
           style={{
             transform: `translateX(${
               index !== 0
-                ? `${(-index + 1 - (Number > shift - 2 ? 1 : 0)) * 3}vh`
+                ? `${(-index + 1 - (Number > shift - 2 ? 1 : 0)) * 30}px`
                 : 0
             })`,
           }}
@@ -64,7 +64,7 @@ class CircularArray extends Component {
         <div
           key={6}
           style={{
-            transform: `translateX(${-(shift - 1) * 3}vh)`,
+            transform: `translateX(${-(shift - 1) * 30}px)`,
           }}
         >
           <CircularNumber
@@ -89,7 +89,7 @@ class CircularArray extends Component {
         <div
           style={{
             display: "flex",
-            width: `${Joined.length * 7 - shift * 3 + 3}vh`,
+            width: `${Joined.length * 60 - shift * 30 + 30}px`,
           }}
         >
           {Joined}
