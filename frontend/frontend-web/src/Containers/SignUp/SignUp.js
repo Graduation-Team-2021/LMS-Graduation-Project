@@ -39,11 +39,11 @@ class SignUp extends Component {
     } else {
       x = validator.isEmpty(event.target.value);
     }
-
+    
     this.setState((prevState) => {
       return {
         errors: { ...prevState.errors, [event.target.name + "Error"]: x },
-        data: { ...prevState.data, [event.target.name]: event.target.value },
+        data: { ...prevState.data, [event.target.name]: event.target.name!=='Birthday'?event.target.value:null },
       };
     });
     // if (this.state.errors[event.target.name + "Error"]) {

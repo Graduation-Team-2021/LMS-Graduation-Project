@@ -8,8 +8,16 @@ import { Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 // import CalendarInput from 'react-calendar-date-picker'
 
 const SignUpField = (props) => {
+  const [Birthday, setBirthday] = useState('');
   const [value, onChange] = useState(new Date());
-  console.log('the valus of the date piker is ', value.getUTCDate().toString());
+
+  const onCalenderChange = (value) => {
+    value.setHours(2)
+    setBirthday(value.toISOString().slice(0,10));
+    onChange(value);
+  };
+
+  console.log('the valus of the date piker is ', (Birthday));
 
   return (
     <React.Fragment>
@@ -33,21 +41,25 @@ const SignUpField = (props) => {
         Name="Birthday"
         onChange={props.onChange}
       >
-        <DatePicker onChange={onChange} value={value} />
+        <DatePicker onChange={onCalenderChange} value={value} />
       </NormalTextField>
-      <NormalTextField
-        Error={props.RoleError}
-        Name="Role"
-      >
+      <NormalTextField Error={props.RoleError} Name="Role">
         <RadioGroup
           aria-label="gender"
           name="Role"
           value={props.Role}
           onChange={props.onChange}
         >
-          <FormControlLabel value="Professor" control={<Radio />} label="Professor" />
-          <FormControlLabel value="Student" control={<Radio />} label="stundent" />
-          
+          <FormControlLabel
+            value="Professor"
+            control={<Radio />}
+            label="Professor"
+          />
+          <FormControlLabel
+            value="Student"
+            control={<Radio />}
+            label="stundent"
+          />
         </RadioGroup>
       </NormalTextField>
       <PasswordTextField
