@@ -19,7 +19,7 @@ const App = (props) => {
         <MainPage Name={props.userData.Name}>
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path="/profile" exact component={Profile} />
+            <Route path="/Profile" exact component={Profile} />
             <Route path="/Courses" exact component={Courses} />
             <Route path="/Course/:id" exact component={Course} />
             <Route path="/Group/:id" exact component={Group} />

@@ -18,24 +18,33 @@ const MiniMenu = (props) => {
   const [Notif, setNotif] = useState(false);
   const [Menu, setMenu] = useState(false);
   const [Messages, setMessages] = useState(false);
-  const [CLicked, setCLicked] = useState(false)
+  const [CLicked, setCLicked] = useState(false);
 
   return (
-    <div className={classes.full}>
+    <div
+      className={classes.full}
+      tabIndex="0"
+      onBlur={() => {
+        setMenu(false);
+        setMessages(false);
+        setNotif(false);
+      }}
+    >
       <div className={classes.Main}>
         <div
           className={classes.holder}
           onClick={() => {
+            setMenu(false);
+            setMessages(false);
+            setNotif(false);
             props.history.push("/");
           }}
         >
           <FontAwesomeIcon icon={faHome} className={classes.Icon} fixedWidth />
         </div>
         <div
-          tabIndex="0"
-          onBlur={() => setNotif(false)}
           className={classes.holder}
-          onFocus={() => {
+          onClick={() => {
             setMenu(false);
             setMessages(false);
             setNotif(!Notif);
@@ -48,10 +57,8 @@ const MiniMenu = (props) => {
           <FontAwesomeIcon icon={faBell} className={classes.Icon} fixedWidth />
         </div>
         <div
-          tabIndex="0"
-          onBlur={() => setMessages(false)}
           className={classes.holder}
-          onFocus={() => {
+          onClick={() => {
             setMenu(false);
             setNotif(false);
             setMessages(!Messages);
@@ -61,13 +68,15 @@ const MiniMenu = (props) => {
           {props.message !== 0 ? (
             <div className={classes.notif}>{props.message}</div>
           ) : null}
-          <FontAwesomeIcon icon={faCommentDots} className={classes.Icon} fixedWidth />
+          <FontAwesomeIcon
+            icon={faCommentDots}
+            className={classes.Icon}
+            fixedWidth
+          />
         </div>
         <div
           className={classes.holder}
-          tabIndex="0"
-          onBlur={() => setMenu(false)}
-          onFocus={() => {
+          onClick={() => {
             setMessages(false);
             setNotif(false);
             setMenu(!Menu);
@@ -88,13 +97,18 @@ const MiniMenu = (props) => {
         ) : null}
       </div>
       <div className={classes.drowpdown}>
-        <button className={classes.dropbtn} onClick={()=>setCLicked(!CLicked)}>Dropdown</button>
+        <button
+          className={classes.dropbtn}
+          onClick={() => setCLicked(!CLicked)}
+        >
+          Dropdown
+        </button>
         <div className={classes.dropdown_content}>
           <div className={classes.Main2}>
             <div
               className={classes.holder}
               onClick={() => {
-                props.history.push('/');
+                props.history.push("/");
               }}
             >
               <FontAwesomeIcon icon={faHome} size="4x" fixedWidth />
@@ -140,11 +154,7 @@ const MiniMenu = (props) => {
             >
               <div className={classes.holder}>
                 <div className={classes.status} />
-                <FontAwesomeIcon
-                  icon={faSquare}
-                  fixedWidth
-                  color="purple"
-                />
+                <FontAwesomeIcon icon={faSquare} fixedWidth color="purple" />
                 <img
                   src={filler}
                   alt=""
@@ -160,7 +170,9 @@ const MiniMenu = (props) => {
           </div>
           <div>
             {Notif || Messages || Menu ? (
-              <DropDownMenu TokenError={props.TokenError} Notif={props.Notif}
+              <DropDownMenu
+                TokenError={props.TokenError}
+                Notif={props.Notif}
                 choice={Notif ? "Notif" : Messages ? "Messages" : "Menu"}
               />
             ) : null}
