@@ -45,11 +45,13 @@ const CoursePage = (props) => {
     getAllPosts(Token, postID).then((value) => {
       const posts = [];
       for (let index = 0; index < value.length; index++) {
+        console.log(value);
         posts.push(
           <Post
             key={index}
             Title={value[value.length - index - 1]["name"]}
-            Content={value[value.length - index - 1]["post_text"]}
+            Desc={value[value.length - index - 1]["post_text"]}
+            ID={value[value.length - index - 1]["post_id"]}
           />
         );
       }
