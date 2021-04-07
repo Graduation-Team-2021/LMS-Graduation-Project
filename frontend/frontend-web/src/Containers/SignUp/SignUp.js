@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import SignUpField from "../../Components/SignUpField/SignUpField";
 import classes from "./SignUp.module.css";
 import Button from "../../Components/Button/Button";
@@ -31,33 +32,25 @@ class SignUp extends Component {
     if (event.target.name === "Email") {
       x = !validator.isEmail(event.target.value);
     } else if (event.target.name === "NationalID") {
-      x =
-        !(
-          validator.isNumeric(event.target.value) &&
-          event.target.value.length === 14
-        ) && !validator.isNumeric(event.target.value);
+      x = !(
+        validator.isNumeric(event.target.value) &&
+        event.target.value.length === 14
+      );
     } else {
-      x = !validator.isEmpty(event.target.value);
+      x = validator.isEmpty(event.target.value);
     }
 
     this.setState((prevState) => {
       return {
-        ...prevState,
         errors: { ...prevState.errors, [event.target.name + "Error"]: x },
-      };
-    });
-
-    this.setState((prevState) => {
-      return {
-        ...prevState,
         data: { ...prevState.data, [event.target.name]: event.target.value },
       };
     });
-    if (this.state.errors[event.target.name + "Error"]) {
-      this.setState({
-        [event.target.name + "Error"]: false,
-      });
-    }
+    // if (this.state.errors[event.target.name + "Error"]) {
+    //   this.setState({
+    //     [event.target.name + "Error"]: false,
+    //   });
+    // }
   };
 
   changeAgreed = () => {
@@ -78,6 +71,7 @@ class SignUp extends Component {
     const signupField = (
       <SignUpField
         {...this.state.errors}
+        {...this.state.data}
         onChange={this.changeInput}
         checked={this.state.data.Agreed}
         changeAgreed={this.changeAgreed}

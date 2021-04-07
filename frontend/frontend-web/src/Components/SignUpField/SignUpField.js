@@ -3,6 +3,7 @@ import NormalTextField from "../NormalTextField/NormalTextField";
 import PasswordTextField from "../PasswordField/PasswordField";
 import Terms from "../TermsAndConditions/Terms";
 import DatePicker from "react-date-picker";
+import { Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 
 // import CalendarInput from 'react-calendar-date-picker'
 
@@ -36,8 +37,18 @@ const SignUpField = (props) => {
       <NormalTextField
         Error={props.RoleError}
         Name="Role"
-        onChange={props.onChange}
-      />
+      >
+        <RadioGroup
+          aria-label="gender"
+          name="Role"
+          value={props.Role}
+          onChange={props.onChange}
+        >
+          <FormControlLabel value="female" control={<Radio />} label="Female" />
+          <FormControlLabel value="male" control={<Radio />} label="Male" />
+          
+        </RadioGroup>
+      </NormalTextField>
       <PasswordTextField
         Error={props.PasswordError}
         onChange={props.onChange}
