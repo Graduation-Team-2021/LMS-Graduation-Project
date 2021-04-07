@@ -60,3 +60,16 @@
   box-sizing: border-box;
   overflow: auto;
 }
+
+@media (max-width : 600px) {
+  .Button {
+    font-size: small;
+  }
+  .userComment {
+    border-radius: 0;
+    font-size: medium;
+  }
+  .Temp {
+    width: 100%;
+  }
+}
