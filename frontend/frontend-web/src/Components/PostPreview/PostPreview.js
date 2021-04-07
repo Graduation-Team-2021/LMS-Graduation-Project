@@ -2,26 +2,28 @@ import React from "react";
 import classes from "./PostPreview.module.css";
 import filler from "../../assets/Filler.png";
 import ImageHolder from "../ImageHolder/ImageHolder";
+import Card from '../Card/Card'
 
-
-const GroupPreview = (props) => {
+const PostPreview = (props) => {
   return (
-    <React.Fragment>
-      <div onClick={props.show}>
-        <div
-          style={{
-            margin: "1vh 1vw",
-          }}
-        >
-          <ImageHolder filler={filler} />
+    <span className={classes.Main}>
+      <Card className={classes.Card}>
+        <div onClick={props.show}>
+          <div
+            style={{
+              margin: "1vh 1vw",
+            }}
+          >
+            <ImageHolder filler={filler} />
+          </div>
+          <div className={classes.Bottom}>
+            <div className={classes.CourseTitle}>{props.Post.Title}</div>
+            <div className={classes.CourseDes}>{props.Post.Desc}</div>
+          </div>
         </div>
-        <div className={classes.Bottom}>
-          <div className={classes.CourseTitle}>{props.Post.Title}</div>
-          <div className={classes.CourseDes}>{props.Post.Desc}</div>
-        </div>
-      </div>
-    </React.Fragment>
+      </Card>
+    </span>
   );
 };
 
-export default GroupPreview;
+export default PostPreview;

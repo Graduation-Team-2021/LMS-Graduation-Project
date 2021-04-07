@@ -7,9 +7,10 @@ import './Menu.module.css'
 const Menu = (props) => {
   return (
     <React.Fragment>
-      <h2 onClick={
+      <h2 color='blue' onClick={
         () => {
-          props.history.push("/profile");
+          console.log('Clicked')
+          props.history.push("/Profile");
         }
       }>View Profile</h2>
       <h2>Open Settings</h2>

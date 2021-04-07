@@ -20,7 +20,7 @@ class CircularArray extends Component {
   }
 
   componentWillUnmount() {
-    window.addEventListener("resize", this.handleResize);
+    window.removeEventListener("resize", this.handleResize);
   }
 
   render() {
@@ -37,8 +37,6 @@ class CircularArray extends Component {
         : this.state.windowWidth > 750
         ? 4
         : 2;
-
-    console.log(this.state.windowWidth);
 
     for (
       let index = 0;

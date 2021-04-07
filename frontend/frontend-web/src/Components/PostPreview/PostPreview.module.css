@@ -5,12 +5,20 @@
     padding-bottom: 5%;
 }
 
+.Main .Card {
+    padding: 5% 0;
+    border: 2px solid purple;
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+}
+
 .CourseDes {
     text-align: start;
     font-size: large;
 }
 
-.dismiss{
+.dismiss {
     cursor: pointer;
     position: absolute;
     right: 0;
@@ -43,7 +51,7 @@
     cursor: pointer;
 }
 
-.Joined{
+.Joined {
     display: flex;
     position: relative;
     align-items: center;
@@ -52,6 +60,6 @@
     justify-content: flex-end;
 }
 
-.Circle{
+.Circle {
     position: absolute;
 }
