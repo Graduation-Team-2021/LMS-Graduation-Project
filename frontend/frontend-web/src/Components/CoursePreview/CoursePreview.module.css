@@ -18,7 +18,7 @@
 }
 
 .holder .Card {
-    width: 20vw;
+    width: 30vw;
     height: 40vh;
     display: flex;
     flex-flow: column;
@@ -28,6 +28,7 @@
 
 @media (max-width : 768px) {
     .holder .Card {
-        width: 30vw;
+        /* width: 35vw; */
+         height: 20vh; 
     }
 }

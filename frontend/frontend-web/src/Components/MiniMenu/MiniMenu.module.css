@@ -71,6 +71,10 @@
     display: none;
 }
 
+.small {
+    display: none;
+}
+
 @media (max-width : 600px) {
     .Main {
         display: none;
@@ -79,7 +83,7 @@
     .dropbtn {
         background-color: #4CAF50;
         color: white;
-        padding: 16px;
+        padding: 10px;
         font-size: 16px;
         border: none;
         cursor: pointer;
@@ -96,22 +100,22 @@
     .dropdown_content {
         display: block;
         background-color: #f9f9f9;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        min-width: 100px;
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
     }
 
     /* Links inside the dropdown */
     .dropdown_content .Main2 {
         color: black;
-        padding: 12px 16px;
+        padding: 10px 14px;
         text-decoration: none;
         display: none;
-        background-color: red;
+        background-color: pink;
     }
 
     /* Change color of dropdown links on hover */
     .dropdown_content .Main2:active {
-        background-color: red;
+        background-color: blue;
     }
 
     .dropdown_content:hover .Main2 {
@@ -134,6 +138,15 @@
     /* Change the background color of the dropdown button when the dropdown content is shown */
     .drowpdown:hover .dropbtn {
         background-color: #3e8e41;
+    }
+    .full {
+        left: 90%;
+    }
+    .large {
+        display: none;
+    }
+    .small {
+        display: flex;
     }
 }
 

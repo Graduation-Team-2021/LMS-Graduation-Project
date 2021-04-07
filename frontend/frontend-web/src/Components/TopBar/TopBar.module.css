@@ -8,3 +8,8 @@
     position: relative;
 }
 
+@media (max-width : 590px) {
+    .Main {
+        padding: 0;
+    }
+}
