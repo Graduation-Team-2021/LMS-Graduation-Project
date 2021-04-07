@@ -7,6 +7,7 @@ from flask_restful import Resource, reqparse
 from flask import jsonify
 from models.user.professors import Professor
 from models.user.students import Student
+import werkzeug,pandas,json
 
 controller_object = users_controller()
 cont_stud = students_controller()
@@ -147,6 +148,8 @@ class Sign_Up(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         role = args['role']
+        student_year = args['student_year']
+        scientific_degree = args['scientific_degree']
         user = {
             'name': args['name'],
             'email': args['email'],
@@ -154,28 +157,45 @@ class Sign_Up(Resource):
             'birthday': args['birthday'],
             'password': generate_hash(args['password']),
         }
-        # create user and return id
-        # if role = teacher create teacher entry else create student entry return auth
-        # return controller_object.post_user(user)
-        id = controller_object.post_user(user)
-        if role == "student":
-            student = {
-                'user_id': id,
-                'student_year': args['student_year']
-            }
-            cont_stud.post_student(student)
+        controller_object.add_new_user(user,student_year,scientific_degree,role)
 
-        elif role == 'professor':
-            professor = {
-                'user_id': id,
-                'scientific_degree': args['scientific_degree']
-            }
-            cont_professor.post_professor(professor)
         # return encode_auth_token(id, role)
         return jsonify({
             'status_code': 200,
             'description': 'Successful sign_up'
         })
+
+# /sign_up/excel_spreadsheet
+class Sign_Up_Using_Excel(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
+
+    def post(self):
+        args = self.reqparse.parse_args()
+        toread = io.BytesIO()
+        raw_data = args['file'].read()
+        excel_data = pandas.read_excel(raw_data,dtype=str)
+        excel_data = excel_data.to_json(orient='records')
+        excel_data = json.loads(excel_data)
+        for entry in excel_data:
+            date = entry['birthday']
+            date = date.split(' ')[0]
+            entry['birthday'] = date
+            student_year = entry['student_year']
+            scientific_degree = entry['scientific_degree']
+            role = entry['role']
+            entry.pop('student_year',None)
+            entry.pop('scientific_degree',None)
+            entry.pop('role',None)
+            user = entry
+            controller_object.add_new_user(user,student_year,scientific_degree,role)
+
+        return jsonify({
+            'message': 'Users Added successfully',
+            'status_code': 200
+        })
+
 
 
 # /login
