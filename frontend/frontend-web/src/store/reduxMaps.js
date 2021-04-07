@@ -25,6 +25,7 @@ export const mapDispatchToProps = (dispatch) => {
         onSetName: (newName) => dispatch(userDataActionFunctions.setName(newName)),
         onSetId: (newId) => dispatch(userDataActionFunctions.setID(newId)),
         onSetRole: (newRole) => dispatch(userDataActionFunctions.setRole(newRole)),
+        onSetData: (newData) => dispatch(userDataActionFunctions.setData(newData))
       },
       currentCoursesActions:{
         onSetCurrentCourses: (newCourses) =>dispatch(currentCoursesActionFunctions.setRecentEvent(newCourses))

@@ -32,11 +32,10 @@ const HomePage = (props) => {
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
   const setPosts = props.recentUserPostsActions.onSetRecentUserPosts;
 
-  console.log(CurrentCourses);
-
   useEffect(() => {
     if (CurrentCourses.size === 0)
       getCurrentCourses(Token).then((res) => {
+        
         const Courses = new Map();
         if (res) {
           res.forEach((element) => {
@@ -133,7 +132,7 @@ const HomePage = (props) => {
             <h1>Loading.....</h1>
           )}
           {Posts.length !== 0 ? (
-            <PostsArea flex="5" Title="Latest Posts" Posts={Posts} />
+            <PostsArea Title="Latest Posts" Posts={Posts} />
           ) : (
             <h1>Loading.....</h1>
           )}

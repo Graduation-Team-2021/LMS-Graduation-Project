@@ -94,10 +94,10 @@ class Post_Controller:
         data = [post.serialize() for post in posts]
         return data
 
-    def get_one_student_first_ten_courses(self,student_id):
+    def get_one_student_first_ten_courses(self):
         courses=Course.query.join(Learns_Relation).\
         filter(Course.course_code==Learns_Relation.course_code).join(Student).\
-        filter(Learns_Relation.student_id==Student.user_id==student_id).\
+        filter(Learns_Relation.student_id==Student.user_id).\
         with_entities(Course.course_code)
         
         groups=GroupProject.query.join(StudentGroupRelation).\
