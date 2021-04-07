@@ -4,7 +4,7 @@
     justify-content: space-between;
     align-items: flex-start;
     padding: 0 0 2% ;
-    height: 8vh;
+    height: fit-content;
     position: relative;
 }
 

@@ -24,7 +24,7 @@ const NewPost = (props) => {
   };
 
   return (
-    <div>
+    <div className = {classes.Container}>
       <div className={classes.Title}>
         <h2>Create Post</h2>
         <div onClick={props.dismiss} className={classes.dismiss}>

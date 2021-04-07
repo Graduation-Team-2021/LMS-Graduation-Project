@@ -34,3 +34,10 @@
     padding: 5% 0;
     border-radius: 10px;
 }
+
+@media (max-width : 600px) {
+    .Container  {
+        display: flex;
+        flex-direction: column;
+    }
+}

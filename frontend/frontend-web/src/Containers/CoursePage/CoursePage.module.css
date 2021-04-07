@@ -49,3 +49,20 @@
     flex-flow: column;
     align-items: center;
 }
+
+.small {
+    display: none;
+}
+
+@media (max-width : 600px) {
+    .large {
+        display: none;
+    }
+    .Center .Course .small {
+        display: flex;
+        flex-direction: row;
+    }
+    .Center .Course{
+        width: 100%;
+    }
+}

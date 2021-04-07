@@ -79,6 +79,11 @@ const CoursePage = (props) => {
         <div className={classes.Center}>
           <Card className={classes.Course}>
             <h1>{Course["course_name"]}</h1>
+            <div className = {classes.small}>
+            <CourseDescription
+            desc={Course["course_description"]}
+            CourseID={courseID}
+          /></div>
             {isJoined === "true" ? (
               Role === "professor" ? (
                 <input
@@ -108,10 +113,11 @@ const CoursePage = (props) => {
               <div className={classes.posts}>{Posts}</div>
             </div>
           </Card>
+          <div className = {classes.large}>
           <CourseDescription
             desc={Course["course_description"]}
             CourseID={courseID}
-          />
+          /></div>
         </div>
       ) : (
         <h1>Loading.......</h1>

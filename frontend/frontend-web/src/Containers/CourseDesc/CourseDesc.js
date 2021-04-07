@@ -35,8 +35,9 @@ class CourseDesc extends Component {
   render() {
     return (
       <div className={classes.upcoming}>
-        <div className={classes.Title}>About</div>
+        <div className={classes.Title}>About</div> 
         <div className={classes.EventTitle}>{this.props.desc}</div>
+        <div className = {classes.Container}>
         <div
           style={{
             padding: "0 0 10% 0",
@@ -71,6 +72,7 @@ class CourseDesc extends Component {
             <Minibar icon={faFilePdf} color=" red" info="Pdfs" />
           </Card>
         </div>
+      </div>
         {this.props.Role === "student" ? (
           <React.Fragment>
             <AddEvent>

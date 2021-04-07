@@ -38,3 +38,15 @@
     height: 100%;
     width: 100%;
 }
+
+@media (max-width : 600px) {
+    .NewPost {
+        flex-direction: column;
+    }
+    .newPostLabel {
+        padding-bottom: 10px;
+    }
+    .InnerPostButton {
+        font-size: large;
+    }
+}
