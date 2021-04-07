@@ -17,7 +17,7 @@ const DropDownMenu = (props) => {
         border: "1px solid black",
       }}
     >
-    <InMenu TokenError={props.TokenError}/>
+    <InMenu onClick={props.onClick} TokenError={props.TokenError}/>
     </Card>
   );
 
@@ -33,7 +33,7 @@ const DropDownMenu = (props) => {
         border: "1px solid black",
       }}
     >
-    <InNotif Notif={props.Notif}/>
+    <InNotif Notif={props.Notif} onClick={props.onClick}/>
     </Card>
   );
 
@@ -48,7 +48,7 @@ const DropDownMenu = (props) => {
         border: "1px solid black",
       }}
     >
-    <InMessages/>
+    <InMessages onClick={props.onClick}/>
     </Card>
   );
 

@@ -133,12 +133,23 @@ const ProfilePage = (props) => {
   return (
     <div className={classes.Center}>
       <Card className={classes.Container}>
-        <Card className={classes.User} shadow>
-          <ImageHolder className={classes.Pic} filler={filler} />
-          <div className={classes.Details}>
-            <h2>{props.userData.Name}</h2>
-            <div>Third Year Student</div>
-            <div>Computer Engineering</div>
+        <Card className={classes.Card} shadow>
+          <div className={classes.background}>{/*insert your image here*/}</div>
+          <div className={classes.User}>
+            <ImageHolder className={classes.Pic} filler={filler} />
+            <div className={classes.Details}>
+              <h2>{props.userData.Name}</h2>
+              <div>Third Year Student</div>
+              <div>Computer Engineering</div>
+            </div>
+            <Card shadow className={classes.Note}>
+              <h2>Passed Courses</h2>
+              <h1>50</h1>
+            </Card>
+            <Card shadow className={classes.Note}>
+              <h2>Total Grade</h2>
+              <h1>50</h1>
+            </Card>
           </div>
         </Card>
         <div className={classes.Bottom}>

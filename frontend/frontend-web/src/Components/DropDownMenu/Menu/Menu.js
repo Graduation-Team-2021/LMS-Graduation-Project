@@ -10,6 +10,7 @@ const Menu = (props) => {
       <h2 color='blue' onClick={
         () => {
           console.log('Clicked')
+          props.onClick()
           props.history.push("/Profile");
         }
       }>View Profile</h2>
@@ -20,6 +21,7 @@ const Menu = (props) => {
           localStorage.removeItem('token');
           localStorage.removeItem('name');
           props.userDataActions.onSetToken(null);
+          props.onClick()
           props.history.push("/login");
         }}>Sign Out</h2>
     </React.Fragment>

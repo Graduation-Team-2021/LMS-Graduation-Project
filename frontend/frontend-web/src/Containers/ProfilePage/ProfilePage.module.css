@@ -7,30 +7,59 @@
 }
 
 .Center .Container {
-    max-width: 80%;
     align-items: flex-start;
-    flex: 3;
     height: fit-content;
 }
 
-.Center .Container .User{
+.Center .Container .Card {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+.User {
+    position: relative;
     flex-flow: row;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    height: 27vh;
+    width: 100%;
+    margin: 2% 2%;
 }
 
-.Center .Container .User .Details{
-    margin: 0 5%;
+.Details {
+    margin: 5% 5% 0;
     font-size: x-large;
 }
 
-.Center .Container .User .Pic{
+.User .Pic {
     border-radius: 100%;
     width: 25vh;
     height: 25vh;
     border: 2px solid purple;
     box-sizing: border-box;
+    box-shadow: 0 0 10px 2px grey;
+}
+
+.User .Note{
+    padding: 0;
+    margin-left: 3%;
+    height: 100%;
+    width: 21%;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.background {
+    align-self: start;
+    position: absolute;
+    height: 40%;
+    width: 100%;
+    background-image: linear-gradient(to right, red, blue);
 }
 
 .Bottom {

@@ -8,7 +8,7 @@ import {
   faChevronDown,
   faSquare,
   faHome,
-  faBars
+  faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
 
@@ -88,9 +88,16 @@ const MiniMenu = (props) => {
           <ImageHolder className={classes.UserImage} filler={filler} />
         </div>
       </div>
-      <div className={classes.large}>
+      <div
+        className={classes.large}
+      >
         {Notif || Messages || Menu ? (
           <DropDownMenu
+          onClick={() => {
+            setMenu(false);
+            setMessages(false);
+            setNotif(false);
+          }}
             TokenError={props.TokenError}
             Notif={props.Notif}
             choice={Notif ? "Notif" : Messages ? "Messages" : "Menu"}
@@ -98,7 +105,12 @@ const MiniMenu = (props) => {
         ) : null}
       </div>
       <div className={classes.drowpdown}>
-        <button className={classes.dropbtn} onClick={()=>setCLicked(!CLicked)}><FontAwesomeIcon icon={faBars}/></button>
+        <button
+          className={classes.dropbtn}
+          onClick={() => setCLicked(!CLicked)}
+        >
+          <FontAwesomeIcon icon={faBars} />
+        </button>
         <div className={classes.dropdown_content}>
           <div className={classes.Main2}>
             <div
