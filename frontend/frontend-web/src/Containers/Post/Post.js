@@ -1,32 +1,48 @@
 import React, { useState } from "react";
-import Card from "../../Components/Card/Card";
-import classes from "./Post.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp as base,
   faCommentAlt,
 } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as liked } from "@fortawesome/free-solid-svg-icons";
+import { connect } from "react-redux";
+
+import Card from "../../Components/Card/Card";
+import classes from "./Post.module.css";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
+import { Like, UnLike, Comment } from "../../Interface/Interface";
 
 const Post = (props) => {
-  const [likeButtonColor, setLikeButtonColor] = useState(true);
-  const [postComments, setPostComments] = useState([]);
+  const [likeButtonColor, setLikeButtonColor] = useState(!props.isLiked);
+  const [postComments, setPostComments] = useState(props.Comments);
   const [currentTypingComment, setCurrentTypingComment] = useState("");
+
   let onTypingComment = (event) => {
     setCurrentTypingComment(event.target.value);
   };
-  const commentPressHandler = () => {
+  const commentPressHandler = async () => {
     if (currentTypingComment === "") {
       console.log("empty comment");
       alert("this is an empty comment");
       return;
     }
+    let temp = {
+      comment: currentTypingComment,
+      commenter_name: props.userData.Name,
+      commenter_id: props.userData.ID,
+    };
     //Todo: set comments
-    setPostComments([...postComments, currentTypingComment]);
+    await Comment(props.userData.Token, props.userData.ID, props.PostId,currentTypingComment)
+    setPostComments([...postComments, temp]);
     setCurrentTypingComment("");
   };
 
-  const likePressHandler = () => {
+  const likePressHandler = async () => {
+    if (likeButtonColor) {
+      await Like(props.userData.Token, props.userData.ID, props.PostId)
+    }else{
+      await UnLike(props.userData.Token, props.userData.ID, props.PostId)
+    }
     setLikeButtonColor((value) => !value);
     // TODO: set liked in the database (send the request)
   };
@@ -41,7 +57,7 @@ const Post = (props) => {
       }}
       key={i}
     >
-      {e}{" "}
+      {`${e["commenter_name"]}: ${e["comment"]}`}{" "}
     </li>
   ));
   //  TODO : set comments from database
@@ -59,13 +75,17 @@ const Post = (props) => {
               ) : (
                 <FontAwesomeIcon icon={liked} color="blue" />
               )}
-              <label className={likeButtonColor?classes.black:classes.blue}>Like</label>
+              <label className={likeButtonColor ? classes.black : classes.blue}>
+                Like
+              </label>
             </button>
             <button onClick={commentPressHandler} className={classes.Button}>
               <FontAwesomeIcon icon={faCommentAlt} />
               <label>Comment</label>
             </button>
           </div>
+
+          <div>{props.Likes.length} Users Like this post</div>
           <textarea
             className={classes.userComment}
             name="comment"
@@ -88,4 +108,4 @@ const Post = (props) => {
   );
 };
 
-export default Post;
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

@@ -6,19 +6,21 @@ import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
 import GroupDescription from "../GroupDesc/GroupDesc.js";
 import NewPostCard from "../../Components/New Post/NewPost";
+import { getAllPosts, uploadPost } from "../../Interface/Interface";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
-import { getAllPosts, uploadPost } from "../../Interface/Interface";
+import { connect } from "react-redux";
 
-const HomePage = (props) => {
+const GroupPage = (props) => {
   const [groupID, isJoined, postID, Title, Token, userID, Desc] = [
     props.match.params.id,
     props.location.state.isJoined,
     props.location.state.postID,
     props.location.state.name,
-    props.Token,
-    props.ID,
+    props.userData.Token,
+    props.userData.ID,
     props.location.state.Desc,
   ];
   const [clicked, setclicked] = useState(false);
@@ -39,20 +41,34 @@ const HomePage = (props) => {
   useEffect(() => {
     //Loading Data from Server
     getAllPosts(Token, postID).then((value) => {
-      const posts = [];
-      for (let index = 0; index < value.length; index++) {
-        posts.push(
-          <Post
-            key={index}
-            Title={value[value.length - index - 1]["name"]}
-            Desc={value[value.length - index - 1]["post_text"]}
-            ID={value[value.length - index - 1]["post_id"]}
-          />
-        );
+      const Posts = [];
+      if (value) {
+        value.forEach((ele) => {
+          let Liked = false;
+          for (let index = 0; index < ele["likes"].length; index++) {
+            if (ele["likes"][index]["liker_id"] === userID) {
+              Liked = true;
+              break;
+            }
+          }
+          Posts.push({
+            Name: ele["name"],
+            Location: Title,
+            Title: `Post by ${ele["name"]}`,
+            Desc: ele["post_text"],
+            PostId: ele["post_id"],
+            Likes: ele["likes"],
+            isLiked: Liked,
+            Comments: ele['comments']
+          });
+        });
+        const posts = Posts.map((post, index) => (
+          <Post key={index} {...post} />
+        ));
+        setPosts(posts);
       }
-      setPosts(posts);
     });
-  }, [Token, postID]);
+  }, [Token, postID, Title, userID]);
 
   const SubmitPost = (post) => {
     console.log(post);
@@ -93,10 +109,10 @@ const HomePage = (props) => {
             </div>
           </Card>
         </div>
-        <GroupDescription desc={Desc}/>
+        <GroupDescription desc={Desc} />
       </div>
     </React.Fragment>
   );
 };
 
-export default withRouter(HomePage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GroupPage));

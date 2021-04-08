@@ -90,6 +90,7 @@ from views.relations.post_commenter import Post_commenter_view,CommentView_Updat
 from views.relations.post_liker import Post_liker_view,Liker_all_posts
 from views.course.post import FirstTenPosts,MyPosts,GetPostByOwnerID
 from views.course.events import Events_most_recent
+from views.relations.post_liker import insert_Delete_like
 # Answers
 """
 Users
@@ -247,7 +248,7 @@ api.add_resource(Post_commenter_view,'/users/<user_id>/all_comments')
 api.add_resource(Post_liker_view,'/post/<post_id>/likers') 
 api.add_resource(CommentView_Update_Delete,'/comments/<commenter_id>/<post_id>')
 api.add_resource(Liker_all_posts,'/liker/<liker_id>/posts')
-
+api.add_resource(insert_Delete_like,'/like/<liker_id>/<post_id>')
 
 """
 Run app

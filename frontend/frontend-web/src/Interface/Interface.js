@@ -90,7 +90,7 @@ export const getRecentPosts = async (Token) => {
 };
 
 export const getRecentUserPosts = async (Token) => {
-  const res = await instance.get('/my_posts',{
+  const res = await instance.get("/my_posts", {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
@@ -200,4 +200,39 @@ export const uploadFile = async (Token, file, CourseID) => {
       },
     }
   );
+};
+
+export const Like = async (Token, userID, postID) => {
+  const res = await instance.post(`/like/${userID}/${postID}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(res);
+};
+
+export const UnLike = async (Token, userID, postID) => {
+  const res = await instance.delete(`/like/${userID}/${postID}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(res);
+};
+
+export const Comment = async (Token, userID, postID, text) => {
+  console.log(text);
+  const res = await instance.post(
+    `/comments/${userID}/${postID}`,
+    { 'comment_text': text },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    }
+  );
+  console.log(res);
 };

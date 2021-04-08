@@ -1,5 +1,5 @@
-import classes from "./CoursePage.module.css";
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 
 import Card from "../../Components/Card/Card";
 import Modal from "../../Components/Modal/Modal";
@@ -7,21 +7,24 @@ import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
 import CourseDescription from "../CourseDesc/CourseDesc.js";
 import NewPostCard from "../../Components/New Post/NewPost";
-
+import classes from "./CoursePage.module.css";
 import {
   getAllPosts,
   uploadPost,
   getCourseByID,
 } from "../../Interface/Interface";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 const CoursePage = (props) => {
-  const [courseID, isJoined, postID, Token, userID, Role] = [
+  const [courseID, isJoined, postID, Title, Token, userID, Role, Desc] = [
     props.match.params.id,
     props.location.state.isJoined,
     props.location.state.postID,
-    props.Token,
-    props.ID,
-    props.Role,
+    props.location.state.name,
+    props.userData.Token,
+    props.userData.ID,
+    props.userData.Role,
+    props.location.state.Desc,
   ];
   const [Course, setCourse] = useState(null);
   const [clicked, setclicked] = useState(false);
@@ -40,24 +43,43 @@ const CoursePage = (props) => {
   };
 
   useEffect(() => {
-    //Loading Data from Server
-    getCourseByID(Token, courseID).then((res) => setCourse(res));
-    getAllPosts(Token, postID).then((value) => {
-      const posts = [];
-      for (let index = 0; index < value.length; index++) {
-        console.log(value);
-        posts.push(
-          <Post
-            key={index}
-            Title={value[value.length - index - 1]["name"]}
-            Desc={value[value.length - index - 1]["post_text"]}
-            ID={value[value.length - index - 1]["post_id"]}
-          />
-        );
-      }
-      setPosts(posts);
+    getCourseByID(Token, courseID).then((res) => {
+      setCourse(res);
     });
-  }, [Token, postID, courseID]);
+  }, [Token, courseID]);
+
+  useEffect(() => {
+    //Loading Data from Server
+    getAllPosts(Token, postID).then((value) => {
+      const Posts = [];
+      if (value) {
+        value.forEach((ele) => {
+          let Liked = false;
+          for (let index = 0; index < ele["likes"].length; index++) {
+            if (ele["likes"][index]["liker_id"] === userID) {
+              Liked = true;
+              break;
+            }
+          }
+          Posts.push({
+            Name: ele["name"],
+            Location: Title,
+            Title: `Post by ${ele["name"]}`,
+            Desc: ele["post_text"],
+            PostId: ele["post_id"],
+            Likes: ele["likes"],
+            isLiked: Liked,
+            Comments: ele['comments']
+          });
+        });
+        console.log(Posts);
+        const posts = Posts.map((post, index) => (
+          <Post key={index} {...post} />
+        ));
+        setPosts(posts);
+      }
+    });
+  }, [Token, postID, userID,Title, Course]);
 
   const SubmitPost = (post) => {
     console.log(post);
@@ -78,12 +100,13 @@ const CoursePage = (props) => {
       {Course ? (
         <div className={classes.Center}>
           <Card className={classes.Course}>
-            <h1>{Course["course_name"]}</h1>
-            <div className = {classes.small}>
-            <CourseDescription
-            desc={Course["course_description"]}
-            CourseID={courseID}
-          /></div>
+            <h1>{Title}</h1>
+            <div className={classes.small}>
+              <CourseDescription
+                desc={Desc}
+                CourseID={courseID}
+              />
+            </div>
             {isJoined === "true" ? (
               Role === "professor" ? (
                 <input
@@ -113,11 +136,12 @@ const CoursePage = (props) => {
               <div className={classes.posts}>{Posts}</div>
             </div>
           </Card>
-          <div className = {classes.large}>
-          <CourseDescription
-            desc={Course["course_description"]}
-            CourseID={courseID}
-          /></div>
+          <div className={classes.large}>
+            <CourseDescription
+              desc={Desc}
+              CourseID={courseID}
+            />
+          </div>
         </div>
       ) : (
         <h1>Loading.......</h1>
@@ -126,4 +150,4 @@ const CoursePage = (props) => {
   );
 };
 
-export default CoursePage;
+export default connect(mapStateToProps, mapDispatchToProps)(CoursePage);

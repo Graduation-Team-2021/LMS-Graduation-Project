@@ -35,7 +35,6 @@ const HomePage = (props) => {
   useEffect(() => {
     if (CurrentCourses.size === 0)
       getCurrentCourses(Token).then((res) => {
-        
         const Courses = new Map();
         if (res) {
           res.forEach((element) => {
@@ -77,12 +76,23 @@ const HomePage = (props) => {
         const Posts = [];
         if (res) {
           res.forEach((ele) => {
+            let Liked = false;
+            for (const id in ele["likes"]) {
+              console.log(ID, id["liker_id"]);
+              if (id["liker_id"] === ID) {
+                Liked = true;
+                break;
+              }
+            }
             Posts.push({
               Name: ele["name"],
               Location: ele["owner_name"],
               Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
               Desc: ele["post_text"],
               PostId: ele["post_id"],
+              Likes: ele["likes"],
+              isLiked: Liked,
+              Comments: ele['comments']
             });
           });
           setPosts(Posts);

@@ -77,7 +77,7 @@ class Post_Commenter_controller:
         try:
             comments=Post_Commenter_relation.query.filter(Post_Commenter_relation.post_id==post_id).join(User).\
             filter(Post_Commenter_relation.commenter_id==User.user_id).\
-            with_entities(User.user_id,User.name)
+            with_entities(User.user_id,User.name,Post_Commenter_relation.comment_text)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({

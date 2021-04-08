@@ -98,6 +98,7 @@ const ProfilePage = (props) => {
             PostId: ele["post_id"],
             Likes: ele["likes"],
             isLiked: Liked,
+            Comments: ele['comments']
           });
         });
         setPosts(Posts);
