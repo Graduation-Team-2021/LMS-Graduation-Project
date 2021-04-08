@@ -72,7 +72,7 @@ export const getCourses = async (Token) => {
     //TODO: Better Check
     return null;
   }
-  return res.data['courses'];
+  return res.data["courses"];
 };
 export const getRecentPosts = async (Token) => {
   const res = await instance.get(`/first_10_posts`, {
@@ -87,6 +87,10 @@ export const getRecentPosts = async (Token) => {
     return null;
   }
   return res.data["posts"];
+};
+
+export const getRecentUserPosts = async (Token) => {
+  const res = await instance.get;
 };
 
 export const getRecentEvent = async (Token, id, role) => {
@@ -115,7 +119,7 @@ export const getFinishedCourses = async (Token, id, role) => {
     //TODO: Better Check
     return null;
   }
-  return res.data['courses'];
+  return res.data["courses"];
 };
 
 export const getAllPosts = async (Token, owner) => {
@@ -130,7 +134,7 @@ export const getAllPosts = async (Token, owner) => {
     //TODO: Better Check
     return null;
   }
-  return res.data['posts'];
+  return res.data["posts"];
 };
 
 export const uploadPost = async (Token, writer, owner, post) => {
