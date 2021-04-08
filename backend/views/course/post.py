@@ -91,7 +91,7 @@ class FirstTenPosts(Resource):
             return e.error
     
 
-#student/<student_id>/my_posts
+#my_posts
 class MyPosts(Resource):
     def get(self,student_id):
         try:
