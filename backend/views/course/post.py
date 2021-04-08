@@ -93,9 +93,9 @@ class FirstTenPosts(Resource):
 
 #my_posts
 class MyPosts(Resource):
-    def get(self,student_id):
+    def get(self):
         try:
-            posts = controller_object.get_the_student_first_posts(student_id)
+            posts = controller_object.get_the_student_first_posts()
             return jsonify({
                 'posts':posts,
                 'status_code':200
