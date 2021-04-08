@@ -138,9 +138,12 @@ class Post_Controller:
         desired_posts=[]
         for i in range(len(courses_post_owner_ids)):
             if Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0]).first() is not None:
-                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0]).first().serialize()
-                posts['owner_name']=courses_post_owner_ids[i][1]
-                desired_posts.append(posts)
+                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0]).all()
+                for p in posts:
+                    temp = p.serialize()
+                    temp['owner_name']=courses_post_owner_ids[i][1]
+                    desired_posts.append(temp)
+                # desired_posts.append(posts)
                 print(posts)
 
         post_writers_ids=[]
@@ -183,16 +186,20 @@ class Post_Controller:
             desired_groups.append(group)
         courses_post_owner_ids=[]
         for i in range(len(desired_courses)):
-            courses_post_owner_ids.append((desired_courses[i]["post_owner_id"]))
+            courses_post_owner_ids.append((desired_courses[i]["post_owner_id"],desired_courses[i]['course_name']))
 
         for i in range(len(desired_groups)):
-            courses_post_owner_ids.append((desired_groups[i]["post_owner_id"]))
+            courses_post_owner_ids.append((desired_groups[i]["post_owner_id"],desired_groups[i]['group_name']))
 
         desired_posts=[]
         for i in range(len(courses_post_owner_ids)):
-            if Post.query.filter(Post.post_owner==courses_post_owner_ids[i],Post.post_writer==Student.user_id).first() is not None:
-                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i],Post.post_writer==Student.user_id).first().serialize()
-                desired_posts.append(posts)
+            if Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0],Post.post_writer==student_id).first() is not None:
+                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0],Post.post_writer==student_id).all()
+                for p in posts:
+                    Temp=p.serialize()
+                    Temp['owner_name']=courses_post_owner_ids[i][1]
+                    desired_posts.append(Temp)
+                # desired_posts.append(posts)
 
         # return desired_posts
         return desired_posts
@@ -212,3 +219,5 @@ class Post_Controller:
         for i in range(len(data)):
             data[i]['name']=post_writers[i][0][0]
         return data        
+
+    
