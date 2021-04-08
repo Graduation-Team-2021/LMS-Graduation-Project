@@ -15,29 +15,28 @@ import {
   getFinishedCourses,
   getCurrentCourses,
   getCurrentGroups,
-  getRecentPosts,
+  getRecentUserPosts,
   getRecentEvent,
 } from "../../Interface/Interface";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 
 const ProfilePage = (props) => {
   const [Finished, setFinished] = useState([]);
+  const [Posts, setPosts] = useState([]);
 
-  const { Token, ID, Role } = props.userData;
+  const { Token, ID, Role, Name } = props.userData;
 
   const { tokenError: TokenError } = props.userDataActions;
 
-  const { currentCourses, recentEvent, currentGroups, recentUserPosts } = props;
+  const { currentCourses, recentEvent, currentGroups } = props;
 
   const CurrentCourses = currentCourses.currentCourses;
   const RecentEvent = recentEvent.recentEvent;
   const Joined = currentGroups.currentGroups;
-  const Posts = recentUserPosts.userRecentPosts;
 
   const setCurrentCourses = props.currentCoursesActions.onSetCurrentCourses;
   const setJoined = props.currentGroupsActions.onSetCurrentGroups;
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
-  const setPosts = props.recentUserPostsActions.onSetRecentUserPosts;
 
   useEffect(() => {
     if (CurrentCourses.size === 0)
@@ -79,25 +78,34 @@ const ProfilePage = (props) => {
 
   useEffect(() => {
     //TODO: Get the User Posts
-    if (Posts.length === 0)
-      getRecentPosts(Token, ID).then((res) => {
-        const Posts = [];
-        if (res) {
-          res.forEach((ele) => {
-            Posts.push({
-              Name: ele["name"],
-              Location: ele["owner_name"],
-              Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
-              Desc: ele["post_text"],
-              PostId: ele["post_id"],
-            });
+    getRecentUserPosts(Token, ID).then((res) => {
+      const Posts = [];
+      if (res) {
+        res.forEach((ele) => {
+          let Liked = false;
+          for (const id in ele["likes"]) {
+            console.log(ID, id['liker_id']);
+            if (id['liker_id']===ID) {
+              Liked = true;
+              break;
+            }
+          }
+          Posts.push({
+            Name: Name,
+            Location: ele["owner_name"],
+            Title: `Post by ${Name}, in ${ele["owner_name"]}`,
+            Desc: ele["post_text"],
+            PostId: ele["post_id"],
+            Likes: ele["likes"],
+            isLiked: Liked,
           });
-          setPosts(Posts);
-        } else {
-          TokenError();
-        }
-      });
-  }, [Token, ID, Role, setPosts, Posts, TokenError]);
+        });
+        setPosts(Posts);
+      } else {
+        TokenError();
+      }
+    });
+  }, [Token, ID, Role, Name, TokenError]);
 
   useEffect(() => {
     if (!RecentEvent)
@@ -139,7 +147,7 @@ const ProfilePage = (props) => {
           <div className={classes.User}>
             <ImageHolder className={classes.Pic} filler={filler} />
             <div className={classes.Details}>
-            <div className={classes.filler}/>
+              <div className={classes.filler} />
               <div className={classes.Name}>{props.userData.Name}</div>
               <div>Third Year</div>
               <div>Computer Engineering</div>

@@ -65,23 +65,17 @@
 }
 
 .GroupsArea {
+    height: fit-content;
     padding-top: 1%;
     width: 100%;
 }
 
 @media (max-width : 800px) {
     .GroupsArea {
-        height: 40vh;
         padding-bottom: 5px;
     }
     .SwipeList {
         flex-grow: 5;
         padding:0;
-    }
-}
-
-@media (max-width : 538px) {
-    .GroupsArea {
-        height: 45vh;
     }
 }

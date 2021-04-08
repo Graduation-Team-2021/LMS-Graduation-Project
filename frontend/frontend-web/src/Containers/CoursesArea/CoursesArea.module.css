@@ -90,12 +90,11 @@
 
 .CoursesArea {
     width: 100%;
-    height: 66vh;
+    height: fit-content;
 }
 
 @media (max-width : 800px) {
     .CoursesArea {
-        height: 50vh;
         padding-bottom: 5px;
         flex-flow: column;
         display: flex;
@@ -110,11 +109,5 @@
     .Join2 {
         align-self: flex-end;
         display: flex;
-    }
-}
-
-@media (max-width : 538px) {
-    .CoursesArea {
-        height: 55vh;
     }
 }

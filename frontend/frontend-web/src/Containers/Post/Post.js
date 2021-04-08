@@ -21,6 +21,7 @@ const Post = (props) => {
       alert("this is an empty comment");
       return;
     }
+    //Todo: set comments
     setPostComments([...postComments, currentTypingComment]);
     setCurrentTypingComment("");
   };

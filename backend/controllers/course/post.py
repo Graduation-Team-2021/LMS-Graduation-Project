@@ -10,6 +10,7 @@ from models.relations.student_group_relation import StudentGroupRelation
 from models.course.post_owner import PostOwner
 from models.user.users import User
 from methods.errors import *
+from controllers.relations.post_liker import Post_Liker_controller
 
 class Post_Controller:
     def get_post_by_id(self,post_id):
@@ -192,12 +193,18 @@ class Post_Controller:
             courses_post_owner_ids.append((desired_groups[i]["post_owner_id"],desired_groups[i]['group_name']))
 
         desired_posts=[]
+        likeGetter = Post_Liker_controller()
         for i in range(len(courses_post_owner_ids)):
-            if Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0],Post.post_writer==student_id).first() is not None:
-                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0],Post.post_writer==student_id).all()
+            if Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0],Post.post_writer==Student.user_id).first() is not None:
+                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0],Post.post_writer==Student.user_id).all()
                 for p in posts:
                     Temp=p.serialize()
                     Temp['owner_name']=courses_post_owner_ids[i][1]
+                    t2=[]
+                    for l in likeGetter.get_one_post_all_likers(Temp['post_id']):
+                        Like = {'liker_id': l[0], 'liker_name':l[1]}
+                        t2.append(Like)
+                    Temp['likes']=t2
                     desired_posts.append(Temp)
                 # desired_posts.append(posts)
 
