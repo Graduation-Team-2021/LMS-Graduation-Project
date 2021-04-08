@@ -29,7 +29,7 @@ class finished_relation_view(Resource):
                 return jsonify({'message': 'No finished courses for this specific student'})
         except ErrorHandler as e:
             return e.error
-        return data_list
+        return {'courses': data_list, 'status_code': 200}
 
     def post(self, student_id):
         args = self.reqparse.parse_args()

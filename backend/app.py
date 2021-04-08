@@ -230,7 +230,7 @@ Posts
 '''
 api.add_resource(Post_view,'/posts/<post_id>')
 api.add_resource(Post_the_post,'/posts/add_post')
-api.add_resource(FirstTenPosts,'/<student_id>/first_10_posts')
+api.add_resource(FirstTenPosts,'/first_10_posts')
 api.add_resource(MyPosts,'/student/<student_id>/my_posts')
 api.add_resource(GetPostByOwnerID,'/posts/by_owner_id/<owner_id>')
 '''

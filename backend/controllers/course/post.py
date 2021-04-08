@@ -94,10 +94,10 @@ class Post_Controller:
         data = [post.serialize() for post in posts]
         return data
 
-    def get_one_student_first_ten_courses(self,student_id):
+    def get_one_student_first_ten_courses(self):
         courses=Course.query.join(Learns_Relation).\
         filter(Course.course_code==Learns_Relation.course_code).join(Student).\
-        filter(Learns_Relation.student_id==Student.user_id==student_id).\
+        filter(Learns_Relation.student_id==Student.user_id).\
         with_entities(Course.course_code)
         
         groups=GroupProject.query.join(StudentGroupRelation).\
@@ -157,10 +157,10 @@ class Post_Controller:
             desired_posts[i]['name']=post_writers[i]
         return desired_posts
 
-    def get_the_student_first_posts(self,student_id):
+    def get_the_student_first_posts(self):
         courses=Course.query.join(Learns_Relation).\
         filter(Course.course_code==Learns_Relation.course_code).join(Student).\
-        filter(Learns_Relation.student_id==Student.user_id==student_id).\
+        filter(Learns_Relation.student_id==Student.user_id).\
         with_entities(Course.course_code)
         
         groups=GroupProject.query.join(StudentGroupRelation).\
@@ -190,8 +190,8 @@ class Post_Controller:
 
         desired_posts=[]
         for i in range(len(courses_post_owner_ids)):
-            if Post.query.filter(Post.post_owner==courses_post_owner_ids[i],Post.post_writer==student_id).first() is not None:
-                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i],Post.post_writer==student_id).first().serialize()
+            if Post.query.filter(Post.post_owner==courses_post_owner_ids[i],Post.post_writer==Student.user_id).first() is not None:
+                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i],Post.post_writer==Student.user_id).first().serialize()
                 desired_posts.append(posts)
 
         # return desired_posts
