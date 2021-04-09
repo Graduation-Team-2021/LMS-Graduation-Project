@@ -20,6 +20,7 @@
 }
 
 .User {
+    padding: 0 2%;
     position: relative;
     flex-flow: row;
     display: flex;
@@ -30,14 +31,14 @@
 }
 
 .Details {
+    margin-left: 2%;
     height: 100%;
-    margin: 0 2% 0;
-    font-size: x-large;
+    font-size: 1.5em;
 }
 
 .Name{
     font-weight: bold;
-    font-size: xx-large;
+    font-size: 1em;
     padding: 5% 0;
 }
 
@@ -52,7 +53,7 @@
     height: 200px;
     border: 6px solid purple;
     box-sizing: border-box;
-    margin: 3%;
+
 }
 
 .User .Note{
