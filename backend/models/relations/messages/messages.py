@@ -5,18 +5,22 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 class Messages(db.Model):
-    __tablename__ = 'message'
+    __tablename__ = 'messages'
     message_id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, ForeignKey('user.user_id', ondelete='CASCADE', onupdate="CASCADE"))
-    receiver_id = db.Column(db.Integer, ForeignKey('user.user_id', ondelete='CASCADE', onupdate="CASCADE"))
+    conversation_id = db.Column(db.Integer, ForeignKey('conversations.conversation_id', ondelete='CASCADE', onupdate="CASCADE"))
     text = db.Column(db.Text)
     sent_time = db.Column(db.DateTime)
+    sender_id = db.Column(db.Integer,ForeignKey('user.user_id', ondelete='CASCADE', onupdate="CASCADE"))
+    receiver_id = db.Column(db.Integer,ForeignKey('user.user_id', ondelete='CASCADE', onupdate="CASCADE"))
+    
     sender = relationship("User", foreign_keys=[sender_id])
     receiver = relationship("User", foreign_keys=[receiver_id])
 
+
     def serialize(self):
         return {
-            'message_id ': self.message_id,
+            'message_id': self.message_id,
+            'conversation_id': self.conversation_id,
             'sender_id ': self.sender_id,
             'receiver_id': self.receiver_id,
             'text': self.text,

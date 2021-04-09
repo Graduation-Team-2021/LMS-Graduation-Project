@@ -39,10 +39,23 @@ class Messages_Relation(Resource):
         except ErrorHandler as e:
             return e.error
         return jsonify({
+            "test":message,
             'message': 'Message added successfully',
             'status_code': 200
         })
+# /user/messages
+class Messages(Resource):
+    method_decorators = [requires_auth_identity("")]
 
+    def get(self, user_id,role):
+        try:
+            messages = controller_object.get_all_conversations(user_id)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'conversations': messages,
+            'status_code': 200
+        })
 
 # /users/messages/delete/<message_id>
 class DeleteMessageById(Resource):
