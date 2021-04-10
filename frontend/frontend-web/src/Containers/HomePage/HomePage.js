@@ -95,7 +95,7 @@ const HomePage = (props) => {
   return (
     <div className={classes.Center}>
       <div className={classes.contanier}>
-        <Card className={classes.Card}>
+        <Card shadow className={classes.Card}>
           {CurrentCourses.size !== 0 ? (
             <CoursesArea Courses={CurrentCourses} />
           ) : (

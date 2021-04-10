@@ -71,7 +71,7 @@ const HomePage = (props) => {
 
   return (
     <div className={classes.Center}>
-      <Card className={classes.Card}>
+      <Card shadow className={classes.Card}>
         {Courses.size !== 0 ? (
           <div className={classes.CoursesPage}>
             <div className={classes.CoursesList}>{loadedCourses}</div>

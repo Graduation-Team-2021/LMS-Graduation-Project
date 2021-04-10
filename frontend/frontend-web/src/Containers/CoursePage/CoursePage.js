@@ -94,7 +94,7 @@ const CoursePage = (props) => {
       </Modal>
       {Course ? (
         <div className={classes.Center}>
-          <Card className={classes.Course}>
+          <Card shadow className={classes.Course}>
             <h1>{Title}</h1>
             <div className={classes.small}>
               <CourseDescription

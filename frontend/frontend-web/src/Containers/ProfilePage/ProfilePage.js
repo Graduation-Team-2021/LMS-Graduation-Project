@@ -75,7 +75,7 @@ const ProfilePage = (props) => {
 
   return (
     <div className={classes.Center}>
-      <Card className={classes.Container}>
+      <Card shadow className={classes.Container}>
         <Card className={classes.Card} shadow>
           <div className={classes.background}>{/*insert your image here*/}</div>
           <div className={classes.User}>
