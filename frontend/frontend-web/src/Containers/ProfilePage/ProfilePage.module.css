@@ -17,21 +17,28 @@
     overflow: hidden;
     height: 100%;
     width: 100%;
+    min-width: 0;
+}
+
+.main{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 55%;
 }
 
 .User {
-    padding: 0 2%;
     position: relative;
     flex-flow: row;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     height: 27vh;
     width: 100%;
 }
 
 .Details {
-    margin-left: 2%;
+    padding-left: 5%;
     height: 100%;
     font-size: 1.5em;
 }
@@ -53,17 +60,7 @@
     height: 200px;
     border: 6px solid purple;
     box-sizing: border-box;
-
-}
-
-.User .Note{
-    padding: 0;
-    margin: 0 3%;
-    height: 85%;
-    width: 21%;
-    min-width: 0;
-    align-items: center;
-    justify-content: center;
+    margin-left: 5%;
 }
 
 .background {
@@ -82,21 +79,34 @@
     height: 100%;
 }
 .small {
+    height: 100%;
+    width: 45%;
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
 }
 .small .Note {
-    width: 40%;
     align-content: center;
+    padding: 0;
+    height: 85%;
+    width: 45%;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (max-width : 662px) {
+    .main{
+        flex-flow: column;
+    }
     .Center .Container .Card {
         display: flex;
         flex-direction: column;
         height: fit-content;
     }
     .User {
+        padding: 0;
         flex-flow: column;
         height: fit-content;
         justify-content: space-between;
@@ -108,15 +118,16 @@
         padding: 15px;
     }
     .small {
+        position: relative;
         display: flex;
         flex-direction: column;
         width: 100%;
     }
     .small .Note {
-        width: 86%;
+        margin: 0 auto 10px;
+        width: 75%;
         padding-top: 10px;
         padding-bottom: 10px;
-        margin-bottom: 10px;
         text-align: center;
     }
     .Bottom {
@@ -125,7 +136,6 @@
     .User .Pic {
         width: 166px;
         height: 166px;
-        margin-top: 20px;
-        margin-left: -8px;
+        margin-top: 10px;
     }
 }
