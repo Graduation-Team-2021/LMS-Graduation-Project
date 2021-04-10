@@ -1,34 +1,10 @@
-/* .sidenav {
-    height: 100%;
-    width: 160px;
-    position: fixed;
-    z-index: 0;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 20px;
-  } */
-  
-  /* .sidenav a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-  } */
-  
-  /* .sidenav a:hover {
-    color: #f1f1f1;
-  } */
-  
-
-  .main {
+.main {
     /* margin-left: 160px;  */
     font-size: 28px; 
     height: 100%;
     padding: 0 5%;
     overflow: auto;
+    padding-top: 15px;
   }
 
   .main p {
@@ -39,28 +15,24 @@
     display: block;
     padding: 5px;
   }
-  
-    /* @media screen and (max-height: 450px) {
-      .sidenav {padding-top: 15px;}
-      .sidenav a {font-size: 18px;}
-    } */
 
-    .App_App__1UEGG {
-      overflow: scroll;
-    }
 .main table {
   width:100%;
+
 }
 
 
 
 table, th, td {
-    border: 1px solid black;
+    border-radius: 33px;
     border-collapse: collapse;
     text-align: center;
-    background-color: blue;
+    background-color: cornflowerblue;
     color: white;
   }
+  th {
+    border-bottom: 2px solid black;
+  }  
 
   th, td {
     padding: 15px;
@@ -71,6 +43,6 @@ table tr button{
 }
 
 .finish {
-    margin:15px 0px 15px 600px;
+    margin:15px 0px 15px 45%;
     padding:  10px 10px;
 }

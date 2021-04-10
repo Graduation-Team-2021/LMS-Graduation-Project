@@ -79,21 +79,25 @@ const ProfilePage = (props) => {
         <Card className={classes.Card} shadow>
           <div className={classes.background}>{/*insert your image here*/}</div>
           <div className={classes.User}>
-            <ImageHolder className={classes.Pic} filler={filler} />
-            <div className={classes.Details}>
-              <div className={classes.filler} />
-              <div className={classes.Name}>{props.userData.Name}</div>
-              <div>Third Year{/*get from database*/}</div>
-              <div>Computer Engineering{/*get from database*/}</div>
+            <div className={classes.main}>
+              <ImageHolder className={classes.Pic} filler={filler} />
+              <div className={classes.Details}>
+                <div className={classes.filler} />
+                <div className={classes.Name}>{props.userData.Name}</div>
+                <div>Third Year{/*get from database*/}</div>
+                <div>Computer Engineering{/*get from database*/}</div>
+              </div>
             </div>
-            <Card shadow className={classes.Note}>
-              <h2>Passed Courses</h2>
-              <h1>50{/*get from database*/}</h1>
-            </Card>
-            <Card shadow className={classes.Note}>
-              <h2>Total Grade</h2>
-              <h1>50{/*get from database*/}</h1>
-            </Card>
+            <div className={classes.small}>
+              <Card shadow className={classes.Note}>
+                <h2>Passed Courses</h2>
+                <h1>50{/*get from database*/}</h1>
+              </Card>
+              <Card shadow className={classes.Note}>
+                <h2>Total Grade</h2>
+                <h1>50{/*get from database*/}</h1>
+              </Card>
+            </div>
           </div>
         </Card>
         <div className={classes.Bottom}>

@@ -45,7 +45,7 @@ class MarkEdit extends Component {
   render() {
     return (
       <div className="main">
-        <p>{this.props.location.state.name}</p>
+        {/* <p>{this.props.location.state.name}</p> */}
         <table className="oo">
           <thead>
             <tr>

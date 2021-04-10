@@ -58,3 +58,12 @@
     opacity: 0;
     transition: 500ms;
 }
+
+@media (max-width : 662px) {
+    .holder  {
+        width: 55vw;
+    }
+    .Title {
+        padding-top: 8vw;
+    }
+}
