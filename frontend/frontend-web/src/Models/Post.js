@@ -52,4 +52,5 @@ export const setFullPost = (ele, ID) => {
     isLiked: Liked,
     Comments: ele["comments"],
   };
+  return data
 };
