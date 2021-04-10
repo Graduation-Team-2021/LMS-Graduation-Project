@@ -1,16 +1,17 @@
-.Center{
+.Center {
     display: flex;
-}
-
-.Home{
-    flex:3;
 }
 
 .contanier {
     width: 80%;
 }
+
+.contanier .Card {
+    align-items: flex-start;
+}
+
 @media (max-width : 668px) {
-    .contanier{
+    .contanier {
         width: 100%;
     }
 }

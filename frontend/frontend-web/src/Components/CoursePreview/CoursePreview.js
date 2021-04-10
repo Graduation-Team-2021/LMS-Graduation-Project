@@ -10,18 +10,19 @@ const CoursePreview = (props) => {
     <div
       className={classes.holder}
       onClick={() => {
+        console.log(props.Course);
         props.history.push({
           pathname: `/Course/${props.id}`,
           state: {
-            postID: props.Course.Post,
+            Data: props.Course,
             isJoined: "true",
           },
         });
       }}
     >
       <Card className={classes.Card} shadow>
-        <div className={classes.CourseTitle}>{props.Course.Title}</div>
-        <ImageHolder filler={filler} />
+        <div className={classes.CourseTitle}>{props.Course.CourseName}</div>
+        <ImageHolder filler={props.Course.CoursePicture||filler} />
       </Card>
     </div>
   );

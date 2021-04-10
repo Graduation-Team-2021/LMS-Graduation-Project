@@ -1,4 +1,5 @@
 import React from "react";
+
 import MainPage from "./Containers/MainPage/MainPage";
 import Home from "./Containers/HomePage/HomePage";
 import Login from "./Containers/LoginPage/LoginPage";
@@ -7,6 +8,8 @@ import Courses from "./Containers/CoursesPage/CoursesPage";
 import Course from "./Containers/CoursePage/CoursePage";
 import Group from './Containers/GroupPage/GroupPage.js'
 import Mark_edit from "./Ibrahim/Mrak_edit.js"
+import Group from './Containers/GroupPage/GroupPage.js';
+import Messenger from './Components/Messenger/Messenger';
 
 import { mapStateToProps, mapDispatchToProps } from "./store/reduxMaps";
 import { connect } from "react-redux";
@@ -25,6 +28,7 @@ const App = (props) => {
             <Route path="/Course/:id" exact component={Course} />
             <Route path="/Group/:id" exact component={Group} />
             <Route path="/Mark_edit" exact component={Mark_edit} />
+            <Route path="/Messenger" exact component={Messenger} />
             <Redirect path='/login' to='/'/>
           </Switch>
         </MainPage>

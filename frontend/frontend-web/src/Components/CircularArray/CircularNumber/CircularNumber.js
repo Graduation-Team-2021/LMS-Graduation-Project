@@ -7,7 +7,7 @@ const CircularNumber = (props) => {
       <div
         style={{
           color: "white",
-          fontSize: "2.4vh",
+          fontSize: "27px",
         }}
       >
         {props.filler}

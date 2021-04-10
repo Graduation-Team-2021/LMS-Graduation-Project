@@ -10,16 +10,21 @@ export const f1 = async () => {
   return users;
 };
 
-export const signup = async (Data) => {
+export const SignUp = async (Data) => {
   //TODO: use request result
-  await instance.post("/sign_up", Data, {
+  console.log(Data['birthday'])
+  let res = await instance.post("/sign_up", Data, {
     headers: {
       "Content-Type": "application/json",
     },
   });
+  if (res.data['status_code']!==200) {
+    return null
+  }
+  return 1;
 };
 
-export const login = async (Data) => {
+export const Login = async (Data) => {
   const res = await instance.post("/login", Data, {
     headers: {
       "Content-Type": "application/json",
@@ -72,7 +77,7 @@ export const getCourses = async (Token) => {
     //TODO: Better Check
     return null;
   }
-  return res.data['courses'];
+  return res.data["courses"];
 };
 export const getRecentPosts = async (Token) => {
   const res = await instance.get(`/first_10_posts`, {
@@ -82,6 +87,21 @@ export const getRecentPosts = async (Token) => {
     },
   });
 
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["posts"];
+};
+
+export const getRecentUserPosts = async (Token) => {
+  const res = await instance.get("/my_posts", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(res);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -115,7 +135,7 @@ export const getFinishedCourses = async (Token, id, role) => {
     //TODO: Better Check
     return null;
   }
-  return res.data['courses'];
+  return res.data["courses"];
 };
 
 export const getAllPosts = async (Token, owner) => {
@@ -130,7 +150,7 @@ export const getAllPosts = async (Token, owner) => {
     //TODO: Better Check
     return null;
   }
-  return res.data['posts'];
+  return res.data["posts"];
 };
 
 export const uploadPost = async (Token, writer, owner, post) => {
@@ -153,7 +173,7 @@ export const uploadPost = async (Token, writer, owner, post) => {
     //TODO: Better Check
     return null;
   }
-  return res.data;
+  return res.data['post_id'];
 };
 
 export const getCourseByID = async (Token, CourseID) => {
@@ -185,4 +205,39 @@ export const uploadFile = async (Token, file, CourseID) => {
       },
     }
   );
+};
+
+export const Like = async (Token, userID, postID) => {
+  const res = await instance.post(`/like/${userID}/${postID}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(res);
+};
+
+export const UnLike = async (Token, userID, postID) => {
+  const res = await instance.delete(`/like/${userID}/${postID}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(res);
+};
+
+export const Comment = async (Token, userID, postID, text) => {
+  console.log(text);
+  const res = await instance.post(
+    `/comments/${userID}/${postID}`,
+    { 'comment_text': text },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    }
+  );
+  console.log(res);
 };

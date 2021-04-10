@@ -5,7 +5,7 @@ import classes from "./CoursePreview.module.css";
 import ImageHolder from "../ImageHolder/ImageHolder";
 import { withRouter } from "react-router-dom";
 
-const CoursePreview = (props) => {
+const GroupPreview = (props) => {
   return (
     <div
       onClick={() =>
@@ -29,4 +29,4 @@ const CoursePreview = (props) => {
   );
 };
 
-export default withRouter(CoursePreview);
+export default withRouter(GroupPreview);

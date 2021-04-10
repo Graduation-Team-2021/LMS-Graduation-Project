@@ -15,6 +15,10 @@ import {
   getRecentEvent,
 } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
+import { setCourse } from "../../Models/Course";
+import { setFullPost } from "../../Models/Post";
+import { setGroup } from "../../Models/Group";
+import { setEvent } from "../../Models/Event";
 
 const HomePage = (props) => {
   const { Token, ID, Role } = props.userData;
@@ -35,15 +39,10 @@ const HomePage = (props) => {
   useEffect(() => {
     if (CurrentCourses.size === 0)
       getCurrentCourses(Token).then((res) => {
-        
         const Courses = new Map();
         if (res) {
           res.forEach((element) => {
-            Courses.set(element["course_code"], {
-              Title: element["course_name"],
-              Desc: element["course_description"],
-              Post: element["post_owner_id"],
-            });
+            Courses.set(element["course_code"], setCourse(element));
           });
           setCurrentCourses(Courses);
         } else {
@@ -55,16 +54,12 @@ const HomePage = (props) => {
   useEffect(() => {
     if (Joined.size === 0)
       getCurrentGroups(Token).then((res) => {
-        const Courses = new Map();
+        const Groups = new Map();
         if (res) {
           res.forEach((element) => {
-            Courses.set(element["group_id"], {
-              Title: element["group_name"],
-              Desc: element["group_description"],
-              Post: element["post_owner_id"],
-            });
+            Groups.set(element["group_id"], setGroup(element));
           });
-          setJoined(Courses);
+          setJoined(Groups);
         } else {
           TokenError();
         }
@@ -77,13 +72,7 @@ const HomePage = (props) => {
         const Posts = [];
         if (res) {
           res.forEach((ele) => {
-            Posts.push({
-              Name: ele["name"],
-              Location: ele["owner_name"],
-              Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
-              Desc: ele["post_text"],
-              PostId: ele["post_id"],
-            });
+            Posts.push(setFullPost(ele, ID));
           });
           setPosts(Posts);
         } else {
@@ -96,15 +85,7 @@ const HomePage = (props) => {
     if (!RecentEvent)
       getRecentEvent(Token, ID, Role).then((res) => {
         if (res) {
-          setRecentEvent({
-            Title: res["event_name"],
-            Desc: res["event_description"],
-            Type: res["event_type"],
-            Duration: res["event_duration"],
-            Date: res["event_date"].slice(0, 10),
-            Host: res["course_code"],
-            Time: res["event_date"].slice(11),
-          });
+          setRecentEvent(setEvent(res));
         } else {
           TokenError();
         }
@@ -114,13 +95,7 @@ const HomePage = (props) => {
   return (
     <div className={classes.Center}>
       <div className={classes.contanier}>
-        <Card
-          style={{
-            alignItems: "flex-start",
-            flex: "3",
-            height: "fit-content",
-          }}
-        >
+        <Card className={classes.Card}>
           {CurrentCourses.size !== 0 ? (
             <CoursesArea Courses={CurrentCourses} />
           ) : (

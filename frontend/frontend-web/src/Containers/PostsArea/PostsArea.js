@@ -46,9 +46,9 @@ class PostsArea extends Component {
 
     return (
       <div className={classes.Main}>
-        <Modal show={this.state.clicked} onClick={this.hide}>
+        {this.state.Posts.length!==0?<Modal show={this.state.clicked} onClick={this.hide}>
           <Post {...this.state.Posts[this.state.Posts.length - 1]} />
-        </Modal>
+        </Modal>:null}
         <div className={classes.Title}>{this.props.Title}</div>
         <div className={classes.holder}>
           <Dismiss Title="Posts" ref={this.myRef} onDismiss={this.onDismiss}>

@@ -13,104 +13,47 @@ import Upcoming from "../Upcoming/Upcoming";
 import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
 import {
   getFinishedCourses,
-  getCurrentCourses,
-  getCurrentGroups,
-  getRecentPosts,
+  getRecentUserPosts,
   getRecentEvent,
 } from "../../Interface/Interface";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
+import { setFullPost } from "../../Models/Post";
+import { setEvent } from "../../Models/Event";
 
 const ProfilePage = (props) => {
   const [Finished, setFinished] = useState([]);
+  const [Posts, setPosts] = useState([]);
 
-  const { Token, ID, Role } = props.userData;
+  const { Token, ID, Role, Name } = props.userData;
 
   const { tokenError: TokenError } = props.userDataActions;
 
-  const { currentCourses, recentEvent, currentGroups, recentUserPosts } = props;
+  const { recentEvent } = props;
 
-  const CurrentCourses = currentCourses.currentCourses;
   const RecentEvent = recentEvent.recentEvent;
-  const Joined = currentGroups.currentGroups;
-  const Posts = recentUserPosts.userRecentPosts;
 
-  const setCurrentCourses = props.currentCoursesActions.onSetCurrentCourses;
-  const setJoined = props.currentGroupsActions.onSetCurrentGroups;
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
-  const setPosts = props.recentUserPostsActions.onSetRecentUserPosts;
 
   useEffect(() => {
-    if (CurrentCourses.size === 0)
-      getCurrentCourses(Token).then((res) => {
-        const Courses = new Map();
-        if (res) {
-          res.forEach((element) => {
-            Courses.set(element["course_code"], {
-              Title: element["course_name"],
-              Desc: element["course_description"],
-              Post: element["post_owner_id"],
-            });
-          });
-          setCurrentCourses(Courses);
-        } else {
-          TokenError();
-        }
-      });
-  }, [Token, TokenError, setCurrentCourses, CurrentCourses]);
-
-  useEffect(() => {
-    if (Joined.size === 0)
-      getCurrentGroups(Token).then((res) => {
-        const Courses = new Map();
-        if (res) {
-          res.forEach((element) => {
-            Courses.set(element["group_id"], {
-              Title: element["group_name"],
-              Desc: element["group_description"],
-              Post: element["post_owner_id"],
-            });
-          });
-          setJoined(Courses);
-        } else {
-          TokenError();
-        }
-      });
-  }, [TokenError, Token, ID, Role, setJoined, Joined]);
-
-  useEffect(() => {
-    if (Posts.length === 0)
-      getRecentPosts(Token, ID).then((res) => {
-        const Posts = [];
-        if (res) {
-          res.forEach((ele) => {
-            Posts.push({
-              Name: ele["name"],
-              Location: ele["owner_name"],
-              Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
-              Desc: ele["post_text"],
-              PostId: ele["post_id"],
-            });
-          });
-          setPosts(Posts);
-        } else {
-          TokenError();
-        }
-      });
-  }, [Token, ID, Role, setPosts, Posts, TokenError]);
+    //TODO: Get the User Posts
+    getRecentUserPosts(Token, ID).then((res) => {
+      const Posts = [];
+      if (res) {
+        res.forEach((ele) => {
+          Posts.push(setFullPost(ele, ID));
+        });
+        setPosts(Posts);
+      } else {
+        TokenError();
+      }
+    });
+  }, [Token, ID, Role, Name, TokenError]);
 
   useEffect(() => {
     if (!RecentEvent)
       getRecentEvent(Token, ID, Role).then((res) => {
         if (res) {
-          setRecentEvent({
-            Title: res["event_name"],
-            Desc: res["event_description"],
-            Type: res["event_type"],
-            Duration: res["event_duration"],
-            Date: res["event_date"].slice(0, 10),
-            Host: res["course_code"],
-            Time: res["event_date"].slice(11),
-          });
+          setRecentEvent(setEvent(res));
         } else {
           TokenError();
         }
@@ -138,17 +81,18 @@ const ProfilePage = (props) => {
           <div className={classes.User}>
             <ImageHolder className={classes.Pic} filler={filler} />
             <div className={classes.Details}>
-              <h2>{props.userData.Name}</h2>
-              <div>Third Year Student</div>
-              <div>Computer Engineering</div>
+              <div className={classes.filler} />
+              <div className={classes.Name}>{props.userData.Name}</div>
+              <div>Third Year{/*get from database*/}</div>
+              <div>Computer Engineering{/*get from database*/}</div>
             </div>
             <Card shadow className={classes.Note}>
               <h2>Passed Courses</h2>
-              <h1>50</h1>
+              <h1>50{/*get from database*/}</h1>
             </Card>
             <Card shadow className={classes.Note}>
               <h2>Total Grade</h2>
-              <h1>50</h1>
+              <h1>50{/*get from database*/}</h1>
             </Card>
           </div>
         </Card>

@@ -70,10 +70,11 @@ class Post_the_post(Resource):
             "post_text":args['post_text']
         }
         try:
-            controller_object.post_a_post(new_post)
+            post=controller_object.post_a_post(new_post)
         except ErrorHandler as e:
             return e.error
         return jsonify({
+            'post_id': post.serialize()['post_id'],
             'message': 'Post created successfully',
             'status_code': 200
         })
@@ -91,11 +92,11 @@ class FirstTenPosts(Resource):
             return e.error
     
 
-#student/<student_id>/my_posts
+#my_posts
 class MyPosts(Resource):
-    def get(self,student_id):
+    def get(self):
         try:
-            posts = controller_object.get_the_student_first_posts(student_id)
+            posts = controller_object.get_the_student_first_posts()
             return jsonify({
                 'posts':posts,
                 'status_code':200

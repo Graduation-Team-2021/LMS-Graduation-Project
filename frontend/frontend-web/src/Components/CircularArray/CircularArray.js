@@ -24,6 +24,8 @@ class CircularArray extends Component {
   }
 
   render() {
+    const distance = this.props.distance || 20;
+
     let Joined = [];
 
     const Number = 21;
@@ -47,9 +49,10 @@ class CircularArray extends Component {
         <div
           key={index}
           style={{
+            zIndex: -index + (Number <= shift ? Number : shift - 1),
             transform: `translateX(${
               index !== 0
-                ? `${(-index + 1 - (Number > shift - 2 ? 1 : 0)) * 3}vh`
+                ? `${(-index + 1 - (Number > shift - 2 ? 1 : 0)) * distance}px`
                 : 0
             })`,
           }}
@@ -64,7 +67,8 @@ class CircularArray extends Component {
         <div
           key={6}
           style={{
-            transform: `translateX(${-(shift - 1) * 3}vh)`,
+            zIndex: 0,
+            transform: `translateX(${-(shift - 1) * distance}px)`,
           }}
         >
           <CircularNumber
@@ -89,7 +93,7 @@ class CircularArray extends Component {
         <div
           style={{
             display: "flex",
-            width: `${Joined.length * 7 - shift * 3 + 3}vh`,
+            width: `${Joined.length * 60 - shift * distance + distance}px`,
           }}
         >
           {Joined}

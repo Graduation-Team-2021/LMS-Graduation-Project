@@ -60,7 +60,7 @@ mail service
 """
 import all the endpoints from views
 """
-from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile
+from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile,Sign_Up_Using_Excel
 from views.user.professors import Professor, Professors
 from views.user.students import Students, Student,Student_result_calculation
 from views.course.courses import Course, Courses, My_Courses
@@ -90,6 +90,7 @@ from views.relations.post_commenter import Post_commenter_view,CommentView_Updat
 from views.relations.post_liker import Post_liker_view,Liker_all_posts
 from views.course.post import FirstTenPosts,MyPosts,GetPostByOwnerID
 from views.course.events import Events_most_recent
+from views.relations.post_liker import insert_Delete_like
 # Answers
 """
 Users
@@ -97,6 +98,7 @@ Users
 api.add_resource(User, '/users/<user_id>')
 api.add_resource(Users, '/users')
 api.add_resource(Sign_Up, '/sign_up')
+api.add_resource(Sign_Up_Using_Excel,'/sign_up/excell')
 api.add_resource(Login, '/login')
 api.add_resource(Reset_password, '/reset/password')
 api.add_resource(Profile, '/users/<user_id>/profile')
@@ -231,7 +233,7 @@ Posts
 api.add_resource(Post_view,'/posts/<post_id>')
 api.add_resource(Post_the_post,'/posts/add_post')
 api.add_resource(FirstTenPosts,'/first_10_posts')
-api.add_resource(MyPosts,'/student/<student_id>/my_posts')
+api.add_resource(MyPosts,'/my_posts')
 api.add_resource(GetPostByOwnerID,'/posts/by_owner_id/<owner_id>')
 '''
 Post owners
@@ -246,7 +248,7 @@ api.add_resource(Post_commenter_view,'/users/<user_id>/all_comments')
 api.add_resource(Post_liker_view,'/post/<post_id>/likers') 
 api.add_resource(CommentView_Update_Delete,'/comments/<commenter_id>/<post_id>')
 api.add_resource(Liker_all_posts,'/liker/<liker_id>/posts')
-
+api.add_resource(insert_Delete_like,'/like/<liker_id>/<post_id>')
 
 """
 Run app

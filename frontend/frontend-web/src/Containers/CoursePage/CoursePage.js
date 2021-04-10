@@ -1,5 +1,5 @@
-import classes from "./CoursePage.module.css";
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 
 import Card from "../../Components/Card/Card";
 import Modal from "../../Components/Modal/Modal";
@@ -7,22 +7,28 @@ import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
 import CourseDescription from "../CourseDesc/CourseDesc.js";
 import NewPostCard from "../../Components/New Post/NewPost";
-
+import classes from "./CoursePage.module.css";
 import {
   getAllPosts,
   uploadPost,
   getCourseByID,
 } from "../../Interface/Interface";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
+import { setNewPost,setLocationPost } from "../../Models/Post";
 
 const CoursePage = (props) => {
-  const [courseID, isJoined, postID, Token, userID, Role] = [
-    props.match.params.id,
+  const [isJoined,  Token, userID, Role, Name] = [
     props.location.state.isJoined,
-    props.location.state.postID,
-    props.Token,
-    props.ID,
-    props.Role,
+    props.userData.Token,
+    props.userData.ID,
+    props.userData.Role,
+    props.userData.Name,
   ];
+
+  console.log(props.location.state);
+
+  const {CourseID:courseID, CourseName:Title, PostID: postID, CourseDescription: Desc} = props.location.state.Data
+
   const [Course, setCourse] = useState(null);
   const [clicked, setclicked] = useState(false);
   const [Posts, setPosts] = useState([]);
@@ -40,33 +46,44 @@ const CoursePage = (props) => {
   };
 
   useEffect(() => {
-    //Loading Data from Server
-    getCourseByID(Token, courseID).then((res) => setCourse(res));
-    getAllPosts(Token, postID).then((value) => {
-      const posts = [];
-      for (let index = 0; index < value.length; index++) {
-        console.log(value);
-        posts.push(
-          <Post
-            key={index}
-            Title={value[value.length - index - 1]["name"]}
-            Desc={value[value.length - index - 1]["post_text"]}
-            ID={value[value.length - index - 1]["post_id"]}
-          />
-        );
-      }
-      setPosts(posts);
+    getCourseByID(Token, courseID).then((res) => {
+      setCourse(res);
     });
-  }, [Token, postID, courseID]);
+  }, [Token, courseID]);
 
-  const SubmitPost = (post) => {
+  useEffect(() => {
+    //Loading Data from Server
+    getAllPosts(Token, postID).then((value) => {
+      const Posts = [];
+      if (value) {
+        value.forEach((ele) => {
+          Posts.push(setLocationPost(ele, Title, userID));
+        });
+        console.log(Posts);
+        const posts = Posts.map((post, index) => (
+          <Post key={index} {...post} />
+        ));
+        posts.reverse()
+        setPosts(posts);
+      }
+    });
+  }, [Token, postID, userID,Title, Course]);
+
+  const SubmitPost = async (post) => {
     console.log(post);
-    let temp = [
-      <Post key={Posts.length} Title={props.Name} Content={post} />,
-      ...Posts,
-    ];
-    uploadPost(Token, userID, postID, post);
-    setPosts(temp);
+    
+    let data = setNewPost(post, Title, Name);
+    let id = await uploadPost(Token, userID, postID, post);
+    if (id) {
+      data.PostId=id
+      let temp = [
+        <Post key={Posts.length} {...data} />,
+        ...Posts,
+      ];
+      setPosts(temp);
+    } else {
+      alert("Couldn't Upload the Post, Please Try again later")
+    }
     hide();
   };
 
@@ -78,12 +95,13 @@ const CoursePage = (props) => {
       {Course ? (
         <div className={classes.Center}>
           <Card className={classes.Course}>
-            <h1>{Course["course_name"]}</h1>
-            <div className = {classes.small}>
-            <CourseDescription
-            desc={Course["course_description"]}
-            CourseID={courseID}
-          /></div>
+            <h1>{Title}</h1>
+            <div className={classes.small}>
+              <CourseDescription
+                desc={Desc}
+                CourseID={courseID}
+              />
+            </div>
             {isJoined === "true" ? (
               Role === "professor" ? (
                 <input
@@ -94,7 +112,7 @@ const CoursePage = (props) => {
                     props.history.push({
                       pathname: `/Course/${courseID}/Marks`,
                       state: {
-                        name: Course["course_name"],
+                        name: Title,
                       },
                     })
                   }
@@ -113,11 +131,12 @@ const CoursePage = (props) => {
               <div className={classes.posts}>{Posts}</div>
             </div>
           </Card>
-          <div className = {classes.large}>
-          <CourseDescription
-            desc={Course["course_description"]}
-            CourseID={courseID}
-          /></div>
+          <div className={classes.large}>
+            <CourseDescription
+              desc={Desc}
+              CourseID={courseID}
+            />
+          </div>
         </div>
       ) : (
         <h1>Loading.......</h1>
@@ -126,4 +145,4 @@ const CoursePage = (props) => {
   );
 };
 
-export default CoursePage;
+export default connect(mapStateToProps, mapDispatchToProps)(CoursePage);

@@ -4,7 +4,7 @@
     align-items: center;
     border-radius: 100%;
     border: 2px solid white;
-    width: 7vh;
-    height: 7vh;
+    width: 60px;
+    height: 60px;
     box-sizing: border-box;
 }

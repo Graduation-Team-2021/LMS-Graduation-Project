@@ -7,6 +7,7 @@ const TextField = (props) => {
     : classes.Field + " " + classes.ErrorField;
   let inputField = (
     <input
+    value={props.value}
       type="text"
       name={props.Name}
       className={Field}
@@ -28,7 +29,7 @@ const TextField = (props) => {
             color: "red",
           }}
         >
-          This Field Can't be Empty
+          Please Insert Valid Data
         </p>
       ) : null}
     </React.Fragment>
