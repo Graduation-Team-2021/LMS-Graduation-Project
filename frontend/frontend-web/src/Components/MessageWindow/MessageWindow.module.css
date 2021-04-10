@@ -1,13 +1,15 @@
 .list {
-  margin: 10px;
-  padding: 10px;
+      padding: 10px;
+      height: 800px;
+      display: flex;
+      flex-direction: column;
   }
 
   .container {
     margin: 10px;
-    padding: 10px;
-    height: 580px;
-    overflow-y: scroll;
+    flex-direction: column;
+    overflow-y:scroll;
+    -webkit-overflow-scrolling: touch;
     }
 
   .title {
