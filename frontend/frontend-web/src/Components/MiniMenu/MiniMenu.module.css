@@ -9,7 +9,7 @@
 
 .full {
     outline: none;
-    position: absolute;
+    position: relative;
     right: 0;
     display: flex;
     flex-flow: column;
