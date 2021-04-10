@@ -83,7 +83,7 @@ const GroupPage = (props) => {
       </Modal>
       <div className={classes.Center}>
         <div className={classes.MainArea}>
-          <Card className={classes.Card}>
+          <Card shadow className={classes.Card}>
             <div className={classes.Title}>
               <h1>{Title}</h1>
               {isJoined === "false" ? (
