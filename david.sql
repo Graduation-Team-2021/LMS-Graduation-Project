@@ -384,7 +384,7 @@ INSERT INTO `student` (`user_id`,`student_year`) VALUES (33,4),(43,4),(44,3);
 INSERT INTO `student_group_relation` (`group_id`,`student_id`) VALUES (1,44);
 
 
-INSERT INTO `teaches` (`professor_id`,`course_code`) VALUES (5,'123'),(5,'CS88'),(5,'CSE4');
+INSERT INTO `teaches` (`professor_id`,`course_code`) VALUES (5,'123'),(5,'CS88'),(52,'CS88'),(5,'CSE4');
 
 INSERT INTO `user` (`user_id`,`name`,`email`,`national_id`,`birthday`,`password`) VALUES (2,'Adham Nour','Adhoom@eng.asu.edu.eg','oig39inn','1999-02-02',NULL),(5,'Ashraf Salem','Ashroof@eng.com','3759uewfbi','1960-01-01',NULL),(33,'Hema Shoukry','hema@mam.com','zijwoewj','1990-01-01','komg'),(43,'Ziad Tarek','ziadtht@yahoo.com','poe932y','1950-01-01','pbkdf2:sha256:150000$oNidVhs0$fff38c1560d4cb688290161aa42e83c6751194b14af5d924a897d486b87867e5'),(44,'d','d','d','1998-07-24','pbkdf2:sha256:150000$6Jw6Sv6A$fca74764bfb559053a6310535ce30363fcc2ba81845410ef8b531a7cff2f2915'),(45,'evevw','ever','tg4t4','1999-01-01','pbkdf2:sha256:150000$82XOuxa3$7a79237615a505044d45ba1bb6c8e843eb7a54537fb04ab8abb7ee553a370fbc'),(47,'d','dd','dd','1999-01-01','pbkdf2:sha256:150000$ZgcLoTJh$185f4d5512f1c5a4a254cfc59ff255c71b8ad7554afd355c25422bd4e4f1212e'),(52,'David John','d@d.dd','12121212121212','2021-04-02','pbkdf2:sha256:150000$dKX3qmJF$7ac8b7cebb0b73a4c39a97d070e5d6059e98e3c260457bb2255d851eb8072d2c'),(53,'D','D@D.dj','14141141414114','2021-04-03','pbkdf2:sha256:150000$C3raZb82$46878b45714eaa16eb78fafccec804404e9980c2794e4fe4344b738f10e28f95');
 
