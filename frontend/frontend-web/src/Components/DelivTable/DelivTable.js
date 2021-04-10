@@ -28,7 +28,7 @@ const rows = [
 ];
 
 
-export default function DataGridDemo() {
+export default function DeliverableList(props) {
 
     let newArrayOfObjects = Object.values(rows.reduce((mapping, item) => {
         const { [item.status]: matchingItem } = mapping;
@@ -71,7 +71,7 @@ export default function DataGridDemo() {
             </div>
             {searchbb}
             <div className={cls.list}>
-                <DataGrid rows={rows} columns={columns} pageSize={6} />
+                <DataGrid rows={rows} columns={columns} pageSize={6} onRowClick={(rowData)=> props.onRowHand(rowData.id)} />
             </div>
         </div>
     );
