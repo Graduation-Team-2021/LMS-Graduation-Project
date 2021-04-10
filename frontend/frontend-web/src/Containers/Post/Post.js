@@ -47,8 +47,6 @@ const Post = (props) => {
     // TODO: set liked in the database (send the request)
   };
 
-  console.log(postComments, props.Comments);
-
   let comments = postComments.map((e, i) => (
     <li
       style={{

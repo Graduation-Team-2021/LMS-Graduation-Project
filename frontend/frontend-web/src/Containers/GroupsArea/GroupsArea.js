@@ -1,12 +1,8 @@
-import classes from "./GroupsArea.module.css";
 import React, { Component } from "react";
+
 import GroupPreview from "../../Components/GroupPreview/CoursePreview";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
 import SwipeList from "../../Components/SwipeList/SwipeList";
+import classes from "./GroupsArea.module.css";
 
 class GroupsArea extends Component {
   render() {

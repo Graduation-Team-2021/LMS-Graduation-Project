@@ -13,12 +13,12 @@ import Upcoming from "../Upcoming/Upcoming";
 import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
 import {
   getFinishedCourses,
-  getCurrentCourses,
-  getCurrentGroups,
   getRecentUserPosts,
   getRecentEvent,
 } from "../../Interface/Interface";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
+import { setFullPost } from "../../Models/Post";
+import { setEvent } from "../../Models/Event";
 
 const ProfilePage = (props) => {
   const [Finished, setFinished] = useState([]);
@@ -28,53 +28,11 @@ const ProfilePage = (props) => {
 
   const { tokenError: TokenError } = props.userDataActions;
 
-  const { currentCourses, recentEvent, currentGroups } = props;
+  const { recentEvent } = props;
 
-  const CurrentCourses = currentCourses.currentCourses;
   const RecentEvent = recentEvent.recentEvent;
-  const Joined = currentGroups.currentGroups;
 
-  const setCurrentCourses = props.currentCoursesActions.onSetCurrentCourses;
-  const setJoined = props.currentGroupsActions.onSetCurrentGroups;
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
-
-  useEffect(() => {
-    if (CurrentCourses.size === 0)
-      getCurrentCourses(Token).then((res) => {
-        const Courses = new Map();
-        if (res) {
-          res.forEach((element) => {
-            Courses.set(element["course_code"], {
-              Title: element["course_name"],
-              Desc: element["course_description"],
-              Post: element["post_owner_id"],
-            });
-          });
-          setCurrentCourses(Courses);
-        } else {
-          TokenError();
-        }
-      });
-  }, [Token, TokenError, setCurrentCourses, CurrentCourses]);
-
-  useEffect(() => {
-    if (Joined.size === 0)
-      getCurrentGroups(Token).then((res) => {
-        const Courses = new Map();
-        if (res) {
-          res.forEach((element) => {
-            Courses.set(element["group_id"], {
-              Title: element["group_name"],
-              Desc: element["group_description"],
-              Post: element["post_owner_id"],
-            });
-          });
-          setJoined(Courses);
-        } else {
-          TokenError();
-        }
-      });
-  }, [TokenError, Token, ID, Role, setJoined, Joined]);
 
   useEffect(() => {
     //TODO: Get the User Posts
@@ -82,24 +40,7 @@ const ProfilePage = (props) => {
       const Posts = [];
       if (res) {
         res.forEach((ele) => {
-          let Liked = false;
-          for (const id in ele["likes"]) {
-            console.log(ID, id['liker_id']);
-            if (id['liker_id']===ID) {
-              Liked = true;
-              break;
-            }
-          }
-          Posts.push({
-            Name: Name,
-            Location: ele["owner_name"],
-            Title: `Post by ${Name}, in ${ele["owner_name"]}`,
-            Desc: ele["post_text"],
-            PostId: ele["post_id"],
-            Likes: ele["likes"],
-            isLiked: Liked,
-            Comments: ele['comments']
-          });
+          Posts.push(setFullPost(ele, ID));
         });
         setPosts(Posts);
       } else {
@@ -112,15 +53,7 @@ const ProfilePage = (props) => {
     if (!RecentEvent)
       getRecentEvent(Token, ID, Role).then((res) => {
         if (res) {
-          setRecentEvent({
-            Title: res["event_name"],
-            Desc: res["event_description"],
-            Type: res["event_type"],
-            Duration: res["event_duration"],
-            Date: res["event_date"].slice(0, 10),
-            Host: res["course_code"],
-            Time: res["event_date"].slice(11),
-          });
+          setRecentEvent(setEvent(res));
         } else {
           TokenError();
         }

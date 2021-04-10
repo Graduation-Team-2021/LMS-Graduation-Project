@@ -32,3 +32,24 @@ export const setNewPost = (data, Title, userID, Name) => {
   };
   return Post;
 };
+
+export const setFullPost = (ele, ID) => {
+  let Liked = false;
+  for (const id in ele["likes"]) {
+    console.log(ID, id["liker_id"]);
+    if (id["liker_id"] === ID) {
+      Liked = true;
+      break;
+    }
+  }
+  let data = {
+    Name: ele["name"],
+    Location: ele["owner_name"],
+    Title: `Post by ${ele["name"]}, in ${ele["owner_name"]}`,
+    Desc: ele["post_text"],
+    PostId: ele["post_id"],
+    Likes: ele["likes"],
+    isLiked: Liked,
+    Comments: ele["comments"],
+  };
+};

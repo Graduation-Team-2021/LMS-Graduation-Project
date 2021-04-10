@@ -17,17 +17,18 @@ import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setNewPost,setLocationPost } from "../../Models/Post";
 
 const CoursePage = (props) => {
-  const [courseID, isJoined, postID, Title, Token, userID, Role, Name, Desc] = [
-    props.match.params.id,
+  const [isJoined,  Token, userID, Role, Name] = [
     props.location.state.isJoined,
-    props.location.state.postID,
-    props.location.state.name,
     props.userData.Token,
     props.userData.ID,
     props.userData.Role,
     props.userData.Name,
-    props.location.state.Desc,
   ];
+
+  console.log(props.location.state);
+
+  const {CourseID:courseID, CourseName:Title, PostID: postID, CourseDescription: Desc} = props.location.state.Data
+
   const [Course, setCourse] = useState(null);
   const [clicked, setclicked] = useState(false);
   const [Posts, setPosts] = useState([]);
@@ -70,7 +71,8 @@ const CoursePage = (props) => {
 
   const SubmitPost = async (post) => {
     console.log(post);
-    let data = setNewPost(post, Title, userID, Name);
+    
+    let data = setNewPost(post, Title, Name);
     let id = await uploadPost(Token, userID, postID, post);
     if (id) {
       data.PostId=id

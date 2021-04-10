@@ -1,40 +1,39 @@
-.Main{
-    background-image: linear-gradient(to top right,rgb(255, 193, 255),rgb(237, 163, 255));
-    height: -webkit-fill-available;
-    width: -webkit-fill-available;
-    padding: 5%;
-    overflow: auto;
+.Center {
+  width: 100%;
+  display: flex;
 }
 
-.Center{
-    display: flex;
+.Center .Card {
+  align-items: flex-start;
+  flex: 3;
+  height: fit-content;
 }
 
-.Home{
-    flex:3;
+.Home {
+  flex: 3;
 }
 
 .CoursesPage {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-    width: 100%;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-  .CoursesList{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-self: space-between;
-    align-items: flex-start;
-    height: 100vh;
-    width: 100%;
-  
-  }
-  .CourseOverview{
-    flex: 2;
-    height: 100vh;
-  }
-  
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
 
+.CoursesList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-self: space-between;
+  align-items: flex-start;
+  height: 100vh;
+  width: 100%;
+
+}
+
+.CourseOverview {
+  flex: 2;
+  height: 100vh;
+}

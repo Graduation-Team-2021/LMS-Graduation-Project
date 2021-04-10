@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import classes from "./Upcoming.module.css";
-import filler from "../../assets/Filler.png";
 import Minibar from "../../Components/Minibar/Minibar";
 import {
   faCalendarAlt,
