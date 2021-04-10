@@ -21,4 +21,7 @@
     .Main div {
         padding-top: 5px;
     }
+    .Main{
+        font-size: medium;
+    }
 }
