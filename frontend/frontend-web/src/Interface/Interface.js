@@ -10,16 +10,21 @@ export const f1 = async () => {
   return users;
 };
 
-export const signup = async (Data) => {
+export const SignUp = async (Data) => {
   //TODO: use request result
-  await instance.post("/sign_up", Data, {
+  console.log(Data['birthday'])
+  let res = await instance.post("/sign_up", Data, {
     headers: {
       "Content-Type": "application/json",
     },
   });
+  if (res.data['status_code']!==200) {
+    return null
+  }
+  return 1;
 };
 
-export const login = async (Data) => {
+export const Login = async (Data) => {
   const res = await instance.post("/login", Data, {
     headers: {
       "Content-Type": "application/json",
@@ -168,7 +173,7 @@ export const uploadPost = async (Token, writer, owner, post) => {
     //TODO: Better Check
     return null;
   }
-  return res.data;
+  return res.data['post_id'];
 };
 
 export const getCourseByID = async (Token, CourseID) => {

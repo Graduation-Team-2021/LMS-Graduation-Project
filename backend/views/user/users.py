@@ -148,8 +148,8 @@ class Sign_Up(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         role = args['role']
-        student_year = args['student_year']
-        scientific_degree = args['scientific_degree']
+        student_year = ''
+        scientific_degree = ''
         user = {
             'name': args['name'],
             'email': args['email'],

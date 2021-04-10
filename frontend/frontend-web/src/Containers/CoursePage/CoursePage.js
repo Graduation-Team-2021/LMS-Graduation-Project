@@ -14,9 +14,10 @@ import {
   getCourseByID,
 } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
+import { setNewPost,setLocationPost } from "../../Models/Post";
 
 const CoursePage = (props) => {
-  const [courseID, isJoined, postID, Title, Token, userID, Role, Desc] = [
+  const [courseID, isJoined, postID, Title, Token, userID, Role, Name, Desc] = [
     props.match.params.id,
     props.location.state.isJoined,
     props.location.state.postID,
@@ -24,6 +25,7 @@ const CoursePage = (props) => {
     props.userData.Token,
     props.userData.ID,
     props.userData.Role,
+    props.userData.Name,
     props.location.state.Desc,
   ];
   const [Course, setCourse] = useState(null);
@@ -54,41 +56,32 @@ const CoursePage = (props) => {
       const Posts = [];
       if (value) {
         value.forEach((ele) => {
-          let Liked = false;
-          for (let index = 0; index < ele["likes"].length; index++) {
-            if (ele["likes"][index]["liker_id"] === userID) {
-              Liked = true;
-              break;
-            }
-          }
-          Posts.push({
-            Name: ele["name"],
-            Location: Title,
-            Title: `Post by ${ele["name"]}`,
-            Desc: ele["post_text"],
-            PostId: ele["post_id"],
-            Likes: ele["likes"],
-            isLiked: Liked,
-            Comments: ele['comments']
-          });
+          Posts.push(setLocationPost(ele, Title, userID));
         });
         console.log(Posts);
         const posts = Posts.map((post, index) => (
           <Post key={index} {...post} />
         ));
+        posts.reverse()
         setPosts(posts);
       }
     });
   }, [Token, postID, userID,Title, Course]);
 
-  const SubmitPost = (post) => {
+  const SubmitPost = async (post) => {
     console.log(post);
-    let temp = [
-      <Post key={Posts.length} Title={props.Name} Content={post} />,
-      ...Posts,
-    ];
-    uploadPost(Token, userID, postID, post);
-    setPosts(temp);
+    let data = setNewPost(post, Title, userID, Name);
+    let id = await uploadPost(Token, userID, postID, post);
+    if (id) {
+      data.PostId=id
+      let temp = [
+        <Post key={Posts.length} {...data} />,
+        ...Posts,
+      ];
+      setPosts(temp);
+    } else {
+      alert("Couldn't Upload the Post, Please Try again later")
+    }
     hide();
   };
 
@@ -117,7 +110,7 @@ const CoursePage = (props) => {
                     props.history.push({
                       pathname: `/Course/${courseID}/Marks`,
                       state: {
-                        name: Course["course_name"],
+                        name: Title,
                       },
                     })
                   }

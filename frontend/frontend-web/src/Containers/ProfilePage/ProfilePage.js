@@ -150,16 +150,16 @@ const ProfilePage = (props) => {
             <div className={classes.Details}>
               <div className={classes.filler} />
               <div className={classes.Name}>{props.userData.Name}</div>
-              <div>Third Year</div>
-              <div>Computer Engineering</div>
+              <div>Third Year{/*get from database*/}</div>
+              <div>Computer Engineering{/*get from database*/}</div>
             </div>
             <Card shadow className={classes.Note}>
               <h2>Passed Courses</h2>
-              <h1>50</h1>
+              <h1>50{/*get from database*/}</h1>
             </Card>
             <Card shadow className={classes.Note}>
               <h2>Total Grade</h2>
-              <h1>50</h1>
+              <h1>50{/*get from database*/}</h1>
             </Card>
           </div>
         </Card>

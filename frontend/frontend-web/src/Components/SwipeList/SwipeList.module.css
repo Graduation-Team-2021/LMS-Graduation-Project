@@ -3,6 +3,7 @@
     width: 100%;
     position: relative;
     align-items: center;
+    padding-top: 50px;
 }
 
 .InnerSwipeList {
@@ -16,10 +17,6 @@
     scroll-behavior: smooth;
     align-items: center;
     justify-content: center;
-}
-
-.overFlow{
-    justify-content: flex-start;
 }
 
 .Left {
@@ -57,33 +54,4 @@
     background-color: aliceblue;
     outline: none;
     font-size: 400%;
-}
-
-.Title {
-    text-align: start;
-    font-size: xx-large;
-    font-weight: bold;
-    padding-bottom: 1%;
-}
-
-.GroupsArea {
-    height: fit-content;
-    padding-top: 1%;
-    width: 100%;
-}
-
-@media (max-width : 800px) {
-    .GroupsArea {
-        padding-bottom: 5px;
-    }
-    .SwipeList {
-        flex-grow: 5;
-        padding:0;
-    }
-    .Left{
-        font-size: 200%;
-    }
-    .Right{
-        font-size: 200%;
-    }
 }

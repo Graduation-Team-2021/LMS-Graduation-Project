@@ -19,51 +19,56 @@ const SignUpField = (props) => {
   return (
     <React.Fragment>
       <NormalTextField
+      value={props.UserName}
         Error={props.UserNameError}
         Name="UserName"
         onChange={props.onChange}
       />
       <NormalTextField
+      value={props.Email}
         Error={props.EmailError}
         Name="Email"
         onChange={props.onChange}
       />
       <NormalTextField
+      value={props.NationalID}
         Error={props.NationalIDError}
         Name="NationalID"
         onChange={props.onChange}
       />
       <NormalTextField
+      value={props.Birthday}
         Error={props.BirthdayError}
         Name="Birthday"
         onChange={props.onChange}
       >
         <DatePicker onChange={onCalenderChange} value={value} />
       </NormalTextField>
-      <NormalTextField Error={props.RoleError} Name="Role">
+      <NormalTextField value={props.Role} Error={props.RoleError} Name="Role">
         <RadioGroup
-          aria-label="gender"
           name="Role"
           value={props.Role}
           onChange={props.onChange}
         >
           <FormControlLabel
-            value="Professor"
+            value="professor"
             control={<Radio />}
             label="Professor"
           />
           <FormControlLabel
-            value="Student"
+            value="student"
             control={<Radio />}
-            label="stundent"
+            label="Student"
           />
         </RadioGroup>
       </NormalTextField>
       <PasswordTextField
+      value={props.Password}
         Error={props.PasswordError}
         onChange={props.onChange}
       />
       <Terms
+      value={props.Agreed}
         checked={props.checked}
         onChange={props.changeAgreed}
         AgreedError={props.AgreedError}

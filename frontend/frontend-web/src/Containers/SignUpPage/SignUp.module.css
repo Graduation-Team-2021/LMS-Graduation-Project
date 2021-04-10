@@ -1,4 +1,22 @@
-.Login{
+.Main {
+    background-color: gainsboro;
+    padding: 50px;
+    height: -webkit-fill-available;
+}
+
+.Blue {
+    padding: 2%;
+    flex: 5;
+}
+
+.ButtonArea {
+    margin: 30px 0px;
+    display: flex;
+    width: -webkit-fill-available;
+    justify-content: center;
+}
+
+.Login {
     text-align: start;
     flex: 2;
     width: -webkit-fill-available;
@@ -8,12 +26,12 @@
     height: -webkit-fill-available;
 }
 
-.MainTitle{
+.MainTitle {
     font-size: 200%;
     color: red;
 }
 
-.Main{
+.Field {
     display: block;
     justify-content: center;
     height: -webkit-fill-available;

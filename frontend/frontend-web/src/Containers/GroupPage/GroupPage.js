@@ -8,19 +8,21 @@ import GroupDescription from "../GroupDesc/GroupDesc.js";
 import NewPostCard from "../../Components/New Post/NewPost";
 import { getAllPosts, uploadPost } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
+import { setLocationPost, setNewPost } from "../../Models/Post";
 
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 const GroupPage = (props) => {
-  const [groupID, isJoined, postID, Title, Token, userID, Desc] = [
+  const [groupID, isJoined, postID, Title, Token, userID, Name, Desc] = [
     props.match.params.id,
     props.location.state.isJoined,
     props.location.state.postID,
     props.location.state.name,
     props.userData.Token,
     props.userData.ID,
+    props.userData.Name,
     props.location.state.Desc,
   ];
   const [clicked, setclicked] = useState(false);
@@ -39,45 +41,38 @@ const GroupPage = (props) => {
   };
 
   useEffect(() => {
-    //Loading Data from Server
     getAllPosts(Token, postID).then((value) => {
       const Posts = [];
       if (value) {
         value.forEach((ele) => {
-          let Liked = false;
-          for (let index = 0; index < ele["likes"].length; index++) {
-            if (ele["likes"][index]["liker_id"] === userID) {
-              Liked = true;
-              break;
-            }
-          }
-          Posts.push({
-            Name: ele["name"],
-            Location: Title,
-            Title: `Post by ${ele["name"]}`,
-            Desc: ele["post_text"],
-            PostId: ele["post_id"],
-            Likes: ele["likes"],
-            isLiked: Liked,
-            Comments: ele['comments']
-          });
+          Posts.push(setLocationPost(ele, Title, userID));
         });
         const posts = Posts.map((post, index) => (
           <Post key={index} {...post} />
         ));
+        posts.reverse()
         setPosts(posts);
       }
     });
   }, [Token, postID, Title, userID]);
 
-  const SubmitPost = (post) => {
+  const SubmitPost = async (post) => {
     console.log(post);
-    let temp = [
-      <Post key={Posts.length} Title={`by ${props.Name}`} Content={post} />,
-      ...Posts,
-    ];
-    uploadPost(Token, userID, postID, post);
-    setPosts(temp);
+    let data = setNewPost(post, Title, userID, Name);
+    
+    let id = await uploadPost(Token, userID, postID, post);
+    if (id) {
+      console.log(id)
+      data.PostId=id;
+      let temp = [
+        <Post key={Posts.length} {...data} />,
+        ...Posts
+      ];
+      setPosts(temp);
+    } else {
+      alert("Couldn't Upload the Post, Please Try again later")
+    }
+    
     hide();
   };
 
@@ -115,4 +110,6 @@ const GroupPage = (props) => {
   );
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GroupPage));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(GroupPage)
+);

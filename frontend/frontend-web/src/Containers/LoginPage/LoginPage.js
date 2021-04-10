@@ -9,10 +9,9 @@ import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 import { withRouter } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
-import { login } from "../../Interface/Interface";
+import { Login } from "../../Interface/Interface";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
-import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
 
 class LoginPage extends Component {
   state = {
@@ -24,7 +23,7 @@ class LoginPage extends Component {
 
   signin = () =>
     this.handleSigninCLicked((Data) => {
-      login(Data).then((res) => {
+      Login(Data).then((res) => {
         if (res) {
           localStorage.setItem("token", res.Token);
           localStorage.setItem("name", res.name);
