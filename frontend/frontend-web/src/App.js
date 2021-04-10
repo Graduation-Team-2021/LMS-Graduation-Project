@@ -6,7 +6,6 @@ import Login from "./Containers/LoginPage/LoginPage";
 import Profile from "./Containers/ProfilePage/ProfilePage";
 import Courses from "./Containers/CoursesPage/CoursesPage";
 import Course from "./Containers/CoursePage/CoursePage";
-import Group from './Containers/GroupPage/GroupPage.js'
 import Mark_edit from "./Ibrahim/Mrak_edit.js"
 import Group from './Containers/GroupPage/GroupPage.js';
 import Messenger from './Components/Messenger/Messenger';

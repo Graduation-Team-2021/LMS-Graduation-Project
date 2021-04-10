@@ -86,6 +86,7 @@ const ProfilePage = (props) => {
               <div>Third Year{/*get from database*/}</div>
               <div>Computer Engineering{/*get from database*/}</div>
             </div>
+            <div className = {classes.small}>
             <Card shadow className={classes.Note}>
               <h2>Passed Courses</h2>
               <h1>50{/*get from database*/}</h1>
@@ -94,6 +95,7 @@ const ProfilePage = (props) => {
               <h2>Total Grade</h2>
               <h1>50{/*get from database*/}</h1>
             </Card>
+            </div>
           </div>
         </Card>
         <div className={classes.Bottom}>
