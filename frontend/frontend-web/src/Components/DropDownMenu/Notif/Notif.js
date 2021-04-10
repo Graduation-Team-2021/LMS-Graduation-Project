@@ -1,9 +1,14 @@
 import React from "react";
+import { connect } from "react-redux";
+
+import { mapStateToProps, mapDispatchToProps } from "../../../store/reduxMaps";
 
 const Notif = (props) => {
   const Notif  = [];
 
-  props.Notif.forEach(
+  console.log(props);
+
+  props.recentUserPosts.userRecentPosts.forEach(
     (value)=> Notif.push(
       <h2>{value.Name} has Posted in {value.Location}</h2>
     )
@@ -16,4 +21,4 @@ const Notif = (props) => {
   );
 };
 
-export default Notif;
+export default connect(mapStateToProps,mapDispatchToProps)(Notif);

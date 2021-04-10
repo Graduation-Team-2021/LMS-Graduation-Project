@@ -1,55 +1,34 @@
 import React from "react";
+
+import classes from "./DropDown.module.css";
 import Card from "../Card/Card";
-import InMenu from'./Menu/Menu';
-import InNotif from'./Notif/Notif';
-import InMessages from'./Messages/Messages';
+import InMenu from "./Menu/Menu";
+import InNotif from "./Notif/Notif";
+import InMessages from "./Messages/Messages";
 
 const DropDownMenu = (props) => {
   const Menu = (
-    <Card
-    shadow
-    key={1}
-      style={{
-        textAlign: 'center',
-        padding: "0",
-        maxHeight: "40vh",
-        overflow: "auto",
-        border: "1px solid black",
-      }}
-    >
-    <InMenu onClick={props.onClick} TokenError={props.TokenError}/>
-    </Card>
+    <span className={classes.holder}>
+      <Card className={classes.Card} shadow key={1}>
+        <InMenu onClick={props.onClick} />
+      </Card>
+    </span>
   );
 
   const Notif = (
-    <Card
-    shadow
-    key={2}
-      style={{
-        textAlign: 'center',
-        padding: "0",
-        maxHeight: "40vh",
-        overflow: "auto",
-        border: "1px solid black",
-      }}
-    >
-    <InNotif Notif={props.Notif} onClick={props.onClick}/>
-    </Card>
+    <span className={classes.holder}>
+      <Card className={classes.Card} shadow key={2}>
+        <InNotif onClick={props.onClick} />
+      </Card>
+    </span>
   );
 
   const Messages = (
-    <Card
-    shadow
-    key={3}
-      style={{
-        textAlign: 'center',
-        padding: "0",
-        maxHeight: "40vh",
-        border: "1px solid black",
-      }}
-    >
-    <InMessages onClick={props.onClick}/>
-    </Card>
+    <span className={classes.holder}>
+      <Card shadow key={3} className={classes.Card}>
+        <InMessages onClick={props.onClick} />
+      </Card>
+    </span>
   );
 
   return props.choice === "Notif"

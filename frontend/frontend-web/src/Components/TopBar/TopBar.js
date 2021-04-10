@@ -1,13 +1,18 @@
-import classes from "./TopBar.module.css";
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+
 import Search from "../Search/Search";
 import Welcome from "../Welcome/Welcome";
 import MiniMenu from "../MiniMenu/MiniMenu";
+import classes from "./TopBar.module.css";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 const TopBar = (props) => {
   useEffect(() => {
     setNotif(2);
   }, []);
+
+  //TODO: Think about how to add only new notifications
 
   const [notif, setNotif] = useState(2);
 
@@ -38,4 +43,4 @@ const TopBar = (props) => {
   );
 };
 
-export default TopBar;
+export default connect(mapStateToProps,mapDispatchToProps)(TopBar);

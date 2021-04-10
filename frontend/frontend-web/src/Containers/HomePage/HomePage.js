@@ -49,7 +49,7 @@ const HomePage = (props) => {
           TokenError();
         }
       });
-  }, [Token, TokenError, setCurrentCourses, CurrentCourses]);
+  }, [Token, TokenError, setCurrentCourses]);
 
   useEffect(() => {
     if (Joined.size === 0)
@@ -64,7 +64,7 @@ const HomePage = (props) => {
           TokenError();
         }
       });
-  }, [TokenError, Token, ID, Role, setJoined, Joined]);
+  }, [TokenError, Token, ID, Role, setJoined]);
 
   useEffect(() => {
     if (Posts.length === 0)
