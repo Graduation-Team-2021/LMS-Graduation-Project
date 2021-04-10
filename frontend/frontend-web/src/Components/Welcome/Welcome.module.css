@@ -3,7 +3,9 @@
     flex-flow: column;
     align-items: flex-start;
     text-align: start;
-    position: absolute;
+    position: relative;
+    width: 50%;
+    font-size: larger;
 }
 
 .Title{

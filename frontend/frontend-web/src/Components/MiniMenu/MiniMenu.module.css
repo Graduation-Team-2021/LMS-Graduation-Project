@@ -1,10 +1,10 @@
 .Main {
     display: flex;
     justify-content: space-between;
-    width: 20vw;
     padding-bottom: 1%;
     align-items: center;
     height: 4vw;
+    position: relative;
 }
 
 .full {
