@@ -1,0 +1,70 @@
+
+/* Style the tab */
+.tab {
+  position: fixed;
+  float: left;
+  background-color: rgba(38, 42, 52);
+  width: fit-content;
+  height: 1000px;
+  border-radius: 5px;
+  border: 1px hidden black;
+  transition: all .3s cubic-bezier(0, .52, 0, 1);
+}
+
+/* Style the buttons that are used to open the tab content */
+.slot {
+  display: flex;
+  color: white;
+  background-color: inherit;
+  padding: 16px;
+  margin: auto;
+  width: fit-content;
+  border: 1px hidden black;
+  border-top: 1px solid #bbb;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+  transform: translateX(0);
+}
+
+/* Change background color of buttons on hover */
+.slot:hover {
+  background-color: rgba(79, 171, 255, 0.3);
+  border-left: 4px solid rgb(79, 171, 255);
+}
+
+/* Create an active/current "tab button" class */
+.slot.active {
+  background-color: rgba(79, 171, 255, 0.3);
+  border-left: 4px solid rgb(79, 171, 255);
+}
+
+.welcome {
+  margin: 30px;
+  align-content: center;
+  color: white;
+}
+
+.text {
+  margin: 5px;
+  margin-left: 40px;
+  align-content: center;
+  color: white;
+}
+
+/* Style the tab content */
+.tabcontent {
+  float: left;
+  border: 1px hidden #ccc;
+  margin: 5px;
+  width: fit-content;
+  border-left: none;
+  height: fit-content;
+}
+
+.tabClosed {
+  transform: translateX(-100%);
+}
+
+
