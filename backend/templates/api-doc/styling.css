@@ -2,6 +2,23 @@ body{
   margin:0;
   padding:0;
 }
+#bottom-hr{
+  margin-bottom: 50px;
+}
+li{
+  list-style-type: circle;
+}
+#header{
+  padding-top: 10px;
+  font-family:  'Hoefler Text', Georgia, 'Times New Roman', serif;
+	font-weight: normal;
+        font-size: 1.75em;
+	letter-spacing: .2em;
+	line-height: 1.1em;
+	margin:0px;
+	text-align: center;
+	text-transform: uppercase;
+}
 html{
   scroll-behavior: smooth;
 }

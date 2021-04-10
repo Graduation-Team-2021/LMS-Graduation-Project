@@ -8,10 +8,9 @@ Base = declarative_base()
 
 class Post_Commenter_relation(db.Model, Base):
     __tablename__ = 'post_commenter'
-    commenter_id = db.Column(db.Integer, ForeignKey('user.user_id', onupdate="CASCADE"),
-                             primary_key=True)
-    post_id = db.Column(db.Integer, ForeignKey('post.post_id', ondelete='CASCADE', onupdate="CASCADE"),
-                        primary_key=True)
+    comment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    commenter_id = db.Column(db.Integer, ForeignKey('user.user_id', onupdate="CASCADE"))
+    post_id = db.Column(db.Integer, ForeignKey('post.post_id', ondelete='CASCADE', onupdate="CASCADE"))
     comment_text = db.Column(db.Text(20000))
     created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 

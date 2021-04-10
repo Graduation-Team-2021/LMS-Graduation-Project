@@ -30,3 +30,25 @@ class Liker_all_posts(Resource):
                 'post_id':posts[i][2]
             })
         return data
+
+#/like/<liker_id>/<post_id>
+class insert_Delete_like(Resource):
+    def post(self,liker_id,post_id):
+        try:
+            controller_object.insert_like(liker_id,post_id)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'message': 'Like added successfully',
+            'status_code': 200
+        })
+    
+    def delete(self,liker_id,post_id):
+        try:
+            controller_object.delete_like(liker_id,post_id)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'message': 'Like Removed successfully',
+            'status_code': 200
+        })

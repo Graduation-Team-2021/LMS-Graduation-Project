@@ -80,9 +80,9 @@ class Post_the_post(Resource):
 
 #/<student_id>/first_10_posts
 class FirstTenPosts(Resource):
-    def get(self,student_id):
+    def get(self):
         try:
-            ten_posts = controller_object.get_one_student_first_ten_courses(student_id)
+            ten_posts = controller_object.get_one_student_first_ten_courses()
             return jsonify({
                 'posts':ten_posts,
                 'status_code':200
@@ -91,11 +91,11 @@ class FirstTenPosts(Resource):
             return e.error
     
 
-#student/<student_id>/my_posts
+#my_posts
 class MyPosts(Resource):
-    def get(self,student_id):
+    def get(self):
         try:
-            posts = controller_object.get_the_student_first_posts(student_id)
+            posts = controller_object.get_the_student_first_posts()
             return jsonify({
                 'posts':posts,
                 'status_code':200

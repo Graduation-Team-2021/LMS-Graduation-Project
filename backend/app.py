@@ -18,7 +18,8 @@ from models.course.deliverables_results import Deliverables_Results
 from models.course.materials import Materials
 from models.relations.learns import Learns_Relation
 from models.relations.teaches import Teaches_Relation
-from models.relations.messages import Messages
+from models.relations.messages.messages import Messages
+from models.relations.messages.conversation import Conversation
 from models.relations.has_prerequistes import Prerequiste
 from models.relations.delivers import Deliver
 from models.relations.finished import Finished
@@ -60,14 +61,14 @@ mail service
 """
 import all the endpoints from views
 """
-from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile
+from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile,Sign_Up_Using_Excel
 from views.user.professors import Professor, Professors
 from views.user.students import Students, Student,Student_result_calculation
 from views.course.courses import Course, Courses, My_Courses
 from views.course.materials import material, materials, download_material, upload_material
 from views.relations.teaches import Professor_Course_Relation, UpdateAndDelete_professor_Courses_Relation
 from views.relations.learns import Student_Course_Relation, Student_Courses_Relation
-from views.relations.messages import Messages_Relation, DeleteMessageById
+from views.relations.messages import Messages_Relation, DeleteMessageById, Messages
 from views.relations.delivers import Delivers_Relation, Delete_Delivers_Relation, Upload_Deliverable_File, Download_Deliverable_File, Student_Deliverables
 from views.course.deliverables_results import Deliverable_Results
 
@@ -90,6 +91,7 @@ from views.relations.post_commenter import Post_commenter_view,CommentView_Updat
 from views.relations.post_liker import Post_liker_view,Liker_all_posts
 from views.course.post import FirstTenPosts,MyPosts,GetPostByOwnerID
 from views.course.events import Events_most_recent
+from views.relations.post_liker import insert_Delete_like
 # Answers
 """
 Users
@@ -97,6 +99,7 @@ Users
 api.add_resource(User, '/users/<user_id>')
 api.add_resource(Users, '/users')
 api.add_resource(Sign_Up, '/sign_up')
+api.add_resource(Sign_Up_Using_Excel,'/sign_up/excel')
 api.add_resource(Login, '/login')
 api.add_resource(Reset_password, '/reset/password')
 api.add_resource(Profile, '/users/<user_id>/profile')
@@ -130,6 +133,7 @@ Messages
 """
 api.add_resource(Messages_Relation, '/users/messages/<conversee_id>')
 api.add_resource(DeleteMessageById, '/users/messages/delete/<message_id>')
+api.add_resource(Messages, '/users/messages')
 
 
 """
@@ -230,8 +234,8 @@ Posts
 '''
 api.add_resource(Post_view,'/posts/<post_id>')
 api.add_resource(Post_the_post,'/posts/add_post')
-api.add_resource(FirstTenPosts,'/<student_id>/first_10_posts')
-api.add_resource(MyPosts,'/student/<student_id>/my_posts')
+api.add_resource(FirstTenPosts,'/first_10_posts')
+api.add_resource(MyPosts,'/my_posts')
 api.add_resource(GetPostByOwnerID,'/posts/by_owner_id/<owner_id>')
 '''
 Post owners
@@ -246,7 +250,7 @@ api.add_resource(Post_commenter_view,'/users/<user_id>/all_comments')
 api.add_resource(Post_liker_view,'/post/<post_id>/likers') 
 api.add_resource(CommentView_Update_Delete,'/comments/<commenter_id>/<post_id>')
 api.add_resource(Liker_all_posts,'/liker/<liker_id>/posts')
-
+api.add_resource(insert_Delete_like,'/like/<liker_id>/<post_id>')
 
 """
 Run app

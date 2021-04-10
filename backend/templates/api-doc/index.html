@@ -6,18 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="styling.css">
-    <title>Document</title>
+    <title>API Documentation - LMS Project</title>
 </head>
 <body>
         
         <div class="row">
             <div id="left-menu" class="col-5">
                 <div id="nav-left">
-                    <h3>API Documentation</h3>
+                    <hr>
+                    <h3 id="header">API Documentation</h3>
+                    
+                    <hr id="bottom-hr">
+
                     <ul>
                         <li>
                             <p>
-                                <a class="btn btn-info" data-toggle="collapse" href="#usercollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <a class="btn btn-outline-info" data-toggle="collapse" href="#usercollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 User
                                 </a>
                             </p>
@@ -47,7 +51,7 @@
 
                         <li>
                             <p>
-                                <a class="btn btn-info" data-toggle="collapse" href="#coursecollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <a class="btn btn-outline-info" data-toggle="collapse" href="#coursecollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 Course
                                 
                                 </a>
@@ -83,7 +87,7 @@
                         
                         <li>
                             <p>
-                                <a class="btn btn-info" data-toggle="collapse" href="#deliverablecollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <a class="btn btn-outline-info" data-toggle="collapse" href="#deliverablecollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 Course Deliverables
                                 </a>
                             </p>
@@ -114,7 +118,7 @@
 
                         <li>
                             <p>
-                                <a class="btn btn-info" data-toggle="collapse" href="#materialcollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <a class="btn btn-outline-info" data-toggle="collapse" href="#materialcollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 Course Materials
                                 </a>
                             </p>
@@ -178,7 +182,7 @@
                         </li> -->
                         <li>
                             <p>
-                                <a class="btn btn-info" data-toggle="collapse" href="#messagecollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <a class="btn btn-outline-info" data-toggle="collapse" href="#messagecollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 Messages
                                 </a>
                             </p>
@@ -189,7 +193,10 @@
                                             <a href="#postmessage">Send Message</a>
                                         </li>
                                         <li>
-                                            <a href="#getconvo">Get Conversation</a>
+                                            <a href="#getallconvo">Get All Conversations</a>
+                                        </li>
+                                        <li>
+                                            <a href="#getconvomsges">Get Conversation Messages</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -600,36 +607,72 @@
                 <hr>
                 <ul>
                     <li id='postmessage'>SEND MESSAGE
-                        <p>POST /course/&ltcourse_code&gt/materials</p>
+                        <p>POST /users/messages/&ltconversee_id&gt</p>
+                        <p>Requires an auth token</p>
                         Request example:
                         <pre class="json"><code>
-                            file: text.docx
-                        </code></pre>
-                    </li>
-                    <li id='downloadmaterial'>DOWNLOAD COURSE MATERIAL
-                        <p>POST /materials/&ltmaterial_id&gt</p>
-                    </li>
-                    <li id='deletematerial'>DELETE COURSE MATERIAL
-                        <p>DELETE /materials/&ltmaterial_id&gt</p>
-                    </li>
-                    <li id='getallmaterials'>GET ALL COURSE MATERIALS
-                        <p>GET /courses/&ltcourse_code&gt/materials</p>
-                        <pre class="json"><code>
                             {
-                                "status_code": 200,
-                                "materials": {
-                                    "course_code": "1",
-                                    "materials": [
-                                        {
-                                            "material_id": 3,
-                                            "material_name": "text",
-                                            "material_type": ".txt"
-                                        }
-                                    ]
-                                }
+                                'text': "Hello World!",
+                                'sent_time': "1996-10-10 21:53:30"
                             }
                         </code></pre>
                     </li>
+                    <li id='getallconvo'>GET ALL CONVERSATIONS
+                        <p>GET /users/messages</p>
+                        <p>Requires an auth token</p>
+                        Reply example:
+                        <pre class="json"><code>
+                            {
+                                'conversations':[
+                                    {
+                                        'conversation_id': 1,
+                                        'recent_message': 'Hello World!',
+                                        'sent_time': '2010-10-10 4:20:15',
+                                        'user_id': 5,
+                                        'user_name': 'steve'
+                                    },
+                                    {
+                                        'conversation_id': 2,
+                                        'recent_message': 'Test.',
+                                        'sent_time': '2010-10-10 4:20:15',
+                                        'user_id': 3,
+                                        'user_name': 'bob'
+                                    }
+                                ],
+                                'status_code':200
+                            }
+                        </code></pre>
+                    </li>
+                    <li id='getconvomsges'>GET CONVERSATION MESSAGES
+                        <p>GET /users/messages/&ltconversation_id&gt</p>
+                        <p>Requires an auth token</p>
+                        Reply example:
+                        <pre class="json"><code>
+                            {
+                                "messages": [
+                                    {
+                                        "message_id": 8,
+                                        "receiver_id": 7,
+                                        "receiver_name": "steve",
+                                        "sender_id ": 2,
+                                        "sender_name": "bob",
+                                        "sent_time": '2010-10-10 4:20:15',
+                                        "text": "Test"
+                                    },
+                                    {
+                                        "message_id": 9,
+                                        "receiver_id": 7,
+                                        "receiver_name": "steve",
+                                        "sender_id ": 2,
+                                        "sender_name": "bob",
+                                        "sent_time": "1996-10-10 21:53:30",
+                                        "text": "Test"
+                                    }
+                                ],
+                                "status_code": 200
+                            }
+                        </code></pre>
+                    </li>        
                 </ul>
             </div>
 

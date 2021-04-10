@@ -73,3 +73,17 @@ class Post_Commenter_controller:
         to_be_udpated.update()
         return to_be_udpated.serialize()
 
+    def get_one_post_all_comments(self,post_id):
+        try:
+            comments=Post_Commenter_relation.query.filter(Post_Commenter_relation.post_id==post_id).join(User).\
+            filter(Post_Commenter_relation.commenter_id==User.user_id).\
+            with_entities(User.user_id,User.name,Post_Commenter_relation.comment_text)
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        data=[c for c in comments]
+        return data
+

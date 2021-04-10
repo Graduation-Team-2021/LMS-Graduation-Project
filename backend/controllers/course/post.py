@@ -10,11 +10,13 @@ from models.relations.student_group_relation import StudentGroupRelation
 from models.course.post_owner import PostOwner
 from models.user.users import User
 from methods.errors import *
+from controllers.relations.post_liker import Post_Liker_controller
+from controllers.relations.post_commenter import Post_Commenter_controller
 
 class Post_Controller:
-    def get_post_by_id(self,post_id):
+    def get_post_by_id(self, post_id):
         try:
-            post=Post.query.filter_by(post_id=post_id).first()
+            post = Post.query.filter_by(post_id=post_id).first()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
@@ -28,9 +30,9 @@ class Post_Controller:
             })
         return post.serialize()
 
-    def delete_post_by_id(self,post_id):
+    def delete_post_by_id(self, post_id):
         try:
-            to_be_deleted=Post.query.filter_by(post_id=post_id).first()
+            to_be_deleted = Post.query.filter_by(post_id=post_id).first()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
@@ -44,8 +46,8 @@ class Post_Controller:
             })
         Post.delete(to_be_deleted)
         return True
-    
-    def update_post(self, post_id,post):
+
+    def update_post(self, post_id, post):
         try:
             to_be_updated_post = Post.query.filter_by(post_id=post_id)
             if to_be_updated_post is None:
@@ -60,7 +62,7 @@ class Post_Controller:
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
-            }) 
+            })
         return to_be_updated_post.serialize()
 
     def post_a_post(self, post):
@@ -94,121 +96,178 @@ class Post_Controller:
         data = [post.serialize() for post in posts]
         return data
 
-    def get_one_student_first_ten_courses(self,student_id):
-        courses=Course.query.join(Learns_Relation).\
-        filter(Course.course_code==Learns_Relation.course_code).join(Student).\
-        filter(Learns_Relation.student_id==Student.user_id==student_id).\
-        with_entities(Course.course_code)
-        
-        groups=GroupProject.query.join(StudentGroupRelation).\
-        filter(GroupProject.group_id==StudentGroupRelation.group_id).\
-        join(Student).filter(Student.user_id==StudentGroupRelation.student_id).\
+    def get_one_student_first_ten_courses(self):
+        courses = Course.query.join(Learns_Relation).\
+        filter(Course.course_code == Learns_Relation.course_code).join(Student).\
+        filter(Learns_Relation.student_id == Student.user_id).\
+            with_entities(Course.course_code)
+
+        groups = GroupProject.query.join(StudentGroupRelation).\
+        filter(GroupProject.group_id == StudentGroupRelation.group_id).\
+        join(Student).filter(Student.user_id == StudentGroupRelation.student_id).\
             with_entities(GroupProject.group_id)
 
-        group_ids=[g for g in groups]
-        course_codes=[c for c in courses]
+        group_ids = [g for g in groups]
+        course_codes = [c for c in courses]
 
-        desired_courses=[]
-        desired_groups=[]
+        desired_courses = []
+        desired_groups = []
         for i in range(len(course_codes)):
             # course=Course.query.filter_by(Course.course_code==i).first()
-            course=Course.query.filter(Course.course_code==course_codes[i][0]).first().serialize()
+            course = Course.query.filter(
+                Course.course_code == course_codes[i][0]).first().serialize()
             desired_courses.append(course)
 
         for i in range(len(group_ids)):
-            group=GroupProject.query.filter(GroupProject.group_id==group_ids[i][0]).first().serialize()
+            group = GroupProject.query.filter(
+                GroupProject.group_id == group_ids[i][0]).first().serialize()
             desired_groups.append(group)
 
-        courses_post_owner_ids=[]
+        courses_post_owner_ids = []
         for i in range(len(desired_courses)):
-            courses_post_owner_ids.append((desired_courses[i]["post_owner_id"],desired_courses[i]["course_name"]))
+            courses_post_owner_ids.append(
+                (desired_courses[i]["post_owner_id"], desired_courses[i]["course_name"]))
 
         for i in range(len(desired_groups)):
-            courses_post_owner_ids.append((desired_groups[i]["post_owner_id"], desired_groups[i]["group_name"]))
+            courses_post_owner_ids.append(
+                (desired_groups[i]["post_owner_id"], desired_groups[i]["group_name"]))
 
-        
         # for i in range(len(courses_post_owner_ids)):
         #     desired_post_owner_ids=PostOwner.query.filter(PostOwner.id==courses_post_owner_ids[i][0]).all()
-        
+
         # desired_posts=[]
         # for i in range(len(courses_post_owner_ids)):
         #     posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i]).all()
         #     desired_posts.append(p.serialize() for p in posts)
 
-        desired_posts=[]
+        desired_posts = []
+        likeGetter = Post_Liker_controller()
+        commentGetter = Post_Commenter_controller()
         for i in range(len(courses_post_owner_ids)):
-            if Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0]).first() is not None:
-                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i][0]).first().serialize()
-                posts['owner_name']=courses_post_owner_ids[i][1]
-                desired_posts.append(posts)
+            if Post.query.filter(Post.post_owner == courses_post_owner_ids[i][0]).first() is not None:
+                posts = Post.query.filter(
+                    Post.post_owner == courses_post_owner_ids[i][0]).all()
+                for p in posts:
+                    temp = p.serialize()
+                    t2 = []
+                    for l in likeGetter.get_one_post_all_likers(temp['post_id']):
+                        Like = {'liker_id': l[0], 'liker_name': l[1]}
+                        t2.append(Like)
+                    temp['likes'] = t2
+                    t3 = []
+                    for c in commentGetter.get_one_post_all_comments(temp['post_id']):
+                        print(c)
+                        Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2]}
+                        t3.append(Comment)
+                    temp['comments'] = t3
+                    temp['owner_name'] = courses_post_owner_ids[i][1]
+                    desired_posts.append(temp)
+                # desired_posts.append(posts)
                 print(posts)
 
-        post_writers_ids=[]
+        post_writers_ids = []
         for i in desired_posts:
             post_writers_ids.append(i["post_writer"])
 
-        post_writers=[]
+        post_writers = []
         for i in range(len(post_writers_ids)):
-            users=User.query.filter(User.user_id==post_writers_ids[i]).first().serialize()
+            users = User.query.filter(
+                User.user_id == post_writers_ids[i]).first().serialize()
             post_writers.append(users['name'])
-        
 
         for i in range(len(desired_posts)):
-            desired_posts[i]['name']=post_writers[i]
+            desired_posts[i]['name'] = post_writers[i]
         return desired_posts
 
-    def get_the_student_first_posts(self,student_id):
-        courses=Course.query.join(Learns_Relation).\
-        filter(Course.course_code==Learns_Relation.course_code).join(Student).\
-        filter(Learns_Relation.student_id==Student.user_id==student_id).\
-        with_entities(Course.course_code)
-        
-        groups=GroupProject.query.join(StudentGroupRelation).\
-        filter(GroupProject.group_id==StudentGroupRelation.group_id).\
-        join(Student).filter(Student.user_id==StudentGroupRelation.student_id).\
+    def get_the_student_first_posts(self):
+        courses = Course.query.join(Learns_Relation).\
+        filter(Course.course_code == Learns_Relation.course_code).join(Student).\
+        filter(Learns_Relation.student_id == Student.user_id).\
+            with_entities(Course.course_code)
+
+        groups = GroupProject.query.join(StudentGroupRelation).\
+        filter(GroupProject.group_id == StudentGroupRelation.group_id).\
+        join(Student).filter(Student.user_id == StudentGroupRelation.student_id).\
             with_entities(GroupProject.group_id)
 
-        group_ids=[g for g in groups]
-        course_codes=[c for c in courses]
+        group_ids = [g for g in groups]
+        course_codes = [c for c in courses]
 
-        desired_courses=[]
-        desired_groups=[]
+        desired_courses = []
+        desired_groups = []
         for i in range(len(course_codes)):
             # course=Course.query.filter_by(Course.course_code==i).first()
-            course=Course.query.filter(Course.course_code==course_codes[i][0]).first().serialize()
+            course = Course.query.filter(
+                Course.course_code == course_codes[i][0]).first().serialize()
             desired_courses.append(course)
 
         for i in range(len(group_ids)):
-            group=GroupProject.query.filter(GroupProject.group_id==group_ids[i][0]).first().serialize()
+            group = GroupProject.query.filter(
+                GroupProject.group_id == group_ids[i][0]).first().serialize()
             desired_groups.append(group)
-        courses_post_owner_ids=[]
+        courses_post_owner_ids = []
         for i in range(len(desired_courses)):
-            courses_post_owner_ids.append((desired_courses[i]["post_owner_id"]))
+            courses_post_owner_ids.append(
+                (desired_courses[i]["post_owner_id"], desired_courses[i]['course_name']))
 
         for i in range(len(desired_groups)):
-            courses_post_owner_ids.append((desired_groups[i]["post_owner_id"]))
+            courses_post_owner_ids.append(
+                (desired_groups[i]["post_owner_id"], desired_groups[i]['group_name']))
 
-        desired_posts=[]
+        desired_posts = []
+        likeGetter = Post_Liker_controller()
+        commentGetter = Post_Commenter_controller()
         for i in range(len(courses_post_owner_ids)):
-            if Post.query.filter(Post.post_owner==courses_post_owner_ids[i],Post.post_writer==student_id).first() is not None:
-                posts=Post.query.filter(Post.post_owner==courses_post_owner_ids[i],Post.post_writer==student_id).first().serialize()
-                desired_posts.append(posts)
+            if Post.query.filter(Post.post_owner == courses_post_owner_ids[i][0], Post.post_writer == Student.user_id).first() is not None:
+                posts = Post.query.filter(
+                    Post.post_owner == courses_post_owner_ids[i][0], Post.post_writer == Student.user_id).all()
+                for p in posts:
+                    Temp = p.serialize()
+                    Temp['owner_name'] = courses_post_owner_ids[i][1]
+                    t2 = []
+                    for l in likeGetter.get_one_post_all_likers(Temp['post_id']):
+                        Like = {'liker_id': l[0], 'liker_name': l[1]}
+                        t2.append(Like)
+                    Temp['likes'] = t2
+                    t3 = []
+                    for c in commentGetter.get_one_post_all_comments(Temp['post_id']):
+                        print(c)
+                        Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2]}
+                        t3.append(Comment)
+                    Temp['comments'] = t3
+                    desired_posts.append(Temp)
+                # desired_posts.append(posts)
 
         # return desired_posts
         return desired_posts
 
-
-    def get_posts_by_owner_id(self,owner_id):
-        posts=Post.query.filter(Post.post_owner==owner_id).all()
-        data=[p.serialize() for p in posts]
-        post_writer_ids=[]
+    def get_posts_by_owner_id(self, owner_id):
+        posts = Post.query.filter(Post.post_owner == owner_id).all()
+        data = []
+        likeGetter = Post_Liker_controller()
+        commentGetter = Post_Commenter_controller()
+        for p in posts:
+            Temp = p.serialize()
+            t2 = []
+            for l in likeGetter.get_one_post_all_likers(Temp['post_id']):
+                Like = {'liker_id': l[0], 'liker_name': l[1]}
+                t2.append(Like)
+            Temp['likes'] = t2
+            t3 = []
+            for c in commentGetter.get_one_post_all_comments(Temp['post_id']):
+                print(c)
+                Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2]}
+                t3.append(Comment)
+            Temp['comments'] = t3
+            data.append(Temp)
+        post_writer_ids = []
         for i in data:
             post_writer_ids.append(i['post_writer'])
-        post_writers=[]
+        post_writers = []
         for i in range(len(post_writer_ids)):
-            users=User.query.filter(User.user_id==post_writer_ids[i]).with_entities(User.name).all()
+            users = User.query.filter(User.user_id ==post_writer_ids[i]).with_entities(User.name).all()
             post_writers.append(users)
         print(post_writers)
         for i in range(len(data)):
-            data[i]['name']=post_writers[i][0][0]
-        return data        
+            data[i]['name'] = post_writers[i][0][0]
+        return data
