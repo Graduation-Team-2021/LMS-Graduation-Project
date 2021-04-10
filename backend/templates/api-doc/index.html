@@ -193,7 +193,10 @@
                                             <a href="#postmessage">Send Message</a>
                                         </li>
                                         <li>
-                                            <a href="#getconvo">Get Conversation</a>
+                                            <a href="#getallconvo">Get All Conversations</a>
+                                        </li>
+                                        <li>
+                                            <a href="#getconvomsges">Get Conversation Messages</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -604,13 +607,72 @@
                 <hr>
                 <ul>
                     <li id='postmessage'>SEND MESSAGE
-                        <p>POST /course/&ltcourse_code&gt/materials</p>
+                        <p>POST /users/messages/&ltconversee_id&gt</p>
+                        <p>Requires an auth token</p>
                         Request example:
                         <pre class="json"><code>
-                            file: text.docx
+                            {
+                                'text': "Hello World!",
+                                'sent_time': "1996-10-10 21:53:30"
+                            }
                         </code></pre>
                     </li>
-
+                    <li id='getallconvo'>GET ALL CONVERSATIONS
+                        <p>GET /users/messages</p>
+                        <p>Requires an auth token</p>
+                        Reply example:
+                        <pre class="json"><code>
+                            {
+                                'conversations':[
+                                    {
+                                        'conversation_id': 1,
+                                        'recent_message': 'Hello World!',
+                                        'sent_time': '2010-10-10 4:20:15',
+                                        'user_id': 5,
+                                        'user_name': 'steve'
+                                    },
+                                    {
+                                        'conversation_id': 2,
+                                        'recent_message': 'Test.',
+                                        'sent_time': '2010-10-10 4:20:15',
+                                        'user_id': 3,
+                                        'user_name': 'bob'
+                                    }
+                                ],
+                                'status_code':200
+                            }
+                        </code></pre>
+                    </li>
+                    <li id='getconvomsges'>GET CONVERSATION MESSAGES
+                        <p>GET /users/messages/&ltconversation_id&gt</p>
+                        <p>Requires an auth token</p>
+                        Reply example:
+                        <pre class="json"><code>
+                            {
+                                "messages": [
+                                    {
+                                        "message_id": 8,
+                                        "receiver_id": 7,
+                                        "receiver_name": "steve",
+                                        "sender_id ": 2,
+                                        "sender_name": "bob",
+                                        "sent_time": '2010-10-10 4:20:15',
+                                        "text": "Test"
+                                    },
+                                    {
+                                        "message_id": 9,
+                                        "receiver_id": 7,
+                                        "receiver_name": "steve",
+                                        "sender_id ": 2,
+                                        "sender_name": "bob",
+                                        "sent_time": "1996-10-10 21:53:30",
+                                        "text": "Test"
+                                    }
+                                ],
+                                "status_code": 200
+                            }
+                        </code></pre>
+                    </li>        
                 </ul>
             </div>
 
