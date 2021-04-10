@@ -9,12 +9,12 @@ import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 const TopBar = (props) => {
   useEffect(() => {
-    setNotif(2);
-  }, []);
+    setNotif(props.recentUserPosts.userRecentPosts.length);
+  }, [props.recentUserPosts.userRecentPosts.length]);
 
   //TODO: Think about how to add only new notifications
 
-  const [notif, setNotif] = useState(2);
+  const [notif, setNotif] = useState(0);
 
   const [message, setMessage] = useState(5);
 

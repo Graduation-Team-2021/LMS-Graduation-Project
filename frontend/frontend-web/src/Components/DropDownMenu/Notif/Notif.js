@@ -9,8 +9,8 @@ const Notif = (props) => {
   console.log(props);
 
   props.recentUserPosts.userRecentPosts.forEach(
-    (value)=> Notif.push(
-      <h2>{value.Name} has Posted in {value.Location}</h2>
+    (value, index)=> Notif.push(
+      <h2 key={index}>{value.Name} has Posted in {value.Location}</h2>
     )
   )
 
