@@ -173,7 +173,6 @@ class Sign_Up_Using_Excel(Resource):
 
     def post(self):
         args = self.reqparse.parse_args()
-        toread = io.BytesIO()
         raw_data = args['file'].read()
         excel_data = pandas.read_excel(raw_data,dtype=str)
         excel_data = excel_data.to_json(orient='records')
