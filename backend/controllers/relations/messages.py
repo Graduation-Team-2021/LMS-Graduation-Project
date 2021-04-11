@@ -7,10 +7,15 @@ from methods.errors import *
 
 # professor/courses
 class messages_controller():
-    def get_conversation(self, first_id, conversation_id):
+    def get_conversation(self, first_id, second_id):
         try:
-            messages = Messages.query.filter(Messages.conversation_id==conversation_id).all()
-            conversation = Conversation.query.filter(Conversation.conversation_id==conversation_id).first().serialize()
+            messages = Messages.query.filter(
+                or_(and_(Messages.sender_id == first_id, Messages.receiver_id == second_id),
+                    and_(Messages.sender_id == second_id, Messages.receiver_id == first_id))).all()
+            conversation = Conversation.query.filter(
+                or_(and_(Conversation.first_user == first_id, Conversation.second_user == second_id),
+                    and_(Conversation.first_user == second_id, Conversation.second_user == first_id))).first().serialize()
+            
             if(first_id==conversation['first_user']):
                 second_id=converstion['second_user']
             else:

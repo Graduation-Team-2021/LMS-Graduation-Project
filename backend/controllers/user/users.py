@@ -34,17 +34,17 @@ class users_controller:
         role = ""
         try:
             user = User.query.filter_by(email=email).first()
+            if user is None:
+                raise ErrorHandler({
+                    'description': 'User does not exist.',
+                    'status_code': 404
+                })
             prof = Professor.query.filter_by(user_id=user.user_id).first()
             student = Student.query.filter_by(user_id=user.user_id).first()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
-                'status_code': 404
-            })
-        if user is None:
-            raise ErrorHandler({
-                'description': 'User does not exist.',
                 'status_code': 404
             })
         if user and not prof and not student:
