@@ -70,11 +70,10 @@ class Post_the_post(Resource):
             "post_text":args['post_text']
         }
         try:
-            post=controller_object.post_a_post(new_post)
+            controller_object.post_a_post(new_post)
         except ErrorHandler as e:
             return e.error
         return jsonify({
-            'post_id': post.serialize()['post_id'],
             'message': 'Post created successfully',
             'status_code': 200
         })
