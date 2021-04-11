@@ -3,17 +3,19 @@ import ConversationListItem from './Item/Item';
 import axios from 'axios';
 import SearchBar from './SearchBar/SearchBar'
 import cls from './ConversationList.module.css';
+import { getAllConversations, getAllUsers } from "../../Interface/Interface";
 
 export default function ConversationList(props) {
-  /////////////////////////////////////////////////////////////////////////////
-  useEffect(() => {
-    getConversations()
-  }, [])
+  
+  
   ////////////////////////////////////////////////////////////////////////////
   const [conversations, setConversations] = useState([]);
   const [searchVis, setSearchVis] = useState({ showSearch: false });
+  const [Query, setQuery] = useState('');
   ///////////////////////////////////////////////////////////////////////////
   const getConversations = () => {
+    getAllConversations();
+    getAllUsers()
     axios.get('https://randomuser.me/api/?results=20').then(response => {
       let newConversations = response.data.results.map(result => {
         return {
@@ -25,6 +27,10 @@ export default function ConversationList(props) {
       setConversations([...conversations, ...newConversations])
     });
   }
+  /////////////////////////////////////////////////////////////////////////////
+  useEffect(
+    getConversations
+  , [])
 
   const toggleSearch = () => {
     setSearchVis({ showSearch: !searchVis.showSearch })
@@ -34,7 +40,7 @@ export default function ConversationList(props) {
   
   let searchbb = null;
   if (searchVis.showSearch) {
-    searchbb = <SearchBar />;
+    searchbb = <SearchBar Query={Query} setQuery={setQuery}/>;
   }
 
   return (

@@ -43,6 +43,9 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(PORT, () =>
+
+const PORT = 6000;
+
+server.listen(PORT, () =>
   console.log(`server listening at http://localhost:${PORT}`)
 );

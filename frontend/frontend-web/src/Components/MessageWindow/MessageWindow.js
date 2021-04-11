@@ -5,6 +5,8 @@ import SearchBar from './SearchBar/SearchBar'
 import Compose from './Compose/Compose'
 import cls from './MessageWindow.module.css';
 
+// TODO: initialize the socket-io client here
+
 const MY_USER_ID = 'apple';
 
 export default function MessageList(props) {
@@ -81,7 +83,7 @@ export default function MessageList(props) {
     const toggleSearch = () => {
         setSearchVis({ showSearch: !searchVis.showSearch })
     }
-
+    //TODO: add another useEffect here to add the on recive message call back
     let searchbb = null;
     if (searchVis.showSearch) {
         searchbb = <SearchBar />;
@@ -119,6 +121,9 @@ export default function MessageList(props) {
             message: messIn.text,
             timestamp: new Date().getTime()
         });
+        //TODO: add the message sending code here
+        //TODO: send to flask to update the database 
+        //TODO: use io socket to send the messages
         setMessages([...joined])
         setMess({ text: '' })
     }

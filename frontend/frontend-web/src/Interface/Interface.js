@@ -241,3 +241,22 @@ export const Comment = async (Token, userID, postID, text) => {
   );
   console.log(res);
 };
+
+export const getAllConversations=async(Token)=>{
+  const res = await instance.get('/users/messages',{
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    }})
+    console.log(res)
+}
+
+export const getAllUsers = async(Token)=>{
+  const res = await instance.get('/users',{
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    }
+  })
+  console.log(res)
+}
