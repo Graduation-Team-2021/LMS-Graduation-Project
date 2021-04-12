@@ -293,5 +293,6 @@ export const sendMessage = async (Token, otherID, Data) => {
       Authorization: "Bearer " + Token,
     },
   });
+  msngrskt.emit("private message",{content:Data,to:otherID})
   
 };

@@ -11,6 +11,8 @@ import filler from "../../assets/Filler.png";
 import SearchItem from "../ConversationList/SearchItem/SearchItem";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
+import msngrskt from "../../sockets/msngrskts";
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
@@ -20,21 +22,79 @@ export default connect(
   const [searchVis, setSearchVis] = useState({ showSearch: false });
   const [Query, setQuery] = useState("");
   const [Users, setUsers] = useState([]);
+  const [CurrentActiveUsers, setCurrentActiveUsers] = useState([]);
+  const [oldConv, setOldConv] = useState([]);
   ///////////////////////////////////////////////////////////////////////////
+
+  useEffect(() => {
+    msngrskt.on("users", (response) => {
+      //TODO: get the online users, and then mark them
+      setCurrentActiveUsers(response);
+      //FIXME: convs may not be loaded => dont use timeout
+      // setTimeout(() => {
+      //   let newConvs = [...conversations];
+      //   console.log('[ConvsList]', conversations);
+      //   response.forEach((id) => {
+      //     console.log(id);
+      //     console.log(conversations);
+      //     newConvs.forEach((element) => {
+      //       console.log("[myConvList]", element);
+      //     });
+      //   });
+      // }, 2500);
+    });
+    msngrskt.on("user connected", () => {
+      //TODO: update the new online user
+    });
+    msngrskt.on("private message", (res) => {
+      console.log(res,conversations,Users);
+      let user = null;
+      for (let index = 0; index < conversations.length; index++) {
+        if (conversations[index].ID === res.from) {
+          user = conversations[index];
+          conversations.splice(index, 1);
+          break;
+        }
+      }
+      if(user){
+        user['text']=res.content.text
+        let temp = [user,...conversations]
+        setConversations(temp)
+      }else{
+        for (let index = 0; index < Users.length; index++) {
+          if(Users[index].ID === res.from) {
+            user = Users[index];
+            break;
+          }
+        }
+        user['text']=res.content.text
+        let temp = [user,...conversations]
+        setConversations(temp)
+      }
+      //TODO: retrive the user ID
+      //TODO: put that user on the top of list
+    });
+    msngrskt.on("user disconnected", () => {
+      //TODO: update the offline user
+    });
+  }, [conversations,Users]);
+
   const getConversations = () => {
     getAllConversations(props.userData.Token).then((res) => {
       const temp = [];
       res.forEach((ele) => {
-        console.log(ele);
         ele["user"]["photo"] = filler;
+        let x = setUser(ele["user"]);
         let data = {
           name: ele["user"]["name"],
           text: ele["recent_message"],
-          ...setUser(ele["user"]),
+          isOnline: false,
+          ...x,
         };
         temp.push(data);
       });
-      setConversations(temp);
+      console.log(temp);
+      setOldConv(temp);
     });
     getAllUsers().then((res) => {
       const temp = [];
@@ -56,8 +116,15 @@ export default connect(
     }); */
   };
   /////////////////////////////////////////////////////////////////////////////
-  useEffect(getConversations, []);
-
+  useEffect(getConversations, [props.userData.Token]);
+  useEffect(() => {
+    let newCon = [...oldConv];
+    newCon.forEach((ele) => {
+      ele.isOnline = CurrentActiveUsers.includes(ele.ID);
+    });
+    console.log(newCon);
+    setConversations(newCon);
+  }, [CurrentActiveUsers, oldConv]);
   const toggleSearch = () => {
     setSearchVis({ showSearch: !searchVis.showSearch });
   };
@@ -84,6 +151,8 @@ export default connect(
                     name: value.Name,
                     photo: value.photo,
                     text: "no messages Yet",
+                    isOnline: false,
+                    ...value,
                   },
                   ...conversations,
                 ];
