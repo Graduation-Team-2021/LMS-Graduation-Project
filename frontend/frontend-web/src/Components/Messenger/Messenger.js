@@ -1,12 +1,11 @@
-import React, {Component, useState } from "react";
+import React, { Component, useState } from "react";
 import ConversationList from "../ConversationList/ConversationList";
 import LSB from "../LeftSidebar/Sidebar";
 import MessageWindow from "../MessageWindow/MessageWindow";
 import cls from "./Messenger.module.css";
 import Card from "../Card/Card";
-import io from 'socket.io-client'
-const socket = io("http://localhost:7000",{transports:['websocket'], upgrade: false})
-socket.on("ServerAdmin",(msg) => console.log(msg))
+import socetIO_Client from "socket.io-client";
+
 /* export default function Messenger(props) {
   const [Current, setCurrent] = useState(null);
   const [isNew, setIsNew] = useState(false);
@@ -27,32 +26,40 @@ socket.on("ServerAdmin",(msg) => console.log(msg))
 class Messenger extends Component {
   constructor(props) {
     super(props);
-    console.log("connecting")
-    
-    this.state = { Current: null, isNew: false }
+    console.log("connecting");
+    const socket = socetIO_Client("http://localhost:7000", {transports:['websocket'], autoConnect: false, upgrade:false });
+    socket.on("ServerAdmin", (msg) => console.log(msg));
+    socket.connect();
+    this.state = { Current: null, isNew: false };
   }
 
-  setCurrent=(value)=>{
-    this.setState({Current: value})
-  }
+  setCurrent = (value) => {
+    this.setState({ Current: value });
+  };
 
-  setIsNew=(value)=>{
-    this.setState({isNew: value})
-  }
+  setIsNew = (value) => {
+    this.setState({ isNew: value });
+  };
 
-  render() { 
+  render() {
     return (
       <span className={cls.holder}>
         <Card shadow className={cls.Card}>
           <div className={cls.Messenger}>
             <LSB />
-            <ConversationList setCurrent={this.setCurrent} setIsNew={this.setIsNew} />
-            <MessageWindow Current={this.state.Current} isNew={this.state.isNew} />
+            <ConversationList
+              setCurrent={this.setCurrent}
+              setIsNew={this.setIsNew}
+            />
+            <MessageWindow
+              Current={this.state.Current}
+              isNew={this.state.isNew}
+            />
           </div>
         </Card>
       </span>
     );
   }
 }
- 
+
 export default Messenger;

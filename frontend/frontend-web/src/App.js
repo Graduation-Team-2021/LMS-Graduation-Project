@@ -27,7 +27,7 @@ const App = (props) => {
             <Route path="/Course/:id" exact component={Course} />
             <Route path="/Group/:id" exact component={Group} />
             <Route path="/Mark_edit" exact component={Mark_edit} />
-            <Route path="/Messenger" exact component={Messenger} />
+            <Route path="/messenger" exact component={Messenger} />
             <Redirect path='/login' to='/'/>
           </Switch>
         </MainPage>
