@@ -4,7 +4,9 @@ import LSB from "../LeftSidebar/Sidebar";
 import MessageWindow from "../MessageWindow/MessageWindow";
 import cls from "./Messenger.module.css";
 import Card from "../Card/Card";
-import socetIO_Client from "socket.io-client";
+import msngrskt from "../../sockets/msngrskts";
+import { connect } from "react-redux";
+import { mapStateToProps } from "../../store/reduxMaps";
 
 /* export default function Messenger(props) {
   const [Current, setCurrent] = useState(null);
@@ -26,11 +28,9 @@ import socetIO_Client from "socket.io-client";
 class Messenger extends Component {
   constructor(props) {
     super(props);
-    console.log("connecting");
-    const socket = socetIO_Client("http://localhost:9000");
-    socket.on("ServerAdmin", (msg) => console.log(msg));
-    socket.connect();
     this.state = { Current: null, isNew: false };
+    msngrskt.auth = { userID: props.userData.ID };
+    msngrskt.connect();
   }
 
   setCurrent = (value) => {
@@ -62,4 +62,4 @@ class Messenger extends Component {
   }
 }
 
-export default Messenger;
+export default connect(mapStateToProps)(Messenger);

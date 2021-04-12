@@ -1,17 +1,13 @@
-// import  io  from 'socket.io-client'
+import  io  from 'socket.io-client'
 
-// const URL = 'http://localhost:7000'
+const URL = 'http://localhost:9000'
 
-// const socket = io(URL);
+const socket = io(URL,{autoConnect:false});
 
-// // socket.onAny((event, ...args) => {
-// //   console.log("Hello from hell")
-// //   console.log(event, args);
-// // });
-
-// // socket.on("ServerAdmin", (msg)=>console.log("please for the sake of God, work",msg))
+socket.onAny((event, ...args) => {
+  console.log("Hello from hell")
+  console.log(event, args);
+});
 
 
-// export const sendMsg = (msg) => {
-//   socket.emit("chat message",'tst');
-// }
+export default socket
