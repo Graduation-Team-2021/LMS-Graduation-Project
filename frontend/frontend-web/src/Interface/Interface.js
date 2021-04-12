@@ -241,7 +241,6 @@ export const Comment = async (Token, userID, postID, text) => {
       },
     }
   );
-  console.log(res);
 };
 
 export const getAllConversations = async (Token) => {
@@ -251,10 +250,11 @@ export const getAllConversations = async (Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
   if (res.data['status_code']!==200) {
     return null
   }
+  console.log(res.data['conversations']);
+  res.data.conversations.reverse()
   return res.data['conversations']
 };
 
@@ -265,7 +265,6 @@ export const getAllUsers = async (Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
   if (res.data["status_code"] !== 200) {
     return null;
   }

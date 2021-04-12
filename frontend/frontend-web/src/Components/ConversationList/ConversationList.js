@@ -24,6 +24,7 @@ export default connect(
   const [Users, setUsers] = useState([]);
   const [CurrentActiveUsers, setCurrentActiveUsers] = useState([]);
   const [oldConv, setOldConv] = useState([]);
+  const [newMessage, setNewMessage] = useState(null);
   ///////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
@@ -46,8 +47,18 @@ export default connect(
     msngrskt.on("user connected", () => {
       //TODO: update the new online user
     });
-    msngrskt.on("private message", (res) => {
-      console.log(res,conversations,Users);
+    msngrskt.on("private message", (res) => setNewMessage(res));
+    msngrskt.on("user disconnected", () => {
+      //TODO: update the offline user
+    });
+  }, []);
+
+  console.log(conversations);
+
+  useEffect(() => {
+    if (newMessage) {
+      let res = newMessage;
+      console.log(res, conversations, Users);
       let user = null;
       for (let index = 0; index < conversations.length; index++) {
         if (conversations[index].ID === res.from) {
@@ -56,28 +67,23 @@ export default connect(
           break;
         }
       }
-      if(user){
-        user['text']=res.content.text
-        let temp = [user,...conversations]
-        setConversations(temp)
-      }else{
+      if (user) {
+        user["text"] = res.content.text;
+        let temp = [user, ...conversations];
+        setConversations(temp);
+      } else {
         for (let index = 0; index < Users.length; index++) {
-          if(Users[index].ID === res.from) {
+          if (Users[index].ID === res.from) {
             user = Users[index];
             break;
           }
         }
-        user['text']=res.content.text
-        let temp = [user,...conversations]
-        setConversations(temp)
+        user["text"] = res.content.text;
+        let temp = [user, ...conversations];
+        setConversations(temp);
       }
-      //TODO: retrive the user ID
-      //TODO: put that user on the top of list
-    });
-    msngrskt.on("user disconnected", () => {
-      //TODO: update the offline user
-    });
-  }, [conversations,Users]);
+    }
+  }, [newMessage]);
 
   const getConversations = () => {
     getAllConversations(props.userData.Token).then((res) => {
@@ -88,12 +94,12 @@ export default connect(
         let data = {
           name: ele["user"]["name"],
           text: ele["recent_message"],
+          sent_time: ele['sent_time'],
           isOnline: false,
           ...x,
         };
         temp.push(data);
       });
-      console.log(temp);
       setOldConv(temp);
     });
     getAllUsers().then((res) => {
@@ -122,7 +128,6 @@ export default connect(
     newCon.forEach((ele) => {
       ele.isOnline = CurrentActiveUsers.includes(ele.ID);
     });
-    console.log(newCon);
     setConversations(newCon);
   }, [CurrentActiveUsers, oldConv]);
   const toggleSearch = () => {

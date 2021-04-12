@@ -10,6 +10,7 @@ import { getAllMessages, sendMessage } from "../../Interface/Interface";
 import { mapDispatchToProps,mapStateToProps } from "../../store/reduxMaps";
 
 // TODO: initialize the socket-io client here
+import msngrskt from "../../sockets/msngrskts";
 
 
 
@@ -19,6 +20,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
 
   const [messages, setMessages] = useState([]);
   const [searchVis, setSearchVis] = useState({ showSearch: false });
+  const [newMes, setNewMes] = useState(null)
   //////////////////////////////////////////////////////////////////////////////////////
   var tempMessages1 = [
     {
@@ -92,6 +94,22 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   useEffect(() => {
     getMessages();
   }, [props.Current]);
+
+  useEffect(()=>{
+    msngrskt.on("private message", (res) => setNewMes(res));
+  },[])
+
+  useEffect(()=>{
+    if(newMes && props.Current &&newMes.from===props.Current.ID){
+      const Temp = [...messages,{
+        id:messages.length,
+        author: newMes.from,
+        message: newMes.content.text,
+        timestamp: new Date(newMes.content.sent_time).getTime()
+      }]
+      setMessages(Temp)
+    }
+  },[newMes, props.Current])
   //////////////////////////////////////////////////////////////////////////////////////
   const toggleSearch = () => {
     setSearchVis({ showSearch: !searchVis.showSearch });
@@ -175,7 +193,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
               )
               setMessages(temp)
             });
-            setMessages([...tempMessages1]);
         } else {
             setMessages([])
         }
