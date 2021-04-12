@@ -29,20 +29,7 @@ export default connect(
 
   useEffect(() => {
     msngrskt.on("users", (response) => {
-      //TODO: get the online users, and then mark them
       setCurrentActiveUsers(response);
-      //FIXME: convs may not be loaded => dont use timeout
-      // setTimeout(() => {
-      //   let newConvs = [...conversations];
-      //   console.log('[ConvsList]', conversations);
-      //   response.forEach((id) => {
-      //     console.log(id);
-      //     console.log(conversations);
-      //     newConvs.forEach((element) => {
-      //       console.log("[myConvList]", element);
-      //     });
-      //   });
-      // }, 2500);
     });
     msngrskt.on("user connected", () => {
       //TODO: update the new online user
@@ -52,9 +39,8 @@ export default connect(
       //TODO: update the offline user
     });
   }, []);
-
-  console.log(conversations);
-
+  ///////////////////////////////////////////////////////////////////////////
+  
   useEffect(() => {
     if (newMessage) {
       let res = newMessage;
@@ -94,7 +80,7 @@ export default connect(
         let data = {
           name: ele["user"]["name"],
           text: ele["recent_message"],
-          sent_time: ele['sent_time'],
+          sent_time: ele["sent_time"],
           isOnline: false,
           ...x,
         };
