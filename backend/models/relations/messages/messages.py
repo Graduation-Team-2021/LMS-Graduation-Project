@@ -21,7 +21,7 @@ class Messages(db.Model):
         return {
             'message_id': self.message_id,
             'conversation_id': self.conversation_id,
-            'sender_id ': self.sender_id,
+            'sender_id': self.sender_id,
             'receiver_id': self.receiver_id,
             'text': self.text,
             'sent_time': self.sent_time
