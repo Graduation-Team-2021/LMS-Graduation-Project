@@ -17,7 +17,7 @@ class messages_controller():
                     and_(Conversation.first_user == second_id, Conversation.second_user == first_id))).first().serialize()
             
             if(first_id==conversation['first_user']):
-                second_id=converstion['second_user']
+                second_id=conversation['second_user']
             else:
                 second_id=conversation['first_user']
         except SQLAlchemyError as e:
@@ -108,10 +108,10 @@ class messages_controller():
                 conversation.pop('second_user',None)
                 conversation['user_id']=conversation.pop('first_user')
 
-            user = User.query.filter(User.user_id==conversation['user_id']).first()
-            conversation['user_name'] = user.name  
+            user = User.query.filter(User.user_id==conversation['user_id']).first().serialize()
+            conversation['user'] = user 
 
-            recent_message = Messages.query.filter(Messages.conversation_id==conversation['conversation_id']).order_by(Messages.sent_time).first() 
+            recent_message = Messages.query.filter(Messages.conversation_id==conversation['conversation_id']).order_by(Messages.sent_time.desc()).first() 
             conversation['recent_message'] = recent_message.text
             conversation['sent_time'] = recent_message.sent_time
         return data

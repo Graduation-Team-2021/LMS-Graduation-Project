@@ -22,6 +22,7 @@
     background: none;
     border: 1px solid #bbb;
     border-radius: 30px;
+    outline: none;
   }
   
   .compose-input::placeholder {

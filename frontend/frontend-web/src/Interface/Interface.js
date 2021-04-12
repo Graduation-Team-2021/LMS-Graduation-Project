@@ -12,14 +12,14 @@ export const f1 = async () => {
 
 export const SignUp = async (Data) => {
   //TODO: use request result
-  console.log(Data['birthday'])
+  console.log(Data["birthday"]);
   let res = await instance.post("/sign_up", Data, {
     headers: {
       "Content-Type": "application/json",
     },
   });
-  if (res.data['status_code']!==200) {
-    return null
+  if (res.data["status_code"] !== 200) {
+    return null;
   }
   return 1;
 };
@@ -173,7 +173,7 @@ export const uploadPost = async (Token, writer, owner, post) => {
     //TODO: Better Check
     return null;
   }
-  return res.data['post_id'];
+  return res.data["post_id"];
 };
 
 export const getCourseByID = async (Token, CourseID) => {
@@ -231,7 +231,7 @@ export const Comment = async (Token, userID, postID, text) => {
   console.log(text);
   const res = await instance.post(
     `/comments/${userID}/${postID}`,
-    { 'comment_text': text },
+    { comment_text: text },
     {
       headers: {
         "Content-Type": "application/json",
@@ -242,21 +242,54 @@ export const Comment = async (Token, userID, postID, text) => {
   console.log(res);
 };
 
-export const getAllConversations=async(Token)=>{
-  const res = await instance.get('/users/messages',{
+export const getAllConversations = async (Token) => {
+  const res = await instance.get("/users/messages", {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
-    }})
-    console.log(res)
-}
+    },
+  });
+  console.log(res);
+  if (res.data['status_code']!==200) {
+    return null
+  }
+  return res.data['conversations']
+};
 
-export const getAllUsers = async(Token)=>{
-  const res = await instance.get('/users',{
+export const getAllUsers = async (Token) => {
+  const res = await instance.get("/users", {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
-    }
-  })
-  console.log(res)
-}
+    },
+  });
+  console.log(res);
+  if (res.data["status_code"] !== 200) {
+    return null;
+  }
+  return res.data["users"];
+};
+
+export const getAllMessages = async (Token, otherID) => {
+  const res = await instance.get(`/users/messages/${otherID}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(res);
+  if (res.data["status_code"] !== 200) {
+    return null;
+  }
+  return res.data["messages"];
+};
+
+export const sendMessage = async (Token, otherID, Data) => {
+  const res = await instance.post(`/users/messages/${otherID}`, Data, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  
+};

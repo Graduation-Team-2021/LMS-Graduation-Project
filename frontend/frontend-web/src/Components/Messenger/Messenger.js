@@ -1,24 +1,23 @@
-import React from 'react';
-import ConversationList from '../ConversationList/ConversationList';
-import LSB from '../LeftSidebar/Sidebar';
-import MessageWindow from '../MessageWindow/MessageWindow'
-import cls from './Messenger.css';
-import Card from '../Card/Card'
+import React, { useState } from "react";
+import ConversationList from "../ConversationList/ConversationList";
+import LSB from "../LeftSidebar/Sidebar";
+import MessageWindow from "../MessageWindow/MessageWindow";
+import cls from "./Messenger.module.css";
+import Card from "../Card/Card";
 
 export default function Messenger(props) {
+  const [Current, setCurrent] = useState(null);
+  const [isNew, setIsNew] = useState(false);
+
   return (
-    <Card shadow>
-      <div className={cls.Messenger}>
-  
-        <div className={cls.sidebar}>
+    <span className={cls.holder}>
+      <Card shadow className={cls.Card}>
+        <div className={cls.Messenger}>
           <LSB />
-          <ConversationList />
+          <ConversationList setCurrent={setCurrent} setIsNew={setIsNew} />
+          <MessageWindow Current={Current} isNew={isNew} />
         </div>
-        <div className={cls.scrollabe}>
-          <MessageWindow />
-        </div>
-        
-      </div>
-    </Card>
+      </Card>
+    </span>
   );
 }
