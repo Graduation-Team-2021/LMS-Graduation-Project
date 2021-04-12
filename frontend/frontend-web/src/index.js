@@ -13,6 +13,7 @@ import recentEventsReducer from './store/reducers/recentEventsReducer'
 import finishedCoursesReducer from './store/reducers/finishedCoursesReducer'
 import recentUserPostsReducer from './store/reducers/recentUserPostsReducer'
 
+
 const rootReducer = combineReducers({
   userDataReducer: userDataReducer,
   currentCoursesReducer: currentCoursesReducer,
