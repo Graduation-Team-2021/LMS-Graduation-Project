@@ -2,15 +2,13 @@ const express = require("express");
 const app = express();
 const http = require("http");
 const server = http.createServer(app);
-const index = require("./routes/index");
-app.use(index);
 
-const io = require("socket.io")(server, {
-  log: false,
-  "close timeout": 60,
-  "heartbeat timeout": 60,
-  "heartbeat interval": 20,
-});
+
+corsOptions = {
+  cors: true,
+  origins: ["http://localhost:9000"],
+};
+const io = require("socket.io")(server, corsOptions);
 
 io.on("connection", (socket) => {
   console.log("A user has been connected ", socket.id);
@@ -24,4 +22,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(7000, () => console.log("Server Started"));
+server.listen(9000, () => console.log("Server Started"));

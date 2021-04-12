@@ -27,11 +27,7 @@ class Messenger extends Component {
   constructor(props) {
     super(props);
     console.log("connecting");
-    const socket = socetIO_Client("http://localhost:7000", {
-      transports: ["websocket"],
-      autoConnect: false,
-      upgrade: false,
-    });
+    const socket = socetIO_Client("http://localhost:9000");
     socket.on("ServerAdmin", (msg) => console.log(msg));
     socket.connect();
     this.state = { Current: null, isNew: false };
