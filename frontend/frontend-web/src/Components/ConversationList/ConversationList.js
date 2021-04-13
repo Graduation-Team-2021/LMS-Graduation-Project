@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import ConversationListItem from "./Item/Item";
-import axios from "axios";
 import SearchBar from "./SearchBar/SearchBar";
 import cls from "./ConversationList.module.css";
 import { getAllConversations, getAllUsers } from "../../Interface/Interface";
@@ -192,6 +191,7 @@ export default connect(
                   props.setIsNew(false);
                   props.setCurrent(conversation);
                 }}
+                isOnline = {CurrentActiveUsers.includes(conversation.ID)}
                 key={index}
                 data={conversation}
               />

@@ -7,21 +7,3 @@
 .holder .Card {
   height: 670px;
 }
-
-.container {
-  padding: 10px;
-}
-
-.content {
-  position: relative;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-  background: white;
-  grid-row-start: 1;
-  grid-row-end: span 3;
-}
-
-.footer {
-  grid-column-start: 2;
-  background: white;
-}
