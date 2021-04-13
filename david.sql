@@ -33,6 +33,19 @@ CREATE TABLE `answers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+DROP TABLE IF EXISTS `conversations`;
+CREATE TABLE `conversations` (
+  `conversation_id` int NOT NULL AUTO_INCREMENT,
+  `first_user` int DEFAULT NULL,
+  `second_user` int DEFAULT NULL,
+  PRIMARY KEY (`conversation_id`),
+  KEY `first_user` (`first_user`),
+  KEY `second_user` (`second_user`),
+  CONSTRAINT `conversations_ibfk_1` FOREIGN KEY (`first_user`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `conversations_ibfk_2` FOREIGN KEY (`second_user`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
   `course_code` varchar(7) NOT NULL,
@@ -45,7 +58,7 @@ CREATE TABLE `course` (
   PRIMARY KEY (`course_code`),
   UNIQUE KEY `group_number` (`group_number`),
   KEY `post_owner_idx` (`post_owner_id`),
-  CONSTRAINT `post_owner` FOREIGN KEY (`post_owner_id`) REFERENCES `post_owner` (`id`)
+  CONSTRAINT `post_owner` FOREIGN KEY (`post_owner_id`) REFERENCES `post_owner` (`owner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
@@ -148,7 +161,7 @@ CREATE TABLE `group_project` (
   `post_owner_id` int DEFAULT NULL,
   PRIMARY KEY (`group_id`),
   KEY `post_owner_idx` (`post_owner_id`),
-  CONSTRAINT `post_owner_id` FOREIGN KEY (`post_owner_id`) REFERENCES `post_owner` (`id`)
+  CONSTRAINT `post_owner_id` FOREIGN KEY (`post_owner_id`) REFERENCES `post_owner` (`owner_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
@@ -175,19 +188,22 @@ CREATE TABLE `material` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
-DROP TABLE IF EXISTS `message`;
-CREATE TABLE `message` (
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE `messages` (
   `message_id` int NOT NULL AUTO_INCREMENT,
-  `sender_id` int DEFAULT NULL,
-  `receiver_id` int DEFAULT NULL,
+  `conversation_id` int DEFAULT NULL,
   `text` text,
   `sent_time` datetime DEFAULT NULL,
+  `sender_id` int DEFAULT NULL,
+  `receiver_id` int DEFAULT NULL,
   PRIMARY KEY (`message_id`),
+  KEY `conversation_id` (`conversation_id`),
   KEY `sender_id` (`sender_id`),
   KEY `receiver_id` (`receiver_id`),
-  CONSTRAINT `message_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `message_ibfk_2` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`conversation_id`) REFERENCES `conversations` (`conversation_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `messages_ibfk_3` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 DROP TABLE IF EXISTS `post`;
@@ -200,7 +216,7 @@ CREATE TABLE `post` (
   KEY `post_writer` (`post_writer`),
   KEY `post_owner` (`post_owner`),
   CONSTRAINT `post_ibfk_1` FOREIGN KEY (`post_writer`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE,
-  CONSTRAINT `post_ibfk_2` FOREIGN KEY (`post_owner`) REFERENCES `post_owner` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `post_ibfk_2` FOREIGN KEY (`post_owner`) REFERENCES `post_owner` (`owner_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
@@ -233,8 +249,8 @@ CREATE TABLE `post_liker` (
 
 DROP TABLE IF EXISTS `post_owner`;
 CREATE TABLE `post_owner` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
+  `owner_id` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`owner_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
@@ -344,6 +360,8 @@ CREATE TABLE `user` (
 
 
 
+INSERT INTO `conversations` (`conversation_id`,`first_user`,`second_user`) VALUES (1,44,52),(2,44,43);
+
 INSERT INTO `course` (`course_code`,`course_name`,`weekly_hours`,`group_number`,`max_students`,`course_description`,`post_owner_id`) VALUES ('123','Networks',3,20,250,NULL,1),('CS88','NN',4,39,250,NULL,2),('CSE4','artificialIntelligenceAI',3,40,241,NULL,3);
 
 
@@ -364,6 +382,7 @@ INSERT INTO `learns` (`student_id`,`course_code`) VALUES (44,'CS88');
 
 INSERT INTO `material` (`material_id`,`material_type`,`material_name`,`course_material`) VALUES (1,'.png','Screenshot_20210327_180947','CS88'),(2,'.png','Screenshot_20210327_180947','CS88'),(3,'.png','Screenshot_20210327_180947','CS88'),(4,'.png','Screenshot_20210327_180947','CS88'),(5,'.png','Screenshot_20200317_223147','CS88'),(6,'.jpeg','1610321429147','CS88'),(7,'.pdf','Technical Writing','CS88');
 
+INSERT INTO `messages` (`message_id`,`conversation_id`,`text`,`sent_time`,`sender_id`,`receiver_id`) VALUES (12,1,'dasd','2021-04-12 00:30:21',44,52),(13,1,'Hi there','2021-04-12 00:30:26',44,52),(14,1,'hello','2021-04-12 22:20:15',52,44),(15,1,'hi','2021-04-12 22:26:40',52,44),(16,1,'hi','2021-04-12 22:30:57',52,44),(17,1,'what\'s up','2021-04-12 22:31:17',52,44),(18,1,'hi','2021-04-12 22:31:30',44,52),(19,1,'david','2021-04-12 22:31:35',44,52),(20,1,'Adham','2021-04-12 22:31:55',44,52),(21,1,'1234','2021-04-12 22:32:04',52,44),(22,1,'david','2021-04-12 22:32:46',52,44),(23,1,'dj','2021-04-12 22:32:50',44,52),(24,2,'asdlas','2021-04-12 22:33:03',44,43),(25,2,'sadasdas','2021-04-12 22:33:24',44,43),(26,1,'dav','2021-04-12 22:37:41',52,44),(27,2,'sadasd','2021-04-12 22:37:54',44,43),(28,1,'hello','2021-04-12 22:38:00',52,44),(29,1,'Hello','2021-04-12 22:48:04',44,52),(30,1,'What\'s Up','2021-04-12 22:48:47',44,52),(31,1,'hello','2021-04-12 22:49:17',52,44),(32,1,'What\'s Up???!','2021-04-12 22:49:32',44,52),(33,1,'sdfsfsdf','2021-04-12 22:50:56',44,52),(34,1,'asdbaskj','2021-04-12 22:53:40',44,52);
 
 INSERT INTO `post` (`post_id`,`post_writer`,`post_owner`,`post_text`) VALUES (1,2,4,'1sst post'),(2,33,4,'2nd post'),(3,44,4,'test post'),(4,44,4,'Hey-O'),(5,44,4,'David'),(6,44,4,'DJ Man\n'),(7,44,2,'Hiiiii'),(8,44,2,'Hey-O'),(9,44,2,'What\'s Up???'),(10,44,NULL,'David'),(11,44,2,'Hey-oooooo'),(12,44,2,'What is going on'),(13,44,2,'Sonic'),(14,44,4,'Sonic'),(15,44,4,'Spider'),(16,44,4,'Mega'),(17,44,4,'Man'),(18,44,4,'Ben 10\n'),(19,44,4,'Zezoooooooooo');
 
@@ -371,7 +390,7 @@ INSERT INTO `post_commenter` (`comment_id`,`commenter_id`,`post_id`,`comment_tex
 
 INSERT INTO `post_liker` (`liker_id`,`post_id`,`created_date`) VALUES (5,1,'2021-04-03 13:25:17'),(5,2,'2021-04-03 13:25:17'),(33,1,'2021-04-03 13:25:17'),(43,1,'2021-04-03 13:25:17'),(44,2,'2021-04-08 18:31:33'),(44,3,'2021-04-08 18:34:15'),(44,15,'2021-04-10 01:09:29');
 
-INSERT INTO `post_owner` (`id`) VALUES (1),(2),(3),(4),(5);
+INSERT INTO `post_owner` (`owner_id`) VALUES (1),(2),(3),(4),(5);
 
 INSERT INTO `professor` (`user_id`,`scientific_degree`) VALUES (5,'PHD doctorate'),(52,''),(53,'');
 
