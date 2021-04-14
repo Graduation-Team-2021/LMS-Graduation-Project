@@ -3,15 +3,15 @@ from models.relations.messages.conversation import Conversation
 from models.user.users import User
 from sqlalchemy import or_, and_
 from methods.errors import *
+from operator import itemgetter
 
 
-# professor/courses
 class messages_controller():
     def get_conversation(self, first_id, second_id):
         try:
             messages = Messages.query.filter(
                 or_(and_(Messages.sender_id == first_id, Messages.receiver_id == second_id),
-                    and_(Messages.sender_id == second_id, Messages.receiver_id == first_id))).all()
+                    and_(Messages.sender_id == second_id, Messages.receiver_id == first_id))).order_by(Messages.sent_time.desc()).all()
             conversation = Conversation.query.filter(
                 or_(and_(Conversation.first_user == first_id, Conversation.second_user == second_id),
                     and_(Conversation.first_user == second_id, Conversation.second_user == first_id))).first().serialize()
@@ -114,4 +114,6 @@ class messages_controller():
             recent_message = Messages.query.filter(Messages.conversation_id==conversation['conversation_id']).order_by(Messages.sent_time.desc()).first() 
             conversation['recent_message'] = recent_message.text
             conversation['sent_time'] = recent_message.sent_time
+
+        data = sorted(data, key=itemgetter('sent_time'), reverse=True) 
         return data
