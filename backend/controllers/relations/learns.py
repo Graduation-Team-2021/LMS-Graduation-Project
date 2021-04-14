@@ -41,20 +41,18 @@ class student_course_relation_controller():
 
     def update_student_course_relation(self, student_id, course_code, new_relation):
         relation = Learns_Relation.query.filter_by(student_id=student_id, course_code=course_code).first()
-        relation.delete()
         if not relation:
             raise ErrorHandler('relation does not exist,please recheck your data')
-
-        the_update = Learns_Relation(**new_relation)
+        relation = Learns_Relation(**new_relation)
         try:
-            the_update.update()
+            relation.update()   
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
             })
-        return the_update.serialize()
+        return relation.serialize()
 
     def delete_student_course_relation(self, student_id, course_code):
         try:

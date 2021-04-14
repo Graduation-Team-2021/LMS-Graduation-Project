@@ -2,7 +2,7 @@ import React, { Component } from "react";
 //import  from ''
 import "./Mark_edit.css";
 import axios from "axios";
-import { getCourseStudents } from "../Interface/Interface";
+import { getCourseStudents, setCourseStudent } from "../Interface/Interface";
 
 class MarkEdit extends Component {
   state = {
@@ -23,7 +23,7 @@ class MarkEdit extends Component {
     
   }
 
-  mark = (event) => {
+  mark = (event , id) => {
     // this.setState({
     //     // marks : event.target.value
     // })
@@ -31,8 +31,11 @@ class MarkEdit extends Component {
     if (event.target.value > 50 || event.target.value < 0) {
       console.log("enter a sutuble nim ");
     } else {
+      const temp = [...this.state.users]
+      const user = temp[id]
+      user[event.target.name] = event.target.value
       this.setState({
-        marks: event.target.value,
+        users: temp
       });
       console.log("askdjhksadj");
       // console.log({marks})
@@ -41,6 +44,7 @@ class MarkEdit extends Component {
 
   sumbit = () => {
     // axios.patch('https://jsonplaceholder.typicode.com/users',)
+    setCourseStudent(this.props.match.params.id, this.state.users)
   };
   render() {
     return (
@@ -64,16 +68,16 @@ class MarkEdit extends Component {
                   <td>{user.name}</td>
                   <td>{user.id}</td>
                   <td>
-                    <input type="number" onChange={this.mark}  />
-                    <pre> out of 50 </pre>
+                    <input type="number" name='drev' onChange={(event)=>this.mark(event, key)}  />
+                    <pre> out of 15 </pre>
                   </td>
                   <td>
-                    <input type="number" onChange={this.mark}  value = {user.mid}/>
-                    <pre> out of 50 </pre>
+                    <input type="number" name='mid' onChange={(event)=>this.mark(event, key)}  value = {user.mid}/>
+                    <pre> out of 25 </pre>
                   </td>
                   <td>
-                    <input type="number" onChange={this.mark} value = {user.final} />
-                    <pre> out of 50 </pre>
+                    <input type="number" name='final' onChange={(event)=>this.mark(event, key)} value = {user.final} />
+                    <pre> out of 110 </pre>
                   </td>
                 </tr>
               );
