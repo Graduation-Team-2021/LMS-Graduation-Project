@@ -3,21 +3,21 @@
 3. Sign Up Update/Integrate
 4. Reset Password
 5. Materials get/update
-6. Add Event integration
+6. Add Event integration (DONE)
 7. Pdfs page making/integration
-8. Messenger integration
-9. Redux (هنعيط كلنا)
+8. Messenger integration (DONE)
+9. Redux (هنعيط كلنا) (DONE)
 10. Deliverables
 11. Drag and Drop
-12. Comments
+12. Comments (DONE)
 13. Add Course
 14. Add Group
 15. Edit profile Pic
-16. get users of Course/Group
+16. get users of Course/Group 
 17. Join Courses
 18. Quizzes
-19. Course Area/Group Area
-20. Adaptive view
+19. Course Area/Group Area (DONE)
+20. Responsive view (75% DONE)
 21. Mobile app
 22. Authentication/Security
 *************************************************
