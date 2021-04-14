@@ -76,9 +76,12 @@ export default connect(
   //////////////////////////////////////////////////////////////////
   useEffect(() => {
     if (props.hasChanged) {
-      conversations.splice(conversations.findIndex(Ar => { return Ar.ID === props.newMessID }), 1);
+      if (conversations.findIndex(Ar => { return Ar.ID === props.newMessID }) != -1) {
+        conversations.splice(conversations.findIndex(Ar => { return Ar.ID === props.newMessID }), 1);
+      }
       let newTemp = { ...props.Current }
       newTemp.text = props.newText
+      newTemp.name = Users[Users.findIndex(Ar => { return Ar.ID === props.newMessID })].Name
       let temp = [newTemp, ...conversations]
       setConversations(temp)
       props.setChanged(false)
@@ -88,7 +91,7 @@ export default connect(
   },
     [props.hasChanged, props.newMessID])
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(props.Current)
   }, [props.Current])
   /////////////////////////////////////////////////////////////////
@@ -129,7 +132,7 @@ export default connect(
     }); */
   };
   /////////////////////////////////////////////////////////////////////////////
-  useEffect(getConversations, [props.userData.Token, props.hasChanged]);
+  useEffect(getConversations, [props.userData.Token]);
   useEffect(() => {
     let newCon = [...oldConv];
     newCon.forEach((ele) => {
