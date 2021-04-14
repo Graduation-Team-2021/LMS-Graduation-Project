@@ -53,7 +53,6 @@ class Vedioplayer extends Component {
     // props.history.push('/Courses')
     <BrowserRouter>
     <Route path="/Courses">
-    <CoursePage/>
     </Route>
     </BrowserRouter>
   };

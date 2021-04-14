@@ -9,7 +9,7 @@ import Course from "./Containers/CoursePage/CoursePage";
 import Mark_edit from "./Ibrahim/Mrak_edit.js"
 import Group from './Containers/GroupPage/GroupPage.js';
 import Messenger from './Components/Messenger/Messenger';
-import Video from './Ibrahim/Vedio'
+import Video from './Ibrahim/Vedio.js'
 
 import { mapStateToProps, mapDispatchToProps } from "./store/reduxMaps";
 import { connect } from "react-redux";
