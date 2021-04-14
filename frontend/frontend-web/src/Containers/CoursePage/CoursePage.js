@@ -135,6 +135,7 @@ const CoursePage = (props) => {
             <CourseDescription
               desc={Desc}
               CourseID={courseID}
+              Title={Title}
             />
           </div>
         </div>

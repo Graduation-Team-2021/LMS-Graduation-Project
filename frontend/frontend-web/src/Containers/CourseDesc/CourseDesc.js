@@ -43,7 +43,12 @@ class CourseDesc extends Component {
             padding: "0 0 10% 0",
           }}
           onClick={() => {
-            this.props.history.push("/Videos");
+            this.props.history.push({
+              pathname: `/Course/${this.props.CourseID}/Videos`,
+              state: {
+                name: this.props.Title,
+              },
+            });
           }}
         >
           <Card
@@ -60,7 +65,12 @@ class CourseDesc extends Component {
             padding: "0 0 10% 0",
           }}
           onClick={() => {
-            this.props.history.push("/Pdfs");
+            this.props.history.push({
+              pathname: `/Course/${this.props.CourseID}/PDFs`,
+              state: {
+                name: this.props.Title,
+              },
+            });
           }}
         >
           <Card
