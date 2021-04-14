@@ -2,6 +2,7 @@ import React, { Component } from "react";
 //import  from ''
 import "./Mark_edit.css";
 import axios from "axios";
+import { getCourseStudents } from "../Interface/Interface";
 
 class MarkEdit extends Component {
   state = {
@@ -11,16 +12,15 @@ class MarkEdit extends Component {
   };
 
   componentDidMount() {
-    axios
-      .get("/course/CS88/students")
-      .then((result) => {
-        console.log(result);
-        this.setState({
-          users: result.data,
-        });
-        console.log(this.state.users);
+    console.log(this.props);
+    getCourseStudents(this.props.match.params.id).then(res=>{
+      this.setState({
+        users : res
       })
-      .catch((err) => {});
+      console.log(res)
+    })
+    
+    
   }
 
   mark = (event) => {
@@ -61,18 +61,18 @@ class MarkEdit extends Component {
             {this.state.users.map((user, key) => {
               return (
                 <tr key={key}>
-                  <td>{user.username}</td>
+                  <td>{user.name}</td>
                   <td>{user.id}</td>
                   <td>
-                    <input type="number" onChange={this.mark} />
+                    <input type="number" onChange={this.mark}  />
                     <pre> out of 50 </pre>
                   </td>
                   <td>
-                    <input type="number" onChange={this.mark} />
+                    <input type="number" onChange={this.mark}  value = {user.mid}/>
                     <pre> out of 50 </pre>
                   </td>
                   <td>
-                    <input type="number" onChange={this.mark} />
+                    <input type="number" onChange={this.mark} value = {user.final} />
                     <pre> out of 50 </pre>
                   </td>
                 </tr>

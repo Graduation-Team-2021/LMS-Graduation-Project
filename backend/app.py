@@ -92,6 +92,7 @@ from views.relations.post_liker import Post_liker_view,Liker_all_posts
 from views.course.post import FirstTenPosts,MyPosts,GetPostByOwnerID
 from views.course.events import Events_most_recent
 from views.relations.post_liker import insert_Delete_like
+from views.relations.learns import All_Students_in_one_course
 # Answers
 """
 Users
@@ -128,6 +129,7 @@ Student relation
 """
 api.add_resource(Student_Course_Relation, '/student/<student_id>/courses')
 api.add_resource(Student_Courses_Relation, '/student/<student_id>/courses/<course_code>')
+api.add_resource(All_Students_in_one_course,"/course/<course_code>/students")
 """
 Messages
 """

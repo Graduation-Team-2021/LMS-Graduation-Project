@@ -294,3 +294,14 @@ export const sendMessage = async (Token, otherID, Data) => {
   msngrskt.emit("private message",{content:Data,to:otherID})
   
 };
+
+export const getCourseStudents = async(id)=>{
+  const res = await instance.get(`/course/${id}/students`,{
+    headers: {
+      "Content-Type": "application/json",
+      
+    },
+  })
+  console.log(res)
+  return res.data['names']
+}

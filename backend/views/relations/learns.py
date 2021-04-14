@@ -50,6 +50,9 @@ class Student_Courses_Relation(Resource):
         self.reqparse.add_argument('student_id', type=str, location='json')
         self.reqparse.add_argument('course_code', type=str, location='json')
 
+    def get(self,student_id,course_code):
+        return controller_object.get_student_marks(student_id,course_code)
+        
     def put(self,student_id,course_code):
         args = self.reqparse.parse_args()
         new={'student_id':args['student_id'],'course_code':args['course_code']}
@@ -73,3 +76,17 @@ class Student_Courses_Relation(Resource):
             'message': 'Course removed successfully',
             'status_code': 200
         })
+# /course/<course_code>/students
+class All_Students_in_one_course(Resource):
+     def get(self, course_code):
+        try:
+            result= controller_object.get_all_students_in_one_course(course_code)
+        except ErrorHandler as e:
+            return jsonify({
+                "error":e.error,
+                "status_code":201})
+        return jsonify({
+            'names':result,
+            'status_code': 200
+        })
+    
