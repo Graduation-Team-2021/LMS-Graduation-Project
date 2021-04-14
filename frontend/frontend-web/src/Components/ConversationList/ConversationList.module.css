@@ -1,5 +1,5 @@
 .title {
-  font-size: 25pt;
+  font-size: 20pt;
   font-weight: bold;
   text-transform: capitalize;
   margin: 10px;
@@ -11,7 +11,7 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -21,7 +21,7 @@
   padding: 10px;
   margin: 10px;
   width: 400px;
-  height: 450px;
+  height: 550px;
   display: flex;
   flex-direction: column;
 }
@@ -30,14 +30,16 @@
 @media (max-width: 1000px) {
   .conversationList {
     position: fixed;
-    width: 300px;
-    transition: all .3s cubic-bezier(0, .52, 0, 1);
+    width: 250px;
+    height: 455px;
     background-color: rgb(221, 221, 221);
+    transition: all .3s cubic-bezier(0, .52, 0, 1);
   }
 
   .listClosed {
     transform: translateX(-100%);
-    display: none;
+    transition: all .3s cubic-bezier(0, .52, 0, 1);
+    opacity: 0;
   }
 }
 

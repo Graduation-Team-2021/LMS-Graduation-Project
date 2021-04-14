@@ -56,6 +56,10 @@ class Messenger extends Component {
     this.setState({showList: !this.state.showList})
   }
 
+  hideList = () => {
+    this.setState({showList: false})
+  }
+
   render() {
     return (
       <span className={cls.holder}>
@@ -81,6 +85,7 @@ class Messenger extends Component {
               setNewID={this.setNewMessID}
               setNewText={this.setNewText}
               toggleVis={this.toggleListVis}
+              hideList = {this.hideList}
             />
           </div>
         </Card>
