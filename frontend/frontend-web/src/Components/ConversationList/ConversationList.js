@@ -32,12 +32,15 @@ export default connect(
     msngrskt.on("users", (response) => {
       setCurrentActiveUsers(response);
     });
-    msngrskt.on("user connected", () => {
-      //TODO: update the new online user
+    msngrskt.on("user connected", (response) => {
+      let temp = [response, ...CurrentActiveUsers]
+      setCurrentActiveUsers(temp)
     });
     msngrskt.on("private message", (res) => setNewMessage(res));
-    msngrskt.on("user disconnected", () => {
-      //TODO: update the offline user
+    msngrskt.on("user disconnected", (response) => {
+      let temp = [...CurrentActiveUsers]
+      temp.splice(temp.findIndex(el => { return el === response }), 1)
+      setCurrentActiveUsers(temp)
     });
   }, []);
   ///////////////////////////////////////////////////////////////////////////
@@ -71,11 +74,10 @@ export default connect(
     }
   }, [newMessage]);
   //////////////////////////////////////////////////////////////////
-  useEffect(()=>{
-    if(props.hasChanged)
-    {
+  useEffect(() => {
+    if (props.hasChanged) {
       conversations.splice(conversations.findIndex(Ar => { return Ar.ID === props.newMessID }), 1);
-      let newTemp = {...props.Current}
+      let newTemp = { ...props.Current }
       newTemp.text = props.newText
       let temp = [newTemp, ...conversations]
       setConversations(temp)
@@ -84,7 +86,11 @@ export default connect(
       props.setNewText("")
     }
   },
-  [props.hasChanged, props.newMessID])
+    [props.hasChanged, props.newMessID])
+
+  useEffect(()=>{
+    console.log(props.Current)
+  }, [props.Current])
   /////////////////////////////////////////////////////////////////
   const getConversations = () => {
     getAllConversations(props.userData.Token).then((res) => {
@@ -123,7 +129,7 @@ export default connect(
     }); */
   };
   /////////////////////////////////////////////////////////////////////////////
-  useEffect(getConversations, [props.userData.Token]);
+  useEffect(getConversations, [props.userData.Token, props.hasChanged]);
   useEffect(() => {
     let newCon = [...oldConv];
     newCon.forEach((ele) => {
@@ -252,7 +258,7 @@ export default connect(
                   isOnline={CurrentActiveUsers.includes(conversation.ID)}
                   key={index}
                   data={conversation}
-                  isCurrent = {props.Current===null?false:props.Current.ID===conversation.ID}
+                  isCurrent={props.Current === null ? false : props.Current.ID === conversation.ID}
                 />
               )) : oldResults)
             : SearchResult
