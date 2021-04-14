@@ -44,13 +44,13 @@ class MarkEdit extends Component {
   };
   render() {
     return (
-      <div className="main">
+      <div >
+        <div className="main">
         {/* <p>{this.props.location.state.name}</p> */}
         <table className="oo">
           <thead>
             <tr>
               <th>Name</th>
-              <th>email</th>
               <th>id</th>
               <th>Mark</th>
             </tr>
@@ -59,7 +59,6 @@ class MarkEdit extends Component {
             {this.state.users.map((user, key) => {
               return (
                 <tr key={key}>
-                  <td>{user.name}</td>
                   <td>{user.username}</td>
                   <td>{user.id}</td>
                   <td>
@@ -71,11 +70,14 @@ class MarkEdit extends Component {
             })}
           </tbody>
         </table>
-        <button className="finish" onClick={this.sumbit}>
-          {" "}
-          sumbut the marks
-        </button>
       </div>
+       <div>
+      <button className="finish" onClick={this.sumbit}>
+      {" "}
+      sumbut the marks
+    </button>
+    </div>
+    </div>
     );
   }
 }
