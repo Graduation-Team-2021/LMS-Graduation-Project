@@ -254,7 +254,7 @@ export const getAllConversations = async (Token) => {
     return null
   }
   console.log(res.data['conversations']);
-  res.data.conversations.reverse()
+  res.data['conversations'].reverse()
   return res.data['conversations']
 };
 
