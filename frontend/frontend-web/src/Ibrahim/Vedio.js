@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import "./Vedio.css";
 import { withRouter } from "react-router-dom";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import CoursePage from "../Containers/CoursePage/GroupPage";
+import CoursePage from "../Containers/CoursePage/CoursePage";
 
 class Vedioplayer extends Component {
   // axios.get()
@@ -18,42 +18,43 @@ class Vedioplayer extends Component {
     this.setState({
       url:
         // "https://youtu.be/8zuE3Rtm1Eo?list=PLQkyODvJ8ywuGxYwN0BfMSvembIJkNQH1"
-        "https://www.youtube.com/watch?v=rAxXcX_w5fE&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=2",
+        "https://www.youtube.com/watch?v=MZLkCsa1YfE",
     });
-    alert("math");
+    // alert("math");
     console.log(this.state.url);
   };
   Phyurl = () => {
     this.setState({
       url:
-        "https://www.youtube.com/watch?v=hWEZsyF3ZZc&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=3",
+        "https://www.youtube.com/watch?v=cJZQczEEWkc",
     });
-    alert("phy");
+    // alert("phy");
     console.log(this.state.url);
   };
   compurl = () => {
     this.setState({
       url:
-        "https://www.youtube.com/watch?v=A2k3ulOJ3u4&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=4",
+        "https://www.youtube.com/watch?v=u16K5eWI9Rk",
     });
-    alert("comp");
+    // alert("comp");
     console.log(this.state.url);
   };
   softwre = () => {
     setTimeout(
       this.setState({
         url:
-          "https://www.youtube.com/watch?v=N2YHianzseI&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=5",
+          "https://www.youtube.com/watch?v=xzjStyEDPM0",
       }),
       3000
     );
 
-    alert("software");
+    // alert("software");
     console.log(this.state.url);
   };
   nulling = () => {
+    console.log(this.props.location.state);
     this.props.history.push({
-      pathname: `/Course/${this.props.location.state.Data.courseID}`,
+      pathname: `/Course/${this.props.location.state.Data.CourseID}`,
       state: {
         Data: this.props.location.state.Data,
         isJoined: "true",

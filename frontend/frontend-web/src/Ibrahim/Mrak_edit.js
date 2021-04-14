@@ -12,7 +12,7 @@ class MarkEdit extends Component {
 
   componentDidMount() {
     axios
-      .get("/students/<student_id>/deliverable/<deliverable_id>/results")
+      .get("/course/CS88/students")
       .then((result) => {
         console.log(result);
         this.setState({
