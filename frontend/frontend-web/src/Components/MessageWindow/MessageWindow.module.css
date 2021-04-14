@@ -10,11 +10,11 @@
   margin: 10px;
   padding: 10px;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .title {
-  font-size: 25pt;
+  font-size: 18pt;
   font-weight: bold;
   text-transform: capitalize;
   margin: 10px;
@@ -36,4 +36,35 @@
 
 .search:hover {
   background: #a8a8a8;
+}
+
+.button {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .list{
+    width: 100%;
+  }
+
+  .button {
+    float: left;
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 8px;
+    margin: 10px;
+    width: fit-content;
+    border: 1px hidden black;
+    border-radius: 15px;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  /* Change background color of buttons on hover */
+  .button:hover {
+    background-color: rgba(187, 187, 187, 0.3);
+  }
 }

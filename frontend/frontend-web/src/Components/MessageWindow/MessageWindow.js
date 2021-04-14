@@ -62,6 +62,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   //////////////////////////////////////////////////////////////////////////////////////
   const toggleSearch = () => {
     setSearchVis({ showSearch: !searchVis.showSearch });
+    props.hideList();
   };
   //TODO: add another useEffect here to add the on recive message call back
   let searchbb = null;
@@ -234,16 +235,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
         <React.Fragment>
           <div className={cls.title}>
             {props.Current.Name}
-            <button className={cls.search}>
-              <i>
-                <img
-                  src="/settings_black.png"
-                  width="20"
-                  height="20"
-                  alt="options"
-                />
-              </i>
-            </button>
+            <button className={cls.button} onClick={props.toggleVis} >
+              <img src="/menu.svg" width="50" height="50" alt="open toolbar" />
+              </button>
             <button className={cls.search} onClick={toggleSearch}>
               <i>
                 <img
@@ -254,32 +248,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
                 />
               </i>
             </button>
-            <button className={cls.search}>
-              <i>
-                <img
-                  src="/video_call_black.png"
-                  width="20"
-                  height="20"
-                  alt="video call button"
-                />
-              </i>
-            </button>
-            <button className={cls.search}>
-              <i>
-                <img
-                  src="/call_black.png"
-                  width="20"
-                  height="20"
-                  alt="call button"
-                />
-              </i>
-            </button>
           </div>
           {searchbb}
           {
             !(searchVis.showSearch && Query !== "") ?
-              <div className={cls.container}>{renderMessages(messages)}</div> :
-              <div className={cls.container}>{renderMessages(searchResults)}</div>
+              <div className={cls.container} onClick={props.hideList}>{renderMessages(messages)}</div> :
+              <div className={cls.container} onClick={props.hideList}>{renderMessages(searchResults)}</div>
           }
           <Compose
             value={messIn.text}

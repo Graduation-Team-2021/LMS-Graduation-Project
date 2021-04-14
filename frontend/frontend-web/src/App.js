@@ -9,6 +9,7 @@ import Course from "./Containers/CoursePage/CoursePage";
 import Mark_edit from "./Ibrahim/Mrak_edit.js"
 import Group from './Containers/GroupPage/GroupPage.js';
 import Messenger from './Components/Messenger/Messenger';
+import Video from './Ibrahim/Vedio'
 
 import { mapStateToProps, mapDispatchToProps } from "./store/reduxMaps";
 import { connect } from "react-redux";
@@ -28,6 +29,7 @@ const App = (props) => {
             <Route path="/Group/:id" exact component={Group} />
             <Route path="/Course/:id/Marks" exact component={Mark_edit} />
             <Route path="/messenger" exact component={Messenger} />
+            <Route path="/Course/:id/Videos" exact component={Video} />
             <Redirect path='/login' to='/'/>
           </Switch>
         </MainPage>
