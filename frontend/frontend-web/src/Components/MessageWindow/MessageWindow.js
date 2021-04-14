@@ -21,76 +21,24 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   const [messages, setMessages] = useState([]);
   const [searchVis, setSearchVis] = useState({ showSearch: false });
   const [newMes, setNewMes] = useState(null)
-  //////////////////////////////////////////////////////////////////////////////////////
-  var tempMessages1 = [
-    {
-      id: 1,
-      author: "apple",
-      message: "Definitely looks like everyone is affected",
-      timestamp: new Date().getTime(),
-    },
-    {
-      id: 2,
-      author: "orange",
-      message:
-        "They literally have to have one of each because you want to see benchmarks and builds by them.",
-      timestamp: new Date().getTime(),
-    },
-    {
-      id: 3,
-      author: "orange",
-      message:
-        "And they`ve had a lot of those for a long time. Only the 30 series they`ve had recently, because y`know, that`s when they came out.",
-      timestamp: new Date().getTime(),
-    },
-    {
-      id: 4,
-      author: "apple",
-      message:
-        "They`ve had some but remember they have direct access to manufacturers. They can place orders in ways we don`t have access to.",
-      timestamp: new Date().getTime(),
-    },
-    {
-      id: 5,
-      author: "apple",
-      message: "That`s why they`re doing the Verified Actual Gamer program.",
-      timestamp: new Date().getTime(),
-    },
-    {
-      id: 6,
-      author: "apple",
-      message:
-        "Plus it`s easy to be mad at the reviewers for having piles but if they were all given away it wouldn`t make a dent anyway. Points to LMG for trying to distribute though",
-      timestamp: new Date().getTime(),
-    },
-    {
-      id: 7,
-      author: "orange",
-      message:
-        "Linus talked about it on the WAN show last week and also the 2 weeks before that. Its basically where they partner up with manufacturers to get a ton of stock on gaming hardware, then build a program that verified that a buyer is an actual gamer, then sell them the stuff at or close to MSRP. I dont remember the list of partners so far, but its lengthy from what i remember.",
-      timestamp: new Date().getTime(),
-    },
-    {
-      id: 8,
-      author: "orange",
-      message: "Damn thats actually pretty cool",
-      timestamp: new Date().getTime(),
-    },
-    {
-      id: 9,
-      author: "apple",
-      message: "How would they know though?",
-      timestamp: new Date().getTime(),
-    },
-    {
-      id: 10,
-      author: "orange",
-      message:
-        "Any update on this? There was a community post on youtube a couple days ago I think. I don`t really watch the WAN show, so do you know when this might be rolling out?",
-      timestamp: new Date().getTime(),
-    },
-  ];
-  /////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
+  //var tempMessages1 = [
+  //  {
+  //    id: 1,
+  //    author: "apple",
+  //    message: "Definitely looks like everyone is affected",
+  //    timestamp: new Date().getTime(),
+  //  },
+  //  {
+  //    id: 2,
+  //    author: "orange",
+  //    message:
+  //      "They literally have to have one of each because you want to see benchmarks and builds by them.",
+  //    timestamp: new Date().getTime(),
+  //  },
+  //];
+  ///////////////////////////////////////////////////////////////////////////////////////
+  
   useEffect(() => {
     getMessages();
   }, [props.Current]);
@@ -147,7 +95,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
       return 0;
     }
     let Time = new Date();
-    
+    props.setChanged(true)
+    props.setNewID(props.Current.ID)
+    props.setNewText(messIn.text)
     sendMessage(props.userData.Token,props.Current.ID,{
         text: messIn.text,
         sent_time: `${Time.toISOString().slice(0,10)} ${Time.toISOString().slice(11,19)}`
@@ -251,6 +201,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
           endsSequence={endsSequence}
           showTimestamp={showTimestamp}
           data={current}
+          isLast={i===(messageCount-1)}
         />
       );
 

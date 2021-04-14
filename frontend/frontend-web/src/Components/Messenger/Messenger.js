@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import ConversationList from "../ConversationList/ConversationList";
 import LSB from "../LeftSidebar/Sidebar";
 import MessageWindow from "../MessageWindow/MessageWindow";
@@ -28,7 +28,7 @@ import { mapStateToProps } from "../../store/reduxMaps";
 class Messenger extends Component {
   constructor(props) {
     super(props);
-    this.state = { Current: null, isNew: false };
+    this.state = { Current: null, isNew: false, hasChanged: false, newConversationID: null, newText:"" };
     msngrskt.auth = { userID: props.userData.ID };
     msngrskt.connect();
   }
@@ -41,6 +41,18 @@ class Messenger extends Component {
     this.setState({ isNew: value });
   };
 
+  setHasChanged = (value) => {
+    this.setState({ hasChanged:value })
+  }
+
+  setNewMessID = (value) => {
+    this.setState({newConversationID:value})
+  }
+
+  setNewText = (value) => {
+    this.setState({newText:value})
+  }
+
   render() {
     return (
       <span className={cls.holder}>
@@ -48,12 +60,22 @@ class Messenger extends Component {
           <div className={cls.Messenger}>
             <LSB />
             <ConversationList
+              Current= {this.state.Current}
               setCurrent={this.setCurrent}
               setIsNew={this.setIsNew}
+              hasChanged={this.state.hasChanged}
+              newMessID={this.state.newConversationID}
+              newText={this.state.newText}
+              setChanged={this.setHasChanged}
+              setNewID = {this.setNewMessID}
+              setNewText= {this.setNewText}
             />
             <MessageWindow
               Current={this.state.Current}
               isNew={this.state.isNew}
+              setChanged={this.setHasChanged}
+              setNewID = {this.setNewMessID}
+              setNewText= {this.setNewText}
             />
           </div>
         </Card>
