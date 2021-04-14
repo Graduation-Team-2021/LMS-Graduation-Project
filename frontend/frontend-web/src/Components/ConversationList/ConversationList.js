@@ -19,7 +19,9 @@ export default connect(
   ////////////////////////////////////////////////////////////////////////////
   const [conversations, setConversations] = useState([]);
   const [searchVis, setSearchVis] = useState({ showSearch: false });
+  const [addBarVis, setAddBar] = useState({ showBar: false });
   const [Query, setQuery] = useState("");
+  const [oldQuery, setOldQuery] = useState("");
   const [Users, setUsers] = useState([]);
   const [CurrentActiveUsers, setCurrentActiveUsers] = useState([]);
   const [oldConv, setOldConv] = useState([]);
@@ -39,11 +41,10 @@ export default connect(
     });
   }, []);
   ///////////////////////////////////////////////////////////////////////////
-  
+
   useEffect(() => {
     if (newMessage) {
       let res = newMessage;
-      console.log(res, conversations, Users);
       let user = null;
       for (let index = 0; index < conversations.length; index++) {
         if (conversations[index].ID === res.from) {
@@ -69,7 +70,22 @@ export default connect(
       }
     }
   }, [newMessage]);
-
+  //////////////////////////////////////////////////////////////////
+  useEffect(()=>{
+    if(props.hasChanged)
+    {
+      conversations.splice(conversations.findIndex(Ar => { return Ar.ID === props.newMessID }), 1);
+      let newTemp = {...props.Current}
+      newTemp.text = props.newText
+      let temp = [newTemp, ...conversations]
+      setConversations(temp)
+      props.setChanged(false)
+      props.setNewID(null)
+      props.setNewText("")
+    }
+  },
+  [props.hasChanged, props.newMessID])
+  /////////////////////////////////////////////////////////////////
   const getConversations = () => {
     getAllConversations(props.userData.Token).then((res) => {
       const temp = [];
@@ -117,46 +133,85 @@ export default connect(
   }, [CurrentActiveUsers, oldConv]);
   const toggleSearch = () => {
     setSearchVis({ showSearch: !searchVis.showSearch });
+    setAddBar({ showBar: false });
+  };
+  const toggleBar = () => {
+    setAddBar({ showBar: !addBarVis.showBar });
+    setSearchVis({ showSearch: false });
   };
   /////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////
-
   let searchbb = null;
-  let SearchResult = [];
+  let addbb = null;
+  let oldResults = [];
   if (searchVis.showSearch) {
-    searchbb = <SearchBar searchQuery={Query} setSearchQuery={setQuery} />;
-    if (Query !== "") {
-      Users.forEach((value, index) => {
-        if (value.Name.toLowerCase().includes(Query.toLowerCase())) {
-          SearchResult.push(
-            <SearchItem
+    searchbb = <SearchBar searchQuery={oldQuery} setSearchQuery={setOldQuery} fillerText="Search in your chats..." />;
+    if (oldQuery !== "") {
+      oldConv.forEach((value, index) => {
+        if (value.Name.toLowerCase().includes(oldQuery.toLowerCase())) {
+          oldResults.push(
+            <ConversationListItem
               key={index}
-              Name={value.Name}
-              img={filler}
+              data={{
+                name: value.name,
+                photo: filler,
+                text: " "
+              }
+              }
               onClick={() => {
-                props.setIsNew(true);
+                props.setIsNew(false);
                 props.setCurrent(value);
-                let temp = [
-                  {
-                    name: value.Name,
-                    photo: value.photo,
-                    text: "no messages Yet",
-                    isOnline: false,
-                    ...value,
-                  },
-                  ...conversations,
-                ];
-                setConversations(temp);
-                setQuery("");
+                setOldQuery("");
                 setSearchVis({ showSearch: false });
               }}
+              isOnline={value.isOnline}
             />
           );
         }
       });
     }
   }
-
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  let SearchResult = [];
+  if (addBarVis.showBar) {
+    addbb = <SearchBar searchQuery={Query} setSearchQuery={setQuery} fillerText="Search for someone to start a new chat..." />;
+    if (Query !== "") {
+      Users.forEach((value, index) => {
+        let isPart = false
+        let onClickHandler = null
+        if (value.Name.toLowerCase().includes(Query.toLowerCase())) {
+          oldConv.forEach((ele) => { if (ele.ID === value.ID) { isPart = true; } })
+          if (isPart) {
+            onClickHandler = () => {
+              props.setIsNew(false);
+              props.setCurrent(value);
+              setQuery("");
+              setAddBar({ showBar: false });
+            }
+          }
+          else {
+            onClickHandler = () => {
+              props.setIsNew(true);
+              props.setCurrent(value);
+              setQuery("");
+              setAddBar({ showBar: false });
+            }
+          }
+          SearchResult.push(
+            <SearchItem
+              key={index}
+              Name={value.Name}
+              img={filler}
+              onClick={onClickHandler}
+            />
+          );
+        }
+      });
+    }
+  }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
     <div className={cls.conversationList}>
       <div className={cls.title}>
@@ -171,7 +226,7 @@ export default connect(
             />
           </i>
         </button>
-        <button className={cls.search}>
+        <button className={cls.search} onClick={toggleBar}>
           <img
             src="/add_box.png"
             width="25"
@@ -182,21 +237,26 @@ export default connect(
       </div>
 
       {searchbb}
+      {addbb}
 
       <div className={cls.scrollableList}>
-        {!(searchVis.showSearch && Query !== "")
-          ? conversations.map((conversation, index) => (
-              <ConversationListItem
-                onClick={() => {
-                  props.setIsNew(false);
-                  props.setCurrent(conversation);
-                }}
-                isOnline = {CurrentActiveUsers.includes(conversation.ID)}
-                key={index}
-                data={conversation}
-              />
-            ))
-          : SearchResult}
+        {
+          !(addBarVis.showBar && Query !== "") ?
+            (!(searchVis.showSearch && oldQuery !== "") ?
+              conversations.map((conversation, index) => (
+                <ConversationListItem
+                  onClick={() => {
+                    props.setIsNew(false);
+                    props.setCurrent(conversation);
+                  }}
+                  isOnline={CurrentActiveUsers.includes(conversation.ID)}
+                  key={index}
+                  data={conversation}
+                  isCurrent = {props.Current===null?false:props.Current.ID===conversation.ID}
+                />
+              )) : oldResults)
+            : SearchResult
+        }
       </div>
     </div>
   );

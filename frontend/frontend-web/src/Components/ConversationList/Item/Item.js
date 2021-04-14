@@ -17,12 +17,17 @@ export default function Item(props) {
   }, [props.isOnline])
 
   const { photo, name, text } = props.data;
+
   let statCls = [cls.status]
   if (isOnline.isOnline) { statCls = [cls.status] }
   else { statCls.push(cls.offline) }
 
+  let itemCls = [cls.item]
+  if(props.isCurrent) {itemCls.push(cls.active)}
+  else {itemCls = [cls.item]}
+
   return (
-    <div className={cls.item} onClick={props.onClick}>
+    <div className={itemCls.join(' ')} onClick={props.onClick}>
       <div className={cls.holder}>
         <div className={statCls.join(' ')} />
         <img className={cls.photo} src={photo} alt="conversation" />

@@ -11,6 +11,11 @@
   cursor: pointer;
 }
 
+.active{
+  background-color: rgba(79, 171, 255, 0.3);
+  border-left: 4px solid rgb(79, 171, 255);
+}
+
 .photo {
   width: 50px;
   height: 50px;

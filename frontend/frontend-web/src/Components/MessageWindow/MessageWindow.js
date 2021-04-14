@@ -95,7 +95,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
       return 0;
     }
     let Time = new Date();
-    
+    props.setChanged(true)
+    props.setNewID(props.Current.ID)
+    props.setNewText(messIn.text)
     sendMessage(props.userData.Token,props.Current.ID,{
         text: messIn.text,
         sent_time: `${Time.toISOString().slice(0,10)} ${Time.toISOString().slice(11,19)}`
