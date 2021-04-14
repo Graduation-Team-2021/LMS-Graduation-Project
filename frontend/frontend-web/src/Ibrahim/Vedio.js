@@ -75,7 +75,7 @@ class Vedioplayer extends Component {
         <div className="Vedio">
            <ReactPlayer
             controls
-            width="1100px"
+            width="1500px"
             height="600px"
             url={this.state.url}
             onReady={this.start}
