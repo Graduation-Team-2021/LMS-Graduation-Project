@@ -52,12 +52,13 @@ class Vedioplayer extends Component {
     console.log(this.state.url);
   };
   nulling = () => {
-    // props.history.push('/Courses')
-    <BrowserRouter>
-      <Route path="/Courses">
-        <CoursePage />
-      </Route>
-    </BrowserRouter>;
+    this.props.history.push({
+      pathname: `/Course/${this.props.location.state.Data.courseID}`,
+      state: {
+        Data: this.props.location.state.Data,
+        isJoined: "true",
+      },
+    })
   };
 
   start = () => {
