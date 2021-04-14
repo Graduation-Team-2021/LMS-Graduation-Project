@@ -4,15 +4,9 @@
     align-items: center;
     background: white;
     border-top: 1px solid #eeeef1;
+    flex-wrap: wrap;
   }
   
-  @supports (backdrop-filter: blur(20px)) {
-    .compose {
-      border: none;
-      background-color: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(20px);
-    }
-  }
   
   .compose-input {
     flex: 1;

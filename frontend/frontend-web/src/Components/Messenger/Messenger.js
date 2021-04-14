@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ConversationList from "../ConversationList/ConversationList";
-import LSB from "../LeftSidebar/Sidebar";
 import MessageWindow from "../MessageWindow/MessageWindow";
 import cls from "./Messenger.module.css";
 import Card from "../Card/Card";
@@ -28,7 +27,7 @@ import { mapStateToProps } from "../../store/reduxMaps";
 class Messenger extends Component {
   constructor(props) {
     super(props);
-    this.state = { Current: null, isNew: false, hasChanged: false, newConversationID: null, newText:"" };
+    this.state = { Current: null, isNew: false, hasChanged: false, newConversationID: null, newText: "", showList:true };
     msngrskt.auth = { userID: props.userData.ID };
     msngrskt.connect();
   }
@@ -42,15 +41,19 @@ class Messenger extends Component {
   };
 
   setHasChanged = (value) => {
-    this.setState({ hasChanged:value })
+    this.setState({ hasChanged: value })
   }
 
   setNewMessID = (value) => {
-    this.setState({newConversationID:value})
+    this.setState({ newConversationID: value })
   }
 
   setNewText = (value) => {
-    this.setState({newText:value})
+    this.setState({ newText: value })
+  }
+
+  toggleListVis = () => {
+    this.setState({showList: !this.state.showList})
   }
 
   render() {
@@ -58,24 +61,26 @@ class Messenger extends Component {
       <span className={cls.holder}>
         <Card shadow className={cls.Card}>
           <div className={cls.Messenger}>
-            <LSB />
             <ConversationList
-              Current= {this.state.Current}
+              Current={this.state.Current}
               setCurrent={this.setCurrent}
               setIsNew={this.setIsNew}
               hasChanged={this.state.hasChanged}
               newMessID={this.state.newConversationID}
               newText={this.state.newText}
               setChanged={this.setHasChanged}
-              setNewID = {this.setNewMessID}
-              setNewText= {this.setNewText}
+              setNewID={this.setNewMessID}
+              setNewText={this.setNewText}
+              visState={this.state.showList}
+              setVis = {this.toggleListVis}
             />
             <MessageWindow
               Current={this.state.Current}
               isNew={this.state.isNew}
               setChanged={this.setHasChanged}
-              setNewID = {this.setNewMessID}
-              setNewText= {this.setNewText}
+              setNewID={this.setNewMessID}
+              setNewText={this.setNewText}
+              toggleVis={this.toggleListVis}
             />
           </div>
         </Card>

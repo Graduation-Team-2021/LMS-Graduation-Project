@@ -37,3 +37,34 @@
 .search:hover {
   background: #a8a8a8;
 }
+
+.button {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .list{
+    width: 100%;
+  }
+
+  .button {
+    float: left;
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 8px;
+    margin: 10px;
+    width: fit-content;
+    border: 1px hidden black;
+    border-radius: 15px;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  /* Change background color of buttons on hover */
+  .button:hover {
+    background-color: rgba(187, 187, 187, 0.3);
+  }
+}

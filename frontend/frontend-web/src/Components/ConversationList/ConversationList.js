@@ -32,12 +32,15 @@ export default connect(
     msngrskt.on("users", (response) => {
       setCurrentActiveUsers(response);
     });
-    msngrskt.on("user connected", () => {
-      //TODO: update the new online user
+    msngrskt.on("user connected", (response) => {
+      let temp = [response, ...CurrentActiveUsers]
+      setCurrentActiveUsers(temp)
     });
     msngrskt.on("private message", (res) => setNewMessage(res));
-    msngrskt.on("user disconnected", () => {
-      //TODO: update the offline user
+    msngrskt.on("user disconnected", (response) => {
+      let temp = [...CurrentActiveUsers]
+      temp.splice(temp.findIndex(el => { return el === response }), 1)
+      setCurrentActiveUsers(temp)
     });
   }, []);
   ///////////////////////////////////////////////////////////////////////////
@@ -71,12 +74,14 @@ export default connect(
     }
   }, [newMessage]);
   //////////////////////////////////////////////////////////////////
-  useEffect(()=>{
-    if(props.hasChanged)
-    {
-      conversations.splice(conversations.findIndex(Ar => { return Ar.ID === props.newMessID }), 1);
-      let newTemp = {...props.Current}
+  useEffect(() => {
+    if (props.hasChanged) {
+      if (conversations.findIndex(Ar => { return Ar.ID === props.newMessID }) != -1) {
+        conversations.splice(conversations.findIndex(Ar => { return Ar.ID === props.newMessID }), 1);
+      }
+      let newTemp = { ...props.Current }
       newTemp.text = props.newText
+      newTemp.name = Users[Users.findIndex(Ar => { return Ar.ID === props.newMessID })].Name
       let temp = [newTemp, ...conversations]
       setConversations(temp)
       props.setChanged(false)
@@ -84,7 +89,11 @@ export default connect(
       props.setNewText("")
     }
   },
-  [props.hasChanged, props.newMessID])
+    [props.hasChanged, props.newMessID])
+
+  useEffect(() => {
+    console.log(props.Current)
+  }, [props.Current])
   /////////////////////////////////////////////////////////////////
   const getConversations = () => {
     getAllConversations(props.userData.Token).then((res) => {
@@ -160,6 +169,7 @@ export default connect(
               }
               onClick={() => {
                 props.setIsNew(false);
+                props.setVis();
                 props.setCurrent(value);
                 setOldQuery("");
                 setSearchVis({ showSearch: false });
@@ -184,6 +194,7 @@ export default connect(
           oldConv.forEach((ele) => { if (ele.ID === value.ID) { isPart = true; } })
           if (isPart) {
             onClickHandler = () => {
+              props.setVis();
               props.setIsNew(false);
               props.setCurrent(value);
               setQuery("");
@@ -192,6 +203,7 @@ export default connect(
           }
           else {
             onClickHandler = () => {
+              props.setVis();
               props.setIsNew(true);
               props.setCurrent(value);
               setQuery("");
@@ -212,8 +224,13 @@ export default connect(
   }
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  let listCls = [cls.conversationList]
+  if (props.visState) { listCls = [cls.conversationList]; }
+  else { listCls.push(cls.listClosed) }  
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
-    <div className={cls.conversationList}>
+    <div className={listCls.join(' ')}>
       <div className={cls.title}>
         Messages
         <button className={cls.search} onClick={toggleSearch}>
@@ -248,11 +265,12 @@ export default connect(
                   onClick={() => {
                     props.setIsNew(false);
                     props.setCurrent(conversation);
+                    props.setVis();
                   }}
                   isOnline={CurrentActiveUsers.includes(conversation.ID)}
                   key={index}
                   data={conversation}
-                  isCurrent = {props.Current===null?false:props.Current.ID===conversation.ID}
+                  isCurrent={props.Current === null ? false : props.Current.ID === conversation.ID}
                 />
               )) : oldResults)
             : SearchResult

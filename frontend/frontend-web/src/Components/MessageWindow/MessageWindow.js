@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 
 import Message from "./Message/Message";
 import moment from "moment";
-import SearchBar from "./SearchBar/SearchBar";
+import SearchBar from "../ConversationList/SearchBar/SearchBar";
 import Compose from "./Compose/Compose";
 import cls from "./MessageWindow.module.css";
 import { getAllMessages, sendMessage } from "../../Interface/Interface";
-import { mapDispatchToProps,mapStateToProps } from "../../store/reduxMaps";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 // TODO: initialize the socket-io client here
 import msngrskt from "../../sockets/msngrskts";
@@ -21,6 +21,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   const [messages, setMessages] = useState([]);
   const [searchVis, setSearchVis] = useState({ showSearch: false });
   const [newMes, setNewMes] = useState(null)
+  const [Query, setQuery] = useState("");
   ////////////////////////////////////////////////////////////////////////////////////////
   //var tempMessages1 = [
   //  {
@@ -38,34 +39,49 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   //  },
   //];
   ///////////////////////////////////////////////////////////////////////////////////////
-  
+
   useEffect(() => {
     getMessages();
   }, [props.Current]);
 
-  useEffect(()=>{
+  useEffect(() => {
     msngrskt.on("private message", (res) => setNewMes(res));
-  },[])
+  }, [])
 
-  useEffect(()=>{
-    if(newMes && props.Current &&newMes.from===props.Current.ID){
-      const Temp = [...messages,{
-        id:messages.length,
+  useEffect(() => {
+    if (newMes && props.Current && newMes.from === props.Current.ID) {
+      const Temp = [...messages, {
+        id: messages.length,
         author: newMes.from,
         message: newMes.content.text,
         timestamp: new Date(newMes.content.sent_time).getTime()
       }]
       setMessages(Temp)
     }
-  },[newMes, props.Current])
+  }, [newMes, props.Current])
   //////////////////////////////////////////////////////////////////////////////////////
   const toggleSearch = () => {
     setSearchVis({ showSearch: !searchVis.showSearch });
   };
   //TODO: add another useEffect here to add the on recive message call back
   let searchbb = null;
+  let searchResults = [];
   if (searchVis.showSearch) {
-    searchbb = <SearchBar />;
+    searchbb = <SearchBar searchQuery={Query} setSearchQuery={setQuery} fillerText="Search in current conversation..." />;
+    if (Query !== "") {
+      messages.forEach((value, index) => {
+        if (value.message.toLowerCase().includes(Query.toLowerCase())) {
+          searchResults.push(
+            {
+              id: value.id,
+              author: value.author,
+              message: value.message,
+              timestamp: value.timestamp,
+            }
+          );
+        }
+      });
+    }
   }
 
   //////////////////////////////////////////////////////////////////////////////////////
@@ -95,14 +111,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
       return 0;
     }
     let Time = new Date();
-    props.setChanged(true)
-    props.setNewID(props.Current.ID)
-    props.setNewText(messIn.text)
-    sendMessage(props.userData.Token,props.Current.ID,{
-        text: messIn.text,
-        sent_time: `${Time.toISOString().slice(0,10)} ${Time.toISOString().slice(11,19)}`
+    sendMessage(props.userData.Token, props.Current.ID, {
+      text: messIn.text,
+      sent_time: `${Time.toISOString().slice(0, 10)} ${Time.toISOString().slice(11, 19)}`
     });
-    
+
     var joined = messages.concat({
       id: messages.length,
       author: MY_USER_ID,
@@ -114,6 +127,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
     //TODO: use io socket to send the messages
     setMessages([...joined]);
     setMess({ text: "" });
+    props.setChanged(true)
+    props.setNewID(props.Current.ID)
+    props.setNewText(messIn.text)
   }
 
   const handleKeyDown = (event) => {
@@ -125,40 +141,40 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
 
   const getMessages = () => {
     if (props.Current) {
-        console.log(props.Current, props.isNew);
-        if (!props.isNew) {
-            getAllMessages(props.userData.Token,props.Current.ID).then(res=>{
-              const temp = []
-              res.forEach(
-                (ele, index)=>{
-                  let time = ele['sent_time']
-                  let timestamp = new Date(time)
-                  temp.push({
-                    id: ele['message_id'],
-                    author: ele['sender_id'],
-                    message: ele['text'],
-                    timestamp: timestamp
-                  })
-                }
-              )
-              setMessages(temp)
-            });
-        } else {
-            setMessages([])
-        }
+      console.log(props.Current, props.isNew);
+      if (!props.isNew) {
+        getAllMessages(props.userData.Token, props.Current.ID).then(res => {
+          const temp = []
+          res.forEach(
+            (ele, index) => {
+              let time = ele['sent_time']
+              let timestamp = new Date(time)
+              temp.push({
+                id: ele['message_id'],
+                author: ele['sender_id'],
+                message: ele['text'],
+                timestamp: timestamp
+              })
+            }
+          )
+          setMessages(temp)
+        });
+      } else {
+        setMessages([])
+      }
     }
-    
+
   };
 
-  const renderMessages = () => {
+  const renderMessages = (list) => {
     let i = 0;
-    let messageCount = messages.length;
+    let messageCount = list.length;
     let tempMessages = [];
 
     while (i < messageCount) {
-      let previous = messages[i - 1];
-      let current = messages[i];
-      let next = messages[i + 1];
+      let previous = list[i - 1];
+      let current = list[i];
+      let next = list[i + 1];
       let isMine = current.author === MY_USER_ID;
       let currentMoment = moment(current.timestamp);
       let prevBySameAuthor = false;
@@ -201,7 +217,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
           endsSequence={endsSequence}
           showTimestamp={showTimestamp}
           data={current}
-          isLast={i===(messageCount-1)}
+          isLast={i === (messageCount - 1)}
         />
       );
 
@@ -218,6 +234,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
         <React.Fragment>
           <div className={cls.title}>
             {props.Current.Name}
+            <button className={cls.button} onClick={props.toggleVis} >
+              <img src="/menu.svg" width="50" height="50" alt="open toolbar" />
+              </button>
             <button className={cls.search}>
               <i>
                 <img
@@ -260,7 +279,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
             </button>
           </div>
           {searchbb}
-          <div className={cls.container}>{renderMessages()}</div>
+          {
+            !(searchVis.showSearch && Query !== "") ?
+              <div className={cls.container}>{renderMessages(messages)}</div> :
+              <div className={cls.container}>{renderMessages(searchResults)}</div>
+          }
           <Compose
             value={messIn.text}
             onChange={handleInputChanged}
