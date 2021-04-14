@@ -169,6 +169,7 @@ export default connect(
               }
               onClick={() => {
                 props.setIsNew(false);
+                props.setVis();
                 props.setCurrent(value);
                 setOldQuery("");
                 setSearchVis({ showSearch: false });
@@ -193,6 +194,7 @@ export default connect(
           oldConv.forEach((ele) => { if (ele.ID === value.ID) { isPart = true; } })
           if (isPart) {
             onClickHandler = () => {
+              props.setVis();
               props.setIsNew(false);
               props.setCurrent(value);
               setQuery("");
@@ -201,6 +203,7 @@ export default connect(
           }
           else {
             onClickHandler = () => {
+              props.setVis();
               props.setIsNew(true);
               props.setCurrent(value);
               setQuery("");
@@ -221,8 +224,13 @@ export default connect(
   }
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  let listCls = [cls.conversationList]
+  if (props.visState) { listCls = [cls.conversationList]; }
+  else { listCls.push(cls.listClosed) }  
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
-    <div className={cls.conversationList}>
+    <div className={listCls.join(' ')}>
       <div className={cls.title}>
         Messages
         <button className={cls.search} onClick={toggleSearch}>
@@ -257,6 +265,7 @@ export default connect(
                   onClick={() => {
                     props.setIsNew(false);
                     props.setCurrent(conversation);
+                    props.setVis();
                   }}
                   isOnline={CurrentActiveUsers.includes(conversation.ID)}
                   key={index}

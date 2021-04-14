@@ -234,6 +234,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
         <React.Fragment>
           <div className={cls.title}>
             {props.Current.Name}
+            <button className={cls.button} onClick={props.toggleVis} >
+              <img src="/menu.svg" width="50" height="50" alt="open toolbar" />
+              </button>
             <button className={cls.search}>
               <i>
                 <img
