@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ConversationList from "../ConversationList/ConversationList";
-import LSB from "../LeftSidebar/Sidebar";
 import MessageWindow from "../MessageWindow/MessageWindow";
 import cls from "./Messenger.module.css";
 import Card from "../Card/Card";
@@ -58,7 +57,6 @@ class Messenger extends Component {
       <span className={cls.holder}>
         <Card shadow className={cls.Card}>
           <div className={cls.Messenger}>
-            <LSB />
             <ConversationList
               Current= {this.state.Current}
               setCurrent={this.setCurrent}
