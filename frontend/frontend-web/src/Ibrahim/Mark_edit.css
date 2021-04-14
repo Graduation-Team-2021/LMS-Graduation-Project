@@ -5,6 +5,11 @@ table {
   width: 100%;
 }
 
+p {
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+}
 .main {
   height: 78vh;
   overflow: scroll;

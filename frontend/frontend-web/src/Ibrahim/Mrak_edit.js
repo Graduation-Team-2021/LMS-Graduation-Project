@@ -12,7 +12,7 @@ class MarkEdit extends Component {
 
   componentDidMount() {
     axios
-      .get("https://jsonplaceholder.typicode.com/users")
+      .get("/students/<student_id>/deliverable/<deliverable_id>/results")
       .then((result) => {
         console.log(result);
         this.setState({
@@ -45,14 +45,16 @@ class MarkEdit extends Component {
   render() {
     return (
       <div >
+        <p>{this.props.location.state.name}</p>
         <div className="main">
-        {/* <p>{this.props.location.state.name}</p> */}
         <table className="oo">
           <thead>
             <tr>
               <th>Name</th>
               <th>id</th>
-              <th>Mark</th>
+              <th>drev</th>
+              <th>midterm</th>
+              <th>final</th>
             </tr>
           </thead>
           <tbody>
@@ -61,6 +63,14 @@ class MarkEdit extends Component {
                 <tr key={key}>
                   <td>{user.username}</td>
                   <td>{user.id}</td>
+                  <td>
+                    <input type="number" onChange={this.mark} />
+                    <pre> out of 50 </pre>
+                  </td>
+                  <td>
+                    <input type="number" onChange={this.mark} />
+                    <pre> out of 50 </pre>
+                  </td>
                   <td>
                     <input type="number" onChange={this.mark} />
                     <pre> out of 50 </pre>
