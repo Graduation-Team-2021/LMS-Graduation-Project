@@ -136,6 +136,7 @@ const CoursePage = (props) => {
               desc={Desc}
               CourseID={courseID}
               Title={Title}
+              Course={props.location.state.Data}
             />
           </div>
         </div>

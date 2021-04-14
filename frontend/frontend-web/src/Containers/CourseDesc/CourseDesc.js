@@ -46,7 +46,7 @@ class CourseDesc extends Component {
             this.props.history.push({
               pathname: `/Course/${this.props.CourseID}/Videos`,
               state: {
-                name: this.props.Title,
+                Data: this.props.Course
               },
             });
           }}
