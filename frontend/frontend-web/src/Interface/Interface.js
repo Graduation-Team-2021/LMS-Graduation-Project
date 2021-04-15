@@ -315,3 +315,13 @@ export const setCourseStudent = async (id, Data) => {
      })
      console.log(res);
 }
+
+export const AddCourse = async(Data)=>{
+  console.log(Data);
+  const res = await instance.post('/courses',Data,{
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  return res.data['status_code']===200
+}

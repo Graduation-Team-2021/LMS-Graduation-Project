@@ -8,7 +8,7 @@ const TextField = (props) => {
   let inputField = (
     <input
     value={props.value}
-      type="text"
+      type={props.type||'text'}
       name={props.Name}
       className={Field}
       placeholder={"Enter Your " + props.Name + " Here"}

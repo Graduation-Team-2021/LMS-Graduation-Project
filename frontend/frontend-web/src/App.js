@@ -10,11 +10,15 @@ import Mark_edit from "./Ibrahim/Mrak_edit.js"
 import Group from './Containers/GroupPage/GroupPage.js';
 import Messenger from './Components/Messenger/Messenger';
 import Video from './Ibrahim/Vedio.js'
+import SignUp from './Containers/SignUpPage/SignUpPage'
+import AddCourse from "./Containers/AddCoursePage/AddCourse";
 
 import { mapStateToProps, mapDispatchToProps } from "./store/reduxMaps";
 import { connect } from "react-redux";
 
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
+
+
 
 const App = (props) => {
   return (
@@ -36,6 +40,8 @@ const App = (props) => {
       ) : (
         <Switch>
           <Route path="/login" exact component={Login} />
+          <Route path='/Signup' exact component={SignUp}/>
+          <Route path='/AddCourse' exact component={AddCourse}/>
           <Redirect to="/login" />
         </Switch>
       )}
