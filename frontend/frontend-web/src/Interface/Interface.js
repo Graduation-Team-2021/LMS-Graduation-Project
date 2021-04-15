@@ -315,3 +315,12 @@ export const setCourseStudent = async (id, Data) => {
      })
      console.log(res);
 }
+
+export const AddCourse = async(Data)=>{
+  const res = await instance.post('/courses',Data,{
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  console.log(res);
+}
