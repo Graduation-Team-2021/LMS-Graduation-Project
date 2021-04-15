@@ -7,23 +7,19 @@ import Card from "../../Components/Card/Card";
 import NormalTextField from "../../Components/NormalTextField/NormalTextField";
 import Button from "../../Components/Button/Button";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
-import { AddGroup } from "../../Interface/Interface";
+import {
+  AddGroup,
+  getCourses,
+  getStudentsByCourse,
+} from "../../Interface/Interface";
 import { setNewGroup } from "../../Models/Group";
+import { setCourse } from "../../Models/Course";
 
 class AddGroupPage extends Component {
-  state = {
-    Data: {},
-    Error: {},
-  };
-
   Fields = {
-    "Course Code": "text",
-    "Course Name": "text",
-    "Weekly Hours": "number",
-    "Number of Groups": "number",
-    "Max Number of Students": "number",
-    "Course Description": "text",
-    //'List of Doctors'
+    "Group Name": "text",
+    "Group Description": "text",
+    "Related Course": "select",
   };
 
   constructor(props) {
@@ -42,8 +38,50 @@ class AddGroupPage extends Component {
     this.state = {
       Data: Data,
       Error: Error,
+      Courses: [],
+      Students: [],
     };
   }
+
+  componentDidMount() {
+    getCourses().then((res) => {
+      let temp = [{ value: "", name: "Select a Course" }];
+      res.forEach((value) => {
+        let t2 = setCourse(value);
+        temp.push({
+          value: t2.CourseID,
+          name: t2.CourseName,
+        });
+      });
+      this.setState({
+        Courses: temp,
+      });
+    });
+  }
+
+  onCourseChange = (id) => {
+    console.log(id.value);
+    getStudentsByCourse(id.value).then((res) => {
+      let temp = [{ value: "", name: "Select Students" }];
+      res.forEach((data) =>
+        temp.push({
+          value: data["id"],
+          name: data["name"],
+        })
+      );
+      console.log(temp);
+      this.setState((old, props) => {
+        let t2 = { ...old.Data, "List of Students": [] };
+        let t3 = { ...old.Error, "List of Students": false };
+        return {
+          ...old,
+          Students: temp,
+          Data: t2,
+          Error: t3,
+        };
+      });
+    });
+  };
 
   initAddCourse = () => {
     let Data = {};
@@ -71,7 +109,10 @@ class AddGroupPage extends Component {
       if (this.state.Data[element] === "") {
         Error[element] = true;
       }
-      if ((element.includes("Number")|| element.includes("Hours"))&&this.state.Data[element]===0 ){
+      if (
+        (element.includes("Number") || element.includes("Hours")) &&
+        this.state.Data[element] === 0
+      ) {
         Error[element] = true;
       }
     });
@@ -80,14 +121,13 @@ class AddGroupPage extends Component {
       Error: { ...Error },
     }));
     let error = Object.values(Error);
-    console.log(error);
     return error.every((value) => !value);
   };
 
   onAddCourse = async () => {
     console.log("adding", this.errorHandler());
     if (this.errorHandler()) {
-      console.log('Valid');
+      console.log("Valid");
       let Group = setNewGroup(this.state.Data);
       let res = await AddGroup(Group);
       if (res) {
@@ -111,12 +151,21 @@ class AddGroupPage extends Component {
 
   changeInput = (event) => {
     let x = false;
+    if (
+      event.target.name === "Related Course" &&
+      event.target.options.selectedIndex !== 0
+    ) {
+      console.log("New Course Selected");
+      this.onCourseChange(
+        event.target.options[event.target.options.selectedIndex]
+      );
+    }
     if (event.target.name.includes("Number")) {
       x = !event.target.value > 0;
     } else if (event.target.name === "Weekly Hours") {
       x = !(
         validator.isNumeric(event.target.value) &&
-        event.target.value <= 12*7 &&
+        event.target.value <= 12 * 7 &&
         event.target.value > 0
       );
     } else {
@@ -146,6 +195,14 @@ class AddGroupPage extends Component {
               Name={value}
               onChange={this.changeInput}
               Error={this.state.Error[value]}
+              multiple={value === "List of Students"}
+              DataList={
+                value === "List of Students"
+                  ? this.state.Students
+                  : value === "Related Course"
+                  ? this.state.Courses
+                  : null
+              }
             />
           );
         })}
@@ -155,7 +212,7 @@ class AddGroupPage extends Component {
       <div className={classes.Main}>
         <Card row shadow>
           <div className={classes.Login}>
-            <h1 className={classes.MainTitle}>Add New User</h1>
+            <h1 className={classes.MainTitle}>Add New Group</h1>
             <div className={classes.Field}>{AddCourseField}</div>
             <div className={classes.ButtonArea}>
               <Button value="Add Course" onClick={this.onAddCourse} />

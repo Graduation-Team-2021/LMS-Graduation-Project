@@ -55,6 +55,7 @@ class InsertGroup(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('group_name', type=str, location='json')
         self.reqparse.add_argument('group_description', type=str, location='json')
+        
     def get(self):
         try:
             project_groups = controller_object.get_all_groups()

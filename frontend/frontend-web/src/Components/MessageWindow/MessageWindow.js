@@ -42,7 +42,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
 
   useEffect(() => {
     getMessages();
-  }, [props.Current]);
+  }, [props.Current, newMes]);
 
   useEffect(() => {
     msngrskt.on("private message", (res) => setNewMes(res));

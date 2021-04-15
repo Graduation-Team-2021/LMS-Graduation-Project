@@ -155,7 +155,7 @@ class AddCoursePage extends Component {
       <div className={classes.Main}>
         <Card row shadow>
           <div className={classes.Login}>
-            <h1 className={classes.MainTitle}>Add New User</h1>
+            <h1 className={classes.MainTitle}>Add New Course</h1>
             <div className={classes.Field}>{AddCourseField}</div>
             <div className={classes.ButtonArea}>
               <Button value="Add Course" onClick={this.onAddCourse} />

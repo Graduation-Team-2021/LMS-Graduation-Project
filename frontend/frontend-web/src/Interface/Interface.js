@@ -281,6 +281,7 @@ export const getAllMessages = async (Token, otherID) => {
   if (res.data["status_code"] !== 200) {
     return null;
   }
+  res.data['messages'].reverse()
   return res.data["messages"];
 };
 
@@ -328,10 +329,20 @@ export const AddCourse = async(Data)=>{
 
 export const AddGroup = async(Data)=>{
   console.log(Data);
-  const res = await instance.post('/courses',Data,{
+  const res = await instance.post('/project-group',Data,{
     headers: {
       "Content-Type": "application/json",
     },
   })
   return res.data['status_code']===200
+}
+
+export const getStudentsByCourse = async(id)=>{
+  const res = await instance.get(`/course/${id}/students`,{
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  console.log(res);
+  return res.data['names']
 }
