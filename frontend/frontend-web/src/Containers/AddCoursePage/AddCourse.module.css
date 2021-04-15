@@ -1,7 +1,7 @@
 .Main {
     background-color: gainsboro;
-    padding: 50px;
-    height: -webkit-fill-available;
+    padding: 10vh 7vw;
+    min-height: 100vh;
 }
 
 .Blue {

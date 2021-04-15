@@ -101,7 +101,7 @@ const HomePage = (props) => {
           ) : (
             <h1>Loading.....</h1>
           )}
-          {Joined.size !== 0 ? (
+          {true ? (
             <GroupsArea Groups={Joined} />
           ) : (
             <h1>Loading.....</h1>

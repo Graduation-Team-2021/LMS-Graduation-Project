@@ -33,7 +33,7 @@ class AddCoursePage extends Component {
     Object.keys(this.Fields).forEach((value) => {
       Data[value] = "";
       Error[value] = false;
-      if (value.includes("Hours") || value.includes("Number")) {
+      if (this.Fields[value]==='number') {
         Data[value] = 0;
       } else if (value.includes("List")) {
         Data[value] = [];
@@ -42,6 +42,7 @@ class AddCoursePage extends Component {
     this.state = {
       Data: Data,
       Error: Error,
+      Fields: this.Fields
     };
   }
 
@@ -137,12 +138,12 @@ class AddCoursePage extends Component {
   render() {
     const AddCourseField = (
       <React.Fragment>
-        {Object.keys(this.Fields).map((value, index) => {
+        {Object.keys(this.state.Fields).map((value, index) => {
           return (
             <NormalTextField
               key={index}
               value={this.state.Data[value]}
-              type={this.Fields[value]}
+              type={this.state.Fields[value]}
               Name={value}
               onChange={this.changeInput}
               Error={this.state.Error[value]}

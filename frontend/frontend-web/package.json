@@ -18,6 +18,7 @@
     "axios": "^0.21.1",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
+    "multiselect-react-dropdown": "^1.6.11",
     "react": "^17.0.1",
     "react-calendar": "^3.3.1",
     "react-calendar-date-picker": "^1.0.4",

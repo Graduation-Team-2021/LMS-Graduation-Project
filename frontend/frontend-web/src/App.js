@@ -36,6 +36,7 @@ const App = (props) => {
             <Route path="/Course/:id/Marks" exact component={Mark_edit} />
             <Route path="/messenger" exact component={Messenger} />
             <Route path="/Course/:id/Videos" exact component={Video} />
+            <Route path='/AddGroup' exact component={AddGroup}/>
             <Redirect path='/login' to='/'/>
           </Switch>
         </MainPage>
@@ -44,7 +45,6 @@ const App = (props) => {
           <Route path="/login" exact component={Login} />
           <Route path='/Signup' exact component={SignUp}/>
           <Route path='/AddCourse' exact component={AddCourse}/>
-          <Route path='/AddGroup' exact component={AddGroup}/>
           <Route path='/Deliv' component={Deliv}/>
           <Redirect to="/login" />
         </Switch>

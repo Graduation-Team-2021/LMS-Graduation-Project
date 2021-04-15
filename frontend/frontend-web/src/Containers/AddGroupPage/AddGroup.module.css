@@ -1,7 +1,10 @@
 .Main {
+    display: flex;
+    align-items: center;
     background-color: gainsboro;
-    padding: 50px;
-    height: -webkit-fill-available;
+    padding: 10vh 7vw;
+    min-height: 80vh;
+    height: fit-content;
 }
 
 .Blue {
@@ -37,6 +40,5 @@
     height: -webkit-fill-available;
     min-height: 75%;
     width: -webkit-fill-available;
-    overflow: auto;
     transition: all 200ms;
 }

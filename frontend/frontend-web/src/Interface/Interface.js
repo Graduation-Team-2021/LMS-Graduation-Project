@@ -74,7 +74,6 @@ export const getCourses = async (Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -112,7 +111,7 @@ export const getRecentUserPosts = async (Token) => {
 };
 
 export const getRecentEvent = async (Token, id, role) => {
-  const res = await instance.get(`/${role}/${id}/recent_events`, {
+  const res = await instance.get(`/student/${id}/recent_events`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
@@ -327,11 +326,12 @@ export const AddCourse = async(Data)=>{
   return res.data['status_code']===200
 }
 
-export const AddGroup = async(Data)=>{
+export const AddGroup = async(Data, Token)=>{
   console.log(Data);
-  const res = await instance.post('/project-group',Data,{
+  const res = await instance.post('/project-groups',Data,{
     headers: {
       "Content-Type": "application/json",
+      
     },
   })
   return res.data['status_code']===200

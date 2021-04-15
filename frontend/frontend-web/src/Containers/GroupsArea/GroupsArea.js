@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 
+import Button from "../../Components/Button/Button";
 import GroupPreview from "../../Components/GroupPreview/CoursePreview";
 import SwipeList from "../../Components/SwipeList/SwipeList";
 import classes from "./GroupsArea.module.css";
@@ -21,11 +23,14 @@ class GroupsArea extends Component {
 
     return (
       <div className={classes.GroupsArea}>
-        <div className={classes.Title}>Groups You're In</div>
+        <div className={classes.Title}>
+          <div>Groups You're In</div>
+          <Button value="Add Group" onClick={()=>this.props.history.push('/AddGroup')}/>
+        </div>
         <SwipeList>{Groups}</SwipeList>
       </div>
     );
   }
 }
 
-export default GroupsArea;
+export default withRouter(GroupsArea);

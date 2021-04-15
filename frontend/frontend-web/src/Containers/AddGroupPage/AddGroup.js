@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import validator from "validator";
+import { connect } from "react-redux";
 
 import classes from "./AddGroup.module.css";
 import image from "../../assets/Filler.png";
@@ -14,6 +15,8 @@ import {
 } from "../../Interface/Interface";
 import { setNewGroup } from "../../Models/Group";
 import { setCourse } from "../../Models/Course";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
+
 
 class AddGroupPage extends Component {
   Fields = {
@@ -31,11 +34,12 @@ class AddGroupPage extends Component {
       Error[value] = false;
       if (value.includes("Hours") || value.includes("Number")) {
         Data[value] = 0;
-      } else if (value.includes("List")) {
+      } else if (this.Fields[value] === "select") {
         Data[value] = [];
       }
     });
     this.state = {
+      Fields: this.Fields,
       Data: Data,
       Error: Error,
       Courses: [],
@@ -45,7 +49,7 @@ class AddGroupPage extends Component {
 
   componentDidMount() {
     getCourses().then((res) => {
-      let temp = [{ value: "", name: "Select a Course" }];
+      let temp = [];
       res.forEach((value) => {
         let t2 = setCourse(value);
         temp.push({
@@ -59,26 +63,35 @@ class AddGroupPage extends Component {
     });
   }
 
+  onSelect = (List, Option, Name) => {
+    if (Name === "Related Course") this.onCourseChange(Option.value);
+    this.setState((old, props) => {
+      const state = { ...old };
+      state.Error[Name] = false;
+      state.Data[Name] = List;
+      return state;
+    });
+  };
+
   onCourseChange = (id) => {
-    console.log(id.value);
-    getStudentsByCourse(id.value).then((res) => {
-      let temp = [{ value: "", name: "Select Students" }];
+    getStudentsByCourse(id).then((res) => {
+      let temp = [];
       res.forEach((data) =>
         temp.push({
           value: data["id"],
           name: data["name"],
         })
       );
-      console.log(temp);
       this.setState((old, props) => {
         let t2 = { ...old.Data, "List of Students": [] };
         let t3 = { ...old.Error, "List of Students": false };
-        return {
-          ...old,
-          Students: temp,
-          Data: t2,
-          Error: t3,
-        };
+        let t4 = { ...old.Fields, "List of Students": "select" };
+        let New = { ...old };
+        New.Data = t2;
+        New.Error = t3;
+        New["Students"] = temp;
+        New.Fields = t4;
+        return New;
       });
     });
   };
@@ -102,16 +115,21 @@ class AddGroupPage extends Component {
   };
 
   errorHandler = () => {
-    let keys = Object.keys(this.state.Data);
+    let keys = Object.keys(this.state.Fields);
     let Error = this.state.Error;
-
     keys.forEach((element) => {
       if (this.state.Data[element] === "") {
         Error[element] = true;
       }
       if (
-        (element.includes("Number") || element.includes("Hours")) &&
+        this.state.Fields[element] === "number" &&
         this.state.Data[element] === 0
+      ) {
+        Error[element] = true;
+      }
+      if (
+        this.state.Fields[element] === "select" &&
+        this.state.Data[element].length === 0
       ) {
         Error[element] = true;
       }
@@ -125,11 +143,9 @@ class AddGroupPage extends Component {
   };
 
   onAddCourse = async () => {
-    console.log("adding", this.errorHandler());
     if (this.errorHandler()) {
-      console.log("Valid");
       let Group = setNewGroup(this.state.Data);
-      let res = await AddGroup(Group);
+      let res = await AddGroup(Group, this.props.userData.Token);
       if (res) {
         alert("Adding Course Succesful");
         this.initAddCourse();
@@ -151,23 +167,8 @@ class AddGroupPage extends Component {
 
   changeInput = (event) => {
     let x = false;
-    if (
-      event.target.name === "Related Course" &&
-      event.target.options.selectedIndex !== 0
-    ) {
-      console.log("New Course Selected");
-      this.onCourseChange(
-        event.target.options[event.target.options.selectedIndex]
-      );
-    }
-    if (event.target.name.includes("Number")) {
+    if (event.target.type === "number") {
       x = !event.target.value > 0;
-    } else if (event.target.name === "Weekly Hours") {
-      x = !(
-        validator.isNumeric(event.target.value) &&
-        event.target.value <= 12 * 7 &&
-        event.target.value > 0
-      );
     } else {
       x = validator.isEmpty(event.target.value);
     }
@@ -186,14 +187,16 @@ class AddGroupPage extends Component {
   render() {
     const AddCourseField = (
       <React.Fragment>
-        {Object.keys(this.Fields).map((value, index) => {
+        {Object.keys(this.state.Fields).map((value, index) => {
           return (
             <NormalTextField
               key={index}
               value={this.state.Data[value]}
-              type={this.Fields[value]}
+              type={this.state.Fields[value]}
               Name={value}
               onChange={this.changeInput}
+              onSelect={this.onSelect}
+              onRemove={this.onRemove}
               Error={this.state.Error[value]}
               multiple={value === "List of Students"}
               DataList={
@@ -209,22 +212,22 @@ class AddGroupPage extends Component {
       </React.Fragment>
     );
     return (
-      <div className={classes.Main}>
+      
         <Card row shadow>
           <div className={classes.Login}>
             <h1 className={classes.MainTitle}>Add New Group</h1>
             <div className={classes.Field}>{AddCourseField}</div>
             <div className={classes.ButtonArea}>
-              <Button value="Add Course" onClick={this.onAddCourse} />
+              <Button value="Add Group" onClick={this.onAddCourse} />
             </div>
           </div>
           <div className={classes.Blue}>
             <ImageHolder filler={image} />
           </div>
         </Card>
-      </div>
+     
     );
   }
 }
 
-export default AddGroupPage;
+export default connect(mapStateToProps, mapDispatchToProps)(AddGroupPage);
