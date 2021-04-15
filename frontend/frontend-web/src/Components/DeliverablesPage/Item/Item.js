@@ -18,8 +18,8 @@ function Page(props) {
             <button className={cls.button} onClick={() => props.history.push('/')}><h2><b>Go Back...</b></h2></button>
             <div>
                 <h1> This is "{ele.name}" {ele.type} from "{ele.course}" course</h1>
-                {ele.type === 'Quiz' ? <h2><b>Allowed time: {ele.leeway}</b></h2> : ""}
-                {ele.type === 'Quiz' ? <button className={cls.button} onClick={onClickHandler}><h2><b>Begin!</b></h2></button> : ""}
+                <h2><b>Allowed time: {ele.leeway}</b></h2>
+                <button className={cls.button} onClick={onClickHandler}><h2><b>Begin!</b></h2></button>
                 {timer}
             </div>
         </div>

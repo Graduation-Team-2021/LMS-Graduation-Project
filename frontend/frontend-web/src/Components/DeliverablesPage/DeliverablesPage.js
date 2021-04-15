@@ -5,6 +5,7 @@ import cls from './DeliverablesPage.module.css';
 import Table from '../DelivTable/DelivTable'
 import Modal from '../Modal/Modal'
 import Item from './Item/Item'
+import Assignment from './Assignment/Assignment'
 import { withRouter, Switch, Route } from "react-router-dom";
 
 
@@ -26,7 +27,7 @@ function DeliverablesPage(props) {
           <button className={cls.button} onClick={() => {
             setModal({ showMod: false });
             props.history.push({
-              pathname: `/Quiz/${rowData.id}`,
+              pathname: `/${rowData['row'].type}/${rowData.id}`,
               state: { data: rowData['row'] }
             })
           }}>Start</button>
@@ -42,8 +43,9 @@ function DeliverablesPage(props) {
       <TopBar showS={showSideBar} />
       <LSB showSState={showSide.showSide} />
       <Switch>
-        <Route path="/Quiz/:id" exact component={Item} />
         <Route path="/" exact render={() => <Table onRowHand={onRowClickHandler} />} />
+        <Route path="/Quiz/:id" exact component={Item} />
+        <Route path="/Assignment/:id" exact component={Assignment} />
       </Switch>
     </div>
 
