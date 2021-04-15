@@ -22,7 +22,7 @@ function Page(props) {
 
   return (
     <div className={cls.page}>
-      <button className={cls.button} onClick={() => props.history.push("/Deliv")}>
+      <button className={cls.button} onClick={() => props.history.push("/Deliv/")}>
         <h2>
           <b>Go Back...</b>
         </h2>
