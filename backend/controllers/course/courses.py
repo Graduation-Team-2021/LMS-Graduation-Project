@@ -75,13 +75,21 @@ class courses_controller():
         return new_course
 
     def get_all_courses(self):
-        courses = Course.query.join(Teaches_Relation).\
-        filter(Teaches_Relation.course_code==Course.course_code).join(Professor).filter(Professor.user_id==Teaches_Relation.professor_id).join(User).filter(User.user_id==Professor.user_id).\
-        with_entities(Course.course_code,Course.course_name,User.name,Course.course_description,Course.post_owner_id)
+        courses = Course.query.all()
         if courses is None:
             raise ErrorHandler({
                 'description': 'Course does not exist.',
                 'status_code': 404
             })
-        data = [course for course in courses]
+        data = [n.serialize() for n in courses]
+        for course in data:
+            code = course['course_code']
+            professors = Teaches_Relation.query.filter(Teaches_Relation.course_code==code).all()
+            professors = [professor.serialize() for professor in professors]   
+            course['professors'] = []
+            if len(professors) > 0:
+                for professor in professors:
+                    new_professor = User.query.filter(User.user_id==professor['professor_id']).first().serialize()
+                    course['professors'].append(new_professor)
+
         return data

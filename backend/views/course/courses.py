@@ -82,19 +82,9 @@ class Courses(Resource):
             courses = controller_object.get_all_courses()
         except ErrorHandler as e:
             return e.error
-        data=[]
-        for i in range(len(courses)):
-            print(courses)
-            data.append({
-                'course_code':courses[i][0],
-                'course_name':courses[i][1],
-                'course_teacher':courses[i][2],
-                'course_description':courses[i][3],
-                'post_owner_id':courses[i][4]
-            })
         return jsonify({
             'status_code':200,
-            'courses':data
+            'courses':courses
         })
     def post(self):
         args = self.reqparse.parse_args()
