@@ -6,6 +6,7 @@ import cls from "./Item.module.css";
 function Page(props) {
   let ele = props.location.state.data;
   const [timer, setTimer] = useState(null);
+
   const onClickHandler = () => {
     setTimer(
       <Countdown
@@ -21,7 +22,7 @@ function Page(props) {
 
   return (
     <div className={cls.page}>
-      <button className={cls.button} onClick={() => props.history.push("/Deliv")}>
+      <button className={cls.button} onClick={() => props.history.push("/")}>
         <h2>
           <b>Go Back...</b>
         </h2>
@@ -31,22 +32,14 @@ function Page(props) {
           {" "}
           This is "{ele.name}" {ele.type} from "{ele.course}" course
         </h1>
-        {ele.type === "Quiz" ? (
+        <h2>
+          <b>Allowed time: {ele.leeway}</b>
+        </h2>
+        <button className={cls.button} onClick={onClickHandler}>
           <h2>
-            <b>Allowed time: {ele.leeway}</b>
+            <b>Begin!</b>
           </h2>
-        ) : (
-          ""
-        )}
-        {ele.type === "Quiz" ? (
-          <button className={cls.button} onClick={onClickHandler}>
-            <h2>
-              <b>Begin!</b>
-            </h2>
-          </button>
-        ) : (
-          ""
-        )}
+        </button>
         {timer}
       </div>
     </div>
