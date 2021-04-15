@@ -28,7 +28,21 @@ class AddCoursePage extends Component {
 
   constructor(props) {
     super(props);
-    this.initAddCourse();
+    let Data = {};
+    let Error = {};
+    Object.keys(this.Fields).forEach((value) => {
+      Data[value] = "";
+      Error[value] = false;
+      if (value.includes("Hours") || value.includes("Number")) {
+        Data[value] = 0;
+      } else if (value.includes("List")) {
+        Data[value] = [];
+      }
+    });
+    this.state = {
+      Data: Data,
+      Error: Error,
+    };
   }
 
   initAddCourse = () => {
@@ -57,17 +71,23 @@ class AddCoursePage extends Component {
       if (this.state.Data[element] === "") {
         Error[element] = true;
       }
+      if ((element.includes("Number")|| element.includes("Hours"))&&this.state.Data[element]===0 ){
+        Error[element] = true;
+      }
     });
     this.setState((st, pro) => ({
       Data: { ...st.Data },
       Error: { ...Error },
     }));
     let error = Object.values(Error);
-    return error.every((value) => true);
+    console.log(error);
+    return error.every((value) => !value);
   };
 
   onAddCourse = async () => {
-    if (!this.errorHandler()) {
+    console.log("adding", this.errorHandler());
+    if (this.errorHandler()) {
+      console.log('Valid');
       let Course = setNewCourse(this.state.Data);
       let res = await AddCourse(Course);
       if (res) {
@@ -91,9 +111,13 @@ class AddCoursePage extends Component {
 
   changeInput = (event) => {
     let x = false;
-    if (event.target.name === "Weekly Hours") {
+    if (event.target.name.includes("Number")) {
+      x = !event.target.value > 0;
+    } else if (event.target.name === "Weekly Hours") {
       x = !(
-        validator.isNumeric(event.target.value) && event.target.value <= 12
+        validator.isNumeric(event.target.value) &&
+        event.target.value <= 12*7 &&
+        event.target.value > 0
       );
     } else {
       x = validator.isEmpty(event.target.value);
@@ -116,10 +140,12 @@ class AddCoursePage extends Component {
         {Object.keys(this.Fields).map((value, index) => {
           return (
             <NormalTextField
-              value={this.state[value]}
+              key={index}
+              value={this.state.Data[value]}
               type={this.Fields[value]}
               Name={value}
               onChange={this.changeInput}
+              Error={this.state.Error[value]}
             />
           );
         })}
@@ -132,7 +158,7 @@ class AddCoursePage extends Component {
             <h1 className={classes.MainTitle}>Add New User</h1>
             <div className={classes.Field}>{AddCourseField}</div>
             <div className={classes.ButtonArea}>
-              <Button value="Add User" onClick={this.onAddCourse} />
+              <Button value="Add Course" onClick={this.onAddCourse} />
             </div>
           </div>
           <div className={classes.Blue}>
