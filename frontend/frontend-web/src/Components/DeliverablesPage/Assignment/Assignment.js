@@ -17,7 +17,7 @@ function Page(props) {
     <div className={cls.page}>
       <button
         className={cls.button}
-        onClick={() => props.history.push("/Deliv")}
+        onClick={() => props.history.push("/Deliv/")}
       >
         Go Back...
       </button>

@@ -26,7 +26,7 @@ function DeliverablesPage(props) {
           <button className={cls.button} onClick={() => {
             setModal({ showMod: false });
             props.history.push({
-              pathname: `Deliv/${rowData['row'].type}/${rowData.id}`,
+              pathname: `/Deliv/${rowData['row'].type}/${rowData.id}`,
               state: { data: rowData['row'] }
             })
           }}>Start</button>
