@@ -13,6 +13,7 @@ class Student_Course_Relation(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('course_code', type=str, location='json')
         self.reqparse.add_argument('Authorization', type=str, location='headers')
+        
 
     def get(self, student_id):
         try:
@@ -49,20 +50,31 @@ class Student_Courses_Relation(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('student_id', type=str, location='json')
         self.reqparse.add_argument('course_code', type=str, location='json')
+        self.reqparse.add_argument('mid_term_mark', type=float, location='json')
+        self.reqparse.add_argument('final_exam_mark', type=float, location='json')
+        self.reqparse.add_argument('Data', type=list, location='json')
 
-    def put(self,student_id,course_code):
+    def get(self,student_id,course_code):
+        return controller_object.get_student_marks(student_id,course_code)
+    
+    def post(self,student_id,course_code):
         args = self.reqparse.parse_args()
-        new={'student_id':args['student_id'],'course_code':args['course_code']}
+        student_course_relation = {
+            'course_code': course_code,
+            'student_id': student_id,
+            'mid_term_mark':args['mid_term_mark'],
+            'final_exam_mark':args['final_exam_mark']
+        }
         try:
-            controller_object.update_student_course_relation(student_id,course_code,new)
+            controller_object.post_student_course_relation(student_course_relation)
         except ErrorHandler as e:
             return e.error
-        return jsonify(
-            {
-                'message':'relation updated successfully',
-                'status_code':200
-            }
-        )
+        return jsonify({
+            'message': 'Course added successfully',
+            'status_code': 200
+        })
+
+    
 
     def delete(self, student_id, course_code):
         try:
@@ -73,3 +85,44 @@ class Student_Courses_Relation(Resource):
             'message': 'Course removed successfully',
             'status_code': 200
         })
+# /course/<course_code>/students
+class All_Students_in_one_course(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('student_id', type=str, location='json')
+        self.reqparse.add_argument('course_code', type=str, location='json')
+        self.reqparse.add_argument('mid_term_mark', type=float, location='json')
+        self.reqparse.add_argument('final_exam_mark', type=float, location='json')
+        self.reqparse.add_argument('Data', type=list, location='json')
+
+    def get(self, course_code):
+        try:
+            result= controller_object.get_all_students_in_one_course(course_code)
+        except ErrorHandler as e:
+            return jsonify({
+                "error":e.error,
+                "status_code":201})
+        return jsonify({
+            'names':result,
+            'status_code': 200
+        })
+    def put(self,course_code):
+        args = self.reqparse.parse_args()
+        print(args['Data'])
+        for i in args['Data']:
+            new={
+            'student_id':i['id'],    
+            'course_code':course_code, 
+            'mid_term_mark':i['mid'],
+            'final_exam_mark':i['final']}
+            try:
+                controller_object.update_student_course_relation(i['id'],course_code,new)
+            except ErrorHandler as e:
+                return e.error
+        return jsonify(
+            {
+                'message':'relation updated successfully',
+                'status_code':200
+            }
+        )
+    

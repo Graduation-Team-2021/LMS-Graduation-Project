@@ -3,6 +3,7 @@ from models.course.courses import Course
 from models.user.students import Student
 from methods.errors import *
 from flask import jsonify
+from models.user.users import User
 
 
 class student_course_relation_controller():
@@ -40,20 +41,18 @@ class student_course_relation_controller():
 
     def update_student_course_relation(self, student_id, course_code, new_relation):
         relation = Learns_Relation.query.filter_by(student_id=student_id, course_code=course_code).first()
-        relation.delete()
         if not relation:
             raise ErrorHandler('relation does not exist,please recheck your data')
-
-        the_update = Learns_Relation(**new_relation)
+        relation = Learns_Relation(**new_relation)
         try:
-            the_update.update()
+            relation.update()   
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
             })
-        return the_update.serialize()
+        return relation.serialize()
 
     def delete_student_course_relation(self, student_id, course_code):
         try:
@@ -71,3 +70,24 @@ class student_course_relation_controller():
                 'status_code': 500
             })
         return
+    def get_all_students_in_one_course(self,course_code):
+        students=Learns_Relation.query.filter_by(course_code=course_code).all()
+        student_id_list=[s.serialize() for s in students]
+        names=[]
+        for i in student_id_list:
+            # names=[ n.serialize()["name"] for n in User.query.filter(User.user_id==i).all()]
+            # User.query.filter(User.user_id==i).first()
+            t2={}
+            temp=User.query.filter(User.user_id==i["student_id"]).first().serialize()
+            t2['name']=temp['name']
+            t2['id']=temp['user_id']
+            t2['mid']=i['mid_term_mark']
+            t2['final']=i['final_exam_mark']
+            names.append(t2)
+        # s=[]
+        # for i in range(len(names)):
+        #     s.append( f"{names[i]}:{student_id_list[i]}")
+        # return s
+        return names
+    def get_student_marks(self,student_id,course_code):
+        return Learns_Relation.query.filter(student_id==student_id,course_code==course_code).first().serialize()
