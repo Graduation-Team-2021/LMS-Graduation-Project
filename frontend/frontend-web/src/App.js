@@ -12,6 +12,7 @@ import Messenger from './Components/Messenger/Messenger';
 import Video from './Ibrahim/Vedio.js'
 import SignUp from './Containers/SignUpPage/SignUpPage'
 import AddCourse from "./Containers/AddCoursePage/AddCourse";
+import AddGroup from "./Containers/AddGroupPage/AddGroup";
 
 import { mapStateToProps, mapDispatchToProps } from "./store/reduxMaps";
 import { connect } from "react-redux";
@@ -42,6 +43,7 @@ const App = (props) => {
           <Route path="/login" exact component={Login} />
           <Route path='/Signup' exact component={SignUp}/>
           <Route path='/AddCourse' exact component={AddCourse}/>
+          <Route path='/AddGroup' exact component={AddGroup}/>
           <Redirect to="/login" />
         </Switch>
       )}

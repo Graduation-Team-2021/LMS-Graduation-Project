@@ -325,3 +325,13 @@ export const AddCourse = async(Data)=>{
   })
   return res.data['status_code']===200
 }
+
+export const AddGroup = async(Data)=>{
+  console.log(Data);
+  const res = await instance.post('/courses',Data,{
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  return res.data['status_code']===200
+}

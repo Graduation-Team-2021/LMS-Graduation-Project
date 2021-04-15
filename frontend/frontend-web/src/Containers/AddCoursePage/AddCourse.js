@@ -22,7 +22,7 @@ class AddCoursePage extends Component {
     "Weekly Hours": "number",
     "Number of Groups": "number",
     "Max Number of Students": "number",
-    "Course Description": "text",
+    "Course Description": "textArea",
     //'List of Doctors'
   };
 

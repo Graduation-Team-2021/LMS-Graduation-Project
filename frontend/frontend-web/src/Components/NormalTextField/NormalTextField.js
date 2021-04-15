@@ -5,17 +5,28 @@ const TextField = (props) => {
   const Field = !props.Error
     ? classes.Field
     : classes.Field + " " + classes.ErrorField;
-  let inputField = (
-    <input
-    value={props.value}
-      type={props.type||'text'}
-      name={props.Name}
-      className={Field}
-      placeholder={"Enter Your " + props.Name + " Here"}
-      onChange={props.onChange}
-      required
-    />
-  );
+  let inputField =
+    props.type !== "textArea" ? (
+      <input
+        value={props.value}
+        type={props.type || "text"}
+        name={props.Name}
+        className={Field}
+        placeholder={"Enter Your " + props.Name + " Here"}
+        onChange={props.onChange}
+        required
+      />
+    ) : (
+      <textarea
+        rows={7}
+        value={props.value}
+        name={props.Name}
+        className={Field}
+        placeholder={"Enter Your " + props.Name + " Here"}
+        onChange={props.onChange}
+        required
+      />
+    );
   if (props.children) {
     inputField = props.children;
   }
