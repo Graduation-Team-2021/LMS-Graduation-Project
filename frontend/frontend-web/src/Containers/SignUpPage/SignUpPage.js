@@ -72,11 +72,11 @@ class SignUpPage extends Component {
       errors: { ...errors },
     }));
     let error = Object.values(errors);
-    return error.every((value)=>true);
+    return error.every((value)=>!value);
   };
 
   onSignUp = async () => {
-    if (!this.errorHandler()) {
+    if (this.errorHandler()) {
       let user = setNewUser(this.state.data);
       let res = await SignUp(user);
       if (res) {

@@ -11,11 +11,6 @@ import { AddCourse } from "../../Interface/Interface";
 import { setNewCourse } from "../../Models/Course";
 
 class AddCoursePage extends Component {
-  state = {
-    Data: {},
-    Error: {},
-  };
-
   Fields = {
     "Course Code": "text",
     "Course Name": "text",
@@ -30,49 +25,65 @@ class AddCoursePage extends Component {
     super(props);
     let Data = {};
     let Error = {};
+    let Lists = {};
     Object.keys(this.Fields).forEach((value) => {
       Data[value] = "";
       Error[value] = false;
-      if (this.Fields[value]==='number') {
+      if (this.Fields[value] === "number") {
         Data[value] = 0;
-      } else if (value.includes("List")) {
+      } else if (this.Fields[value] === "select") {
         Data[value] = [];
+        Lists[value] = [];
       }
     });
     this.state = {
       Data: Data,
       Error: Error,
-      Fields: this.Fields
+      Fields: this.Fields,
+      ...Lists,
     };
   }
 
   initAddCourse = () => {
     let Data = {};
     let Error = {};
+    let Lists = {};
     Object.keys(this.Fields).forEach((value) => {
       Data[value] = "";
       Error[value] = false;
-      if (value.includes("Hours") || value.includes("Number")) {
+      if (this.Fields[value] === "number") {
         Data[value] = 0;
-      } else if (value.includes("List")) {
+      } else if (this.Fields[value] === "select") {
         Data[value] = [];
+        Lists[value] = [];
       }
     });
     this.setState({
       Data: Data,
       Error: Error,
+      Fields: this.Fields,
+      ...Lists,
     });
   };
 
   errorHandler = () => {
-    let keys = Object.keys(this.state.Data);
+    let keys = Object.keys(this.state.Fields);
     let Error = this.state.Error;
 
     keys.forEach((element) => {
       if (this.state.Data[element] === "") {
         Error[element] = true;
       }
-      if ((element.includes("Number")|| element.includes("Hours"))&&this.state.Data[element]===0 ){
+      if (
+        this.state.Fields[element] === "number" &&
+        this.state.Data[element] === 0
+      ) {
+        Error[element] = true;
+      }
+      if (
+        this.state.Fields[element] === "select" &&
+        this.state.Data[element].length === 0
+      ) {
         Error[element] = true;
       }
     });
@@ -81,14 +92,11 @@ class AddCoursePage extends Component {
       Error: { ...Error },
     }));
     let error = Object.values(Error);
-    console.log(error);
     return error.every((value) => !value);
   };
 
   onAddCourse = async () => {
-    console.log("adding", this.errorHandler());
     if (this.errorHandler()) {
-      console.log('Valid');
       let Course = setNewCourse(this.state.Data);
       let res = await AddCourse(Course);
       if (res) {
@@ -112,12 +120,12 @@ class AddCoursePage extends Component {
 
   changeInput = (event) => {
     let x = false;
-    if (event.target.name.includes("Number")) {
+    if (event.target.type === "number") {
       x = !event.target.value > 0;
     } else if (event.target.name === "Weekly Hours") {
       x = !(
         validator.isNumeric(event.target.value) &&
-        event.target.value <= 12*7 &&
+        event.target.value <= 12 * 7 &&
         event.target.value > 0
       );
     } else {

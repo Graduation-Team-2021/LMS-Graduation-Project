@@ -35,7 +35,8 @@ const TextField = (props) => {
         singleSelect={!props.multiple}
         options={props.DataList}
         selectedValues={props.value}
-        onSelect={(List, Item)=>props.onSelect(List, Item, props.Name)} // Function will trigger on select event
+        onSelect={(List, Item)=>props.onSelect(List, Item, props.Name)}
+        onRemove={(List, Item)=>props.onRemove(List, Item, props.Name)}
         displayValue="name"
       />
     ) : (

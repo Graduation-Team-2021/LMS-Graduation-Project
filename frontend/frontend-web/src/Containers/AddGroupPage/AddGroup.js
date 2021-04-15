@@ -29,21 +29,22 @@ class AddGroupPage extends Component {
     super(props);
     let Data = {};
     let Error = {};
+    let Lists = {};
     Object.keys(this.Fields).forEach((value) => {
       Data[value] = "";
       Error[value] = false;
-      if (value.includes("Hours") || value.includes("Number")) {
+      if (this.Fields[value]==='number') {
         Data[value] = 0;
       } else if (this.Fields[value] === "select") {
         Data[value] = [];
+        Lists[value] = []
       }
     });
     this.state = {
       Fields: this.Fields,
       Data: Data,
       Error: Error,
-      Courses: [],
-      Students: [],
+      ...Lists
     };
   }
 
@@ -73,6 +74,15 @@ class AddGroupPage extends Component {
     });
   };
 
+  onRemove = (List, Option, Name) => {
+    this.setState((old, props) => {
+      const state = { ...old };
+      state.Error[Name] = List.length===0;
+      state.Data[Name] = List;
+      return state;
+    });
+  };
+
   onCourseChange = (id) => {
     getStudentsByCourse(id).then((res) => {
       let temp = [];
@@ -96,21 +106,25 @@ class AddGroupPage extends Component {
     });
   };
 
-  initAddCourse = () => {
+  initAddGroup = () => {
     let Data = {};
     let Error = {};
+    let Lists = {};
     Object.keys(this.Fields).forEach((value) => {
       Data[value] = "";
       Error[value] = false;
-      if (value.includes("Hours") || value.includes("Number")) {
+      if (this.Fields[value]==='number') {
         Data[value] = 0;
-      } else if (value.includes("List")) {
+      } else if (this.Fields[value] === "select") {
         Data[value] = [];
+        Lists[value] = []
       }
     });
     this.setState({
+      Fields: this.Fields,
       Data: Data,
       Error: Error,
+      ...Lists
     });
   };
 
@@ -142,17 +156,17 @@ class AddGroupPage extends Component {
     return error.every((value) => !value);
   };
 
-  onAddCourse = async () => {
+  onAddGroup = async () => {
     if (this.errorHandler()) {
       let Group = setNewGroup(this.state.Data);
       let res = await AddGroup(Group, this.props.userData.Token);
       if (res) {
-        alert("Adding Course Succesful");
-        this.initAddCourse();
+        alert("Adding Group Succesful");
+        this.initAddGroup();
       } else {
-        alert("Adding Course failed");
+        alert("Adding Group failed");
       }
-      this.initAddCourse();
+      this.initAddGroup();
     }
   };
 
@@ -218,7 +232,7 @@ class AddGroupPage extends Component {
             <h1 className={classes.MainTitle}>Add New Group</h1>
             <div className={classes.Field}>{AddCourseField}</div>
             <div className={classes.ButtonArea}>
-              <Button value="Add Group" onClick={this.onAddCourse} />
+              <Button value="Add Group" onClick={this.onAddGroup} />
             </div>
           </div>
           <div className={classes.Blue}>
