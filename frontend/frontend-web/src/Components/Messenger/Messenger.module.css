@@ -5,5 +5,11 @@
 }
 
 .holder .Card {
-  height: 670px;
+  height: 75vh;
+}
+
+@media(max-height: 850px) {
+  .holder .Card {
+    height: 110vh;
+  }
 }

@@ -8,7 +8,7 @@ const description =
 function Page(props) {
   let file = null;
   const ele = props.location.state.data;
-  const [comment, setComment] = useState(null);
+  const [comment, setComment] = useState('');
   const [selfile, setFile] = useState(null);
   const onFileChange = (e) => {
     file = e.target.files[0];
@@ -31,7 +31,7 @@ function Page(props) {
           <input
             type="text"
             value={comment}
-            onChange={(e) => setComment(e.target.value)}
+            onChange={(e) => {setComment(e.target.value)}}
             placeholder="Add a comment..."
           />
           <input type="file" id="file" onChange={onFileChange} />
@@ -40,7 +40,6 @@ function Page(props) {
           className={cls.button}
           onClick={() => {
             setFile(file);
-            console.log(file);
           }}
         >
           Submit

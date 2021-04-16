@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
-
 import ConversationListItem from "./Item/Item";
 import SearchBar from "./SearchBar/SearchBar";
 import cls from "./ConversationList.module.css";
@@ -9,7 +8,6 @@ import { setUser } from "../../Models/User";
 import filler from "../../assets/Filler.png";
 import SearchItem from "../ConversationList/SearchItem/SearchItem";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
-
 import msngrskt from "../../sockets/msngrskts";
 
 export default connect(
@@ -26,6 +24,7 @@ export default connect(
   const [CurrentActiveUsers, setCurrentActiveUsers] = useState([]);
   const [oldConv, setOldConv] = useState([]);
   const [newMessage, setNewMessage] = useState(null);
+  ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
@@ -94,6 +93,29 @@ export default connect(
   useEffect(() => {
     console.log(props.Current)
   }, [props.Current])
+  /////////////////////////////////////////////////////////////////
+  function useOutsideAlerter(ref) {
+    useEffect(() => {
+      /**
+       * Alert if clicked on outside of element
+       */
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          props.hideList();
+        }
+      }
+  
+      // Bind the event listener
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+  /////////////////////////////////////////////////////////////////
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef);
   /////////////////////////////////////////////////////////////////
   const getConversations = () => {
     getAllConversations(props.userData.Token).then((res) => {
@@ -226,11 +248,11 @@ export default connect(
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   let listCls = [cls.conversationList]
   if (props.visState) { listCls = [cls.conversationList]; }
-  else { listCls.push(cls.listClosed) }  
+  else { listCls.push(cls.listClosed) }
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
-    <div className={listCls.join(' ')}>
+    <div className={listCls.join(' ')} ref={wrapperRef}>
       <div className={cls.title}>
         Messages
         <button className={cls.search} onClick={toggleSearch}>

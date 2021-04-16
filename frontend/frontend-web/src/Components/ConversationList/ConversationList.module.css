@@ -29,10 +29,11 @@
 
 @media (max-width: 1000px) {
   .conversationList {
-    position: fixed;
-    width: 250px;
-    height: 455px;
+    position:absolute;
+    width: 60%;
+    height: 57%;
     background-color: rgb(221, 221, 221);
+    border: 1px solid black;
     transition: all .3s cubic-bezier(0, .52, 0, 1);
   }
 

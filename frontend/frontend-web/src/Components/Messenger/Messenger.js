@@ -27,7 +27,7 @@ import { mapStateToProps } from "../../store/reduxMaps";
 class Messenger extends Component {
   constructor(props) {
     super(props);
-    this.state = { Current: null, isNew: false, hasChanged: false, newConversationID: null, newText: "", showList:true };
+    this.state = { Current: null, isNew: false, hasChanged: false, newConversationID: null, newText: "", showList:false };
     msngrskt.auth = { userID: props.userData.ID };
     msngrskt.connect();
   }
@@ -77,6 +77,7 @@ class Messenger extends Component {
               setNewText={this.setNewText}
               visState={this.state.showList}
               setVis = {this.toggleListVis}
+              hideList = {this.hideList}
             />
             <MessageWindow
               Current={this.state.Current}
@@ -85,7 +86,6 @@ class Messenger extends Component {
               setNewID={this.setNewMessID}
               setNewText={this.setNewText}
               toggleVis={this.toggleListVis}
-              hideList = {this.hideList}
             />
           </div>
         </Card>
