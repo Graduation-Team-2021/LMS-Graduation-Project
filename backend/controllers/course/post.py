@@ -49,7 +49,7 @@ class Post_Controller:
 
     def update_post(self, post_id, post):
         try:
-            to_be_updated_post = Post.query.filter_by(post_id=post_id)
+            to_be_updated_post = Post.query.filter_by(post_id=post_id).first()
             if to_be_updated_post is None:
                 raise ErrorHandler({
                     'description': 'Post does not exist.',

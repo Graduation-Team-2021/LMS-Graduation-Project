@@ -26,7 +26,8 @@ class Professor(Resource):
 
     def put(self, user_id):
         args = self.reqparse.parse_args()
-        professor = {'user_id': user_id, 'scientific_degree': args['scientific_degree']}
+        default_professor = controller_object.get_professor(user_id)
+        professor = {'user_id': user_id, 'scientific_degree': args['scientific_degree'] or default_professor['scientific_degree'] }
         try:
             controller_object.update_professor(user_id, professor)
         except ErrorHandler as e:

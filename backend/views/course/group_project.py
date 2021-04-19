@@ -10,6 +10,9 @@ class GroupProject(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('group_name', type=str, location='json')
+        self.reqparse.add_argument('group_description', type=str, location='json')
+        self.reqparse.add_argument('post_owner_id', type=int, location='json')
+        
 
     def get(self, group_id):
         try:
@@ -23,11 +26,12 @@ class GroupProject(Resource):
 
     def put(self, group_id):
         args = self.reqparse.parse_args()
+        default_group = controller_object.get_group(group_id)
         group = {
             "group_id": group_id,
-            "group_name": args['group_name'],
-            'group_description':args['group_description'],
-            'post_owner_id':args['post_owner_id']
+            "group_name": args['group_name'] or default_group['group_name'],
+            'group_description':args['group_description'] or default_group['group_description'],
+            'post_owner_id':args['post_owner_id'] or default_group['post_owner_id']
         }
         try:
             controller_object.update_group(group_id, group)

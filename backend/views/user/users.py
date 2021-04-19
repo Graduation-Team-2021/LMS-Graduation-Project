@@ -39,12 +39,14 @@ class User(Resource):
 
     def put(self, user_id):
         args = self.reqparse.parse_args()
+        default_user = controller_object.get_user(user_id=user_id)
+
         user = {
             'user_id': user_id,
-            'name': args['name'],
-            'email': args['email'],
-            'national_id': args['national_id'],
-            'birthday': args['birthday'],
+            'name': args['name'] or default_user['name'],
+            'email': args['email']  or default_user['email'],
+            'national_id': args['national_id']  or default_user['national_id'],
+            'birthday': args['birthday']  or default_user['birthday'],
         }
         try:
             controller_object.update_user(user_id, user)

@@ -75,3 +75,36 @@ class CommentView_Update_Delete(Resource):
             'message':'comment deleted successfully',
             'status_code':200
         })
+
+#comments/<comment_id>
+class Get_comment_by_comment_id(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('commenter_id', type=int, location='json')
+        self.reqparse.add_argument('post_id', type=int, location='json')
+        self.reqparse.add_argument('comment_text', type=str, location='json')
+        self.reqparse.add_argument('created_date', type=datetime, location='json')
+
+
+    def get(self,comment_id):
+        return controller_object.get_comment_by_id(comment_id)
+    
+    def put(self,comment_id):
+        args = self.reqparse.parse_args()
+        defult_comment=controller_object.get_comment_by_id(comment_id)
+        new_comment={
+            'comment_id':comment_id,
+            'commenter_id':args['commenter_id'] or defult_comment['commenter_id'],
+            'post_id':args['post_id'] or defult_comment['post_id'],
+            'comment_text':args['comment_text'] or defult_comment['comment_text'],
+            'created_date':args['created_date'] or defult_comment['created_date']
+        }
+        try:
+            controller_object.update_a_comment(comment_id,new_comment)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify(
+            {
+                'message':'relation updated successfully',
+                'status_code':200
+            })

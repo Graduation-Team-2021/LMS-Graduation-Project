@@ -78,7 +78,6 @@ class Download_Deliverable_File(Resource):
 
 # /students/<student_id>/deliverables/<deliverable_id>
 class Student_Deliverables(Resource):
-
     def get(self, student_id, deliverable_id):
         try:
             student_deliverables = controller_object.get_all_delivers_by_user_id_and_deliverable_id(student_id,

@@ -5,6 +5,10 @@ from methods.errors import *
 
 
 class Post_Commenter_controller:
+
+    def get_comment_by_id(self,comment_id):
+        return Post_Commenter_relation.query.filter_by(comment_id=comment_id).first().serialize()
+
     def get_one_user_all_comments(self,user_id):
         # comments=Post_Commenter_relation.query.join(User).\
         # filter(Post_Commenter_relation.commenter_id==user_id).\
@@ -55,9 +59,9 @@ class Post_Commenter_controller:
                 'status_code': 500
             })
         return new_comment
-    def update_a_comment(self,commenter_id,post_id,comment):
+    def update_a_comment(self,comment_id,comment):
         try:
-            to_be_udpated=Post_Commenter_relation.query.filter_by(commenter_id=commenter_id,post_id=post_id).first()
+            to_be_udpated=Post_Commenter_relation.query.filter_by(comment_id=comment_id).first()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({

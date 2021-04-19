@@ -74,6 +74,26 @@ class Student_Courses_Relation(Resource):
             'status_code': 200
         })
 
+    def put(self,course_code,student_id):
+        args = self.reqparse.parse_args()
+        default_learns_relation=controller_object.get_student_marks(student_id,course_code)
+        new={
+        'student_id':student_id,    
+        'course_code':course_code, 
+        'mid_term_mark':args['mid_term_mark'] or default_learns_relation['mid_term_mark'],
+        'final_exam_mark':args['final_exam_mark'] or default_learns_relation['final_exam_mark']
+        }
+        try:
+            controller_object.update_student_course_relation(student_id,course_code,new)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify(
+            {
+                'message':'relation updated successfully',
+                'status_code':200
+            }
+        )
+
     
 
     def delete(self, student_id, course_code):
@@ -106,23 +126,23 @@ class All_Students_in_one_course(Resource):
             'names':result,
             'status_code': 200
         })
-    def put(self,course_code):
-        args = self.reqparse.parse_args()
-        print(args['Data'])
-        for i in args['Data']:
-            new={
-            'student_id':i['id'],    
-            'course_code':course_code, 
-            'mid_term_mark':i['mid'],
-            'final_exam_mark':i['final']}
-            try:
-                controller_object.update_student_course_relation(i['id'],course_code,new)
-            except ErrorHandler as e:
-                return e.error
-        return jsonify(
-            {
-                'message':'relation updated successfully',
-                'status_code':200
-            }
-        )
+    # def put(self,course_code):
+    #     args = self.reqparse.parse_args()
+    #     print(args['Data'])
+    #     for i in args['Data']:
+    #         new={
+    #         'student_id':i['id'],    
+    #         'course_code':course_code, 
+    #         'mid_term_mark':i['mid'],
+    #         'final_exam_mark':i['final']}
+    #         try:
+    #             controller_object.update_student_course_relation(i['id'],course_code,new)
+    #         except ErrorHandler as e:
+    #             return e.error
+    #     return jsonify(
+    #         {
+    #             'message':'relation updated successfully',
+    #             'status_code':200
+    #         }
+    #     )
     

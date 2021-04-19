@@ -28,14 +28,15 @@ class Deliverable_view(Resource):
 
     def put(self, deliverable_id):
         args = self.reqparse.parse_args()
+        default_deliverable=controller_object.get_deliverable(deliverable_id)
         deliverable = {
             "deliverable_id": deliverable_id,
-            "deliverable_name": args["deliverable_name"],
-            "deadline": args["deadline"],
-            "course_deliverables": args["course_deliverables"],
-            "students_number": args["students_number"],
-            "description": args["description"],
-            "mark": args["mark"]
+            "deliverable_name": args["deliverable_name"] or default_deliverable['deliverable_name'],
+            "deadline": args["deadline"] or default_deliverable['deadline'],
+            "course_deliverables": args["course_deliverables"] or default_deliverable['course_deliverables'],
+            "students_number": args["students_number"] or default_deliverable['students_number'],
+            "description": args["description"] or default_deliverable['description'],
+            "mark": args["mark"] or default_deliverable['mark']
         }
         try:
             controller_object.update_deliverable(deliverable_id, deliverable)

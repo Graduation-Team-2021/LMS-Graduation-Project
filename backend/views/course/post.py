@@ -28,10 +28,12 @@ class Post_view(Resource):
 
     def put(self,post_id):
         args = self.reqparse.parse_args()
+        default_post=controller_object.get_post_by_id(post_id)
         new_post={
-            "post_writer":args['post_writer'],
-            "post_owner":args['post_owner'],
-            "post_text":args['post_text']
+            'post_id':post_id,
+            "post_writer":args['post_writer'] or default_post['post_writer'],
+            "post_owner":args['post_owner']  or default_post['post_owner'],
+            "post_text":args['post_text'] or default_post['post_text']
         }
         try:
             post=controller_object.update_post(post_id,new_post)

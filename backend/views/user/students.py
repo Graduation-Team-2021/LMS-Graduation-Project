@@ -25,9 +25,12 @@ class Student(Resource):
 
     def put(self, user_id):
         args = self.reqparse.parse_args()
+        default_student = controller_object.get_student(user_id)
+
+
         student = {
             'user_id':user_id,
-            'student_year': args['student_year']
+            'student_year': args['student_year']  or default_student['student_year']
         }
         try:
             controller_object.update_student(user_id, student)

@@ -16,9 +16,12 @@ class Post_Commenter_relation(db.Model, Base):
 
     def serialize(self):
         return {
+            'comment_id':self.comment_id,
             'commenter_id': self.commenter_id,
             'post_id': self.post_id,
-            'comment_text': self.comment_text
+            'comment_text': self.comment_text,
+            'created_date':self.created_date
+
         }
 
     def insert(self):
