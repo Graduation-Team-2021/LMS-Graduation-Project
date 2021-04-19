@@ -1,16 +1,17 @@
-.Main{
-    background-image: linear-gradient(to top right,rgb(255, 193, 255),rgb(237, 163, 255));
-    height: -webkit-fill-available;
-    width: -webkit-fill-available;
-    padding: 5%;
-    overflow: auto;
-}
-
-.Center{
+.Center {
     display: flex;
 }
 
-.Home{
-    flex:3;
+.contanier {
+    width: 80%;
 }
 
+.contanier .Card {
+    align-items: flex-start;
+}
+
+@media (max-width : 668px) {
+    .contanier {
+        width: 100%;
+    }
+}

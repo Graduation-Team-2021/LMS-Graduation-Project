@@ -1,0 +1,7 @@
+.holder .Card {
+    text-align: center;
+    padding: 0;
+    max-height: 40vh;
+    overflow: auto;
+    border: 1px solid black;
+}

@@ -6,7 +6,24 @@
     overflow: auto;
 }
 
-.posts{
+.MainArea {
+    width: 100%;
+}
+
+.MainArea .Card {
+
+}
+
+.Title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+
+.posts {
     position: relative;
     width: 70%;
     display: flex;
@@ -14,7 +31,7 @@
     align-items: center;
 }
 
-.Join{
+.Join {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,14 +67,9 @@
     width: 100%;
 }
 
-.otherMain {
+.PostsHolder {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    flex-flow: column;
     align-items: center;
-    flex: 3;
-    border: 2px solid rgba(158, 157, 157, 0.541);
-    border-radius: 10px;
-    padding: 0.5% 1%;
-    transition: 200ms;
-    position: relative;
 }

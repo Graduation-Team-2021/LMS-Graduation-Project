@@ -1,6 +1,7 @@
 .message {
     display: flex;
     flex-direction: column;
+    outline: none;
   }
   
   .message .timestamp {

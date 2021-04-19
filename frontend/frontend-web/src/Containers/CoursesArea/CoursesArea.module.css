@@ -3,9 +3,11 @@
     width: 100%;
     position: relative;
     align-items: center;
+    padding-top: 50px;
 }
 
-.Join {
+.Join,
+.Join2 {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,11 +17,16 @@
     font-size: x-large;
     background-color: blueviolet;
     border-radius: 10px;
-    width: 12vw;
+    width: fit-content;
     height: 7vh;
     box-shadow: 0px 0px 1px gray;
     text-align: center;
     cursor: pointer;
+    order: 2;
+}
+
+.Join2 {
+    display: none;
 }
 
 .InnerSwipeList {
@@ -33,10 +40,6 @@
     scroll-behavior: smooth;
     align-items: center;
     justify-content: center;
-}
-
-.overFlow{
-    justify-content: flex-start;
 }
 
 .Left {
@@ -55,6 +58,7 @@
     justify-content: center;
     align-items: center;
     background-color: aliceblue;
+    font-size: 400%;
 }
 
 .Right {
@@ -72,6 +76,7 @@
     height: 4vw;
     background-color: aliceblue;
     outline: none;
+    font-size: 400%;
 }
 
 .Title {
@@ -79,8 +84,43 @@
     font-size: xx-large;
     font-weight: bold;
     padding-bottom: 1%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .CoursesArea {
     width: 100%;
+    height: fit-content;
+}
+
+@media (max-width : 800px) {
+    .CoursesArea {
+        padding-bottom: 5px;
+        flex-flow: column;
+        display: flex;
+    }
+
+    .SwipeList {
+        flex-grow: 5;
+        padding: 0;
+    }
+
+    .Join {
+        display: none;
+    }
+
+    .Join2 {
+        align-self: flex-end;
+        display: flex;
+    }
+
+    .Left {
+        font-size: 200%;
+    }
+
+    .Right {
+        font-size: 200%;
+    }
 }

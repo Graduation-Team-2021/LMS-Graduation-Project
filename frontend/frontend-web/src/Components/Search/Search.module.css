@@ -8,17 +8,29 @@
     width: 100%;
 }
 
+.suggest .Card {
+    min-width: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 100;
+    max-height: 50vh;
+    overflow: auto;
+    border: 1px solid blue;
+}
+
 .full {
     display: flex;
     flex-flow: column;
     align-items: center;
-    width: 100%;
+    width: 50%;
     position: relative;
     z-index: 100;
+    justify-self: center;
+    align-self: center;
+    padding: 0 5%;
 }
 
 .suggest {
-    width: 20%;
     position: relative;
 }
 
@@ -27,7 +39,6 @@
     justify-content: space-between;
     align-items: center;
     height: 5%;
-    width: 20%;
     border: 2px solid rgba(158, 157, 157, 0.541);
     border-radius: 10px;
     padding: 0.5% 1%;

@@ -1,32 +1,46 @@
-import classes from "./TopBar.module.css";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+
 import Search from "../Search/Search";
 import Welcome from "../Welcome/Welcome";
-import MiniMenu from '../MiniMenu/MiniMenu'
+import MiniMenu from "../MiniMenu/MiniMenu";
+import classes from "./TopBar.module.css";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 const TopBar = (props) => {
+  useEffect(() => {
+    setNotif(props.recentUserPosts.userRecentPosts.length);
+  }, [props.recentUserPosts.userRecentPosts.length]);
 
-  const {Notif} = props
+  //TODO: Think about how to add only new notifications
 
-  useEffect(()=>{
-    setNotif(Notif.length)
-  },[Notif] )
+  const [notif, setNotif] = useState(0);
 
-  const [notif, setNotif] = useState(Notif.length);
-
-  const [message, setMessage] =useState(5);
+  const [message, setMessage] = useState(5);
 
   return (
     <div className={classes.Main}>
       <Welcome Name={props.Name} />
       <Search />
-      <MiniMenu TokenError={props.TokenError} id={props.id} setLogged={props.setLogged} notif={notif} Notif={props.Notif} onNotifClick={()=>{
-        setNotif(0)
-      }} message={message} onMessageClick={()=>{
-        setMessage(0)
-      }}/>
+      <div style={{
+        width: '40vw'
+      }}>
+        <MiniMenu
+          TokenError={props.TokenError}
+          id={props.id}
+          notif={notif}
+          Notif={props.Notif}
+          onNotifClick={() => {
+            setNotif(0);
+          }}
+          message={message}
+          onMessageClick={() => {
+            setMessage(0);
+          }}
+        />
+      </div>
     </div>
   );
 };
 
-export default TopBar;
+export default connect(mapStateToProps,mapDispatchToProps)(TopBar);

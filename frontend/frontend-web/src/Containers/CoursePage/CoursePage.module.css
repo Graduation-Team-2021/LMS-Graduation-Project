@@ -1,0 +1,68 @@
+.Card {
+    background-color: rgba(243, 238, 238, 0.9);
+}
+
+.posts {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.Join {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    color: white;
+    font-weight: bold;
+    font-size: x-large;
+    background-color: blueviolet;
+    border-radius: 10px;
+    width: 12vw;
+    height: 7vh;
+    box-shadow: 0px 0px 1px gray;
+    text-align: center;
+    cursor: pointer;
+}
+
+.Center {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Home {
+    flex: 3;
+}
+
+.Center .Course {
+    padding-top: 20px;
+    width: 75%;
+    align-items: flex-start;
+    height: fit-content;
+}
+
+.PostsHolder {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.small {
+    display: none;
+}
+
+@media (max-width : 600px) {
+    .large {
+        display: none;
+    }
+    .Center .Course .small {
+        display: flex;
+        flex-direction: row;
+    }
+    .Center .Course{
+        width: 100%;
+    }
+}

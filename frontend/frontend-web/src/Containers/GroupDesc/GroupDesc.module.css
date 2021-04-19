@@ -1,65 +1,34 @@
-.upcoming {
-    width: 100%;
-    max-width: 20vw;
-    padding: 0 0 0 1vw;
-    justify-self: end;
-}
+ .Main {
+     display: flex;
+     flex-flow: column;
+     align-items: center;
+     width: 100%;
+     max-width: 20vw;
+     padding: 0 0 0 1vw;
+ }
 
-.Title {
-    text-align: start;
-    padding: 2vh 0 0;
-    font-size: 200%;
-    color: blueviolet;
-    font-weight: bold;
-}
+ .Title {
+     align-self: start;
+     text-align: start;
+     padding: 2vh 0 0;
+     font-size: 200%;
+     color: blueviolet;
+     font-weight: bold;
+ }
 
-.EventTitle {
-    text-align: start;
-    padding: 5vh 0;
-    font-size: 250%;
-    font-weight: bold;
-}
+ .Desc {
+     text-align: start;
+     padding: 5vh 0;
+     font-size: 250%;
+     font-weight: bold;
+     display: flex;
+     text-overflow: clip;
+     text-align: start;
+ }
 
-.Host {
-    text-align: start;
-    padding: 0vh 0 5vh;
-    font-size: 170%;
-    color: blueviolet;
-}
+ .Invited {
+     text-align: start;
+     font-size: 130%;
+     padding-bottom: 1vh;
+ }
 
-.DesTitle {
-    font-weight: bold;
-    font-size: 120%;
-    padding: 10% 0 5%;
-    text-align: start;
-}
-
-.Des {
-    display: flex;
-    flex-shrink: 1;
-    font-size: 120%;
-    font-weight: bold;
-    max-width: 100%;
-    text-overflow: clip;
-    text-align: start;
-}
-
-.Invited {
-    text-align: start;
-    font-size: 130%;
-    padding-bottom: 1vh;
-}
-
-.Joined {
-    padding-bottom: 20%;
-    display: flex;
-    position: relative;
-    align-items: center;
-    height: 3vw;
-    justify-content: flex-end;
-    justify-self: center;
-}
-
-.Circle {
-    position: absolute;
-}

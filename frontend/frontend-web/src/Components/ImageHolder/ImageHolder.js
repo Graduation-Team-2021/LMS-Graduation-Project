@@ -1,28 +1,20 @@
 import React from "react";
+import classes from "./ImageHolder.module.css";
 
 const ImageHolder = (props) => {
+
+  const className = [classes.handler]
+
+  if (props.className) {
+    className.push(props.className)
+  }
+
   return (
-    <div
-      style={{
-        display: "flex",
-        borderRadius: "40px",
-        border: "1px solid black",
-        width: "100%",
-        overflow: "hidden",
-        margin: "1vh 0",
-        height: '70%',
-      }}
-    >
+    <div className={className.join(" ")}>
       <img
         src={props.filler}
         alt=""
-        style={{
-          objectFit: "fill",
-          width: "100%",
-          height: "100%",
-          alignSelf: "center",
-          justifySelf: "center",
-        }}
+        className={classes.img}
       />
     </div>
   );

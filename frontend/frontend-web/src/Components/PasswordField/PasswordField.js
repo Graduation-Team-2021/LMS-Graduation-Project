@@ -20,7 +20,7 @@ const PasswordTextField = (props) => {
         />
         {props.Error?<p style={{
             color: 'red'
-        }}>This Field Can't be Empty</p>:null} 
+        }}>Please Insert Valid Data</p>:null} 
         </React.Fragment>
     );
 }

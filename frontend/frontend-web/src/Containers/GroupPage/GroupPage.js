@@ -1,22 +1,29 @@
 import classes from "./GroupPage.module.css";
-import React, { useEffect, useState } from "react";
+
 import Card from "../../Components/Card/Card";
-import TopBar from "../../Components/TopBar/TopBar";
 import Modal from "../../Components/Modal/Modal";
 import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
 import GroupDescription from "../GroupDesc/GroupDesc.js";
-import { withRouter } from "react-router-dom";
+import NewPostCard from "../../Components/New Post/NewPost";
 import { getAllPosts, uploadPost } from "../../Interface/Interface";
-const HomePage = (props) => {
-  const [groupID, isJoined, postID, Title, Token, userID, Desc] = [
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
+import { setLocationPost, setNewPost } from "../../Models/Post";
+
+import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+
+const GroupPage = (props) => {
+  const [groupID, isJoined, postID, Title, Token, userID, Name, Desc] = [
     props.match.params.id,
     props.location.state.isJoined,
     props.location.state.postID,
     props.location.state.name,
-    props.Token,
-    props.ID,
-    props.location.state.Desc
+    props.userData.Token,
+    props.userData.ID,
+    props.userData.Name,
+    props.location.state.Desc,
   ];
   const [clicked, setclicked] = useState(false);
   const [Posts, setPosts] = useState([]);
@@ -34,143 +41,75 @@ const HomePage = (props) => {
   };
 
   useEffect(() => {
-    //Loading Data from Server
     getAllPosts(Token, postID).then((value) => {
-      console.log(value);
-      const posts = [];
-      for (let index = 0; index < value.length; index++) {
-        posts.push(
-          <Post
-            key={index}
-            Title={`by ${value[value.length-index-1]["name"]}`}
-            Content={value[value.length-index-1]["post_text"]}
-          />
-        );
+      const Posts = [];
+      if (value) {
+        value.forEach((ele) => {
+          Posts.push(setLocationPost(ele, Title, userID));
+        });
+        const posts = Posts.map((post, index) => (
+          <Post key={index} {...post} />
+        ));
+        posts.reverse()
+        setPosts(posts);
       }
-      setPosts(posts);
     });
-  }, [Token, postID]);
+  }, [Token, postID, Title, userID]);
 
-  const SubmitPost = (post) => {
+  const SubmitPost = async (post) => {
     console.log(post);
-    let temp = [
-      <Post key={Posts.length} Title={`by ${props.Name}`} Content={post} />,
-      ...Posts,
-    ];
-    uploadPost(Token, userID, postID, post);
-    setPosts(temp);
+    let data = setNewPost(post, Title, userID, Name);
+    
+    let id = await uploadPost(Token, userID, postID, post);
+    if (id) {
+      console.log(id)
+      data.PostId=id;
+      let temp = [
+        <Post key={Posts.length} {...data} />,
+        ...Posts
+      ];
+      setPosts(temp);
+    } else {
+      alert("Couldn't Upload the Post, Please Try again later")
+    }
+    
     hide();
   };
 
   return (
-    <div className={classes.Main}>
+    <React.Fragment>
       <Modal show={clicked} onClick={hide}>
         <NewPost submit={SubmitPost} dismiss={hide} />
       </Modal>
-      <Card
-        style={{
-          backgroundColor: "rgba(243, 238, 238, 0.9)",
-          height: "fit-content",
-        }}
-      >
-        <TopBar
-          Name={props.Name}
-          id={props.id}
-          setLogged={props.setLogged}
-          Notif={props.Posts}
-        />
-        <div className={classes.Center}>
-          <div
-            style={{
-              width: "75%",
-            }}
-          >
-            <Card
-              style={{
-                width: "100%",
-                alignItems: "flex-start",
-                height: "fit-content",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
-                }}
-              >
-                <h1>{Title}</h1>
-                {isJoined === "false" ? (
-                  <input
-                    type="button"
-                    value="Join Group"
-                    className={classes.Join}
-                    onClick={() => {
-                      props.Joining(groupID);
-                      props.history.push("/");
-                    }}
-                  />
-                ) : null}
-              </div>
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                {isJoined === "true" ? (
-                  <Card shadow>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <label
-                        style={{
-                          flex: "1",
-                          fontSize: "20px",
-                        }}
-                      >
-                        Write a new Post Here
-                      </label>
-                      <div className={classes.otherMain}>
-                        <input
-                          style={{
-                            cursor: "pointer",
-                            textAlign: "start",
-                            color: "rgb(78, 78, 78)",
-                          }}
-                          value="What's on Your Mind?"
-                          type="button"
-                          className={classes.input}
-                          onClick={Focus}
-                        />
-                      </div>
-                    </div>
-                  </Card>
-                ) : null}
-              </div>
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexFlow: "column",
-                  alignItems: "center",
-                }}
-              >
-                <div className={classes.posts}>{Posts}</div>
-              </div>
-            </Card>
-          </div>
-          <GroupDescription desc={Desc} />
+      <div className={classes.Center}>
+        <div className={classes.MainArea}>
+          <Card shadow className={classes.Card}>
+            <div className={classes.Title}>
+              <h1>{Title}</h1>
+              {isJoined === "false" ? (
+                <input
+                  type="button"
+                  value="Join Group"
+                  className={classes.Join}
+                  onClick={() => {
+                    props.Joining(groupID);
+                    props.history.push("/");
+                  }}
+                />
+              ) : null}
+            </div>
+            {isJoined === "true" ? <NewPostCard Focus={Focus} /> : null}
+            <div className={classes.PostsHolder}>
+              <div className={classes.posts}>{Posts}</div>
+            </div>
+          </Card>
         </div>
-      </Card>
-    </div>
+        <GroupDescription desc={Desc} />
+      </div>
+    </React.Fragment>
   );
 };
 
-export default withRouter(HomePage);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(GroupPage)
+);

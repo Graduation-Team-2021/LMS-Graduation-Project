@@ -3,11 +3,25 @@
     flex-flow: column;
     align-items: flex-start;
     text-align: start;
-    position: absolute;
+    position: relative;
+    width: 50%;
+    font-size: larger;
 }
 
 .Title{
     font-size: xx-large;
     font-weight: bold;
-    padding-bottom: 5%;
+    padding-bottom: 2%;
+}
+
+@media (max-width : 500px) {
+    .Title {
+        font-size: medium;
+    }
+    .Main div {
+        padding-top: 5px;
+    }
+    .Main{
+        font-size: medium;
+    }
 }

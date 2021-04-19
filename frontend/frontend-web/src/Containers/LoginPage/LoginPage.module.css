@@ -1,0 +1,81 @@
+.Main {
+    background-color: gainsboro;
+    padding: 10vh 7vw;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.Blue {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.ButtonArea {
+    margin: 30px 0px;
+    display: flex;
+    width: -webkit-fill-available;
+    justify-content: center;
+}
+
+.Login {
+    text-align: start;
+    width: 30vw;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    padding: 0 5% 0 0;
+}
+
+.MainTitle {
+    font-size: 200%;
+    color: red;
+}
+
+.LoginMain {
+    display: block;
+    justify-content: center;
+    transition: all 200ms;
+}
+
+.Card {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width : 1049px) {
+
+    .Card {
+        flex-direction: column-reverse;
+        height: 100%;
+    }
+
+    .ButtonArea {
+        margin: 10px 0;
+    }
+
+    .Login {
+        width: 100%;
+        padding: 0;
+    }
+
+    .Card {
+        height: auto;
+    }
+}
+
+@media (max-width : 600px) {
+    .Main {
+        padding: 0;
+    }
+
+    .Card {
+        height: 100%;
+        border-radius: 0;
+    }
+}

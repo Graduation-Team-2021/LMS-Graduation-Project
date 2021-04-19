@@ -6,14 +6,15 @@ export default function Item(props) {
   return (
     <div className={cls.tab}>
       <div className={cls.tabcontent}>
-        <div className={cls.button}><div style={{ fontSize: '25pt', color: 'yellow', fontWeight: 'bold', textAlign: 'center' }}>{props.total}</div>Total Deliverables</div>
-        <div className={cls.button}><div style={{ fontSize: '25pt', color: 'green', fontWeight: 'bold', textAlign: 'center' }}>{props.complete}</div>Completed</div>
-        <div className={cls.button}><div style={{ fontSize: '25pt', color: 'orange', fontWeight: 'bold', textAlign: 'center' }}>{props.progress}</div>In Progress</div>
-        <div className={cls.button}><div style={{ fontSize: '25pt', color: 'red', fontWeight: 'bold', textAlign: 'center' }}>{props.notS}</div>Not Started</div>
+        <div className={cls.button}><div style={{ fontSize: '15pt', color: 'yellow', fontWeight: 'bold', textAlign: 'center' }}>{props.total}</div>Total Deliverables</div>
+        <div className={cls.button}><div style={{ fontSize: '15pt', color: 'green', fontWeight: 'bold', textAlign: 'center' }}>{props.complete}</div>Completed</div>
+        <div className={cls.button}><div style={{ fontSize: '15pt', color: 'orange', fontWeight: 'bold', textAlign: 'center' }}>{props.progress}</div>In Progress</div>
+        <div className={cls.button}><div style={{ fontSize: '15pt', color: 'red', fontWeight: 'bold', textAlign: 'center' }}>{props.notS}</div>Not Started</div>
         <div className={cls.chart}>
           <Chart
-            width={'200px'}
-            height={'200px'}
+            width={'20vw'}
+            height={'20vh'}
+
             chartType="PieChart"
             loader={<div>Loading Chart</div>}
             data={[

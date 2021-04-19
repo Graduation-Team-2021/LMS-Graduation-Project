@@ -2,6 +2,7 @@ import React, { Component } from "react";
 //import  from ''
 import "./Mark_edit.css";
 import axios from "axios";
+import { getCourseStudents, setCourseStudent } from "../Interface/Interface";
 
 class MarkEdit extends Component {
   state = {
@@ -11,19 +12,18 @@ class MarkEdit extends Component {
   };
 
   componentDidMount() {
-    axios
-      .get("https://jsonplaceholder.typicode.com/users")
-      .then((result) => {
-        console.log(result);
-        this.setState({
-          users: result.data,
-        });
-        console.log(this.state.users);
+    console.log(this.props);
+    getCourseStudents(this.props.match.params.id).then(res=>{
+      this.setState({
+        users : res
       })
-      .catch((err) => {});
+      console.log(res)
+    })
+    
+    
   }
 
-  mark = (event) => {
+  mark = (event , id) => {
     // this.setState({
     //     // marks : event.target.value
     // })
@@ -31,8 +31,11 @@ class MarkEdit extends Component {
     if (event.target.value > 50 || event.target.value < 0) {
       console.log("enter a sutuble nim ");
     } else {
+      const temp = [...this.state.users]
+      const user = temp[id]
+      user[event.target.name] = event.target.value
       this.setState({
-        marks: event.target.value,
+        users: temp
       });
       console.log("askdjhksadj");
       // console.log({marks})
@@ -41,18 +44,21 @@ class MarkEdit extends Component {
 
   sumbit = () => {
     // axios.patch('https://jsonplaceholder.typicode.com/users',)
+    setCourseStudent(this.props.match.params.id, this.state.users)
   };
   render() {
     return (
-      <div className="main">
+      <div >
         <p>{this.props.location.state.name}</p>
+        <div className="main">
         <table className="oo">
           <thead>
             <tr>
               <th>Name</th>
-              <th>email</th>
               <th>id</th>
-              <th>Mark</th>
+              <th>drev</th>
+              <th>midterm</th>
+              <th>final</th>
             </tr>
           </thead>
           <tbody>
@@ -60,22 +66,32 @@ class MarkEdit extends Component {
               return (
                 <tr key={key}>
                   <td>{user.name}</td>
-                  <td>{user.username}</td>
                   <td>{user.id}</td>
                   <td>
-                    <input type="number" onChange={this.mark} />
-                    <pre> out of 50 </pre>
+                    <input type="number" name='drev' onChange={(event)=>this.mark(event, key)}  />
+                    <pre> out of 15 </pre>
+                  </td>
+                  <td>
+                    <input type="number" name='mid' onChange={(event)=>this.mark(event, key)}  value = {user.mid}/>
+                    <pre> out of 25 </pre>
+                  </td>
+                  <td>
+                    <input type="number" name='final' onChange={(event)=>this.mark(event, key)} value = {user.final} />
+                    <pre> out of 110 </pre>
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <button className="finish" onClick={this.sumbit}>
-          {" "}
-          sumbut the marks
-        </button>
       </div>
+       <div>
+      <button className="finish" onClick={this.sumbit}>
+      {" "}
+      sumbut the marks
+    </button>
+    </div>
+    </div>
     );
   }
 }

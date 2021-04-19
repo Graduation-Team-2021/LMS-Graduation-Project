@@ -6,10 +6,11 @@
 }
 
 .Field{
+    resize: none;
     border: 1px solid rgb(216, 215, 215);
     background-color: rgb(225, 225, 241);
     border-radius: 10px;
-    height: 50px;
+    min-height: 50px;
     width:-webkit-fill-available;
     padding-left: 15px;
     font-size: large;

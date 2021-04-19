@@ -1,62 +1,83 @@
 .title {
-  font-size:25pt;
+  font-size: 20pt;
   font-weight: bold;
   text-transform: capitalize;
   margin: 10px;
+  width: 100%;
 }
 
 .scrollableList {
   margin: 10px;
   flex-direction: column;
-  width: fit-content;
-  overflow-y:scroll;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 .conversationList {
-    background-color: rgb(237, 238, 243);
-    width: fit-content;
-    float: left;
-    padding: 10px;
-    margin: 10px;
-    height: 800px;
-    display: flex;
-    flex-direction: column;
+  width: fit-content;
+  float: left;
+  padding: 10px;
+  margin: 10px;
+  width: 400px;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+@media (max-width: 1000px) {
+  .conversationList {
+    position:absolute;
+    width: 60%;
+    height: 57%;
+    background-color: rgb(221, 221, 221);
+    border: 1px solid black;
+    transition: all .3s cubic-bezier(0, .52, 0, 1);
   }
 
-  .tabs {
-    display: flex;
-    align-items: center;
-    padding: 10px;
+  .listClosed {
+    transform: translateX(-100%);
+    transition: all .3s cubic-bezier(0, .52, 0, 1);
+    opacity: 0;
   }
-  
-  .tabs:hover {
-    background: #eeeef1;
-    cursor: pointer;
-  }
+}
 
-  .search {
-    float: right;
-    width: fit-content;
-    margin: 10px;
-    padding: 10px;
-    background: #dddddd;
-    color: white;
-    font-size: 17px;
-    border: 1px hidden;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+.tabs {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
 
-  .search:hover {
-    background: #a8a8a8;
-  }
+.tabs:hover {
+  background: #eeeef1;
+  cursor: pointer;
+}
 
-  .newMessage {
-    float: right;
-    margin: auto;
-    position: absolute;
-    bottom: 10px;
-    width: fit-content;
-  }
+.search {
+  float: right;
+  width: fit-content;
+  margin: 10px;
+  padding: 10px;
+  background: #dddddd;
+  color: white;
+  font-size: 17px;
+  border: 1px hidden;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.search:hover {
+  background: #a8a8a8;
+}
+
+.newMessage {
+  float: right;
+  margin: auto;
+  position: absolute;
+  bottom: 10px;
+  width: fit-content;
+}

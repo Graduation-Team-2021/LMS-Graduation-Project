@@ -1,0 +1,44 @@
+.Main {
+    display: flex;
+    align-items: center;
+    background-color: gainsboro;
+    padding: 10vh 7vw;
+    min-height: 80vh;
+    height: fit-content;
+}
+
+.Blue {
+    padding: 2%;
+    flex: 5;
+}
+
+.ButtonArea {
+    margin: 30px 0px;
+    display: flex;
+    width: -webkit-fill-available;
+    justify-content: center;
+}
+
+.Login {
+    text-align: start;
+    flex: 2;
+    width: -webkit-fill-available;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    height: -webkit-fill-available;
+}
+
+.MainTitle {
+    font-size: 200%;
+    color: red;
+}
+
+.Field {
+    display: block;
+    justify-content: center;
+    height: -webkit-fill-available;
+    min-height: 75%;
+    width: -webkit-fill-available;
+    transition: all 200ms;
+}

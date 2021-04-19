@@ -34,7 +34,10 @@ const Search = (props) => {
   const find = (event) => {
     let suggest = [];
     FullList.forEach((element, index) => {
-      if (event.target.value !== "" && element.startsWith(event.target.value.toLowerCase())) {
+      if (
+        event.target.value !== "" &&
+        element.startsWith(event.target.value.toLowerCase())
+      ) {
         suggest.push(<h2 key={index}>{element}</h2>);
       }
     });
@@ -57,18 +60,7 @@ const Search = (props) => {
       </div>
       {suggest.length !== 0 ? (
         <div className={classes.suggest}>
-          <Card
-          shadow
-            style={{
-              minWidth: '0',
-              padding: "0",
-              position: 'absolute',
-              zIndex: "100",
-              maxHeight: '50vh',
-              overflow: 'auto',
-              border: "1px solid blue"
-            }}
-          >
+          <Card className={classes.Card} shadow>
             {suggest}
           </Card>
         </div>

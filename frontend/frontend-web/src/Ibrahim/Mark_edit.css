@@ -1,76 +1,46 @@
-/* .sidenav {
-    height: 100%;
-    width: 160px;
-    position: fixed;
-    z-index: 0;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 20px;
-  } */
-  
-  /* .sidenav a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-  } */
-  
-  /* .sidenav a:hover {
-    color: #f1f1f1;
-  } */
-  
-
-  .main {
-    /* margin-left: 160px;  */
-    font-size: 28px; 
-    height: 100%;
-    padding: 0 5%;
-    overflow: auto;
-  }
-
-  .main p {
-    text-align: center;
-    color: brown;
-    /* border: solid 2px cyan;
-    border-radius: 20%; */
-    display: block;
-    padding: 5px;
-  }
-  
-    /* @media screen and (max-height: 450px) {
-      .sidenav {padding-top: 15px;}
-      .sidenav a {font-size: 18px;}
-    } */
-
-    .App_App__1UEGG {
-      overflow: scroll;
-    }
-.main table {
-  width:100%;
+table {
+  text-align: left;
+  position: relative;
+  border-radius: 10px;
+  width: 100%;
 }
 
+p {
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+}
+.main {
+  height: 78vh;
+  overflow: scroll;
+  border-radius: 10px;
+  border : 1px solid black;
+}
 
+table , td , tr {
+  background-color: cornflowerblue;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
 
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-    text-align: center;
-    background-color: blue;
-    color: white;
-  }
+th, td {
+  padding: 15px;
+}
 
-  th, td {
-    padding: 15px;
-  }
+th {
+  background: cornflowerblue;
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  border: 1px solid black; 
+}
 
 table tr button{
-    margin-left: 5px;
+  margin-left: 5px;
 }
 
 .finish {
-    margin:15px 0px 15px 600px;
-    padding:  10px 10px;
+  margin:15px 0px 15px 45%;
+  padding:  10px 10px;
 }

@@ -1,0 +1,41 @@
+.Top {
+    margin: 5% 4% 0;
+    height: 70%;
+}
+
+.Top .Image {
+    height: 70%;
+}
+
+.Main .Card {
+    padding: 0;
+    border: 2px solid purple;
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+}
+
+.CourseTitle {
+    text-align: start;
+    font-size: x-large;
+    font-weight: bold;
+    padding-bottom: 5%;
+}
+
+.CourseDes {
+    text-align: start;
+    font-size: large;
+}
+
+.Bottom {
+    display: flex;
+    border-top: 2px solid purple;
+    padding: 0 5%;
+    height: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(212, 208, 208);
+    font-size: x-large;
+    font-weight: bold;
+}

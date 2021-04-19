@@ -5,7 +5,7 @@ import classes from "./CoursePreview.module.css";
 import ImageHolder from "../ImageHolder/ImageHolder";
 import { withRouter } from "react-router-dom";
 
-const CoursePreview = (props) => {
+const GroupPreview = (props) => {
   return (
     <div
       onClick={() =>
@@ -21,20 +21,12 @@ const CoursePreview = (props) => {
       }
       className={classes.holder}
     >
-      <Card shadow style={{
-        width: '20vw',
-        height: '40vh',
-        display: 'flex',
-        flexFlow: 'column',
-        justifyContent: 'space-between',
-        padding: '10%',
-      }}>
+      <Card shadow className={classes.Card}>
         <div className={classes.CourseTitle}>{props.Group.Title}</div>
-        <div className={classes.CourseDes}>{props.Group.Desc}</div>
         <ImageHolder filler={filler} />
       </Card>
     </div>
   );
 };
 
-export default withRouter(CoursePreview);
+export default withRouter(GroupPreview);

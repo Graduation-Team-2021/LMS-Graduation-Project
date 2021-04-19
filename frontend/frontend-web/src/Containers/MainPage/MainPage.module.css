@@ -1,0 +1,13 @@
+.Main {
+    background-image: linear-gradient(to top right, rgb(255, 193, 255), rgb(237, 163, 255));
+    padding: 2%;
+    overflow: auto;
+    width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.Main .David {
+    background-color: rgba(243, 238, 238, 0.9);
+    min-height: 100%;
+}

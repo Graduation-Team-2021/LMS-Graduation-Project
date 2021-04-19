@@ -3,7 +3,13 @@
     flex-flow: row;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 0 0 2% ;
-    height: 8vh;
+    padding: 0 0 1%;
+    height: fit-content;
     position: relative;
+}
+
+@media (max-width : 590px) {
+    .Main {
+        padding: 0;
+    }
 }

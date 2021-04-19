@@ -23,3 +23,15 @@
     align-items: center;
     justify-content: center;
 }
+
+@media (max-width : 1146px) {
+    .Main {
+        font-size: 10px;
+    }
+}
+
+@media (max-width : 615px) {
+    .Main {
+        font-size: 6px;
+    }
+}

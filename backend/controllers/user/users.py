@@ -111,14 +111,16 @@ class users_controller:
         if role == "student":
             student = {
                 'user_id': id,
-                'student_year': student_year
+                'student_year': student_year or '1'
+
             }
             cont_stud.post_student(student)
 
         elif role == 'professor':
             professor = {
                 'user_id': id,
-                'scientific_degree': scientific_degree
+                'scientific_degree': scientific_degree or "DR"
+
             }
             cont_professor.post_professor(professor)
 
