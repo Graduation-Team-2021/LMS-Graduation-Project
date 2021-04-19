@@ -60,6 +60,7 @@ export default function DeliverableList(props) {
             </div>
             <div className={cls.list}>
                 <DataGrid rows={rows} columns={columns} pageSize={6} onRowClick={(rowData)=> props.onRowHand(rowData)} />
+
             </div>
         </div>
     );

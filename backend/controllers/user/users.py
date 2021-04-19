@@ -112,6 +112,7 @@ class users_controller:
             student = {
                 'user_id': id,
                 'student_year': student_year or '1'
+
             }
             cont_stud.post_student(student)
 
@@ -119,6 +120,7 @@ class users_controller:
             professor = {
                 'user_id': id,
                 'scientific_degree': scientific_degree or "DR"
+
             }
             cont_professor.post_professor(professor)
 

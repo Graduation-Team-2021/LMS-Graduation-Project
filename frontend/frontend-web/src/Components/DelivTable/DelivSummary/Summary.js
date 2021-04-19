@@ -14,6 +14,7 @@ export default function Item(props) {
           <Chart
             width={'20vw'}
             height={'20vh'}
+
             chartType="PieChart"
             loader={<div>Loading Chart</div>}
             data={[
