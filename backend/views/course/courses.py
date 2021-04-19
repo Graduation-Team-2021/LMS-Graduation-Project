@@ -20,6 +20,8 @@ class Course(Resource):
         self.reqparse.add_argument('weekly_hours', type=int, location='json')
         self.reqparse.add_argument('group_number', type=int, location='json')
         self.reqparse.add_argument('max_students', type=int, location='json')
+        self.reqparse.add_argument('course_description', type=str, location='json')
+        self.reqparse.add_argument('post_owner_id', type=int, location='json')
 
     def get(self, course_code):
         try:
@@ -44,15 +46,15 @@ class Course(Resource):
 
     def put(self, course_code):
         args = self.reqparse.parse_args()
+        default_course=controller_object.get_course(course_code)
         course = {
             'course_code': course_code,
-            'course_name': args['course_name'],
-            'weekly_hours': args['weekly_hours'],
-            'group_number': args['group_number'],
-            'max_students': args['max_students'],
-            'course_description':args['course_description'],
-            'post_owner_id':args['post_owner_id']
-
+            'course_name': args['course_name'] or default_course['course_name'],
+            'weekly_hours': args['weekly_hours'] or default_course['weekly_hours'],
+            'group_number': args['group_number'] or default_course['group_number'],
+            'max_students': args['max_students'] or default_course['max_students'],
+            'course_description':args['course_description'] or default_course['course_description'],
+            'post_owner_id':args['post_owner_id'] or default_course['post_owner_id']
         }
         try:
             course = controller_object.update_course(course_code, course)

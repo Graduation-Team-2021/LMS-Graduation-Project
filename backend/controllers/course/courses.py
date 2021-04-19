@@ -49,6 +49,7 @@ class courses_controller():
                     'description': 'Course does not exist.',
                     'status_code': 404
                 })
+            
             updated_course = Course(**course)
             updated_course.update()
         except SQLAlchemyError as e:

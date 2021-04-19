@@ -28,7 +28,6 @@ class deliverable_results_controller:
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
-
             }) 
 
     def post_deliverable_result(self, deliverable_result):

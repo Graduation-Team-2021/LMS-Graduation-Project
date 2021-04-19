@@ -26,11 +26,12 @@ class Deliverable_Results(Resource):
 
     def put(self, deliverable_id, student_id):
         args = self.reqparse.parse_args()
+        default_object=controller_object.get_deliverable_result(deliverable_id, student_id)
         try:
             new_deliverable_result = {
                 'user_id': student_id,
                 'deliverable_id': deliverable_id,
-                'mark': args['mark']
+                'mark': args['mark'] or default_object.mark
             }
             controller_object.update_deliverable_result(new_deliverable_result)
 
