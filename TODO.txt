@@ -20,6 +20,10 @@
 20. Responsive view (75% DONE)
 21. Mobile app
 22. Authentication/Security
+23. Frontend error handling
+24.edit user page
+25. يوم النتيجة
+26. speak with the mentor about the server testing
 *************************************************
 1. Online Courses
 2. QR Code (By Adham)
