@@ -1,18 +1,27 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Card, Button } from "react-native-elements";
-import CoursePreview from "../components/CoursePreview";
-
+import SwipeList from "../components/SwipList";
+import Dismiss from "../components/Dismiss";
 const HomeScreen = (props) => {
+  let c = [];
+  for (let index = 0; index < 10; index++) {
+    c.push(<Text key={index}>Hello {index}</Text>);
+  }
   return (
-    <View style={styles.screen}>
-      <CoursePreview
-        Course={{
-          CourseName: "Hello WOrld",
-          CoursePicture: "https://images3.alphacoders.com/193/193677.jpg",
-        }}
-      />
-    </View>
+    <ScrollView>
+      <View style={styles.screen}>
+        <Text style={styles.title} >Courses you are enrolled in </Text>
+        <SwipeList />
+        <Text style={styles.title}>Your Groups</Text>
+        <SwipeList />
+        <Text style={styles.title}>Last Post</Text>
+
+        <View style={{height:300,width:'100%'}} >
+        <Dismiss>{c}</Dismiss>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -21,7 +30,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical:20,
   },
+  title : {
+      fontSize:20, 
+      fontWeight:'bold'
+  }
 });
 
 export default HomeScreen;
