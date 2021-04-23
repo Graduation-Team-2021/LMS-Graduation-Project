@@ -54,7 +54,7 @@ const ProfileScreen = () => {
             </Card>
           </View>
         </Card>
-        <Text> Your Posts</Text>
+        <Text style={[styles.text,styles.title]} > Your Posts</Text>
         <Dismiss>
           <Text>Post 1</Text>
           <Text>Post 2</Text>
@@ -65,7 +65,7 @@ const ProfileScreen = () => {
           <Text>Post 7</Text>
         </Dismiss>
 
-        <Text style={{paddingTop: 50}} >Your Passed Courses</Text>
+        <Text style={[styles.text,styles.title]} >Your Passed Courses</Text>
 
         <Dismiss>
           <Text>Course 1</Text>
@@ -117,6 +117,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
   },
+  title:{
+    paddingTop:40,
+  }
 });
 
 export default ProfileScreen;

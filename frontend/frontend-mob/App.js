@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginScreen from './screens/ProfileScreen'
+import LoginScreen from './screens/HomeScreen'
 export default function App() {
   return (
     <LoginScreen />
