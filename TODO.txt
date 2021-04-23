@@ -25,6 +25,8 @@
 25. يوم النتيجة
 26. speak with the mentor about the server testing
 27. THe passed courses and the total grade is not connected to the backend يا ديفيد
+28. in Mobile app, Handle the tablet screen
+
 *************************************************
 1. Online Courses
 2. QR Code (By Adham)

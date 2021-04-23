@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   screenL: {
     flexDirection: "row-reverse",
     paddingTop: 50,
+    
   },
   screenP: {
     flexDirection: "column",
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
   },
   imageContainerL: {
     height: "100%",
-    width: 300,
+    flex: 1
   },
   image: {
     width: "100%",
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 15,
-    flex: 1,
+    flex: 2,
   },
   submitButton: {
     width: 200 ,
