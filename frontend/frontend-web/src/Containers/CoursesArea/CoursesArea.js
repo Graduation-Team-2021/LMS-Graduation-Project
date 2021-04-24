@@ -5,13 +5,43 @@ import { connect } from "react-redux";
 
 import CoursePreview from "../../Components/CoursePreview/CoursePreview";
 import SwipeList from "../../Components/SwipeList/SwipeList";
+import Waiting from "../../Components/Waiting/Waiting";
 
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
+import { setCourse } from "../../Models/Course";
+import { getCurrentCourses } from "../../Interface/Interface";
 
 class CoursesArea extends Component {
   state = {
-    Courses: this.props.Courses,
+    Courses: [],
+    Loading: true,
   };
+
+  Token = this.props.userData.Token;
+  CurrentCourses = this.props.currentCourses.currentCourses;
+  setCurrentCourses = this.props.currentCoursesActions.onSetCurrentCourses;
+  TokenError = this.props.userDataActions.tokenError;
+
+  componentDidMount() {
+    getCurrentCourses(this.Token).then((res) => {
+      const Courses = new Map();
+      if (res) {
+        res.forEach((element) => {
+          Courses.set(element["course_code"], setCourse(element));
+        });
+        this.setState({
+          FirstTime: false,
+          Courses: Courses,
+        });
+        this.setCurrentCourses(Courses);
+      } else {
+        this.TokenError();
+      }
+      this.setState({
+        Loading: false,
+      });
+    });
+  }
 
   loadCourses = () => {
     this.props.history.push("/Courses");
@@ -44,7 +74,9 @@ class CoursesArea extends Component {
             See All Courses
           </button>
         </div>
-        <SwipeList>{courses}</SwipeList>
+        <Waiting Loading={this.state.Loading}>
+          <SwipeList>{courses}</SwipeList>
+        </Waiting>
         <button
           className={classes.Join2}
           onClick={() => {

@@ -88,16 +88,14 @@ const MiniMenu = (props) => {
           <ImageHolder className={classes.UserImage} filler={filler} />
         </div>
       </div>
-      <div
-        className={classes.large}
-      >
+      <div className={classes.large}>
         {Notif || Messages || Menu ? (
           <DropDownMenu
-          onClick={() => {
-            setMenu(false);
-            setMessages(false);
-            setNotif(false);
-          }}
+            onClick={() => {
+              setMenu(false);
+              setMessages(false);
+              setNotif(false);
+            }}
             TokenError={props.TokenError}
             Notif={props.Notif}
             choice={Notif ? "Notif" : Messages ? "Messages" : "Menu"}
@@ -116,6 +114,9 @@ const MiniMenu = (props) => {
             <div
               className={classes.holder}
               onClick={() => {
+                setMenu(false);
+                setMessages(false);
+                setNotif(false);
                 props.history.push("/");
               }}
             >
@@ -179,6 +180,11 @@ const MiniMenu = (props) => {
           <div className={classes.small}>
             {Notif || Messages || Menu ? (
               <DropDownMenu
+                onClick={() => {
+                  setMenu(false);
+                  setMessages(false);
+                  setNotif(false);
+                }}
                 TokenError={props.TokenError}
                 Notif={props.Notif}
                 choice={Notif ? "Notif" : Messages ? "Messages" : "Menu"}

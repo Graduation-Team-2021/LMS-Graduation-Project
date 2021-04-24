@@ -27,14 +27,14 @@ class LoginPage extends Component {
         if (res) {
           localStorage.setItem("token", res.Token);
           localStorage.setItem("name", res.name);
-          Data={
+          Data = {
             Token: res.Token,
-            Name:res.name,
-            ID:jwt_decode(res.Token).id,
-            Role:jwt_decode(res.Token).permissions,
-          }
-          this.props.userDataActions.onSetData(Data)
-          console.log(this.props.userData)
+            Name: res.name,
+            ID: jwt_decode(res.Token).id,
+            Role: jwt_decode(res.Token).permissions,
+          };
+          this.props.userDataActions.onSetData(Data);
+          console.log(this.props.userData, Data);
           this.props.history.push("/");
         } else alert("Login Failed");
       });

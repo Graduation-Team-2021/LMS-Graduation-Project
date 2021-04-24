@@ -17,12 +17,11 @@ import {
   getRecentEvent,
 } from "../../Interface/Interface";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
-import { setFullPost } from "../../Models/Post";
+import { setFullUserPost } from "../../Models/Post";
 import { setEvent } from "../../Models/Event";
 
 const ProfilePage = (props) => {
   const [Finished, setFinished] = useState([]);
-  const [Posts, setPosts] = useState([]);
 
   const { Token, ID, Role, Name } = props.userData;
 
@@ -33,21 +32,7 @@ const ProfilePage = (props) => {
   const RecentEvent = recentEvent.recentEvent;
 
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
-
-  useEffect(() => {
-    //TODO: Get the User Posts
-    getRecentUserPosts(Token, ID).then((res) => {
-      const Posts = [];
-      if (res) {
-        res.forEach((ele) => {
-          Posts.push(setFullPost(ele, ID));
-        });
-        setPosts(Posts);
-      } else {
-        TokenError();
-      }
-    });
-  }, [Token, ID, Role, Name, TokenError]);
+  
 
   useEffect(() => {
     if (!RecentEvent)
@@ -106,11 +91,11 @@ const ProfilePage = (props) => {
           ) : (
             <h1>Loading.....</h1>
           )}
-          {Posts.length !== 0 ? (
-            <PostsArea Title="Your Posts" Posts={Posts} />
-          ) : (
-            <h1>Loading.....</h1>
-          )}
+          <PostsArea
+            Title="Your Posts"
+            LoadingPosts={getRecentUserPosts}
+            setPost={(ele, ID)=>setFullUserPost(ele, ID, Name)}
+          />
         </div>
       </Card>
       {RecentEvent ? <Upcoming Event={RecentEvent} /> : <h1>Loading.....</h1>}

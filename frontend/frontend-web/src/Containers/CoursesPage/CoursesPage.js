@@ -60,6 +60,7 @@ const HomePage = (props) => {
   let stage = (
     <div className={classes.CourseOverview}>
       <CourseOverView
+      Course={Courses.get(displayedCourse)}
         {...Courses.get(displayedCourse)}
         removeHandler={removingFromTheStageHandler}
       />

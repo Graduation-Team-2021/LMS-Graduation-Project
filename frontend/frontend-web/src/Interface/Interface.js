@@ -110,14 +110,15 @@ export const getRecentUserPosts = async (Token) => {
   return res.data["posts"];
 };
 
-export const getRecentEvent = async (Token, id, role) => {
+export const getRecentEvent = async (Token, id) => {
+  console.log(Token, id);
   const res = await instance.get(`/student/${id}/recent_events`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
     },
   });
-
+  console.log(res);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;

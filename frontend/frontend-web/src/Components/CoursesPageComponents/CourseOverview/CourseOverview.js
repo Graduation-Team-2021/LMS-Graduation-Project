@@ -21,7 +21,7 @@ const courseOverview = (props) => {
             props.history.push({
               pathname: `/Course/${props.CourseID}`,
               state: {
-                postID: props.PostID,
+                Data: props.Course,
                 isJoined: "true",
               },
             });

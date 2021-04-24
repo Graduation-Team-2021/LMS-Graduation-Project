@@ -54,3 +54,25 @@ export const setFullPost = (ele, ID) => {
   };
   return data
 };
+
+export const setFullUserPost = (ele, ID, Name) => {
+  let Liked = false;
+  for (const id in ele["likes"]) {
+    console.log(ID, id["liker_id"]);
+    if (id["liker_id"] === ID) {
+      Liked = true;
+      break;
+    }
+  }
+  let data = {
+    Name: Name,
+    Location: ele["owner_name"],
+    Title: `Post by ${Name}, in ${ele["owner_name"]}`,
+    Desc: ele["post_text"],
+    PostId: ele["post_id"],
+    Likes: ele["likes"],
+    isLiked: Liked,
+    Comments: ele["comments"],
+  };
+  return data
+};
