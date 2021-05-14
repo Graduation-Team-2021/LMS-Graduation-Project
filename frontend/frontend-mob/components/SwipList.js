@@ -21,14 +21,14 @@ const dummydata = [
   },
 ];
 
-const SwipeList = () => {
+const SwipeList = (props) => {
   return (
     <View style={{height: 250}}>
       <FlatList
         data={dummydata}
         keyExtractor ={(item,index)=>`${index}`}
         renderItem={(item) => {
-          return <CoursePreview Course={item.item} />;
+          return <CoursePreview Course={item.item} navigation={props.navigation} />;
         }}
         horizontal
       />

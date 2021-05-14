@@ -12,9 +12,9 @@ const HomeScreen = (props) => {
     <ScrollView>
       <View style={styles.screen}>
         <Text style={styles.title} >Courses you are enrolled in </Text>
-        <SwipeList />
+        <SwipeList navigation={props.navigation} />
         <Text style={styles.title}>Your Groups</Text>
-        <SwipeList />
+        <SwipeList navigation={props.navigation} />
         <Text style={styles.title}>Last Post</Text>
 
         <View style={{height:300,width:'100%'}} >

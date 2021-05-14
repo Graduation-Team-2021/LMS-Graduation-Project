@@ -1,8 +1,8 @@
 import React from 'react';
-import LoginScreen from './screens/HomeScreen'
+import HomeNav from './navigators/HomeScreenNavigator'
 export default function App() {
   return (
-    <LoginScreen />
+    <HomeNav />
   );
 }
 
