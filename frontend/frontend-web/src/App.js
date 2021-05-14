@@ -14,6 +14,7 @@ import SignUp from './Containers/SignUpPage/SignUpPage'
 import AddCourse from "./Containers/AddCoursePage/AddCourse";
 import AddGroup from "./Containers/AddGroupPage/AddGroup";
 import Deliv from "./Components/DeliverablesPage/DeliverablesPage";
+import PDFs from "./Components/PDFsPage/PDFsPage";
 
 import { mapStateToProps, mapDispatchToProps } from "./store/reduxMaps";
 import { connect } from "react-redux";
@@ -36,6 +37,7 @@ const App = (props) => {
             <Route path="/Course/:id/Marks" exact component={Mark_edit} />
             <Route path="/messenger" exact component={Messenger} />
             <Route path="/Course/:id/Videos" exact component={Video} />
+            <Route path="/Course/:id/PDFs" exact component={PDFs} />
             <Route path='/AddGroup' exact component={AddGroup}/>
             <Route path='/Deliv' exact component={Deliv}/>
             <Redirect path='/login' to='/'/>

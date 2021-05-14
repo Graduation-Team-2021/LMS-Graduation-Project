@@ -345,6 +345,7 @@ export const getStudentsByCourse = async (id) => {
 };
 
 export const getDeliv = async (id) => {
+  //TODO: Integrate the Deliverables backend
   if (id) {
     /* const res = await instance.get(`/course/${id}/students`, {
       headers: {
@@ -356,6 +357,20 @@ export const getDeliv = async (id) => {
   else{
     console.log(`Getting Deliverables of All Courses`);
   }
+  /* console.log(res);
+  return res.data["names"]; */
+};
+
+export const getPDFs = async (id) => {
+  //TODO: Integrate the PDFs backend
+    /* const res = await instance.get(`/course/${id}/students`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }); */
+    console.log(`Getting PDFs of Course ${id}`);
+  
+  
   /* console.log(res);
   return res.data["names"]; */
 };
