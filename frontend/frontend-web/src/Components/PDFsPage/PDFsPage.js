@@ -138,7 +138,7 @@ export default function PDFsPage(props) {
           <DataGrid
             rows={rows}
             columns={columns}
-            pageSize={6}
+            pageSize={8}
             onRowClick={(rowData) => props.onRowHand(rowData)}
           />
         </div>
