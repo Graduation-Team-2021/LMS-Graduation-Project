@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "app_id": "app_cd4dd50a-8f5d-4d91-a77b-692badf2bb65",
+      "org_id": "user_d443c271-1b06-4d54-8f54-d3e2d75790d4",
+      "deploy_url": "https://push-n2-par-clevercloud-customers.services.clever-cloud.com/app_cd4dd50a-8f5d-4d91-a77b-692badf2bb65.git",
+      "name": "dj-man",
+      "alias": "dj-man"
+    }
+  ]
+}
