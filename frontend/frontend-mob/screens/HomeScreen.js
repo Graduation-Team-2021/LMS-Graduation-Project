@@ -11,14 +11,13 @@ const HomeScreen = (props) => {
   return (
     <ScrollView>
       <View style={styles.screen}>
-        <Text style={styles.title} >Courses you are enrolled in </Text>
+        <Text style={styles.title}>Courses you are enrolled in </Text>
         <SwipeList navigation={props.navigation} />
         <Text style={styles.title}>Your Groups</Text>
         <SwipeList navigation={props.navigation} />
         <Text style={styles.title}>Last Post</Text>
-
-        <View style={{height:300,width:'100%'}} >
-        <Dismiss>{c}</Dismiss>
+        <View style={{ height: 300, width: "100%" }}>
+          <Dismiss>{c}</Dismiss>
         </View>
       </View>
     </ScrollView>
@@ -30,12 +29,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical:20,
+    paddingVertical: 20,
   },
-  title : {
-      fontSize:20, 
-      fontWeight:'bold'
-  }
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
 });
 
 export default HomeScreen;

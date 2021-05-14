@@ -9,6 +9,7 @@ const Post = () => {
         alignItems: "center",
         alignContent: "stretch",
       }}
+      containerStyle={{borderRadius:20}}
     >
       <Text>post by : owener name </Text>
       <Text> contant </Text>
