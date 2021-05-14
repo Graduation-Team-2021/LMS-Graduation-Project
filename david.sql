@@ -7,7 +7,8 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-USE `sql4412495`;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `lms` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+USE `lms`;
 DROP TABLE IF EXISTS `Prerequiste`;
 CREATE TABLE `Prerequiste` (
   `course_code` varchar(5) NOT NULL,
