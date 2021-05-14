@@ -17,7 +17,6 @@ const data = [
 ];
 
 const CourseScreen = (props) => {
-  const isCourse = true;
   const courseDetails = (
     <View>
       <Button
@@ -34,11 +33,12 @@ const CourseScreen = (props) => {
     }
     return <Post />;
   };
+  const groupflag = props.navigation.getParam('groupflag')
   return (
     <View style={styles.screen}>
       <View style={styles.topContainer}>
         <About />
-        {courseDetails}
+        {groupflag?null:courseDetails}
       </View>
       <View style={{ width: "90%", flex: 1 }}>
         <FlatList data={data} renderItem={renederitem} />

@@ -28,7 +28,7 @@ const SwipeList = (props) => {
         data={dummydata}
         keyExtractor ={(item,index)=>`${index}`}
         renderItem={(item) => {
-          return <CoursePreview Course={item.item} navigation={props.navigation} />;
+          return <CoursePreview Course={item.item} navigation={props.navigation} groupflag={props.groupflag}/>;
         }}
         horizontal
       />

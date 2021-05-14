@@ -10,6 +10,7 @@ const CoursePreview = (props) => {
           routeName: "Course",
           params: {
             courseName: props.Course.CourseName,
+            groupflag : props.groupflag
           },
         })
       }
