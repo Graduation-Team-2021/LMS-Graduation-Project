@@ -23,6 +23,7 @@ const CourseScreen = (props) => {
         title="Videos"
         type="outline"
         containerStyle={styles.buttonContainer}
+        onPress={() => props.navigation.navigate("Video")}
       />
       <Button title="PDFs" containerStyle={styles.buttonContainer} />
     </View>
