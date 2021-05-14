@@ -14,10 +14,10 @@ import {
   getCourseByID,
 } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
-import { setNewPost,setLocationPost } from "../../Models/Post";
+import { setNewPost, setLocationPost } from "../../Models/Post";
 
 const CoursePage = (props) => {
-  const [isJoined,  Token, userID, Role, Name] = [
+  const [isJoined, Token, userID, Role, Name] = [
     props.location.state.isJoined,
     props.userData.Token,
     props.userData.ID,
@@ -25,9 +25,12 @@ const CoursePage = (props) => {
     props.userData.Name,
   ];
 
-  console.log(props.location.state);
-
-  const {CourseID:courseID, CourseName:Title, PostID: postID, CourseDescription: Desc} = props.location.state.Data
+  const {
+    CourseID: courseID,
+    CourseName: Title,
+    PostID: postID,
+    CourseDescription: Desc,
+  } = props.location.state.Data;
 
   const [Course, setCourse] = useState(null);
   const [clicked, setclicked] = useState(false);
@@ -59,32 +62,36 @@ const CoursePage = (props) => {
         value.forEach((ele) => {
           Posts.push(setLocationPost(ele, Title, userID));
         });
-        console.log(Posts);
         const posts = Posts.map((post, index) => (
           <Post key={index} {...post} />
         ));
-        posts.reverse()
+        posts.reverse();
         setPosts(posts);
       }
     });
-  }, [Token, postID, userID,Title, Course]);
+  }, [Token, postID, userID, Title, Course]);
 
   const SubmitPost = async (post) => {
-    console.log(post);
-    
     let data = setNewPost(post, Title, Name);
     let id = await uploadPost(Token, userID, postID, post);
     if (id) {
-      data.PostId=id
-      let temp = [
-        <Post key={Posts.length} {...data} />,
-        ...Posts,
-      ];
+      data.PostId = id;
+      let temp = [<Post key={Posts.length} {...data} />, ...Posts];
       setPosts(temp);
     } else {
-      alert("Couldn't Upload the Post, Please Try again later")
+      alert("Couldn't Upload the Post, Please Try again later");
     }
     hide();
+  };
+
+  const loadDeliverables = () => {
+    //TODO: use this for routing
+    props.history.push({
+      pathname: `/Deliv`,
+      state: {
+        id: courseID,
+      },
+    });
   };
 
   return (
@@ -95,12 +102,25 @@ const CoursePage = (props) => {
       {Course ? (
         <div className={classes.Center}>
           <Card shadow className={classes.Course}>
-            <h1>{Title}</h1>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <h1>{Title}</h1>
+              <button
+                className={classes.Join}
+                onClick={() => {
+                  loadDeliverables();
+                }}
+              >
+                Check Deliverables
+              </button>
+            </div>
             <div className={classes.small}>
-              <CourseDescription
-                desc={Desc}
-                CourseID={courseID}
-              />
+              <CourseDescription desc={Desc} CourseID={courseID} />
             </div>
             {isJoined === "true" ? (
               Role === "professor" ? (

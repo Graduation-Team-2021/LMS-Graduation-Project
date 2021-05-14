@@ -24,10 +24,8 @@ class Upcoming extends Component {
   setRecentEvent = this.props.recentEventsActions.onSetRecentEvents;
 
   componentDidMount() {
-    console.log("Loading", this.Token, this.ID);
     getRecentEvent(this.Token, this.ID).then((res) => {
       if (res) {
-        console.log(res);
         this.setState({
           Event: setEvent(res),
         });

@@ -36,7 +36,6 @@ export const setNewPost = (data, Title, userID, Name) => {
 export const setFullPost = (ele, ID) => {
   let Liked = false;
   for (const id in ele["likes"]) {
-    console.log(ID, id["liker_id"]);
     if (id["liker_id"] === ID) {
       Liked = true;
       break;

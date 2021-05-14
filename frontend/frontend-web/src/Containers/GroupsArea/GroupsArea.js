@@ -27,7 +27,6 @@ class GroupsArea extends Component {
     getCurrentGroups(this.Token).then((res) => {
       const Groups = new Map();
       if (res) {
-        console.log(res);
         res.forEach((element) => {
           Groups.set(element["group_id"], setGroup(element));
         });

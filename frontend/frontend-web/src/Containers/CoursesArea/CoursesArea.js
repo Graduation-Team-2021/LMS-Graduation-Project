@@ -47,6 +47,16 @@ class CoursesArea extends Component {
     this.props.history.push("/Courses");
   };
 
+  loadDeliverables = () => {
+    //TODO: use this for routing
+    this.props.history.push({
+      pathname: `/Deliv`,
+      state: {
+        id:null
+      },
+    });
+  };
+
   render() {
     let courses = [];
     let ids = Array.from(this.state.Courses.keys());
@@ -65,14 +75,28 @@ class CoursesArea extends Component {
       <div className={classes.CoursesArea}>
         <div className={classes.Title}>
           Courses You're Taking
-          <button
-            className={classes.Join}
-            onClick={() => {
-              this.loadCourses();
-            }}
-          >
-            See All Courses
-          </button>
+          <div style={{
+            display: 'flex',
+            width: '40%',
+            justifyContent:'space-between',
+          }}>
+            <button
+              className={classes.Join}
+              onClick={() => {
+                this.loadDeliverables();
+              }}
+            >
+              Check Deliverables
+            </button>
+            <button
+              className={classes.Join}
+              onClick={() => {
+                this.loadCourses();
+              }}
+            >
+              See All Courses
+            </button>
+          </div>
         </div>
         <Waiting Loading={this.state.Loading}>
           <SwipeList>{courses}</SwipeList>

@@ -1,6 +1,5 @@
 import axios from "axios";
-import msngrskt from '../sockets/msngrskts'
-
+import msngrskt from "../sockets/msngrskts";
 
 const instance = axios.create({
   baseURL: "http://localhost:5000",
@@ -111,14 +110,12 @@ export const getRecentUserPosts = async (Token) => {
 };
 
 export const getRecentEvent = async (Token, id) => {
-  console.log(Token, id);
   const res = await instance.get(`/student/${id}/recent_events`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -250,11 +247,11 @@ export const getAllConversations = async (Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  if (res.data['status_code'] !== 200) {
-    return null
+  if (res.data["status_code"] !== 200) {
+    return null;
   }
-  console.log(res.data['conversations']);
-  return res.data['conversations']
+  console.log(res.data["conversations"]);
+  return res.data["conversations"];
 };
 
 export const getAllUsers = async (Token) => {
@@ -281,7 +278,7 @@ export const getAllMessages = async (Token, otherID) => {
   if (res.data["status_code"] !== 200) {
     return null;
   }
-  res.data['messages'].reverse()
+  res.data["messages"].reverse();
   return res.data["messages"];
 };
 
@@ -292,58 +289,73 @@ export const sendMessage = async (Token, otherID, Data) => {
       Authorization: "Bearer " + Token,
     },
   });
-  msngrskt.emit("private message", { content: Data, to: otherID })
-
+  msngrskt.emit("private message", { content: Data, to: otherID });
 };
 
 export const getCourseStudents = async (id) => {
   const res = await instance.get(`/course/${id}/students`, {
     headers: {
       "Content-Type": "application/json",
-
     },
-  })
-  console.log(res)
-  return res.data['names']
-}
+  });
+  console.log(res);
+  return res.data["names"];
+};
 export const setCourseStudent = async (id, Data) => {
-    const res = await instance.put(`/course/${id}/students`,
-     {Data: Data},{
+  const res = await instance.put(
+    `/course/${id}/students`,
+    { Data: Data },
+    {
       headers: {
         "Content-Type": "application/json",
-  
       },
-     })
-     console.log(res);
-}
-
-export const AddCourse = async(Data)=>{
-  console.log(Data);
-  const res = await instance.post('/courses',Data,{
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-  return res.data['status_code']===200
-}
-
-export const AddGroup = async(Data, Token)=>{
-  console.log(Data);
-  const res = await instance.post('/project-groups',Data,{
-    headers: {
-      "Content-Type": "application/json",
-      
-    },
-  })
-  return res.data['status_code']===200
-}
-
-export const getStudentsByCourse = async(id)=>{
-  const res = await instance.get(`/course/${id}/students`,{
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
+    }
+  );
   console.log(res);
-  return res.data['names']
-}
+};
+
+export const AddCourse = async (Data) => {
+  console.log(Data);
+  const res = await instance.post("/courses", Data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data["status_code"] === 200;
+};
+
+export const AddGroup = async (Data, Token) => {
+  console.log(Data);
+  const res = await instance.post("/project-groups", Data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data["status_code"] === 200;
+};
+
+export const getStudentsByCourse = async (id) => {
+  const res = await instance.get(`/course/${id}/students`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(res);
+  return res.data["names"];
+};
+
+export const getDeliv = async (id) => {
+  if (id) {
+    /* const res = await instance.get(`/course/${id}/students`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }); */
+    console.log(`Getting Deliverables of Course ${id}`);
+  }
+  else{
+    console.log(`Getting Deliverables of All Courses`);
+  }
+  /* console.log(res);
+  return res.data["names"]; */
+};
