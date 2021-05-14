@@ -15,6 +15,7 @@ import AddCourse from "./Containers/AddCoursePage/AddCourse";
 import AddGroup from "./Containers/AddGroupPage/AddGroup";
 import Deliv from "./Components/DeliverablesPage/DeliverablesPage";
 import PDFs from "./Components/PDFsPage/PDFsPage";
+import PDF from "./Ibrahim/Pdf_reader";
 
 import { mapStateToProps, mapDispatchToProps } from "./store/reduxMaps";
 import { connect } from "react-redux";
@@ -40,6 +41,7 @@ const App = (props) => {
             <Route path="/Course/:id/PDFs" exact component={PDFs} />
             <Route path='/AddGroup' exact component={AddGroup}/>
             <Route path='/Deliv' exact component={Deliv}/>
+            <Route path="/Course/:id/PDFs/:id" exact component={PDF} />
             <Redirect path='/login' to='/'/>
           </Switch>
         </MainPage>

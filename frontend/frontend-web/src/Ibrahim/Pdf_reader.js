@@ -1,4 +1,6 @@
 import React from "react";
+import Card from "../Components/Card/Card";
+import classes from "./Pdf_reader.module.css";
 // import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 
 // import samplePDF from './projectdatabase.pdf';
@@ -148,20 +150,16 @@ import React from "react";
 
 const pdf = () => {
   return (
-    <div
-    style={{
-      height:"100vh"
-    }}
-    >
+    <span className={classes.Main}>
       <iframe
         title="PDF"
         src="https://www.cambridgeenglish.org/images/young-learners-sample-papers-2018-vol1.pdf"
-        frameborder="0"
-        height='100%'
+        frameBorder="0"
+        height="100%"
         width="100%"
-        allowfullscreen="true"
+        allowFullScreen
       ></iframe>
-    </div>
+    </span>
   );
 };
 

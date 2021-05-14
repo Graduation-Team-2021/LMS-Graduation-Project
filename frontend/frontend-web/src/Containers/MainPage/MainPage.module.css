@@ -8,6 +8,8 @@
 }
 
 .Main .David {
+    display: flex;
+    flex-flow: column;
     background-color: rgba(243, 238, 238, 0.9);
     min-height: 100%;
 }

@@ -127,6 +127,12 @@ export default function PDFsPage(props) {
         })
     }, [props.match.params.id])
 
+    const loadPDF=(PDF)=>{
+      props.history.push({
+        pathname: `/Course/${props.match.params.id}/PDFs/${PDF.id}`,
+      });
+    }
+
   /////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////
 
@@ -139,7 +145,7 @@ export default function PDFsPage(props) {
             rows={rows}
             columns={columns}
             pageSize={8}
-            onRowClick={(rowData) => props.onRowHand(rowData)}
+            onRowClick={(rowData) => loadPDF(rowData)}
           />
         </div>
       </div>
