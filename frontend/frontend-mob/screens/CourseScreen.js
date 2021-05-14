@@ -1,11 +1,25 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import {} from "react-native-elements";
+import { Card, Button } from "react-native-elements";
+
+import About from '../components/About'
+import NewPost from "../components/NewPost";
 
 const CourseScreen = (props) => {
   return (
     <View style={styles.screen}>
-      <Text>This is supposed to be Course {props.navigation.getParam('courseName')} Screen</Text>
+      <View style={styles.topContainer}>
+        <About />
+        <View>
+          <Button
+            title="Videos"
+            type="outline"
+            containerStyle={styles.buttonContainer}
+          />
+          <Button title="PDFs" containerStyle={styles.buttonContainer} />
+        </View>
+      </View>
+      <NewPost />
     </View>
   );
 };
@@ -13,8 +27,16 @@ const CourseScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
+  },
+  topContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    width: "70%",
+  },
+  buttonContainer: {
+    paddingVertical: 5,
   },
 });
 
