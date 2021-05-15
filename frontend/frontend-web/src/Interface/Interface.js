@@ -374,3 +374,15 @@ export const getPDFs = async (id) => {
   /* console.log(res);
   return res.data["names"]; */
 };
+
+export const AddNewDeliv = async (Data) => {
+  //TODO: Integrate the PDFs backend
+    /* const res = await instance.get(`/course/${id}/students`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }); */
+    console.log(Data)
+  /* console.log(res);
+  return res.data["names"]; */
+};

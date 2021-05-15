@@ -1,4 +1,9 @@
-1. Text Font increase
+NEW TODO:
+1. CREATE "CREATE ASSIGNMENT' page (Done)
+
+
+
+OLD TODO:
 2. Search Capabilities
 3. Sign Up Update/Integrate
 4. Reset Password
@@ -21,7 +26,7 @@
 21. Mobile app
 22. Authentication/Security
 23. Frontend error handling
-24.edit user page
+24. edit profile pic
 25. يوم النتيجة
 26. speak with the mentor about the server testing
 27. THe passed courses and the total grade is not connected to the backend يا ديفيد
