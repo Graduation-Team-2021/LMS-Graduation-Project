@@ -14,8 +14,15 @@ const HomeScreen = (props) => {
       <View style={styles.screen}>
         <Text style={styles.title}>Courses you are enrolled in </Text>
         <SwipeList navigation={props.navigation} />
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Button title="show all courses" containerStyle={{ margin: 5 }} />
+          <Button
+            title="show all Deliverables"
+            containerStyle={{ margin: 5 }}
+          />
+        </View>
         <Text style={styles.title}>Your Groups</Text>
-        <SwipeList navigation={props.navigation} groupflag= {groupflag} />
+        <SwipeList navigation={props.navigation} groupflag={groupflag} />
         <Text style={styles.title}>Last Post</Text>
         <View style={{ height: 300, width: "100%" }}>
           <Dismiss>{c}</Dismiss>
