@@ -87,10 +87,17 @@ const CoursePage = (props) => {
   const loadDeliverables = () => {
     //TODO: use this for routing
     props.history.push({
-      pathname: `/Deliv`,
+      pathname: `/Course/${courseID}/Deliv`,
       state: {
         id: courseID,
       },
+    });
+  };
+
+  const addDeliverables = () => {
+    //TODO: use this for routing
+    props.history.push({
+      pathname: `/Course/${courseID}/newDeliv`,
     });
   };
 
@@ -110,42 +117,60 @@ const CoursePage = (props) => {
               }}
             >
               <h1>{Title}</h1>
-              <button
-                className={classes.Join}
-                onClick={() => {
-                  loadDeliverables();
-                }}
-              >
-                Check Deliverables
-              </button>
+              <div style={{
+                width: '40%',
+                display: "flex",
+                justifyContent: "space-between",
+              }}>
+                {isJoined === "true" ? (
+                  Role === "professor" ? (
+                    <input
+                      type="button"
+                      value="See Grades"
+                      className={classes.Join}
+                      onClick={() =>
+                        props.history.push({
+                          pathname: `/Course/${courseID}/Marks`,
+                          state: {
+                            name: Title,
+                          },
+                        })
+                      }
+                    />
+                  ) : null
+                ) : (
+                  <input
+                    type="button"
+                    value="Enroll"
+                    className={classes.Join}
+                    onClick={props.Joining.bind(this, courseID)}
+                  />
+                )}
+                {Role === "student" ? (
+                  <button
+                    className={classes.Join}
+                    onClick={() => {
+                      loadDeliverables();
+                    }}
+                  >
+                    Check Deliverables
+                  </button>
+                ) : (
+                  <button
+                    className={classes.Join}
+                    onClick={() => {
+                      addDeliverables();
+                    }}
+                  >
+                    Add New Deliverable
+                  </button>
+                )}
+              </div>
             </div>
             <div className={classes.small}>
               <CourseDescription desc={Desc} CourseID={courseID} />
             </div>
-            {isJoined === "true" ? (
-              Role === "professor" ? (
-                <input
-                  type="button"
-                  value="See Grades"
-                  className={classes.Join}
-                  onClick={() =>
-                    props.history.push({
-                      pathname: `/Course/${courseID}/Marks`,
-                      state: {
-                        name: Title,
-                      },
-                    })
-                  }
-                />
-              ) : null
-            ) : (
-              <input
-                type="button"
-                value="Enroll"
-                className={classes.Join}
-                onClick={props.Joining.bind(this, courseID)}
-              />
-            )}
+
             {isJoined === "true" ? <NewPostCard Focus={Focus} /> : null}
             <div className={classes.PostsHolder}>
               <div className={classes.posts}>{Posts}</div>

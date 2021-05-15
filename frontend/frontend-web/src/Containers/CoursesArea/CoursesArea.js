@@ -51,9 +51,6 @@ class CoursesArea extends Component {
     //TODO: use this for routing
     this.props.history.push({
       pathname: `/Deliv`,
-      state: {
-        id:null
-      },
     });
   };
 
