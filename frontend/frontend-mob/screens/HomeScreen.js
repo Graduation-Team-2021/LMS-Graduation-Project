@@ -15,7 +15,11 @@ const HomeScreen = (props) => {
         <Text style={styles.title}>Courses you are enrolled in </Text>
         <SwipeList navigation={props.navigation} />
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Button title="show all courses" containerStyle={{ margin: 5 }} />
+          <Button
+            title="show all courses"
+            containerStyle={{ margin: 5 }}
+            onPress={() => props.navigation.navigate("CourseList")}
+          />
           <Button
             title="show all Deliverables"
             containerStyle={{ margin: 5 }}

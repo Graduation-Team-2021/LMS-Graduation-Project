@@ -4,6 +4,7 @@ import { createAppContainer } from "react-navigation";
 import HomeScreen from "../screens/HomeScreen";
 import CourseScreen from "../screens/CourseScreen";
 import VideoScreen from "../screens/VideoScreen";
+import CourseListScreen from '../screens/CoursesListScreen';
 
 const studentName = "Ibrahim";
 
@@ -18,6 +19,7 @@ const HomeStack = createStackNavigator({
     },
   },
   Video: { screen: VideoScreen },
+  CourseList: {screen:CourseListScreen}
 });
 
 export default createAppContainer(HomeStack);
