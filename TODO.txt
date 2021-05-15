@@ -14,7 +14,7 @@
 14. Add Group
 15. Edit profile Pic
 16. get users of Course/Group 
-17. Join Courses
+17. Join Courses *******************************************
 18. Quizzes
 19. Course Area/Group Area (DONE)
 20. Responsive view (75% DONE)
@@ -26,6 +26,12 @@
 26. speak with the mentor about the server testing
 27. THe passed courses and the total grade is not connected to the backend يا ديفيد
 28. in Mobile app, Handle the tablet screen
+29. Enable Dark Mode
+30. Reset Password
+31. Edit Profile Picture
+32. Remove "Open Settings" button
+33. 
+
 
 *************************************************
 1. Online Courses
