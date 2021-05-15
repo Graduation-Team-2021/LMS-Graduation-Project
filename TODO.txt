@@ -12,6 +12,7 @@ NEW TODO:
 32. Remove "Open Settings" button
 12. real time Comments/like
 2036. Ask Dr. Hoda for The shape of the Document
+2020. check if the student is enrolled from the database/frontend
 
 OLD TODO:
 3. Sign Up Update/Integrate
