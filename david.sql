@@ -7,8 +7,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `lms` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
-USE `lms`;
+USE `sql4412495`;
 DROP TABLE IF EXISTS `Prerequiste`;
 CREATE TABLE `Prerequiste` (
   `course_code` varchar(5) NOT NULL,
@@ -17,7 +16,7 @@ CREATE TABLE `Prerequiste` (
   KEY `pre_course_id` (`pre_course_id`),
   CONSTRAINT `Prerequiste_ibfk_1` FOREIGN KEY (`course_code`) REFERENCES `course` (`course_code`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Prerequiste_ibfk_2` FOREIGN KEY (`pre_course_id`) REFERENCES `course` (`course_code`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `answers`;
@@ -30,7 +29,7 @@ CREATE TABLE `answers` (
   KEY `question_id` (`question_id`),
   CONSTRAINT `answers_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `answers_chk_1` CHECK ((`right_answer` in (0,1)))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `conversations`;
@@ -43,7 +42,7 @@ CREATE TABLE `conversations` (
   KEY `second_user` (`second_user`),
   CONSTRAINT `conversations_ibfk_1` FOREIGN KEY (`first_user`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `conversations_ibfk_2` FOREIGN KEY (`second_user`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `course`;
@@ -59,7 +58,7 @@ CREATE TABLE `course` (
   UNIQUE KEY `group_number` (`group_number`),
   KEY `post_owner_idx` (`post_owner_id`),
   CONSTRAINT `post_owner` FOREIGN KEY (`post_owner_id`) REFERENCES `post_owner` (`owner_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `deliver`;
@@ -74,7 +73,7 @@ CREATE TABLE `deliver` (
   KEY `student_id` (`student_id`),
   CONSTRAINT `deliver_ibfk_1` FOREIGN KEY (`deliverable_id`) REFERENCES `deliverable` (`deliverable_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `deliver_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `deliverable`;
@@ -89,7 +88,7 @@ CREATE TABLE `deliverable` (
   PRIMARY KEY (`deliverable_id`),
   KEY `course_deliverables` (`course_deliverables`),
   CONSTRAINT `deliverable_ibfk_1` FOREIGN KEY (`course_deliverables`) REFERENCES `course` (`course_code`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `deliverables_results`;
@@ -101,7 +100,7 @@ CREATE TABLE `deliverables_results` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `deliverables_results_ibfk_1` FOREIGN KEY (`deliverable_id`) REFERENCES `deliverable` (`deliverable_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `deliverables_results_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `student` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `events`;
@@ -116,7 +115,7 @@ CREATE TABLE `events` (
   PRIMARY KEY (`event_id`),
   KEY `course_code` (`course_code`),
   CONSTRAINT `events_ibfk_1` FOREIGN KEY (`course_code`) REFERENCES `course` (`course_code`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `exams`;
@@ -127,7 +126,7 @@ CREATE TABLE `exams` (
   PRIMARY KEY (`exam_id`),
   UNIQUE KEY `event_id` (`event_id`),
   CONSTRAINT `exams_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `finish`;
@@ -139,7 +138,7 @@ CREATE TABLE `finish` (
   KEY `student_id` (`student_id`),
   CONSTRAINT `finish_ibfk_1` FOREIGN KEY (`course_code`) REFERENCES `course` (`course_code`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `finish_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `group_deliverable_relation`;
@@ -150,7 +149,7 @@ CREATE TABLE `group_deliverable_relation` (
   KEY `deliverable_id` (`deliverable_id`),
   CONSTRAINT `group_deliverable_relation_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `group_project` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `group_deliverable_relation_ibfk_2` FOREIGN KEY (`deliverable_id`) REFERENCES `deliverable` (`deliverable_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `group_project`;
@@ -162,7 +161,7 @@ CREATE TABLE `group_project` (
   PRIMARY KEY (`group_id`),
   KEY `post_owner_idx` (`post_owner_id`),
   CONSTRAINT `post_owner_id` FOREIGN KEY (`post_owner_id`) REFERENCES `post_owner` (`owner_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `learns`;
@@ -173,7 +172,7 @@ CREATE TABLE `learns` (
   KEY `course_code` (`course_code`),
   CONSTRAINT `learns_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `learns_ibfk_2` FOREIGN KEY (`course_code`) REFERENCES `course` (`course_code`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `material`;
@@ -185,7 +184,7 @@ CREATE TABLE `material` (
   PRIMARY KEY (`material_id`),
   KEY `course_material` (`course_material`),
   CONSTRAINT `material_ibfk_1` FOREIGN KEY (`course_material`) REFERENCES `course` (`course_code`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `messages`;
@@ -203,7 +202,7 @@ CREATE TABLE `messages` (
   CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`conversation_id`) REFERENCES `conversations` (`conversation_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `messages_ibfk_3` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `post`;
@@ -217,7 +216,7 @@ CREATE TABLE `post` (
   KEY `post_owner` (`post_owner`),
   CONSTRAINT `post_ibfk_1` FOREIGN KEY (`post_writer`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE,
   CONSTRAINT `post_ibfk_2` FOREIGN KEY (`post_owner`) REFERENCES `post_owner` (`owner_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `post_commenter`;
@@ -232,7 +231,7 @@ CREATE TABLE `post_commenter` (
   KEY `post_id` (`post_id`),
   CONSTRAINT `post_commenter_ibfk_1` FOREIGN KEY (`commenter_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE,
   CONSTRAINT `post_commenter_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `post_liker`;
@@ -244,14 +243,14 @@ CREATE TABLE `post_liker` (
   KEY `post_id` (`post_id`),
   CONSTRAINT `post_liker_ibfk_1` FOREIGN KEY (`liker_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE,
   CONSTRAINT `post_liker_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `post_owner`;
 CREATE TABLE `post_owner` (
   `owner_id` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`owner_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `professor`;
@@ -260,7 +259,7 @@ CREATE TABLE `professor` (
   `scientific_degree` varchar(50) NOT NULL,
   PRIMARY KEY (`user_id`),
   CONSTRAINT `professor_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `questions`;
@@ -273,7 +272,7 @@ CREATE TABLE `questions` (
   UNIQUE KEY `question` (`question`,`exam_id`),
   KEY `exam_id` (`exam_id`),
   CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `results`;
@@ -286,7 +285,7 @@ CREATE TABLE `results` (
   KEY `exam_id` (`exam_id`),
   CONSTRAINT `results_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `results_ibfk_2` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `student`;
@@ -295,7 +294,7 @@ CREATE TABLE `student` (
   `student_year` int NOT NULL,
   PRIMARY KEY (`user_id`),
   CONSTRAINT `student_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `student_answers`;
@@ -308,7 +307,7 @@ CREATE TABLE `student_answers` (
   KEY `student_question_id` (`student_question_id`),
   CONSTRAINT `student_answers_ibfk_1` FOREIGN KEY (`student_question_id`) REFERENCES `student_questions` (`student_question_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `student_answers_chk_1` CHECK ((`correct_answer` in (0,1)))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `student_group_relation`;
@@ -319,7 +318,7 @@ CREATE TABLE `student_group_relation` (
   KEY `student_id` (`student_id`),
   CONSTRAINT `student_group_relation_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `group_project` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `student_group_relation_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `student_questions`;
@@ -332,7 +331,7 @@ CREATE TABLE `student_questions` (
   KEY `question_id` (`question_id`),
   CONSTRAINT `student_questions_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `student_questions_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `teaches`;
@@ -343,7 +342,7 @@ CREATE TABLE `teaches` (
   KEY `course_code` (`course_code`),
   CONSTRAINT `teaches_ibfk_1` FOREIGN KEY (`professor_id`) REFERENCES `professor` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `teaches_ibfk_2` FOREIGN KEY (`course_code`) REFERENCES `course` (`course_code`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `user`;
@@ -356,7 +355,7 @@ CREATE TABLE `user` (
   `password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `national_id` (`national_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 
