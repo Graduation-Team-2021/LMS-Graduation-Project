@@ -23,6 +23,7 @@ const HomeScreen = (props) => {
           <Button
             title="show all Deliverables"
             containerStyle={{ margin: 5 }}
+            onPress={() => props.navigation.navigate("DeliverableList")}
           />
         </View>
         <Text style={styles.title}>Your Groups</Text>
