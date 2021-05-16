@@ -5,7 +5,7 @@ import CourseListItem from "../components/CourseListItem";
 const DummyCourses = [
     {
         courseName: "Deepwebish Course One",
-        courseDescription: "The Discription of Deepwebish Course One",
+        courseDescription: "The Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course OneThe Discription of Deepwebish Course One",
         courseCode: "CSE400",
         coursePicURI: "https://images3.alphacoders.com/165/thumb-1920-165087.jpg",
       },
@@ -50,7 +50,7 @@ const DummyCourses = [
         courseCode: "CSE400",
         coursePicURI: "https://images3.alphacoders.com/165/thumb-1920-165087.jpg",
       },{
-        courseName: "Deepwebish Course 0",
+        courseName: "Deepwebish Course One",
         courseDescription: "The Discription of Deepwebish Course One",
         courseCode: "CSE400",
         coursePicURI: "https://images3.alphacoders.com/165/thumb-1920-165087.jpg",
@@ -65,8 +65,8 @@ const DummyCourses = [
 ];
 
 const AllCoursesList = (props) => {
-  const renderItem = (itemData) => {
-    return <CourseListItem Course={itemData.item} navigation={props.navigation} />;
+  const renderItem = ({ item }) => {
+    return <CourseListItem Course={item} navigation={props.navigation} />;
   };
   return (
     <View style={{ flex: 1 }}>
