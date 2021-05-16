@@ -8,11 +8,12 @@ const CourseListItem = (props) => {
   return (
     <View style={{ margin: 10 }}>
       <TouchableNativeFeedback
-      
-        onPress={()=>navigation.navigate({
-          routeName: "CourseDescription",
-          params: { courseName:Course.courseName}
-        })}
+        onPress={() =>
+          navigation.navigate({
+            routeName: "CourseDescription",
+            params: { courseName: Course.courseName, Course: Course },
+          })
+        }
       >
         <View style={{ flexDirection: "row" }}>
           <Avatar
