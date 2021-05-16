@@ -1,12 +1,19 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableNativeFeedback } from "react-native";
 import { Avatar } from "react-native-elements";
 
-const CourseListItem = ({ Course }) => {
-  console.log(Course);
+const CourseListItem = (props) => {
+  const Course = props.Course;
+  const navigation = props.navigation;
   return (
     <View style={{ margin: 10 }}>
-      <TouchableOpacity>
+      <TouchableNativeFeedback
+      
+        onPress={()=>navigation.navigate({
+          routeName: "CourseDescription",
+          params: { courseName:Course.courseName}
+        })}
+      >
         <View style={{ flexDirection: "row" }}>
           <Avatar
             rounded
@@ -15,12 +22,12 @@ const CourseListItem = ({ Course }) => {
               uri: Course.coursePicURI,
             }}
           />
-          <View style={{justifyContent: "center",padding:15}}>
+          <View style={{ justifyContent: "center", padding: 15 }}>
             <Text>{Course.courseName}</Text>
             <Text>{Course.courseCode}</Text>
           </View>
         </View>
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
     </View>
   );
 };

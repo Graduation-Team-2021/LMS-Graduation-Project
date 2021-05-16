@@ -4,7 +4,8 @@ import { createAppContainer } from "react-navigation";
 import HomeScreen from "../screens/HomeScreen";
 import CourseScreen from "../screens/CourseScreen";
 import VideoScreen from "../screens/VideoScreen";
-import CourseListScreen from '../screens/CoursesListScreen';
+import CourseListScreen from "../screens/CoursesListScreen";
+import CourseDescriptionScreen from "../screens/CourseDescriptionScreen";
 
 const studentName = "Ibrahim";
 
@@ -19,7 +20,15 @@ const HomeStack = createStackNavigator({
     },
   },
   Video: { screen: VideoScreen },
-  CourseList: {screen:CourseListScreen}
+  CourseList: { screen: CourseListScreen },
+  CourseDescription: {
+    screen: CourseDescriptionScreen,
+    navigationOptions: (navData) => {
+      return {
+        title: `${navData.navigation.getParam("courseName")} Details`,
+      };
+    },
+  },
 });
 
 export default createAppContainer(HomeStack);
