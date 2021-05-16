@@ -38,7 +38,13 @@ OLD TODO:
 26. speak with the mentor about the server testing
 27. THe passed courses and the total grade is not connected to the backend يا ديفيد
 28. in Mobile app, Handle the tablet screen
-33. 
+
+
+Mobile TODO:
+1. in Mobile app, Handle the tablet screen
+2.over All Navigation
+3. Delivralbes
+4. integration
 
 
 *************************************************
