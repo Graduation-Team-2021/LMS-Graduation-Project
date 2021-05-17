@@ -73,7 +73,7 @@ const AllCoursesList = (props) => {
       <FlatList
         data={DummyCourses}
         renderItem={renderItem}
-        keyExtractor={(_,index)=>index}
+        keyExtractor={(_,index)=>`${index}`}
       />
     </View>
   );

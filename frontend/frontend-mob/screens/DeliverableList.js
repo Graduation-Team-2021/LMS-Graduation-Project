@@ -123,7 +123,7 @@ const AllDelivList = (props) => {
       <FlatList
         data={Deliverables}
         renderItem={renderItem}
-        keyExtractor={(_, index) => index}
+        keyExtractor={(_, index) => `${index}`}
       />
     </View>
   );
