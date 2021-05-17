@@ -43,7 +43,7 @@ OLD TODO:
 Mobile TODO:
 1. in Mobile app, Handle the tablet screen
 2.over All Navigation
-3. Delivralbes(needs the pie chart)
+3. Delivralbes(compute real data)
 4. integration
 5.SearchBar in the App bar
 

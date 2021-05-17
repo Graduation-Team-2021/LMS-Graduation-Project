@@ -4,7 +4,6 @@ import { PieChart } from "react-native-svg-charts";
 
 import DeliverableItem from "../components/DeliverableItem";
 
-
 const Deliverables = [
   {
     name: "Creating FSD",
@@ -143,8 +142,7 @@ const AllDelivList = (props) => {
 
   return (
     <View style={{ flex: 1 }}>
-                <PieChart style={{ height: 200 }} data={pieData} />
-
+      <PieChart style={{ height: 200 }} data={pieData} />
       <FlatList
         data={Deliverables}
         renderItem={renderItem}
