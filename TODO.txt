@@ -46,6 +46,7 @@ Mobile TODO:
 3. Delivralbes(compute real data)
 4. integration
 5.SearchBar in the App bar
+6. Video/PDF in the App
 
 
 *************************************************
