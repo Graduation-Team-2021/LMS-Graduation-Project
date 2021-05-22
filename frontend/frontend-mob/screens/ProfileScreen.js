@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
+import ANHeaderButton from "../components/ANHeaderButton";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import Dismiss from "../components/Dismiss";
 
@@ -27,8 +29,7 @@ const ProfileScreen = () => {
               rounded
               size="xlarge"
               source={{
-                uri:
-                  "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg",
+                uri: "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg",
               }}
               containerStyle={styles.avatarContainerStyle}
             />
@@ -54,7 +55,7 @@ const ProfileScreen = () => {
             </Card>
           </View>
         </Card>
-        <Text style={[styles.text,styles.title]} > Your Posts</Text>
+        <Text style={[styles.text, styles.title]}> Your Posts</Text>
         <Dismiss>
           <Text>Post 1</Text>
           <Text>Post 2</Text>
@@ -65,7 +66,7 @@ const ProfileScreen = () => {
           <Text>Post 7</Text>
         </Dismiss>
 
-        <Text style={[styles.text,styles.title]} >Your Passed Courses</Text>
+        <Text style={[styles.text, styles.title]}>Your Passed Courses</Text>
 
         <Dismiss>
           <Text>Course 1</Text>
@@ -117,9 +118,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
   },
-  title:{
-    paddingTop:40,
-  }
+  title: {
+    paddingTop: 40,
+  },
 });
+
+ProfileScreen.navigationOptions = (navData) => {
+  return {
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={ANHeaderButton}>
+        <Item
+          title="menu"
+          iconName="ios-menu"
+          onPress={() => navData.navigation.toggleDrawer()}
+        />
+      </HeaderButtons>
+    ),
+  };
+};
 
 export default ProfileScreen;

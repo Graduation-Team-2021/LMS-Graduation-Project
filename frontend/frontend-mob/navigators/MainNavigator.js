@@ -5,12 +5,12 @@ import {createAppContainer} from 'react-navigation'
 import HomeScreenNavigator from './HomeScreenNavigator'
 
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import ProfileScreen from '../screens/ProfileScreen'
+import ProfileNav from './ProfileScreenNavigator'
 import MsgsNavs from './MessagesNavigator'
 
 const MainDrawer = createDrawerNavigator({
     Home:HomeScreenNavigator,
-    Profile:ProfileScreen,
+    Profile:ProfileNav,
     Messenger:MsgsNavs
 })
 

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import ANHeaderButton from "../components/ANHeaderButton";
-import { Card, Button } from "react-native-elements";
+import {Button } from "react-native-elements";
 import SwipeList from "../components/SwipList";
 import Dismiss from "../components/Dismiss";
 const HomeScreen = (props) => {
