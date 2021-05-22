@@ -1,7 +1,7 @@
 import React from 'react';
 import {createAppContainer} from 'react-navigation'
 import {createStackNavigator} from 'react-navigation-stack'
-import MessagesScreen from '../screens/Messages'
+import MessagesScreen from '../screens/messages'
 import ConversationScreen from '../screens/Conversations'
 
 const defaultStackNavOptions = {

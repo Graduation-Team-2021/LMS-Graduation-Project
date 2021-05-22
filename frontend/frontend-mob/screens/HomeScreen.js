@@ -1,5 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import ANHeaderButton from "../components/ANHeaderButton";
 import { Card, Button } from "react-native-elements";
 import SwipeList from "../components/SwipList";
 import Dismiss from "../components/Dismiss";
@@ -35,6 +37,20 @@ const HomeScreen = (props) => {
       </View>
     </ScrollView>
   );
+};
+
+HomeScreen.navigationOptions = (navData) => {
+  return {
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={ANHeaderButton}>
+        <Item
+          title="menu"
+          iconName="ios-menu"
+          onPress={() => navData.navigation.toggleDrawer()}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({
