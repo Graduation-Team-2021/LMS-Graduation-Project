@@ -15,26 +15,19 @@ NEW TODO:
 12. real time Comments/like
 29. Enable Dark Mode
 
-OLD TODO:
 10. Deliverables integration
 18. Quizzes ( create quiz)
-19. Course Area/Group Area (DONE)
 20. Responsive view (75% DONE)
-21. Mobile app
 22. Authentication/Security
-23. Frontend error handling
-24. edit profile pic
 25. يوم النتيجة
 26. speak with the mentor about the server testing
 27. THe passed courses and the total grade is not connected to the backend يا ديفيد
-28. in Mobile app, Handle the tablet screen
+23. Frontend error handling
 
 
 Mobile TODO:
 1. in Mobile app, Handle the tablet screen
-
 2.over All Navigation(Done)
-
 3. Delivralbes(compute real data)
 4. integration
 5.Search Dialog in the App bar
