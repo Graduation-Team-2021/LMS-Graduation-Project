@@ -13,7 +13,7 @@ const Drawer = (props) => {
       <View>
         <View
           style={{
-            paddingVertical: "7%",
+            paddingTop: "21%",
             flexDirection: "row",
             alignItems: "center",
             backgroundColor: "#ccc",
@@ -33,6 +33,7 @@ const Drawer = (props) => {
           </View>
         </View>
         <DrawerItems {...props} />
+        <View style={{ height: "45%"}}></View>
         <Button
           icon={<Icon name="logout" size={15} color="white" style={{padding: 10}} />}
           title="Logout"
