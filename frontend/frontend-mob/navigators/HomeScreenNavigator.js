@@ -1,11 +1,13 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from "react-navigation";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HomeScreen from "../screens/HomeScreen";
 import CourseScreen from "../screens/CourseScreen";
 import VideoScreen from "../screens/VideoScreen";
 import CourseListScreen from "../screens/CoursesListScreen";
 import CourseDescriptionScreen from "../screens/CourseDescriptionScreen";
+import DeliverableList from "../screens/DeliverableList";
+import DeliverableDescriptionScreen from "../screens/DeliverableDescriptionScreen";
 
 const studentName = "Ibrahim";
 
@@ -21,6 +23,7 @@ const HomeStack = createStackNavigator({
   },
   Video: { screen: VideoScreen },
   CourseList: { screen: CourseListScreen },
+  DeliverableList: { screen: DeliverableList },
   CourseDescription: {
     screen: CourseDescriptionScreen,
     navigationOptions: (navData) => {
@@ -29,6 +32,16 @@ const HomeStack = createStackNavigator({
       };
     },
   },
+  DeliverableDescription: {
+    screen: DeliverableDescriptionScreen,
+    navigationOptions: (navData) => {
+      return {
+        title: `${navData.navigation.getParam("deliverableName")} Details`,
+      };
+    },
+  },
 });
 
-export default createAppContainer(HomeStack);
+
+
+export default HomeStack;

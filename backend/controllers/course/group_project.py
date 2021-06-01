@@ -69,3 +69,9 @@ class GroupProjectController:
             })
         data=[g.serialize() for g in all_groups]
         return data
+
+    def search_for_a_group(self,name_string):
+        data=GroupProject.query.filter(GroupProject.group_name.ilike(f'%{name_string}%')).all()
+        return [d.serialize() for d in data]
+
+    

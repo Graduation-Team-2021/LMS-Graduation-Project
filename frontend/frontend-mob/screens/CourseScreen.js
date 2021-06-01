@@ -42,7 +42,7 @@ const CourseScreen = (props) => {
         {groupflag?null:courseDetails}
       </View>
       <View style={{ width: "90%", flex: 1 }}>
-        <FlatList data={data} renderItem={renederitem} />
+        <FlatList data={data} renderItem={renederitem} keyExtractor={(_,index)=>`${index}`} />
       </View>
     </View>
   );

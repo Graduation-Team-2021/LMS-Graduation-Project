@@ -255,3 +255,14 @@ class Profile(Resource):
         except ErrorHandler as e:
             return e.error
         return user
+
+#/users/search
+class SearchUserByName(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('name', type=str, location='json')
+
+    def get(self):
+        args = self.reqparse.parse_args()
+        name=args['name']
+        return controller_object.search_for_a_user(name)

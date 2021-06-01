@@ -1,51 +1,39 @@
 NEW TODO:
-1. CREATE "CREATE ASSIGNMENT' page (Done)
+1. Set routes for admin
 2. Add Quiz/assignment routes to main page
 4. Reset Password
+5. Materials get/update
+2036. Ask Dr. Hoda for The shape of the Document
 15. Edit profile Pic
 16. get users of Course/Group 
-17. Join Courses *******************************************
-2099. add profile pic to table
-2077. Reset Password
+17. Join Courses with a deadline *******************************************
+2099. add profile pic to table in the database
 2. Search Page with categories for each entity
-29. Enable Dark Mode
 32. Remove "Open Settings" button
-12. real time Comments/like
-2036. Ask Dr. Hoda for The shape of the Document
 2020. check if the student is enrolled from the database/frontend
+        check with the list of the enrolled courses
+12. real time Comments/like
+29. Enable Dark Mode
 
-OLD TODO:
-3. Sign Up Update/Integrate
-5. Materials get/update
-6. Add Event integration (DONE)
-7. Pdfs page making/integration
-8. Messenger integration (DONE)
-9. Redux (هنعيط كلنا) (DONE)
-10. Deliverables
-11. Drag and Drop
-13. Add Course
-14. Add Group
-
-
-18. Quizzes
-19. Course Area/Group Area (DONE)
+10. Deliverables integration
+18. Quizzes ( create quiz)
 20. Responsive view (75% DONE)
-21. Mobile app
 22. Authentication/Security
-23. Frontend error handling
-24. edit profile pic
 25. يوم النتيجة
 26. speak with the mentor about the server testing
 27. THe passed courses and the total grade is not connected to the backend يا ديفيد
-28. in Mobile app, Handle the tablet screen
+23. Frontend error handling
 
 
 Mobile TODO:
 1. in Mobile app, Handle the tablet screen
-2.over All Navigation
-3. Delivralbes
+2.over All Navigation(Done)
+3. Delivralbes(compute real data)
 4. integration
-5.SearchBar in the App bar
+5.Search Dialog in the App bar
+6. Video/PDF in the App
+7. Search results screen
+8. Redux in the mobile application
 
 
 *************************************************

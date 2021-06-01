@@ -19,7 +19,7 @@ const ConversationCard = (props, route, navigation)  => {
   return (
 
     (props.position)?
-    <TouchableCmp >
+    <TouchableCmp key={props.key} >
       <View>
         <ListItem>
           <Avatar rounded source={{ uri: props.user2_data.avatar_url }} />

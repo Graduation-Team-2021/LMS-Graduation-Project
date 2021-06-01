@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { Card, Button } from "react-native-elements";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import ANHeaderButton from "../components/ANHeaderButton";
+import {Button } from "react-native-elements";
 import SwipeList from "../components/SwipList";
 import Dismiss from "../components/Dismiss";
 const HomeScreen = (props) => {
@@ -23,6 +25,7 @@ const HomeScreen = (props) => {
           <Button
             title="show all Deliverables"
             containerStyle={{ margin: 5 }}
+            onPress={() => props.navigation.navigate("DeliverableList")}
           />
         </View>
         <Text style={styles.title}>Your Groups</Text>
@@ -34,6 +37,20 @@ const HomeScreen = (props) => {
       </View>
     </ScrollView>
   );
+};
+
+HomeScreen.navigationOptions = (navData) => {
+  return {
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={ANHeaderButton}>
+        <Item
+          title="menu"
+          iconName="ios-menu"
+          onPress={() => navData.navigation.toggleDrawer()}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({

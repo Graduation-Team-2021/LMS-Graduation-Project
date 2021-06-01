@@ -61,10 +61,10 @@ mail service
 """
 import all the endpoints from views
 """
-from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile,Sign_Up_Using_Excel
+from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile,Sign_Up_Using_Excel,SearchUserByName
 from views.user.professors import Professor, Professors
 from views.user.students import Students, Student,Student_result_calculation
-from views.course.courses import Course, Courses, My_Courses
+from views.course.courses import Course, Courses, My_Courses,SearchCourseByName
 from views.course.materials import material, materials, download_material, upload_material
 from views.relations.teaches import Professor_Course_Relation, UpdateAndDelete_professor_Courses_Relation
 from views.relations.learns import Student_Course_Relation, Student_Courses_Relation
@@ -83,7 +83,7 @@ from views.relations.finished import finished_relation_view, finished_relation_u
 from views.relations.has_prerequisites import prerequisite_view
 from views.relations.has_prerequisites import retrieve_all_prequisites
 from views.relations.has_prerequisites import postPrequisites
-from views.course.group_project import GroupProject,InsertGroup
+from views.course.group_project import GroupProject,InsertGroup,SearchGroupByName
 from views.relations.student_group_relation import StudentGroupView,EachGroupStudents
 from views.course.post import Post_view,Post_the_post
 from views.course.post_owner import PostOwner_view,OwnerView
@@ -104,6 +104,7 @@ api.add_resource(Sign_Up_Using_Excel,'/sign_up/excel')
 api.add_resource(Login, '/login')
 api.add_resource(Reset_password, '/reset/password')
 api.add_resource(Profile, '/users/<user_id>/profile')
+api.add_resource(SearchUserByName, '/users/search')
 """
 Professor
 """
@@ -144,6 +145,7 @@ Courses
 api.add_resource(Course, '/courses/<course_code>')
 api.add_resource(Courses, '/courses')
 api.add_resource(My_Courses, '/my_courses')
+api.add_resource(SearchCourseByName, '/courses/search')
 """
 Materials
 """
@@ -229,7 +231,7 @@ Group_projects
 '''
 api.add_resource(GroupProject, '/project-groups/<group_id>')
 api.add_resource(InsertGroup,'/project-groups')
-
+api.add_resource(SearchGroupByName,'/groups/search')
 
 '''
 Posts
