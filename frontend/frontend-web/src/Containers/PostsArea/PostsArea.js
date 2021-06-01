@@ -9,6 +9,8 @@ import Modal from "../../Components/Modal/Modal";
 import Waiting from "../../Components/Waiting/Waiting";
 
 import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
+import { getCancelToken } from "../../Interface/Interface";
+import axios from "axios";
 
 class PostsArea extends Component {
   constructor(props) {
@@ -20,27 +22,36 @@ class PostsArea extends Component {
   Token = this.props.userData.Token;
   TokenError = this.props.userDataActions.TokenError;
   ID = this.props.userData.ID;
+  cancel = getCancelToken()
 
   componentDidMount() {
-    this.props.LoadingPosts(this.Token, this.ID).then((res) => {
-      const Posts = [];
-      if (res) {
-        res.forEach((ele) => {
-          Posts.push(this.props.setPost(ele, this.ID));
-        });
-        this.setState({
-          Posts: Posts,
-        });
-        if (this.props.setPosts) {
-          this.props.setPosts(Posts);
+    this.props
+      .LoadingPosts(this.Token, this.cancel)
+      .then((res) => {
+        const Posts = [];
+        if (res) {
+          res.forEach((ele) => {
+            Posts.push(this.props.setPost(ele, this.ID));
+          });
+          this.setState({
+            Posts: Posts,
+          });
+          if (this.props.setPosts) {
+            this.props.setPosts(Posts);
+          }
+        } else {
+          this.TokenError();
         }
-      } else {
-        this.TokenError();
-      }
-      this.setState({
-        Loading: false,
-      });
-    });
+        this.setState({
+          Loading: false,
+        });
+      })
+      .catch((error) => {});
+  }
+
+  componentWillUnmount() {  
+    this.cancel.cancel()
+    this.cancel=null
   }
 
   onDismiss = () => {

@@ -14,7 +14,8 @@ const Menu = (props) => {
           props.history.push("/Profile");
         }
       }>View Profile</h2>
-      <h2>Open Settings</h2>
+      <h2>Search</h2>
+      <h2>Reset Password</h2>
       <h2>Enroll in Courses</h2>
       <h2 onClick={
         () => {

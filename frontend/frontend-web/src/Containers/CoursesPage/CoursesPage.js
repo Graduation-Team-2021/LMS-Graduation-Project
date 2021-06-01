@@ -13,8 +13,10 @@ import { setCourse } from "../../Models/Course";
 const HomePage = (props) => {
   const [Courses, setCourses] = useState(new Map());
   const [displayedCourse, setdisplayedCourse] = useState(null);
-  const { Token } = props;
+  const { Token } = props.userData;
   const { TokenError } = props.userDataActions;
+  const { currentCourses } = props.currentCourses;
+  const { finishedCourses } = props.finishedCourses;
 
   const selectingCourseHandler = (courseid) => {
     setdisplayedCourse(courseid);
@@ -35,6 +37,15 @@ const HomePage = (props) => {
               : index % 3 === 1
               ? "https://cdn.britannica.com/w:1100/50/190450-131-527BAEF7/series-Elementary-Particles-subject-forms-nuclear-physics.jpg"
               : "https://i.pinimg.com/736x/c8/e5/75/c8e5753370bad54c7977d485e0a0e29d.jpg";
+          id["isenrolled"] = "false";
+          if (
+            Array.from(currentCourses.keys()).includes(
+              id["course_code"]
+            ) ||
+            finishedCourses.includes(id["course_code"])
+          ) {
+            id["isenrolled"] = "true";
+          }
           Courses.set(id["course_code"], setCourse(id));
         });
         setCourses(Courses);
@@ -42,7 +53,7 @@ const HomePage = (props) => {
         TokenError();
       }
     });
-  }, [Token, TokenError]);
+  }, [Token, TokenError, currentCourses, finishedCourses]);
 
   let loadedCourses = [];
   Array.from(Courses.keys()).forEach((key) => {
@@ -60,7 +71,7 @@ const HomePage = (props) => {
   let stage = (
     <div className={classes.CourseOverview}>
       <CourseOverView
-      Course={Courses.get(displayedCourse)}
+        Course={Courses.get(displayedCourse)}
         {...Courses.get(displayedCourse)}
         removeHandler={removingFromTheStageHandler}
       />

@@ -6,6 +6,8 @@ import classes from "./CourseOverview.module.css";
 const courseOverview = (props) => {
   let imageTest = props.CoursePicture;
 
+  console.log(props);
+
   return (
     <div className={classes.CourseOverview}>
       <img src={imageTest} alt="tst" className={classes.CoursePicture} />
@@ -22,7 +24,7 @@ const courseOverview = (props) => {
               pathname: `/Course/${props.CourseID}`,
               state: {
                 Data: props.Course,
-                isJoined: "true",
+                isJoined: props.isEnrolled,
               },
             });
           }}

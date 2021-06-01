@@ -8,7 +8,7 @@ import Upcoming from "../Upcoming/Upcoming";
 import Card from "../../Components/Card/Card";
 import classes from "./HomePage.module.css";
 
-import { getRecentPosts,  } from "../../Interface/Interface";
+import { getRecentPosts } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setFullPost } from "../../Models/Post";
 

@@ -21,10 +21,12 @@ const TopBar = (props) => {
   return (
     <div className={classes.Main}>
       <Welcome Name={props.Name} />
-      <Search />
-      <div style={{
-        width: '40vw'
-      }}>
+      {/* <Search /> */}
+      <div
+        style={{
+          width: "40vw",
+        }}
+      >
         <MiniMenu
           TokenError={props.TokenError}
           id={props.id}
@@ -43,4 +45,4 @@ const TopBar = (props) => {
   );
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(TopBar);
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

@@ -15,6 +15,7 @@ class CoursesArea extends Component {
   state = {
     Courses: [],
     Loading: true,
+    flag: true,
   };
 
   Token = this.props.userData.Token;
@@ -23,6 +24,10 @@ class CoursesArea extends Component {
   TokenError = this.props.userDataActions.tokenError;
 
   componentDidMount() {
+    /* if (this.state.flag) {
+      s2.cancel("Cancelling Current Groups");
+      s2 = null;
+    } */
     getCurrentCourses(this.Token).then((res) => {
       const Courses = new Map();
       if (res) {
@@ -72,11 +77,13 @@ class CoursesArea extends Component {
       <div className={classes.CoursesArea}>
         <div className={classes.Title}>
           Courses You're Taking
-          <div style={{
-            display: 'flex',
-            width: '40%',
-            justifyContent:'space-between',
-          }}>
+          <div
+            style={{
+              display: "flex",
+              width: "40%",
+              justifyContent: "space-between",
+            }}
+          >
             <button
               className={classes.Join}
               onClick={() => {

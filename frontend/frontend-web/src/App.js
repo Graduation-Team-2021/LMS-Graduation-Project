@@ -26,6 +26,10 @@ import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 
 
 const App = (props) => {
+  const Joining=(courseID)=>{
+    console.log(courseID);
+  }
+
   return (
     <BrowserRouter>
       {props.userData.Token ? (
@@ -34,7 +38,7 @@ const App = (props) => {
             <Route path="/" exact component={Home} />
             <Route path="/Profile" exact component={Profile} />
             <Route path="/Courses" exact component={Courses} />
-            <Route path="/Course/:id" exact component={Course} />
+            <Route path="/Course/:id" exact render={(props)=><Course {...props} Joining={Joining}/>}/>
             <Route path="/Group/:id" exact component={Group} />
             <Route path="/Course/:id/Marks" exact component={Mark_edit} />
             <Route path="/messenger" exact component={Messenger} />

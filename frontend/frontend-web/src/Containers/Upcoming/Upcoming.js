@@ -36,7 +36,7 @@ class Upcoming extends Component {
       this.setState({
         Loading: false,
       });
-    });
+    }).catch(error=>console.log(error));
   }
 
   render() {

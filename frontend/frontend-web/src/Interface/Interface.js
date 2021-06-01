@@ -1,9 +1,15 @@
 import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
 
+export const getCancelToken=()=>{
+  return axios.CancelToken.source()
+}
+
+
 const instance = axios.create({
   baseURL: "http://localhost:5000",
 });
+
 //Template for all Functions
 export const f1 = async () => {
   let users;
@@ -52,8 +58,9 @@ export const getCurrentCourses = async (Token) => {
   return res.data["courses"];
 };
 
-export const getCurrentGroups = async (Token, id, role) => {
+export const getCurrentGroups = async (Token, cancel) => {
   const res = await instance.get(`/my_groups`, {
+    cancelToken: cancel.token,
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
@@ -79,8 +86,9 @@ export const getCourses = async (Token) => {
   }
   return res.data["courses"];
 };
-export const getRecentPosts = async (Token) => {
+export const getRecentPosts = async (Token, cancel) => {
   const res = await instance.get(`/first_10_posts`, {
+    cancelToken: cancel.token,
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
@@ -353,8 +361,7 @@ export const getDeliv = async (id) => {
       },
     }); */
     console.log(`Getting Deliverables of Course ${id}`);
-  }
-  else{
+  } else {
     console.log(`Getting Deliverables of All Courses`);
   }
   /* console.log(res);
@@ -363,26 +370,25 @@ export const getDeliv = async (id) => {
 
 export const getPDFs = async (id) => {
   //TODO: Integrate the PDFs backend
-    /* const res = await instance.get(`/course/${id}/students`, {
+  /* const res = await instance.get(`/course/${id}/students`, {
       headers: {
         "Content-Type": "application/json",
       },
     }); */
-    console.log(`Getting PDFs of Course ${id}`);
-  
-  
+  console.log(`Getting PDFs of Course ${id}`);
+
   /* console.log(res);
   return res.data["names"]; */
 };
 
 export const AddNewDeliv = async (Data) => {
   //TODO: Integrate the PDFs backend
-    /* const res = await instance.get(`/course/${id}/students`, {
+  /* const res = await instance.get(`/course/${id}/students`, {
       headers: {
         "Content-Type": "application/json",
       },
     }); */
-    console.log(Data)
+  console.log(Data);
   /* console.log(res);
   return res.data["names"]; */
 };

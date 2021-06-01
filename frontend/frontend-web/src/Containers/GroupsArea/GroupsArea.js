@@ -11,6 +11,7 @@ import Waiting from "../../Components/Waiting/Waiting";
 import {getCurrentGroups} from '../../Interface/Interface'
 import {setGroup} from '../../Models/Group'
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
+import axios from "axios";
 
 class GroupsArea extends Component {
   state = {
@@ -22,9 +23,10 @@ class GroupsArea extends Component {
   TokenError = this.props.userDataActions.tokenError;
   Joined = this.props.currentGroups.currentGroups;
   setJoined = this.props.currentGroupsActions.onSetCurrentGroups;
+  cancel = axios.CancelToken.source()
 
   componentDidMount() {
-    getCurrentGroups(this.Token).then((res) => {
+    getCurrentGroups(this.Token, this.cancel).then((res) => {
       const Groups = new Map();
       if (res) {
         res.forEach((element) => {
@@ -37,9 +39,10 @@ class GroupsArea extends Component {
       this.setState({
         Loading: false,
       });
-    });
+    }).catch(error=>console.log(error));
   }
 
+  
   render() {
     let ids = Array.from(this.state.Groups.keys());
     let Groups = [];

@@ -6,6 +6,7 @@ export const setCourse=(id)=>{
         CourseDescription: id["course_description"],
         PostID: id["post_owner_id"],
         CoursePicture: id['pic'],
+        isEnrolled: id['isenrolled']
       }
     return data
 }

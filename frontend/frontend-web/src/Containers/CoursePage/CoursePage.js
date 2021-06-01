@@ -117,11 +117,13 @@ const CoursePage = (props) => {
               }}
             >
               <h1>{Title}</h1>
-              <div style={{
-                width: '40%',
-                display: "flex",
-                justifyContent: "space-between",
-              }}>
+              <div
+                style={{
+                  width: "40%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
                 {isJoined === "true" ? (
                   Role === "professor" ? (
                     <input
@@ -146,7 +148,7 @@ const CoursePage = (props) => {
                     onClick={props.Joining.bind(this, courseID)}
                   />
                 )}
-                {Role === "student" ? (
+                {Role === "student" && isJoined === "true" ? (
                   <button
                     className={classes.Join}
                     onClick={() => {
@@ -155,7 +157,7 @@ const CoursePage = (props) => {
                   >
                     Check Deliverables
                   </button>
-                ) : (
+                ) : isJoined === "true" ? (
                   <button
                     className={classes.Join}
                     onClick={() => {
@@ -164,7 +166,7 @@ const CoursePage = (props) => {
                   >
                     Add New Deliverable
                   </button>
-                )}
+                ) : null}
               </div>
             </div>
             <div className={classes.small}>
