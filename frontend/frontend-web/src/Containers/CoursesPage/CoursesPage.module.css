@@ -37,3 +37,15 @@
   flex: 2;
   height: 100vh;
 }
+
+
+@media (max-width : 1325px) {
+  .CoursesList {
+    flex-direction: row ;
+    padding-right: 100px;
+  }
+  .CoursesPage {
+    flex-direction: column;
+  }
+}
+
