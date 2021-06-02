@@ -150,11 +150,11 @@ class My_Courses(Resource):
 
 #/courses/search
 class SearchCourseByName(Resource):
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('course_name', type=str, location='json')
+    # def __init__(self):
+    #     self.reqparse = reqparse.RequestParser()
+    #     self.reqparse.add_argument('course_name', type=str, location='json')
 
-    def get(self):
-        args = self.reqparse.parse_args()
-        course_name=args['course_name']
-        return controller_object.search_for_a_course(course_name)
+    def get(self, name):
+        # args = self.reqparse.parse_args()
+        # course_name=args['course_name']
+        return controller_object.search_for_a_course(name)

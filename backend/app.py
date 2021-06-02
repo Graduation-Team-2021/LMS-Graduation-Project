@@ -104,7 +104,7 @@ api.add_resource(Sign_Up_Using_Excel,'/sign_up/excel')
 api.add_resource(Login, '/login')
 api.add_resource(Reset_password, '/reset/password')
 api.add_resource(Profile, '/users/<user_id>/profile')
-api.add_resource(SearchUserByName, '/users/search')
+api.add_resource(SearchUserByName, '/users/search/<name>')
 api.add_resource(updatePic, '/users/<user_id>/pic')
 """
 Professor
@@ -146,7 +146,7 @@ Courses
 api.add_resource(Course, '/courses/<course_code>')
 api.add_resource(Courses, '/courses')
 api.add_resource(My_Courses, '/my_courses')
-api.add_resource(SearchCourseByName, '/courses/search')
+api.add_resource(SearchCourseByName, '/courses/search/<name>')
 """
 Materials
 """
@@ -232,7 +232,7 @@ Group_projects
 '''
 api.add_resource(GroupProject, '/project-groups/<group_id>')
 api.add_resource(InsertGroup,'/project-groups')
-api.add_resource(SearchGroupByName,'/groups/search')
+api.add_resource(SearchGroupByName,'/groups/search/<name>')
 
 '''
 Posts

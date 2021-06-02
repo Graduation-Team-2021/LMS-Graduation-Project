@@ -260,13 +260,13 @@ class Profile(Resource):
 
 #/users/search
 class SearchUserByName(Resource):
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('name', type=str, location='json')
+    # def __init__(self):
+    #     self.reqparse = reqparse.RequestParser()
+    #     self.reqparse.add_argument('name', type=str, location='json')
 
-    def get(self):
-        args = self.reqparse.parse_args()
-        name=args['name']
+    def get(self, name):
+        # args = self.reqparse.parse_args()
+        # name=args['name']
         return controller_object.search_for_a_user(name)
 
 #/users/<user_id>/pic

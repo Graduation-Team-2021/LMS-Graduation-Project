@@ -420,3 +420,28 @@ export const changePassword = async(id, pass)=>{
   });
   return res.data;
 }
+
+export const searchUsers = async(text)=>{
+  const res = await instance.get(`/users/search/${text}`,{
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  return res.data
+}
+export const searchCourses = async(text)=>{
+  const res = await instance.get(`/courses/search/${text}`,{
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  return res.data
+}
+export const searchGroups = async(text)=>{
+  const res = await instance.get(`/groups/search/${text}`,{
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  return res.data
+}

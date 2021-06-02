@@ -14,7 +14,11 @@ const Menu = (props) => {
           props.history.push("/Profile");
         }
       }>View Profile</h2>
-      <h2>Search</h2>
+      <h2 onClick={
+        () => {
+          props.onClick()
+          props.history.push("/Search");
+        }}>Search</h2>
       <h2 onClick={
         () => {
           props.onClick()

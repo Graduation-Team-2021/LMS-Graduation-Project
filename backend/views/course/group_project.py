@@ -82,11 +82,11 @@ class InsertGroup(Resource):
         })
 #/groups/search
 class SearchGroupByName(Resource):
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('group_name', type=str, location='json')
+    # def __init__(self):
+    #     self.reqparse = reqparse.RequestParser()
+    #     self.reqparse.add_argument('group_name', type=str, location='json')
 
-    def get(self):
-        args = self.reqparse.parse_args()
-        group_name=args['group_name']
-        return controller_object.search_for_a_group(group_name)
+    def get(self,name):
+        # args = self.reqparse.parse_args()
+        # group_name=args['group_name']
+        return controller_object.search_for_a_group(name)
