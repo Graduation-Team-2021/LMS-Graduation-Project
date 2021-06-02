@@ -75,7 +75,7 @@ const ProfilePage = (props) => {
           <div className={classes.background}>{/*insert your image here*/}</div>
           <div className={classes.User}>
             <div className={classes.main}>
-              <ImageHolder className={classes.Pic} filler={userSelf ? userSelf['picture'] : filler} />
+              <ImageHolder className={classes.Pic} filler={userSelf?userSelf['picture']:filler} />
               <div className={classes.Details}>
                 <div className={classes.filler} />
                 <div className={classes.Name}>{props.userData.Name}</div>

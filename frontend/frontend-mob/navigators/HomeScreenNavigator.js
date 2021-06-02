@@ -1,6 +1,5 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HomeScreen from "../screens/HomeScreen";
 import CourseScreen from "../screens/CourseScreen";
 import VideoScreen from "../screens/VideoScreen";
@@ -8,7 +7,7 @@ import CourseListScreen from "../screens/CoursesListScreen";
 import CourseDescriptionScreen from "../screens/CourseDescriptionScreen";
 import DeliverableList from "../screens/DeliverableList";
 import DeliverableDescriptionScreen from "../screens/DeliverableDescriptionScreen";
-
+import DeliverableSubmetionScreen from "../screens/DeliverableSubmetionScreen";
 const studentName = "Ibrahim";
 
 const HomeStack = createStackNavigator({
@@ -40,8 +39,16 @@ const HomeStack = createStackNavigator({
       };
     },
   },
+  DeliverableSubmetion: {
+    screen: DeliverableSubmetionScreen,
+    navigationOptions: (navData) => {
+      return {
+        title: `${navData.navigation.getParam(
+          "delevrableName"
+        )} ${navData.navigation.getParam("deliverableType")}`,
+      };
+    },
+  },
 });
-
-
 
 export default HomeStack;
