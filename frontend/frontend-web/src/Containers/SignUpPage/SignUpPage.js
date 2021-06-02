@@ -58,7 +58,7 @@ class SignUpPage extends Component {
   errorHandler = () => {
     let keys = Object.keys(this.state.data);
     let errors = this.state.errors;
-    
+
     keys.forEach((element) => {
       if (
         (this.state.data[element] === "" && element !== "Agreed") ||
@@ -72,7 +72,7 @@ class SignUpPage extends Component {
       errors: { ...errors },
     }));
     let error = Object.values(errors);
-    return error.every((value)=>!value);
+    return error.every((value) => !value);
   };
 
   onSignUp = async () => {
@@ -153,20 +153,18 @@ class SignUpPage extends Component {
       />
     );
     return (
-      <div className={classes.Main}>
-        <Card row shadow>
-          <div className={classes.Login}>
-            <h1 className={classes.MainTitle}>Add New User</h1>
-            <div className={classes.Field}>{signupField}</div>
-            <div className={classes.ButtonArea}>
-              <Button value="Add User" onClick={this.onSignUp} />
-            </div>
+      <Card row shadow>
+        <div className={classes.Login}>
+          <h1 className={classes.MainTitle}>Add New User</h1>
+          <div className={classes.Field}>{signupField}</div>
+          <div className={classes.ButtonArea}>
+            <Button value="Add User" onClick={this.onSignUp} />
           </div>
-          <div className={classes.Blue}>
-            <ImageHolder filler={image} />
-          </div>
-        </Card>
-      </div>
+        </div>
+        <div className={classes.Blue}>
+          <ImageHolder filler={image} />
+        </div>
+      </Card>
     );
   }
 }

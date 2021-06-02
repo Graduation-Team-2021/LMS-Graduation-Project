@@ -48,7 +48,7 @@ class users_controller:
                 'status_code': 404
             })
         if user and not prof and not student:
-            return {"user": user.serialize(), "password": user.password}
+            return {"user": user.serialize(), "password": user.password, "role": 'admin'}
         elif user and prof:
             role = "professor"
             return {"user": user.serialize(), "password": user.password, "role": role,

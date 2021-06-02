@@ -161,20 +161,18 @@ class AddCoursePage extends Component {
       </React.Fragment>
     );
     return (
-      <div className={classes.Main}>
-        <Card row shadow>
-          <div className={classes.Login}>
-            <h1 className={classes.MainTitle}>Add New Course</h1>
-            <div className={classes.Field}>{AddCourseField}</div>
-            <div className={classes.ButtonArea}>
-              <Button value="Add Course" onClick={this.onAddCourse} />
-            </div>
+      <Card row shadow>
+        <div className={classes.Login}>
+          <h1 className={classes.MainTitle}>Add New Course</h1>
+          <div className={classes.Field}>{AddCourseField}</div>
+          <div className={classes.ButtonArea}>
+            <Button value="Add Course" onClick={this.onAddCourse} />
           </div>
-          <div className={classes.Blue}>
-            <ImageHolder filler={image} />
-          </div>
-        </Card>
-      </div>
+        </div>
+        <div className={classes.Blue}>
+          <ImageHolder filler={image} />
+        </div>
+      </Card>
     );
   }
 }

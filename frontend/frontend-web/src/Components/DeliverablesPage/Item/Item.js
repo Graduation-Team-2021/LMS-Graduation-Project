@@ -20,6 +20,8 @@ function Page(props) {
     );
   };
 
+  console.log("quiz loaded");
+
   return (
     <div className={cls.page}>
       <button className={cls.button} onClick={() => props.history.push("/Deliv/")}>

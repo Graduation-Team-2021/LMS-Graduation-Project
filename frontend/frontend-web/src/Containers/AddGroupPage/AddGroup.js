@@ -226,7 +226,6 @@ class AddGroupPage extends Component {
       </React.Fragment>
     );
     return (
-      
         <Card row shadow>
           <div className={classes.Login}>
             <h1 className={classes.MainTitle}>Add New Group</h1>
@@ -239,7 +238,6 @@ class AddGroupPage extends Component {
             <ImageHolder filler={image} />
           </div>
         </Card>
-     
     );
   }
 }

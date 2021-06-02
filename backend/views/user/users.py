@@ -214,10 +214,12 @@ class Login(Resource):
         try:
             if check_hash(user["password"], args["password"]) or user['password'] == args[
                 'password']:  # hashed password #zawedt el b3d el or 3ashan 7war el reset password by email msh sha3'al
+                 print(user)
+                 print(user['user'])
                  return jsonify({
                     'status_code': 200,
                     "name":user['user']['name'],
-                    'token':encode_auth_token(user["user"]["user_id"],controller_object.get_user_by_email(args["email"])["role"]),
+                    'token':encode_auth_token(user["user"]["user_id"],user["role"]),
                     
                 })
             else:

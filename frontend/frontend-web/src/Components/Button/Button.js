@@ -6,7 +6,7 @@ const Button = (props) => {
         <input
               type="button"
               value={props.value}
-              className={classes.Button + " " + classes.Active}
+              className={classes.Button + " " + classes.Active+" "+props.className}
               onClick={props.onClick}
             />
     

@@ -1,0 +1,147 @@
+.Center {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    flex: 1;
+    transition: all 500ms;
+    opacity: 1;
+}
+
+.Bottom {
+    width: 100%;
+    flex: 1;
+    flex-flow: column;
+    align-items: center;
+}
+
+.Center .Container {
+    align-items: flex-start;
+    display: flex;
+    flex-flow: column;
+    flex: 1;
+}
+
+.Center .Container .Card {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
+}
+
+.Buttons .Button {
+    font-size: 2em;
+    width: 250px;
+    height: 100px;
+    background-color: blue;
+    box-shadow: 0px 0px 1vw grey;
+}
+
+.Buttons {
+    padding: 1% 0;
+    width: 70%;
+    display: flex;
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+.main {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 55%;
+}
+
+.User {
+    position: relative;
+    flex-flow: row;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 27vh;
+    width: 100%;
+}
+
+.Details {
+    padding-left: 5%;
+    height: 100%;
+    font-size: 1.5em;
+}
+
+.Name {
+    font-weight: bold;
+    font-size: 1em;
+    padding: 5% 0;
+}
+
+.filler {
+    height: 40%;
+    width: 100%;
+}
+
+.User .Pic {
+    border-radius: 100%;
+    width: 200px;
+    height: 200px;
+    border: 6px solid purple;
+    box-sizing: border-box;
+    margin-left: 5%;
+}
+
+.background {
+    align-self: start;
+    position: absolute;
+    height: 40%;
+    width: 100%;
+    background-image: linear-gradient(to right, red, blue);
+}
+
+.Bottom {
+    flex: 5;
+    justify-content: space-evenly;
+    display: flex;
+    padding: 1% 0;
+    width: 100%;
+}
+
+.dismiss {
+    opacity: 0;
+}
+
+
+@media (max-width : 662px) {
+    .main {
+        flex-flow: column;
+    }
+
+    .Center .Container .Card {
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+    }
+
+    .User {
+        padding: 0;
+        flex-flow: column;
+        height: fit-content;
+        justify-content: space-between;
+    }
+
+    .background {
+        height: 27%;
+    }
+
+    .Details {
+        padding: 15px;
+    }
+
+    .Bottom {
+        flex-direction: column-reverse;
+    }
+
+    .User .Pic {
+        width: 166px;
+        height: 166px;
+        margin-top: 10px;
+    }
+}

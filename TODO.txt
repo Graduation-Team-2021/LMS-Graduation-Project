@@ -1,7 +1,6 @@
 NEW TODO:
 1. Set routes for admin
-2. Add Quiz/assignment routes to main page
-4. Reset Password
+4. Reset Password (needs Integration)
 5. Materials get/update
 2036. Ask Dr. Hoda for The shape of the Document
 15. Edit profile Pic
