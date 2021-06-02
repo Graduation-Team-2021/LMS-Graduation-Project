@@ -268,3 +268,13 @@ class SearchUserByName(Resource):
         args = self.reqparse.parse_args()
         name=args['name']
         return controller_object.search_for_a_user(name)
+
+#/users/<user_id>/pic
+class updatePic(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument("pic", type=str, location='json')
+        
+    def post(self):
+        args = self.reqparse.parse_args()
+        return controller_object.update_profile_pic(args['pic'])

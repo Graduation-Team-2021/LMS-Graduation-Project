@@ -14,6 +14,7 @@ class User(db.Model, Base):
     national_id = db.Column(db.String(50), nullable=False, unique=True)
     birthday = db.Column(db.Date, nullable=False)
     password = db.Column(db.String(255))
+    picture = db.Column(db.String(255))
 
     def serialize(self):
         return {
@@ -21,7 +22,8 @@ class User(db.Model, Base):
             'name': self.name,
             'email':self.email,
             'national_id':self.national_id,
-            'birthday':str(self.birthday)
+            'birthday':str(self.birthday),
+            'picture':self.picture
         }
 
     def insert(self):

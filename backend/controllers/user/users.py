@@ -93,6 +93,9 @@ class users_controller:
         updated_user = User(**user)
         updated_user.update()
         return updated_user.serialize()
+    
+    def update_profile_pic(self, user_id, pic):
+        self.update_user(user_id, {"picture": pic})
 
     def post_user(self, user):
         new_user = User(**user)

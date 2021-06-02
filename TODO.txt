@@ -1,9 +1,8 @@
 NEW TODO:
-1. Set routes for admin
 4. Reset Password (needs Integration)
 5. Materials get/update
 2036. Ask Dr. Hoda for The shape of the Document
-15. Edit profile Pic
+15. Edit profile Pic 
 16. get users of Course/Group 
 17. Join Courses with a deadline *******************************************
 2099. add profile pic to table in the database

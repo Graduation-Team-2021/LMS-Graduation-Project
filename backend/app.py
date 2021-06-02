@@ -61,7 +61,7 @@ mail service
 """
 import all the endpoints from views
 """
-from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile,Sign_Up_Using_Excel,SearchUserByName
+from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile,Sign_Up_Using_Excel,SearchUserByName, updatePic
 from views.user.professors import Professor, Professors
 from views.user.students import Students, Student,Student_result_calculation
 from views.course.courses import Course, Courses, My_Courses,SearchCourseByName
@@ -105,6 +105,7 @@ api.add_resource(Login, '/login')
 api.add_resource(Reset_password, '/reset/password')
 api.add_resource(Profile, '/users/<user_id>/profile')
 api.add_resource(SearchUserByName, '/users/search')
+api.add_resource(updatePic, '/users/<user_id>/pic')
 """
 Professor
 """
