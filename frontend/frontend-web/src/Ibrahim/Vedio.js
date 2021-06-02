@@ -8,12 +8,20 @@ import CoursePage from "../Containers/CoursePage/CoursePage";
 
 class Vedioplayer extends Component {
   // axios.get()
-
+  
   state = {
-    url:
-      "https://www.youtube.com/watch?v=A3Ffwsnad0k&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=1",
+    url: "https://www.youtube.com/watch?v=A3Ffwsnad0k&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=1",
+    windowWidth: window.innerWidth - 100 
   };
-
+  handleResize = (e) => {
+    this.setState({ windowWidth: window.innerWidth - 50 });
+    };
+    componentDidMount() {
+    window.addEventListener("resize", this.handleResize);
+    }
+    componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+    }
   mathurl = () => {
     this.setState({
       url:
@@ -61,9 +69,10 @@ class Vedioplayer extends Component {
       },
     })
   };
-
+  
   start = () => {
     alert("you can start now your vedio");
+    console.log(this.state.screen_length)
   };
   finish = () => {
     alert("you have finished your vedio keeo going");
@@ -75,7 +84,18 @@ class Vedioplayer extends Component {
     return (
       <div className="container">
         <div className="Vedio">
+
           <ReactPlayer
+            controls
+            width= {this.state.windowWidth}
+            height="600px"
+            url={this.state.url}
+            onReady={this.start}
+            onEnded={this.finish}
+            onchange={this.change}
+            onError={this.nulling}
+          />
+          {/* <ReactPlayer
             controls
             width="1500px"
             height="600px"
@@ -84,7 +104,7 @@ class Vedioplayer extends Component {
             onEnded={this.finish}
             onchange={this.change}
             onError={this.nulling}
-          />
+          /> */}
           <ul className="vediolist">
             <li>
               <p> Your courses vedio :</p>

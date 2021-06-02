@@ -104,7 +104,9 @@ const GroupPage = (props) => {
             </div>
           </Card>
         </div>
-        <GroupDescription desc={Desc} />
+        <div className={classes.large}>
+          <GroupDescription desc={Desc} />
+        </div>
       </div>
     </React.Fragment>
   );

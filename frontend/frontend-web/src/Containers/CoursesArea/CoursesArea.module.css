@@ -114,6 +114,7 @@
     .Join2 {
         align-self: flex-end;
         display: flex;
+        font-size: large;
     }
 
     .Left {

@@ -80,7 +80,7 @@ class CoursesArea extends Component {
           <div
             style={{
               display: "flex",
-              width: "40%",
+              width: "50%",
               justifyContent: "space-between",
             }}
           >
@@ -105,6 +105,17 @@ class CoursesArea extends Component {
         <Waiting Loading={this.state.Loading}>
           <SwipeList>{courses}</SwipeList>
         </Waiting>
+        <div style={{
+           display: "flex"
+        }}>
+        <button
+              className={classes.Join2}
+              onClick={() => {
+                this.loadDeliverables();
+              }}
+            >
+              Check Deliverables
+            </button>
         <button
           className={classes.Join2}
           onClick={() => {
@@ -113,6 +124,7 @@ class CoursesArea extends Component {
         >
           See All Courses
         </button>
+        </div>
       </div>
     );
   }

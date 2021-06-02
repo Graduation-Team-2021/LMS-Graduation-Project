@@ -66,3 +66,10 @@
         width: 100%;
     }
 }
+
+@media (max-width : 1150px) {
+    .Join {
+        width: 32vw;
+        font-size: medium;
+    }
+}
