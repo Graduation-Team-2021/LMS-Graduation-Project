@@ -273,8 +273,8 @@ class SearchUserByName(Resource):
 class updatePic(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument("pic", type=str, location='json')
+        self.reqparse.add_argument("pic", type=werkzeug.datastructures.FileStorage, location='files')
         
-    def post(self):
+    def post(self, user_id):
         args = self.reqparse.parse_args()
-        return controller_object.update_profile_pic(args['pic'])
+        return controller_object.update_profile_pic(user_id, args['pic'])

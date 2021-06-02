@@ -1,10 +1,9 @@
 import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
 
-export const getCancelToken=()=>{
-  return axios.CancelToken.source()
-}
-
+export const getCancelToken = () => {
+  return axios.CancelToken.source();
+};
 
 const instance = axios.create({
   baseURL: "http://localhost:5000",
@@ -391,4 +390,24 @@ export const AddNewDeliv = async (Data) => {
   console.log(Data);
   /* console.log(res);
   return res.data["names"]; */
+};
+
+export const updatePic = async (id, Pic) => {
+  let data = new FormData();
+  data.append("pic", Pic);
+  const res = await instance.post(`/users/${id}/pic`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  console.log(res);
+};
+
+export const getUser = async (id) => {
+  const res = await instance.get(`/users/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data;
 };

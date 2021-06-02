@@ -15,6 +15,7 @@ import {
   getFinishedCourses,
   getRecentUserPosts,
   getRecentEvent,
+  getUser
 } from "../../Interface/Interface";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 import { setFullUserPost } from "../../Models/Post";
@@ -22,6 +23,8 @@ import { setEvent } from "../../Models/Event";
 
 const ProfilePage = (props) => {
   const [Finished, setFinished] = useState([]);
+
+  const [userSelf, setuserSelf] = useState(null);
 
   const { Token, ID, Role, Name } = props.userData;
 
@@ -46,6 +49,13 @@ const ProfilePage = (props) => {
   }, [Token, ID, Role, TokenError, RecentEvent, setRecentEvent]);
 
   useEffect(() => {
+    getUser(ID).then(res=>{
+      console.log(res);
+      setuserSelf(res)
+    })
+  }, [ID])
+
+  useEffect(() => {
     getFinishedCourses(Token, ID, Role).then((res) => {
       const Courses = [];
       res.forEach((C) =>
@@ -65,7 +75,7 @@ const ProfilePage = (props) => {
           <div className={classes.background}>{/*insert your image here*/}</div>
           <div className={classes.User}>
             <div className={classes.main}>
-              <ImageHolder className={classes.Pic} filler={filler} />
+              <ImageHolder className={classes.Pic} filler={userSelf['picture']} />
               <div className={classes.Details}>
                 <div className={classes.filler} />
                 <div className={classes.Name}>{props.userData.Name}</div>

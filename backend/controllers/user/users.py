@@ -9,6 +9,7 @@ import smtplib
 from methods.auth import *
 import os
 from models.config import db
+from flask import current_app
 
 cont_stud = students_controller()
 cont_professor = professors_controller()
@@ -95,7 +96,32 @@ class users_controller:
         return updated_user.serialize()
     
     def update_profile_pic(self, user_id, pic):
-        self.update_user(user_id, {"picture": pic})
+        # add to Local then to Database
+        print(pic)
+        file_path = os.path.join(current_app.config['STATIC_PATH'], f"users/{user_id}")
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)
+        file_path = os.path.join(file_path, pic.filename)
+        pic.save(file_path)
+        user={}
+        try:
+            updated_user = User.query.filter_by(user_id=user_id).first()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
+        if updated_user is None:
+            raise ErrorHandler({
+                'description': 'User does not exist.',
+                'status_code': 404
+            })
+        updated_user = updated_user.serialize()
+        updated_user['picture']=file_path
+        updated_user = User(**updated_user)
+        updated_user.update()
+        return updated_user.serialize()
 
     def post_user(self, user):
         new_user = User(**user)
