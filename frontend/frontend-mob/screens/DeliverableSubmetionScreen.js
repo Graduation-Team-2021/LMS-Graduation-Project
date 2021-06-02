@@ -1,8 +1,22 @@
-import React from 'react';
-import { View,Text } from 'react-native';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import Quiz from "../components/Quiz";
+import Assignment from "../components/Assignment";
+const DeliberableSubmetionScreen = (props) => {
+  //if the delevrable type is quiz
+  // show the quiz question component
+  //else
+  // show the adding files part
 
-const QuizScreen = (props) => {
-    return ( <View><Text>This is a Quiz</Text></View> );
-}
- 
-export default QuizScreen;
+  let renderedItem = <Quiz {...props} ></Quiz>;
+  if (props.navigation.getParam("deliverableType") === "Assignment") {
+    renderedItem = <Assignment {...props} ></Assignment>;
+  }
+  return <View style={styles.screen}>{renderedItem}</View>;
+};
+
+const styles = StyleSheet.create({
+  screen: { flex: 1, justifyContent: "center", alignItems: "center" },
+});
+
+export default DeliberableSubmetionScreen;

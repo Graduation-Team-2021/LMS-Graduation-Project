@@ -20,6 +20,7 @@
     "react-native-elements": "^3.4.1",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-linear-gradient": "^2.5.6",
+    "react-native-paper": "^4.9.1",
     "react-native-reanimated": "1.13.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
