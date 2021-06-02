@@ -1,15 +1,10 @@
 NEW TODO:
-4. Reset Password (needs Integration)
 5. Materials get/update
 2036. Ask Dr. Hoda for The shape of the Document
 15. Edit profile Pic (done with Bug, Can't use image if not in assets folder) 
 16. get users of Course/Group 
 17. Join Courses with a deadline *******************************************
-2099. add profile pic to table in the database
 2. Search Page with categories for each entity
-32. Remove "Open Settings" button
-2020. check if the student is enrolled from the database/frontend
-        check with the list of the enrolled courses
 12. real time Comments/like
 29. Enable Dark Mode
 

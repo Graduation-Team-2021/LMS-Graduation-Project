@@ -411,3 +411,12 @@ export const getUser = async (id) => {
   });
   return res.data;
 };
+
+export const changePassword = async(id, pass)=>{
+  const res = await instance.post(`/reset/password`,{user_id: id, password:pass}, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data;
+}

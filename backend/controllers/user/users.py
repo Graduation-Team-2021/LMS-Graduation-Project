@@ -117,9 +117,7 @@ class users_controller:
                 'description': 'User does not exist.',
                 'status_code': 404
             })
-        updated_user = updated_user.serialize()
-        updated_user['picture']=file_path
-        updated_user = User(**updated_user)
+        updated_user.picture = file_path
         updated_user.update()
         return updated_user.serialize()
 
@@ -180,17 +178,18 @@ class users_controller:
 
 
     #Sha3'ala tamam
-    def reset_password(self, national_id):
-        user = User.query.filter_by(national_id=national_id).first()
+    def reset_password(self, user_id, password):
+        user = User.query.filter_by(user_id=user_id).first()
         if user:
             try:
 
-                import random
-                hash = random.getrandbits(128)
-                self.send_email_2(f'your new password is {hex(hash).replace("0x", "")}',
-                                  user.email)  # hena mafeesh moshkela
-                user.password = generate_hash(str(hash))
-                db.session.commit()
+                # import random
+                # hash = random.getrandbits(128)
+                # self.send_email_2(f'your new password is {hex(hash).replace("0x", "")}',
+                #                   user.email)  # hena mafeesh moshkela
+                user.password = generate_hash(str(password))
+                user.update()
+                # db.session.commit()
                 # self.send_email_2(f"your new password is {str(generate_hash(national_id))}", user.email) el satr da feh moshkela
                 # lessa ma3'airtsh el password nafso fl database
                 # print(user.password)

@@ -15,7 +15,11 @@ const Menu = (props) => {
         }
       }>View Profile</h2>
       <h2>Search</h2>
-      <h2>Reset Password</h2>
+      <h2 onClick={
+        () => {
+          props.onClick()
+          props.history.push("/changePass");
+        }}>Reset Password</h2>
       <h2>Enroll in Courses</h2>
       <h2 onClick={
         () => {

@@ -17,12 +17,14 @@ import Deliv from "./Components/DeliverablesPage/DeliverablesPage";
 import PDFs from "./Components/PDFsPage/PDFsPage";
 import PDF from "./Ibrahim/Pdf_reader";
 import AddDelivPage from "./Containers/AddDelivPage/AddDeliv";
+import AdminPage from "./Containers/AdminPage/AdminPage";
+import ResetPass from "./Containers/ResetPass/ResetPass";
 
 import { mapStateToProps, mapDispatchToProps } from "./store/reduxMaps";
 import { connect } from "react-redux";
 
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
-import AdminPage from "./Containers/AdminPage/AdminPage";
+
 
 const App = (props) => {
   const Joining = (courseID) => {
@@ -60,6 +62,7 @@ const App = (props) => {
                   exact
                   component={AddDelivPage}
                 />
+                <Route path='/changePass' exact component={ResetPass}/>
                 <Redirect path="/login" to="/" />
               </React.Fragment>
             ) : (
@@ -71,6 +74,7 @@ const App = (props) => {
                 />
                 <Route path="/SignUp" exact component={SignUp}/>
                 <Route path="/AddCourse" exact component={AddCourse}/>
+                <Route path='/changePass' exact component={ResetPass}/>
               </React.Fragment>
             )}
           </Switch>
