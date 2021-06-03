@@ -38,7 +38,8 @@
     "expo-file-system": "~11.0.2",
     "react-native-pdf": "*",
     "rn-pdf-reader-js": "*",
-    "react-native-webview": "11.2.3"
+    "react-native-webview": "11.2.3",
+    "expo-document-picker": "~9.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

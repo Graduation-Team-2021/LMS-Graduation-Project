@@ -11,8 +11,8 @@ const Quiz = (props) => {
     <View style={styles.parentView}>
       <Text> The Quiz consists of {questions.length} questions </Text>
       <ScrollView horizontal>
-        {questions.map((question) => (
-          <Card containerStyle={styles.cardContainerStyle}>
+        {questions.map((question,index) => (
+          <Card containerStyle={styles.cardContainerStyle} key = {index}>
             <Question question={`Qestion Numbers ${question}`} answers={['a','b','c','d','e']} />
           </Card>
         ))}
