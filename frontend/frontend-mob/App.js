@@ -1,9 +1,10 @@
-import React from 'react';
- import HomeNav from './navigators/AuthNavigator'
+import React from "react";
+import HomeNav from "./navigators/AuthNavigator";
+import { Provider as PaperProvider } from "react-native-paper";
 export default function App() {
   return (
-    <HomeNav />
+    <PaperProvider>
+      <HomeNav />
+    </PaperProvider>
   );
 }
-
-

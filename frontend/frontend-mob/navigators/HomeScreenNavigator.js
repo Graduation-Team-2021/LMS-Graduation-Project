@@ -8,6 +8,7 @@ import CourseDescriptionScreen from "../screens/CourseDescriptionScreen";
 import DeliverableList from "../screens/DeliverableList";
 import DeliverableDescriptionScreen from "../screens/DeliverableDescriptionScreen";
 import DeliverableSubmetionScreen from "../screens/DeliverableSubmetionScreen";
+import ResultsNavigator from "./ResultNavigator";
 const studentName = "Ibrahim";
 
 const HomeStack = createStackNavigator({
@@ -49,6 +50,7 @@ const HomeStack = createStackNavigator({
       };
     },
   },
+  SearchReasult: ResultsNavigator,
 });
 
 export default HomeStack;

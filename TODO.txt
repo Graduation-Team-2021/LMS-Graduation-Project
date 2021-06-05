@@ -20,13 +20,9 @@ NEW TODO:
 
 Mobile TODO:
 1. in Mobile app, Handle the tablet screen
-2.over All Navigation(Done)
-3. Delivralbes(compute real data)
-4. integration
-5.Search Dialog in the App bar
-6. Video/PDF in the App
-7. Search results screen
-8. Redux in the mobile application
+2. integration
+3. Video/PDF in the App
+4. Redux in the mobile application
 
 
 *************************************************
