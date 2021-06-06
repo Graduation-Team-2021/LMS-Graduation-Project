@@ -5,8 +5,10 @@ export const getCancelToken = () => {
   return axios.CancelToken.source();
 };
 
+const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
+
 const instance = axios.create({
-  baseURL: "http://0.0.0.0:5000",
+  baseURL: "http://localhost:5000",
 });
 
 //Template for all Functions

@@ -15,10 +15,7 @@ const HomeStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: (navData) => {
-      let student_name = navData.navigation.getParam("studentName");
-      return {
-        title: student_name,
-      };
+      //console.log(navData.navigation);
     },
   },
   Course: {

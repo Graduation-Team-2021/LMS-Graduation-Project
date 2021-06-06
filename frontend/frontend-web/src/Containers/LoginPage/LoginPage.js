@@ -34,7 +34,6 @@ class LoginPage extends Component {
             Role: jwt_decode(res.Token).permissions,
           };
           this.props.userDataActions.onSetData(Data);
-          console.log(this.props.userData, Data);
           this.props.history.push("/");
         } else alert("Login Failed");
       });
