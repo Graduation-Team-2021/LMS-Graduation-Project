@@ -18,12 +18,12 @@ const HomeScreen = (props) => {
 
   const [ButtomModalVisability, setButtomModalVisability] = useState(false);
 
-  // useEffect(() => {
-  //   props.navigation.setParams({
-  //     showBottomModalSheet: () => setButtomModalVisability(true),
-  //     studentName: props.userData.Name
-  //   });
-  // }, []);
+  useEffect(() => {
+    props.navigation.setParams({
+      showBottomModalSheet: () => setButtomModalVisability(true),
+      studentName: props.userData.Name
+    });
+  }, []);
 
   return (
     <Fragment>

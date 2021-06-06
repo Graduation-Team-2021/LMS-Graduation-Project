@@ -8,7 +8,6 @@ const AuthNavgiator = createSwitchNavigator(
     AuthLoading: AuthLoadingScreen,
     MainNavigator: {
       screen: MainNav,
-      
     },
     Login: LoginScreen,
   },
