@@ -6,10 +6,13 @@ import AuthLoadingScreen from "../screens/AuthLoading";
 const AuthNavgiator = createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
-    MainNavigator: MainNav,
+    MainNavigator: {
+      screen: MainNav,
+      
+    },
     Login: LoginScreen,
   },
   { initialRouteName: "AuthLoading" }
 );
 
-export default createAppContainer(AuthNavgiator)
+export default createAppContainer(AuthNavgiator);

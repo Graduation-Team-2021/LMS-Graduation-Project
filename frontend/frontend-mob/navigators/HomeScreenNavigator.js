@@ -9,10 +9,18 @@ import DeliverableList from "../screens/DeliverableList";
 import DeliverableDescriptionScreen from "../screens/DeliverableDescriptionScreen";
 import DeliverableSubmetionScreen from "../screens/DeliverableSubmetionScreen";
 import ResultsNavigator from "./ResultNavigator";
-const studentName = "Ibrahim";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeStack = createStackNavigator({
-  Home: { screen: HomeScreen, navigationOptions: { title: `${studentName}` } },
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: (navData) => {
+      let student_name = navData.navigation.getParam("studentName");
+      return {
+        title: student_name,
+      };
+    },
+  },
   Course: {
     screen: CourseScreen,
     navigationOptions: (navData) => {

@@ -2,7 +2,7 @@ import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
 
 const instance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "http://192.168.1.9:5000",
 });
 //Template for all Functions
 export const f1 = async () => {
@@ -26,6 +26,7 @@ export const SignUp = async (Data) => {
 };
 
 export const Login = async (Data) => {
+  //console.log('David',Data);
   const res = await instance.post("/login", Data, {
     headers: {
       "Content-Type": "application/json",

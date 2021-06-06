@@ -1,5 +1,7 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+import { connect } from "react-redux";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import ANHeaderButton from "../components/ANHeaderButton";
@@ -16,11 +18,12 @@ const HomeScreen = (props) => {
 
   const [ButtomModalVisability, setButtomModalVisability] = useState(false);
 
-  useEffect(() => {
-    props.navigation.setParams({
-      showBottomModalSheet: () => setButtomModalVisability(true),
-    });
-  }, []);
+  // useEffect(() => {
+  //   props.navigation.setParams({
+  //     showBottomModalSheet: () => setButtomModalVisability(true),
+  //     studentName: props.userData.Name
+  //   });
+  // }, []);
 
   return (
     <Fragment>
@@ -35,9 +38,6 @@ const HomeScreen = (props) => {
         <SearchingButtomModal
           closeTheBottomSheet={() => setButtomModalVisability(false)}
           navigateToResults={(searchingQuery) => {
-            console.log(
-              `[AdhamNour][HomeScreen][Line26] searchingQueary = ${searchingQuery}`
-            );
             setButtomModalVisability(false);
             props.navigation.navigate({
               routeName: "SearchReasult",
@@ -115,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

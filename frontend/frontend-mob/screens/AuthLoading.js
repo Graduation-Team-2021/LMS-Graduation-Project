@@ -1,9 +1,30 @@
 import React, { useEffect } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
+import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+import { connect } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import jwt_decode from "jwt-decode";
+
 const AuthLoadingScreen = (props) => {
   const bootStrapAsync = () => {
-    dummyBool = true;
-    props.navigation.navigate(dummyBool ? "MainNavigator" : "Login");
+    AsyncStorage.getItem("token").then((token) =>{
+      if (token) {
+        AsyncStorage.getItem("name").then((name) => {
+          props.userDataActions.onSetData({
+            Token: token,
+            Name: name,
+            ID: jwt_decode(token).id,
+            Role: jwt_decode(token).permissions,
+          });
+          props.navigation.navigate({
+            routeName: "MainNavigator",
+            params: { studentName: name },
+          });
+        });
+      } else {
+        props.navigation.navigate("Login");
+      }
+    });
   };
   useEffect(() => bootStrapAsync(), []);
   return (
@@ -13,4 +34,4 @@ const AuthLoadingScreen = (props) => {
   );
 };
 
-export default AuthLoadingScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(AuthLoadingScreen);
