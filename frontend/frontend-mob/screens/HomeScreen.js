@@ -9,6 +9,48 @@ import { Button, BottomSheet } from "react-native-elements";
 import SwipeList from "../components/SwipList";
 import Dismiss from "../components/Dismiss";
 import SearchingButtomModal from "../components/searchingButtomModal";
+import * as Interface from "../Interface/Interface";
+import { setCourse } from "../Models/Course";
+import { setGroup } from "../Models/Group";
+
+const DCourses = [
+  {
+    CourseName: "Tst1",
+    CoursePicture: "https://images5.alphacoders.com/903/903845.png",
+  },
+  {
+    CourseName: "Tst2",
+    CoursePicture: "https://images2.alphacoders.com/732/732856.jpg",
+  },
+  {
+    CourseName: "Tst3",
+    CoursePicture: "https://images3.alphacoders.com/714/714619.png",
+  },
+  {
+    CourseName: "Tst4",
+    CoursePicture: "https://images.alphacoders.com/105/1058766.png",
+  },
+];
+
+const DGroups = [
+  {
+    CourseName: "Tst1",
+    CoursePicture: "https://images5.alphacoders.com/903/903845.png",
+  },
+  {
+    CourseName: "Tst2",
+    CoursePicture: "https://images2.alphacoders.com/732/732856.jpg",
+  },
+  {
+    CourseName: "Tst3",
+    CoursePicture: "https://images3.alphacoders.com/714/714619.png",
+  },
+  {
+    CourseName: "Tst4",
+    CoursePicture: "https://images.alphacoders.com/105/1058766.png",
+  },
+];
+
 const HomeScreen = (props) => {
   let c = [];
   const groupflag = true;
@@ -18,10 +60,38 @@ const HomeScreen = (props) => {
 
   const [ButtomModalVisability, setButtomModalVisability] = useState(false);
 
+  const setCurrentCourses = props.currentCoursesActions.onSetCurrentCourses;
+
+  const setCurrentGroups = props.currentGroupsActions.onSetCurrentGroups;
+
   useEffect(() => {
     props.navigation.setParams({
       showBottomModalSheet: () => setButtomModalVisability(true),
-      studentName: props.userData.Name
+      studentName: props.userData.Name,
+    });
+  }, []);
+
+  useEffect(() => {
+    Interface.getCurrentCourses(props.userData.Token).then((res) => {
+      const Courses = [];
+      if (res) {
+        res.forEach((element) => {
+          Courses.push(setCourse(element));
+        });
+        setCurrentCourses(Courses);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    Interface.getCurrentGroups(props.userData.Token).then((res) => {
+      const Groups = [];
+      if (res) {
+        res.forEach((element) => {
+          Groups.push(setGroup(element));
+        });
+        setCurrentGroups(Groups);
+      }
     });
   }, []);
 
@@ -49,7 +119,7 @@ const HomeScreen = (props) => {
       <ScrollView>
         <View style={styles.screen}>
           <Text style={styles.title}>Courses you are enrolled in </Text>
-          <SwipeList navigation={props.navigation} />
+          <SwipeList navigation={props.navigation} Data={DCourses} />
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
@@ -65,7 +135,11 @@ const HomeScreen = (props) => {
             />
           </View>
           <Text style={styles.title}>Your Groups</Text>
-          <SwipeList navigation={props.navigation} groupflag={groupflag} />
+          <SwipeList
+            navigation={props.navigation}
+            groupflag={groupflag}
+            Data={DGroups}
+          />
           <Text style={styles.title}>Last Post</Text>
           <View style={{ height: 300, width: "100%" }}>
             <Dismiss>{c}</Dismiss>
