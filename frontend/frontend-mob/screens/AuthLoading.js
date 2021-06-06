@@ -7,7 +7,7 @@ import jwt_decode from "jwt-decode";
 
 const AuthLoadingScreen = (props) => {
   const bootStrapAsync = () => {
-    AsyncStorage.getItem("token").then((token) =>{
+    AsyncStorage.getItem("token").then((token) => {
       if (token) {
         AsyncStorage.getItem("name").then((name) => {
           props.userDataActions.onSetData({
@@ -18,7 +18,10 @@ const AuthLoadingScreen = (props) => {
           });
           props.navigation.navigate({
             routeName: "MainNavigator",
-            params: { studentName: name },
+            params: {
+              routeName: "Home",
+              params: {studentName: name} 
+            },
           });
         });
       } else {

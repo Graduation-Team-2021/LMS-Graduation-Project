@@ -9,10 +9,6 @@ const MainDrawer = createDrawerNavigator(
   {
     Home: {
       screen: HomeScreenNavigator,
-        navigationOptions: (navOption)=>{
-            console.log(navOption.navigationOptions)
-            return {title: navOption.navigation.getParam('studentName')}
-        }
     },
     Profile: ProfileNav,
     Messenger: MsgsNavs,
