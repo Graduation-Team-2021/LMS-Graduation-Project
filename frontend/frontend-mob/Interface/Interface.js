@@ -88,7 +88,6 @@ export const getRecentPosts = async (Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res)
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
