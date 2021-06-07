@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, Stylesheet, TextInput } from "react-native";
 import { Card, Button, Icon } from "react-native-elements";
-const Post = () => {
+const Post = (props) => {
+  const postData = props.post
   return (
     <Card
       wrapperStyle={{
@@ -11,8 +12,8 @@ const Post = () => {
       }}
       containerStyle={{borderRadius:20}}
     >
-      <Text>post by : owener name </Text>
-      <Text> contant </Text>
+      <Text>post by : {postData.Name} </Text>
+      <Text>{postData.Desc}</Text>
       <View
         style={{
           flexDirection: "row",

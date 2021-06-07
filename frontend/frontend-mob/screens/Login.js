@@ -84,6 +84,7 @@ const LoginScreen = (props) => {
                 console.log(Email, Password);
                 Interface.Login({ email: Email, password: Password }).then(
                   async (value) => {
+                    console.log(value);
                     if (value !== null) {
                       await AsyncStorage.setItem("token", value.Token);
                       await AsyncStorage.setItem("name", value.name);

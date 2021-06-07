@@ -2,7 +2,7 @@ import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
 
 const instance = axios.create({
-  baseURL: "http://lmsproj.centralus.cloudapp.azure.com:5000",
+  baseURL: "http://192.168.1.9:5000",
 });
 //Template for all Functions
 export const f1 = async () => {
@@ -26,12 +26,13 @@ export const SignUp = async (Data) => {
 };
 
 export const Login = async (Data) => {
-  //console.log('David',Data);
   const res = await instance.post("/login", Data, {
     headers: {
       "Content-Type": "application/json",
     },
   });
+
+  console.log('[Interface:35]',res.data);
   if (res.data["status_code"] === 200) {
     return { Token: res.data["token"], name: res.data["name"] };
   } else {
@@ -145,7 +146,7 @@ export const getAllPosts = async (Token, owner) => {
       Authorization: "Bearer " + Token,
     },
   });
-
+  console.log('[Interface]',res.data);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
