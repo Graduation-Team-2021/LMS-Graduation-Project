@@ -53,7 +53,7 @@ const DGroups = [
 ];
 
 const HomeScreen = (props) => {
-  let c = [];
+  const [c, setC] = useState([])
   const groupflag = true;
 
   const [ButtomModalVisability, setButtomModalVisability] = useState(false);
@@ -99,13 +99,14 @@ const HomeScreen = (props) => {
     Interface.getRecentPosts(props.userData.Token).then((res) => {
       const Posts = [];
         if (res) {
+          console.log(res)
           res.forEach((ele) => {
             Posts.push(setFullPost(ele, props.userData.ID));
           });
           if (setPosts) {
             setPosts(Posts);
           }
-          c=Posts.map((value, index)=><Text key={index}>{value.Title}: {value.Desc}</Text>)
+          setC(Posts.map((value, index)=><Text key={index}>{value.Title}: {value.Desc}</Text>))
         }
 
     });
