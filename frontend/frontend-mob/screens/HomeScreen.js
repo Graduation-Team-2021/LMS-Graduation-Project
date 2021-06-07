@@ -12,6 +12,7 @@ import SearchingButtomModal from "../components/searchingButtomModal";
 import * as Interface from "../Interface/Interface";
 import { setCourse } from "../Models/Course";
 import { setGroup } from "../Models/Group";
+import { setFullPost } from "../Models/Post";
 
 const DCourses = [
   {
@@ -54,15 +55,14 @@ const DGroups = [
 const HomeScreen = (props) => {
   let c = [];
   const groupflag = true;
-  for (let index = 0; index < 10; index++) {
-    c.push(<Text key={index}>Hello {index}</Text>);
-  }
 
   const [ButtomModalVisability, setButtomModalVisability] = useState(false);
 
   const setCurrentCourses = props.currentCoursesActions.onSetCurrentCourses;
 
   const setCurrentGroups = props.currentGroupsActions.onSetCurrentGroups;
+
+  const setPosts = props.recentUserPostsActions.onSetRecentUserPosts;
 
   useEffect(() => {
     props.navigation.setParams({
@@ -94,6 +94,23 @@ const HomeScreen = (props) => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    Interface.getRecentPosts(props.userData.Token).then((res) => {
+      const Posts = [];
+        if (res) {
+          res.forEach((ele) => {
+            Posts.push(setFullPost(ele, props.userData.ID));
+          });
+          if (setPosts) {
+            setPosts(Posts);
+          }
+          c=Posts.map((value, index)=><Text key={index}>{value.Title}: {value.Desc}</Text>)
+        }
+
+    });
+  }, []);
+
 
   return (
     <Fragment>
