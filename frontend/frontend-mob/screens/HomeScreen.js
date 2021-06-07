@@ -98,8 +98,9 @@ const HomeScreen = (props) => {
   useEffect(() => {
     Interface.getRecentPosts(props.userData.Token).then((res) => {
       const Posts = [];
+      console.log(res)
         if (res) {
-          console.log(res)
+          
           res.forEach((ele) => {
             Posts.push(setFullPost(ele, props.userData.ID));
           });
