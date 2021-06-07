@@ -24,7 +24,7 @@ const HomeStack = createStackNavigator({
     screen: CourseScreen,
     navigationOptions: (navData) => {
       return {
-        title: `${navData.navigation.getParam("courseName")}`,
+        title: `${navData.navigation.getParam("course").CourseName}`,
       };
     },
   },

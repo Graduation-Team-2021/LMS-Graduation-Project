@@ -1,22 +1,36 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
-import { Card, Button } from "react-native-elements";
-
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, FlatList } from "react-native";
+import { Button } from "react-native-elements";
+import { getAllPosts } from "../Interface/Interface";
+import { connect } from "react-redux";
+import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
+import { setLocationPost } from "../Models/Post";
 import Post from "../components/Post";
 
 import About from "../components/About";
 import NewPost from "../components/NewPost";
 
-const data = [
-  "sklahjdlsa",
-  "sakjhkjsdah",
-  "sakjhkjsdah",
-  "sakjhkjsdah",
-  "sakjhkjsdah",
-  "kjasdhdsajk",
-];
+const data = ["sklahjdlsa"];
 
 const CourseScreen = (props) => {
+  let myCourse = props.navigation.getParam("course");
+  const [Data, setData] = useState(data);
+
+  useEffect(() => {
+    getAllPosts(props.userData.Token, myCourse.PostID).then((res) => {
+      const Posts = [];
+      console.log("[Adham]", res);
+      if (res) {
+        res.forEach((ele) => {
+          Posts.push(
+            setLocationPost(ele, myCourse.CourseName, props.userData.ID)
+          );
+        });
+        Posts.reverse();
+        setData([...data, ...Posts]);
+      }
+    });
+  }, []);
   const courseDetails = (
     <View>
       <Button
@@ -29,20 +43,25 @@ const CourseScreen = (props) => {
     </View>
   );
   const renederitem = (itemdata) => {
+    console.log(itemdata);
     if (itemdata.index === 0) {
       return <NewPost />;
     }
-    return <Post />;
+    return <Post post={itemdata.item} />;
   };
-  const groupflag = props.navigation.getParam('groupflag')
+  const groupflag = props.navigation.getParam("groupflag");
   return (
     <View style={styles.screen}>
       <View style={styles.topContainer}>
         <About />
-        {groupflag?null:courseDetails}
       </View>
+      {groupflag ? null : courseDetails}
       <View style={{ width: "90%", flex: 1 }}>
-        <FlatList data={data} renderItem={renederitem} keyExtractor={(_,index)=>`${index}`} />
+        <FlatList
+          data={Data}
+          renderItem={renederitem}
+          keyExtractor={(_, index) => `${index}`}
+        />
       </View>
     </View>
   );
@@ -64,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CourseScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(CourseScreen);
