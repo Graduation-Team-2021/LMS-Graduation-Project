@@ -19,7 +19,7 @@ export const setLocationPost = (data, Title, userID) => {
   return Post;
 };
 
-export const setNewPost = (data, Title, userID, Name) => {
+export const setNewPost = (data, Title, Name) => {
   let Post = {
     Name: Name,
     Location: Title,

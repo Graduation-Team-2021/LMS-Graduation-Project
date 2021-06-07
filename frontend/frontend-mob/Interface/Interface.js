@@ -213,7 +213,6 @@ export const Like = async (Token, userID, postID) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
 };
 
 export const UnLike = async (Token, userID, postID) => {
@@ -223,7 +222,6 @@ export const UnLike = async (Token, userID, postID) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
 };
 
 export const Comment = async (Token, userID, postID, text) => {
