@@ -98,16 +98,16 @@ const HomeScreen = (props) => {
   useEffect(() => {
     Interface.getRecentPosts(props.userData.Token).then((res) => {
       const Posts = [];
-      console.log(res)
+      
         if (res) {
-          
-          res.forEach((ele) => {
-            Posts.push(setFullPost(ele, props.userData.ID));
+          res.forEach((ele, index) => {
+            let POST = setFullPost(ele, props.userData.ID)
+            Posts.push(<Text key={index}>{POST.Title}: {POST.Desc}</Text>);
           });
           if (setPosts) {
             setPosts(Posts);
           }
-          setC(Posts.map((value, index)=><Text key={index}>{value.Title}: {value.Desc}</Text>))
+          setC(Posts)
         }
 
     });
@@ -161,7 +161,7 @@ const HomeScreen = (props) => {
           />
           <Text style={styles.title}>Last Post</Text>
           <View style={{ height: 300, width: "100%" }}>
-            <Dismiss>{c}</Dismiss>
+            {c.length!==0?<Dismiss>{c}</Dismiss>:<Text>Loading.....</Text>}
           </View>
         </View>
       </ScrollView>

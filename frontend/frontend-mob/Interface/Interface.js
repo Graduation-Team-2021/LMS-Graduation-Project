@@ -145,7 +145,6 @@ export const getAllPosts = async (Token, owner) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log('[Interface]',res);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
