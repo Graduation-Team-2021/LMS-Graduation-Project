@@ -55,7 +55,7 @@ const DGroups = [
 ];
 
 const HomeScreen = (props) => {
-  const db = useRef(SQLite.openDatabase("LMS"));
+  const db = useRef(SQLite.openDatabase("LMS.db"));
   const [c, setC] = useState([]);
   const groupflag = true;
 
@@ -75,11 +75,17 @@ const HomeScreen = (props) => {
   }, []);
 
   useEffect(() => {
-    db.current.transaction((tx) => {
-      tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS course ( course_description mediumtext, course_code varchar(7) NOT NULL,course_name varchar(50) NOT NULL,CoursePicture varchar(255),DoctorName varchar(255),PostID INT,isEnrolled INT)"
-      );
-    });
+    // db.current.transaction((tx) =>
+    //   tx.executeSql("CREATE TABLE IF NOT EXISTS hello (tst INT);")
+    // );
+    // db.current.transaction((tx) =>
+    //   tx.executeSql("INSERT INTO hello VALUES (1)")
+    // );
+    // db.current.transaction((tx) =>
+    //   tx.executeSql("SELECT * FROM hello", [], (_, res) =>
+    //     console.log(JSON.stringify(res.rows))
+    //   )
+    // );
 
     Interface.getCurrentCourses(props.userData.Token).then((res) => {
       const Courses = [];
@@ -88,26 +94,6 @@ const HomeScreen = (props) => {
           let currentCourse = setCourse(element);
           Courses.push(currentCourse);
         });
-        // db.current.transaction((tx)=>{
-
-        // })
-        console.log("====================================");
-
-        db.current.transaction((tx) => {
-          Courses.forEach((Course) => {
-            const values = [];
-            Object.keys(Course).forEach((key) => values.push(Course[key]));
-            tx.executeSql("INSERT INTO course VALUES(?,?,?,?,?,?,?)", values);
-          });
-        });
-        db.current.transaction((tx) =>
-          tx.executeSql("show tables", [], (sqlres, sqlres_set) =>
-            console.log(`sqlres_set ${JSON.stringify(sqlres_set.rows)}`)
-          )
-        );
-        console.log("====================================");
-
-        console.log("[HomeScreen91]", Courses);
         setCurrentCourses(Courses);
       }
     });
