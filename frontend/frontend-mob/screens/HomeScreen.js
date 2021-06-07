@@ -1,9 +1,10 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+
 import ANHeaderButton from "../components/ANHeaderButton";
 import { Button, BottomSheet } from "react-native-elements";
 import SwipeList from "../components/SwipList";
@@ -13,6 +14,7 @@ import * as Interface from "../Interface/Interface";
 import { setCourse } from "../Models/Course";
 import { setGroup } from "../Models/Group";
 import { setFullPost } from "../Models/Post";
+import * as SQLite from "expo-sqlite";
 
 const DCourses = [
   {
@@ -53,7 +55,8 @@ const DGroups = [
 ];
 
 const HomeScreen = (props) => {
-  const [c, setC] = useState([])
+  const db = useRef(SQLite.openDatabase("LMS.db"));
+  const [c, setC] = useState([]);
   const groupflag = true;
 
   const [ButtomModalVisability, setButtomModalVisability] = useState(false);
@@ -72,11 +75,24 @@ const HomeScreen = (props) => {
   }, []);
 
   useEffect(() => {
+    // db.current.transaction((tx) =>
+    //   tx.executeSql("CREATE TABLE IF NOT EXISTS hello (tst INT);")
+    // );
+    // db.current.transaction((tx) =>
+    //   tx.executeSql("INSERT INTO hello VALUES (1)")
+    // );
+    // db.current.transaction((tx) =>
+    //   tx.executeSql("SELECT * FROM hello", [], (_, res) =>
+    //     console.log(JSON.stringify(res.rows))
+    //   )
+    // );
+
     Interface.getCurrentCourses(props.userData.Token).then((res) => {
       const Courses = [];
       if (res) {
         res.forEach((element) => {
-          Courses.push(setCourse(element));
+          let currentCourse = setCourse(element);
+          Courses.push(currentCourse);
         });
         setCurrentCourses(Courses);
       }
@@ -98,21 +114,23 @@ const HomeScreen = (props) => {
   useEffect(() => {
     Interface.getRecentPosts(props.userData.Token).then((res) => {
       const Posts = [];
-      
-        if (res) {
-          res.forEach((ele, index) => {
-            let POST = setFullPost(ele, props.userData.ID)
-            Posts.push(<Text key={index}>{POST.Title}: {POST.Desc}</Text>);
-          });
-          if (setPosts) {
-            setPosts(Posts);
-          }
-          setC(Posts)
-        }
 
+      if (res) {
+        res.forEach((ele, index) => {
+          let POST = setFullPost(ele, props.userData.ID);
+          Posts.push(
+            <Text key={index}>
+              {POST.Title}: {POST.Desc}
+            </Text>
+          );
+        });
+        if (setPosts) {
+          setPosts(Posts);
+        }
+        setC(Posts);
+      }
     });
   }, []);
-
 
   return (
     <Fragment>
@@ -161,7 +179,11 @@ const HomeScreen = (props) => {
           />
           <Text style={styles.title}>Last Post</Text>
           <View style={{ height: 300, width: "100%" }}>
-            {c.length!==0?<Dismiss>{c}</Dismiss>:<Text>Loading.....</Text>}
+            {c.length !== 0 ? (
+              <Dismiss>{c}</Dismiss>
+            ) : (
+              <Text>Loading.....</Text>
+            )}
           </View>
         </View>
       </ScrollView>

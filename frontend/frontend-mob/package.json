@@ -48,7 +48,8 @@
     "react-redux": "^7.2.4",
     "rn-pdf-reader-js": "*",
     "socket.io-client": "^4.1.2",
-    "validator": "^13.6.0"
+    "validator": "^13.6.0",
+    "expo-sqlite": "~9.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
