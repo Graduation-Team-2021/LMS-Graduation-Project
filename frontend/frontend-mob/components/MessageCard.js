@@ -22,14 +22,14 @@ const ConversationCard = (props, route, navigation)  => {
     <TouchableCmp key={props.key} >
       <View>
         <ListItem>
-          <Avatar rounded source={{ uri: props.user2_data.avatar_url }} />
+          {/* <Avatar rounded source={{ uri: props.user2_data.avatar_url }} /> */}
           <ListItem.Content>
             <ListItem.Title>
               <View style={{justifyContent: 'flex-start',
     flexDirection: 'row',
     width: Dimensions.get('window').width / 1.5}}>
                 <Text style={styles.Messages2}>
-                  {props.message.text}
+                  {props.message}
                 </Text>
 
               </View>
@@ -48,7 +48,7 @@ const ConversationCard = (props, route, navigation)  => {
     flexDirection: 'row',
     width: Dimensions.get('window').width / 1.1}}>
                 <Text style={styles.Messages1}>
-                  {props.message.text}
+                  {props.message}
                 </Text>
               </View>
             </ListItem.Title>
@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     backgroundColor:'rgb(120,201,195)',
     color:'white',
     padding:14,
-    borderRadius: 10
+    borderRadius: 10,
+    overflow: 'hidden'
   },
   Messages2: {
     maxWidth: '100%',
@@ -75,7 +76,8 @@ const styles = StyleSheet.create({
     backgroundColor:'rgb(134,175,205)',
     color:'white',
     padding:14,
-    borderRadius: 11
+    borderRadius: 11,
+    overflow:'hidden'
   }
 });
 export default ConversationCard;
