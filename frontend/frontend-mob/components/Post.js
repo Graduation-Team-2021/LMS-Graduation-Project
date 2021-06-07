@@ -3,6 +3,19 @@ import { View, Text, Stylesheet, TextInput } from "react-native";
 import { Card, Button, Icon } from "react-native-elements";
 const Post = (props) => {
   const postData = props.post
+
+  const Comments = []
+
+  for (let index = 0; index < (postData.Comments.length>2?2:postData.Comments.length); index++) {
+    Comments.push(<Text key={index}>{postData.Comments[index]}</Text>)
+  }
+  if(postData.Comments.length>2){
+    Comments.push(<Text key={2}>Show More Comments</Text>)
+  }
+  if(postData.Comments.length===0){
+    Comments.push(<Text key={0}>No Comments Yet</Text>)
+  }
+
   return (
     <Card
       wrapperStyle={{
@@ -38,6 +51,7 @@ const Post = (props) => {
         multiline
         style={{ borderWidth: 2, width: "100%", height: 50 }}
       />
+      {Comments}
     </Card>
   );
 };

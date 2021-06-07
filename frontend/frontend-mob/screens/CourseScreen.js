@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import { Button } from "react-native-elements";
-import { getAllPosts } from "../Interface/Interface";
+import { getAllPosts, uploadPost } from "../Interface/Interface";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
-import { setLocationPost } from "../Models/Post";
+import { setLocationPost, setNewPost } from "../Models/Post";
 import Post from "../components/Post";
 
 import About from "../components/About";
@@ -19,7 +19,6 @@ const CourseScreen = (props) => {
   useEffect(() => {
     getAllPosts(props.userData.Token, myCourse.PostID).then((res) => {
       const Posts = [];
-      console.log("[Adham]", res);
       if (res) {
         res.forEach((ele) => {
           Posts.push(
@@ -31,6 +30,22 @@ const CourseScreen = (props) => {
       }
     });
   }, []);
+
+  const [post, setPost] = useState('');
+
+  const Submit = async () => {
+    
+    let data = setNewPost(post, myCourse.CourseName, props.userData.Name);
+    let id = await uploadPost(props.userData.Token, props.userData.ID, myCourse.PostID, post);
+    console.log(id);
+    if (id) {
+      console.log("Adding to Queue");
+      data.PostId = id;
+      let temp = [...data, <Post key={Posts.length} {...data} />, ...Posts];
+      setData(temp);
+    }
+  };
+
   const courseDetails = (
     <View>
       <Button
@@ -43,9 +58,8 @@ const CourseScreen = (props) => {
     </View>
   );
   const renederitem = (itemdata) => {
-    console.log(itemdata);
     if (itemdata.index === 0) {
-      return <NewPost />;
+      return <NewPost setPost={setPost} Submit={Submit} post={post}/>;
     }
     return <Post post={itemdata.item} />;
   };
@@ -53,7 +67,7 @@ const CourseScreen = (props) => {
   return (
     <View style={styles.screen}>
       <View style={styles.topContainer}>
-        <About />
+        <About description={myCourse.CourseDescription}/>
       </View>
       {groupflag ? null : courseDetails}
       <View style={{ width: "90%", flex: 1 }}>

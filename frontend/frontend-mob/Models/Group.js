@@ -1,8 +1,8 @@
 export const setGroup = (ele) => {
   let data = {
     CourseName: ele["group_name"],
-    Desc: ele["group_description"],
-    Post: ele["post_owner_id"],
+    CourseDescription: ele["group_description"],
+    PostID: ele["post_owner_id"],
   };
   return data;
 };

@@ -167,7 +167,7 @@ export const uploadPost = async (Token, writer, owner, post) => {
       },
     }
   );
-
+    console.log(res.data)
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
