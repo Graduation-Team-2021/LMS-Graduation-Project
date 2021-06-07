@@ -2,7 +2,7 @@ import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
 
 const instance = axios.create({
-  baseURL: "http://192.168.1.9:5000",
+  baseURL: "http://lmsproj.centralus.cloudapp.azure.com:5000",
 });
 //Template for all Functions
 export const f1 = async () => {
@@ -146,7 +146,7 @@ export const getAllPosts = async (Token, owner) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log('[Interface]',res.data);
+  console.log('[Interface]',res);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
