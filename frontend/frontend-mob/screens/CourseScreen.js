@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, Text } from "react-native";
 import { Button } from "react-native-elements";
 import { getAllPosts, uploadPost } from "../Interface/Interface";
 import { connect } from "react-redux";
@@ -63,7 +63,11 @@ const CourseScreen = (props) => {
   );
   const renederitem = (itemdata) => {
     if (itemdata.index === 0) {
-      return <NewPost setPost={setPost} Submit={Submit} post={post} />;
+      let Element = <NewPost setPost={setPost} Submit={Submit} post={post} />;
+      if(myCourse.isEnrolled!=='true'){
+        Element=<Text>Please Enroll First...</Text>
+      } 
+      return Element;
     }
     return <Post post={itemdata.item} />;
   };

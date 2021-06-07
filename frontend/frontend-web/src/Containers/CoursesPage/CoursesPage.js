@@ -42,6 +42,7 @@ const HomePage = (props) => {
             Array.from(currentCourses.keys()).includes(
               id["course_code"]
             ) ||
+            //TODO: Fix Major Bug Here (Finished Courses may not be Loaded First)
             finishedCourses.includes(id["course_code"])
           ) {
             id["isenrolled"] = "true";

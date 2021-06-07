@@ -10,25 +10,25 @@ const CourseDerscerption = (props) => {
         style={{ width: "100%", height: "40%" }}
         //source={require($`props.image`)}
         source={{
-          uri: Course.coursePicURI,
+          uri: Course.CoursePicture,
         }}
       />
       <ScrollView>
         <Text style={{ padding: 20, fontSize: 24, textAlign: "center" }}>
-          {Course.courseDescription}
+          {Course.CourseDescription}
         </Text>
       </ScrollView>
       <Text style={{ padding: 20, fontSize: 24, textAlign: "center" }}>
-        {Course.courseName}
+        {Course.CourseName}
       </Text>
       <Button
         //title= "go to $`props.CourseName`"
-        title={`Go To ${Course.courseName}`}
+        title={`Go To ${Course.CourseName}`}
         color="#F0F8FF"
         onPress={() => {
           props.navigation.navigate({
             routeName: "Course",
-            params: { courseName: Course.courseName, groupflag: false },
+            params: { course: Course, groupflag: false },
           });
         }}
       />

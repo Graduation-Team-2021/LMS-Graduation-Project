@@ -11,7 +11,7 @@ const CourseListItem = (props) => {
         onPress={() =>
           navigation.navigate({
             routeName: "CourseDescription",
-            params: { courseName: Course.courseName, Course: Course },
+            params: { courseName: Course.CourseName, Course: Course },
           })
         }
       >
@@ -20,12 +20,12 @@ const CourseListItem = (props) => {
             rounded
             size="xlarge"
             source={{
-              uri: Course.coursePicURI,
+              uri: Course.CoursePicture,
             }}
           />
           <View style={{ justifyContent: "center", padding: 15 }}>
-            <Text>{Course.courseName}</Text>
-            <Text>{Course.courseCode}</Text>
+            <Text>{Course.CourseName}</Text>
+            <Text>{Course.CourseCode}</Text>
           </View>
         </View>
       </TouchableNativeFeedback>
