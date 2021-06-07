@@ -17,7 +17,7 @@ const ConversationCard = props => {
     TouchableCmp = TouchableNativeFeedback;
   }
   let onClickHandler=()=>{
-    props.onNavigation(props.data)
+    props.onClick(props.id)
   }
 
   return (
