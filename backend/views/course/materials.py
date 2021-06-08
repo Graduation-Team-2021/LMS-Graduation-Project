@@ -45,17 +45,48 @@ class materials(Resource):
             'status_code': 200,
              
         },**materials}
-
-
+# /courses/<course_code>/materials/pdfs
+class materials_pdfs(Resource):
+    def get(self, course_code):
+        try:
+            materials = controller_object.get_course_pdfs(course_code)
+        except ErrorHandler as e:
+            return e.error
+        return {**{
+            'status_code': 200,
+             
+        },**materials}
+# /courses/<course_code>/materials/videos
+class materials_videos(Resource):
+    def get(self, course_code):
+        try:
+            materials = controller_object.get_course_videos(course_code)
+        except ErrorHandler as e:
+            return e.error
+        return {**{
+            'status_code': 200,
+             
+        },**materials}
 
 # /materials/<id>/download
 class download_material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
 
-    def post(self, id):
+    def get(self, id):
         try:
-            return controller_object.download_material(id)
+            return {"url":controller_object.download_material(id)}
+        except ErrorHandler as e:
+            return e.error
+
+# /materials/<id>/preview
+class preview_material(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+
+    def get(self, id):
+        try:
+            return {"byte_stream":str(controller_object.preview_material(id))[1:].replace("'",""),"status_code":200}
         except ErrorHandler as e:
             return e.error
 

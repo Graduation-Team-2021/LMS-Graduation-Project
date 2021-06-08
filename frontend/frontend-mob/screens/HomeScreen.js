@@ -20,6 +20,7 @@ const DCourses = [
   {
     CourseName: "Tst1",
     CoursePicture: "https://images5.alphacoders.com/903/903845.png",
+    
   },
   {
     CourseName: "Tst2",

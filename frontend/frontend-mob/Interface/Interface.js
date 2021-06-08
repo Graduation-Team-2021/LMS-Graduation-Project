@@ -206,6 +206,15 @@ export const uploadFile = async (Token, file, CourseID) => {
   );
 };
 
+  export const downloadFile = async (material_id) => {
+    const res = await instance.get(`/materials/${material_id}/download`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return res.data['url']
+  };
+
 export const Like = async (Token, userID, postID) => {
   const res = await instance.post(`/like/${userID}/${postID}`, {
     headers: {
@@ -359,19 +368,44 @@ export const getDeliv = async (id) => {
   return res.data["names"]; */
 };
 
-export const getPDFs = async (id) => {
-  //TODO: Integrate the PDFs backend
-    /* const res = await instance.get(`/course/${id}/students`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }); */
-    console.log(`Getting PDFs of Course ${id}`);
-  
-  
-  /* console.log(res);
-  return res.data["names"]; */
+export const getPDFs = async (course_code) => {
+  const res = await instance.get(`/courses/${course_code}/materials/pdf`, {
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["materials"];
 };
+
+export const previewPdf = async (material_id) => {
+  const res = await instance.get(`/materials/${material_id}/preview`, {
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    return null;
+  }
+  return res.data["byte_stream"];
+};
+
+export const getVideos = async (course_code) => {
+  const res = await instance.get(`/courses/${course_code}/materials/videos`, {
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["materials"];
+};
+
 
 export const AddNewDeliv = async (Data) => {
   //TODO: Integrate the PDFs backend
