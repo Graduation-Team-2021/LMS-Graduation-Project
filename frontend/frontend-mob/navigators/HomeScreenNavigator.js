@@ -9,6 +9,7 @@ import DeliverableList from "../screens/DeliverableList";
 import DeliverableDescriptionScreen from "../screens/DeliverableDescriptionScreen";
 import DeliverableSubmetionScreen from "../screens/DeliverableSubmetionScreen";
 import ResultsNavigator from "./ResultNavigator";
+import PdfReader from "../screens/PDFScreen"
 
 const HomeStack = createStackNavigator({
   Home: {
@@ -29,6 +30,7 @@ const HomeStack = createStackNavigator({
     },
   },
   Video: { screen: VideoScreen },
+  Pdf: { screen: PdfReader },
   CourseList: { screen: CourseListScreen },
   DeliverableList: { screen: DeliverableList },
   CourseDescription: {

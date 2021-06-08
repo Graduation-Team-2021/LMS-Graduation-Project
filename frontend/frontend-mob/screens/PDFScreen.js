@@ -1,12 +1,15 @@
-import React from 'react';
-import { View,Text, StyleSheet} from 'react-native';
- import {} from 'react-native-elements';
+import * as React from 'react'
+import { View ,Text} from 'react-native'
+import PDFReader from 'rn-pdf-reader-js'
 
- const PDFScreen = (props) => {
-     return ( <View>
-        <Text>This is PDF Screen To be implemented</Text>
-
-     </View> );
- }
-  
- export default PDFScreen;
+const PdfReader = (props)=>{
+    const pdfStream = props.navigation.state.params.pdfStream
+    return (
+      <PDFReader
+        source={{
+          base64:"data:application/pdf;base64,"+pdfStream,
+        }}
+      />
+    )
+}
+export default PdfReader;
