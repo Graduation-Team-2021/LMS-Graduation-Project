@@ -16,6 +16,7 @@ NEW TODO:
 26. speak with the mentor about the server testing
 27. THe passed courses and the total grade is not connected to the backend يا ديفيد
 23. Frontend error handling
+24. Notification View
 
 
 Mobile TODO:
@@ -23,6 +24,9 @@ Mobile TODO:
 2. integration
 3. Video/PDF in the App
 4. Redux in the mobile application
+
+5. For SQLite, check the dublicate Data before inserting it
+6. Modify the interface file to check the SQLite also
 
 
 *************************************************
