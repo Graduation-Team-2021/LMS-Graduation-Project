@@ -101,6 +101,19 @@ class deliverable_controller:
             })
         return {"courses_deliverables": deliverables_list}
 
+    def get_all_course_deliverables(self,course_code):
+        try:
+            deliverable = Deliverables.query.filter_by(course_deliverables=course_code).all()
+            deliverables_formatted = []
+            for i in deliverable:
+                deliverables_formatted.append(i.serialize())
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
+        return deliverables_formatted
     def get_all_deliverables_by_deliverable_id(self, deliverable_id):
         try:
             all_deliverables = Student.query.join(Deliver).join(User).filter(

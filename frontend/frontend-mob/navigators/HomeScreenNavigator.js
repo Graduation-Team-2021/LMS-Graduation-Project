@@ -10,6 +10,7 @@ import DeliverableDescriptionScreen from "../screens/DeliverableDescriptionScree
 import DeliverableSubmetionScreen from "../screens/DeliverableSubmetionScreen";
 import ResultsNavigator from "./ResultNavigator";
 import PdfReader from "../screens/PDFScreen"
+import CreateDeliverable from "../screens/CreateDeliverable";
 
 const HomeStack = createStackNavigator({
   Home: {
@@ -21,6 +22,15 @@ const HomeStack = createStackNavigator({
       }
     },
   },
+  CreateDeliverable :{
+    screen: CreateDeliverable,
+    navigationOptions: (navData) => {
+      return {
+        title:"Deliverable Form"
+      }
+    },
+  },
+
   Course: {
     screen: CourseScreen,
     navigationOptions: (navData) => {
@@ -45,7 +55,7 @@ const HomeStack = createStackNavigator({
     screen: DeliverableDescriptionScreen,
     navigationOptions: (navData) => {
       return {
-        title: `${navData.navigation.getParam("deliverableName")} Details`,
+        title: `${navData.navigation.getParam("deliverable_name")} Details`,
       };
     },
   },

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Text,TouchableOpacity , TouchableNativeFeedback,Platform} from "react-native";
+
+import { ScrollView,View, StyleSheet, FlatList, Text,TouchableOpacity , TouchableNativeFeedback} from "react-native";
+
 import { Button,Divider  } from "react-native-elements";
-import { getAllPosts, uploadPost ,getPDFs,getVideos,materialUri,previewPdf} from "../Interface/Interface";
+import { getAllPosts, uploadPost ,getPDFs,getVideos, getAllCourseDeliverables} from "../Interface/Interface";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import { setLocationPost, setNewPost } from "../Models/Post";
@@ -10,19 +12,17 @@ import PdfItem from '../components/PdfItem'
 import VideoItem from '../components/VideoItem'
 import About from "../components/About";
 import NewPost from "../components/NewPost";
-import * as FileSystem from 'expo-file-system';
+import DeliverableItem from "../components/DeliverableItem";
 
 const data = ["sklahjdlsa"];
-
 const CourseScreen = (props) => {
   let myCourse = props.navigation.getParam("course");
   const [Data, setData] = useState(data);
   const [pdfs,setPdfs] = useState([]);
   const [videos,setVideos] = useState([]);
-  let TouchableCmp = TouchableOpacity;
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-  }
+  const [deliverables,setDeliverables] = useState([])
+  const role = props.userData.Role
+
   useEffect(() => {
     getAllPosts(props.userData.Token, myCourse.PostID).then((res) => {
       const Posts = [];
@@ -37,6 +37,24 @@ const CourseScreen = (props) => {
       }
     });
   }, []);
+
+  useEffect(()=>{
+    getAllCourseDeliverables(myCourse.CourseID).then(res => {
+        const temp = []
+        res.forEach(
+          (ele, index) => {
+            temp.push({
+              deliverable_name: ele['deliverable_name'],
+              mark: ele['mark'],
+              description: ele['description'],
+              deadline: ele['deadline'],
+              id: ele['deliverable_id']
+            })
+          }
+        )
+        setDeliverables(temp)
+    });
+},[])
   useEffect(()=>{
       getPDFs(myCourse.CourseID).then(res => {
           const temp = []
@@ -87,63 +105,58 @@ const CourseScreen = (props) => {
     }
     setPost("")
   };
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-  ];
 
- const makeDowload = (fileUri) => {
-  FileSystem.createDownloadResumable(
-    "http://192.168.1.68:5000"+fileUri,
-    FileSystem.documentDirectory + fileUri.split("/").pop(),
-    {}
-  )
+  
+const previewPdfHandler = (pdf_id) =>{
+  props.navigation.navigate({
+    routeName: "Pdf",
+    params:{pdfId:pdf_id}
+  })
 }
-  const previewPdfHandler = (pdf_id) =>{
+
+
+  const previewDeliverableHandler = (deliverable) =>{
     props.navigation.navigate({
-      routeName: "Pdf",
-      params:{pdfId:pdf_id}
-    })
-  }
-  const downloadPdfHandler = (pdf_id) =>{
-    materialUri(pdf_id).then((res) => {
-      makeDowload(res)
-  });
-  }
-  const previewVideoHandler = (video_id) =>{
-          props.navigation.navigate({
-          routeName: "Video",
-          params: {videoId:video_id}})
+      routeName: "DeliverableDescription",
+      params: {deliverable_id:deliverable.deliverable_id,deliverable_name:deliverable.deliverable_name,mark:deliverable.mark,deadline:deliverable.deadline,description:deliverable.description}})
   }
   
-  const downloadVideoHandler = (video_id) =>{
-    materialUri(video_id).then((res) => {
-      makeDowload(res)
-  });
+  const previewVideoHandler = (video_id) =>{
+    props.navigation.navigate({
+    routeName: "Video",
+    params: {videoId:video_id}})
+}
+  const createNewDeliverableHandler = () =>{
+    props.navigation.navigate({
+      routeName:"CreateDeliverable",
+      params: {courseId:myCourse.CourseID}
+    })
   }
   const materialsDetails = (
     <View style={styles.materialsContainer}>
       <Divider style={styles.dividerStyle}/>
+      <Text style={styles.videos_pdfs_header}>Deliverables</Text>
+      {deliverables.map((deliverable,i)=>(
+        <DeliverableItem key ={i} deliverable={deliverable} previewDeliverableHandler={previewDeliverableHandler}></DeliverableItem>
+      ))}
+      {role=="professor" && <Button
+      title="Create Deliverable"
+      buttonStyle={{minWidth:150, width:"70%", maxWidth:200, alignSelf: 'center',marginTop:20}}
+      
+      onPress={createNewDeliverableHandler}
+      />}
+      <Divider style={styles.dividerStyle}/>
       <Text style={styles.videos_pdfs_header}>Videos</Text>
       {videos.map((video,i)=>(
-        <VideoItem key ={i} video={video} previewVideoHandler={previewVideoHandler} downloadVideoHandler={downloadVideoHandler}></VideoItem>
+        <VideoItem key ={i} video={video} previewVideoHandler={previewVideoHandler}></VideoItem>
       ))}
       <Divider style={styles.dividerStyle}/>
       <Text style={styles.videos_pdfs_header}>PDFs</Text>
       {pdfs.map((pdf,i)=>(
-        <PdfItem key = {i} pdf={pdf} previewPdfHandler={previewPdfHandler} downloadPdfHandler={downloadPdfHandler}></PdfItem>
+        <PdfItem key = {i} pdf={pdf} previewPdfHandler={previewPdfHandler}></PdfItem>
       ))}
       <Divider style={styles.dividerStyle}/>
+      
     </View>
   );
 
@@ -160,19 +173,23 @@ const CourseScreen = (props) => {
   const groupflag = props.navigation.getParam("groupflag");
   return (
 
-
+    
     <View style={styles.screen}>
+      <ScrollView>
       <View style={styles.topContainer}>
         <About description={myCourse.CourseDescription} />
       </View>
+      
       {groupflag ? null : materialsDetails}
+      
       <View style={{ width: "90%", flex: 1 }}>
         <FlatList
           data={Data}
           renderItem={renederitem}
           keyExtractor={(_, index) => `${index}`}
         />
-      </View>
+      </View> 
+      </ScrollView>
     </View>
   );
 };
