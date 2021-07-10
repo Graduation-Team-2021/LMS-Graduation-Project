@@ -23,7 +23,7 @@ const rows = [
     course: "Software Engineering",
     coursecode: "CSE412",
     deadline: "09-04-2021",
-    leeway: "40 minutes",
+    leeway: "1 minutes",
     mark: "N/A",
     id: 1,
   },
