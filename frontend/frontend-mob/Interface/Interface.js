@@ -2,7 +2,7 @@ import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
 
 const instance = axios.create({
-  baseURL: "http://lmsproj.centralus.cloudapp.azure.com:5000",
+  baseURL: "http://192.168.1.68:5000",
 });
 //Template for all Functions
 export const f1 = async () => {
@@ -206,8 +206,8 @@ export const uploadFile = async (Token, file, CourseID) => {
   );
 };
 
-  export const downloadFile = async (material_id) => {
-    const res = await instance.get(`/materials/${material_id}/download`, {
+  export const materialUri = async (material_id) => {
+    const res = await instance.get(`/materials/${material_id}/uri`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -379,18 +379,6 @@ export const getPDFs = async (course_code) => {
     return null;
   }
   return res.data["materials"];
-};
-
-export const previewPdf = async (material_id) => {
-  const res = await instance.get(`/materials/${material_id}/preview`, {
-    headers: {
-      "Content-Type": "application/json"
-    },
-  });
-  if (res.data["status_code"] !== 200) {
-    return null;
-  }
-  return res.data["byte_stream"];
 };
 
 export const getVideos = async (course_code) => {

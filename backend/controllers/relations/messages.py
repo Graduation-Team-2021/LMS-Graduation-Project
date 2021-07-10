@@ -113,7 +113,6 @@ class messages_controller():
 
             recent_message = Messages.query.filter(Messages.conversation_id==conversation['conversation_id']).order_by(Messages.sent_time.desc()).first() 
             conversation['recent_message'] = recent_message.text
-            conversation['sent_time'] = recent_message.sent_time
-
+            conversation['sent_time'] = recent_message.sent_time.strftime('%Y-%m-%dT%H:%M:%SZ')
         data = sorted(data, key=itemgetter('sent_time'), reverse=True) 
         return data

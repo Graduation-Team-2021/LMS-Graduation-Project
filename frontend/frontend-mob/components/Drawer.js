@@ -34,7 +34,6 @@ const Drawer = (props) => {
           </View>
         </View>
         <DrawerItems {...props} />
-        <View style={{ height: "45%" }}></View>
         <Button
           icon={
             <Icon

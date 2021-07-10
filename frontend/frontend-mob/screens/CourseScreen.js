@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, Text,TouchableOpacity , TouchableNativeFeedback} from "react-native";
 import { Button,Divider  } from "react-native-elements";
-import { getAllPosts, uploadPost ,getPDFs,getVideos,downloadFile,previewPdf} from "../Interface/Interface";
+import { getAllPosts, uploadPost ,getPDFs,getVideos,materialUri,previewPdf} from "../Interface/Interface";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import { setLocationPost, setNewPost } from "../Models/Post";
@@ -10,8 +10,7 @@ import PdfItem from '../components/PdfItem'
 import VideoItem from '../components/VideoItem'
 import About from "../components/About";
 import NewPost from "../components/NewPost";
-
-
+import * as FileSystem from 'expo-file-system';
 
 const data = ["sklahjdlsa"];
 
@@ -102,18 +101,24 @@ const CourseScreen = (props) => {
       title: 'Third Item',
     },
   ];
-  const previewPdfHandler = (pdf_id) =>{
-    previewPdf(pdf_id).then(res => {
-      props.navigation.navigate({
-        routeName: "Pdf",
-        params: {pdfStream:res}
-      });
 
+ const makeDowload = (fileUri) => {
+  FileSystem.createDownloadResumable(
+    "http://192.168.1.68:5000"+fileUri,
+    FileSystem.documentDirectory + fileUri.split("/").pop(),
+    {}
+  )
+}
+  const previewPdfHandler = (pdf_id) =>{
+    props.navigation.navigate({
+      routeName: "Pdf",
+      params:{pdfId:pdf_id}
     })
   }
   const downloadPdfHandler = (pdf_id) =>{
-    
-    
+    materialUri(pdf_id).then((res) => {
+      makeDowload(res)
+  });
   }
   const previewVideoHandler = (video_id) =>{
           props.navigation.navigate({
@@ -122,19 +127,21 @@ const CourseScreen = (props) => {
   }
   
   const downloadVideoHandler = (video_id) =>{
-    
+    materialUri(video_id).then((res) => {
+      makeDowload(res)
+  });
   }
   const materialsDetails = (
     <View style={styles.materialsContainer}>
       <Divider style={styles.dividerStyle}/>
       <Text style={styles.videos_pdfs_header}>Videos</Text>
       {videos.map((video,i)=>(
-        <VideoItem video={video} previewVideoHandler={previewVideoHandler} downloadVideoHandler={downloadVideoHandler}></VideoItem>
+        <VideoItem key ={i} video={video} previewVideoHandler={previewVideoHandler} downloadVideoHandler={downloadVideoHandler}></VideoItem>
       ))}
       <Divider style={styles.dividerStyle}/>
       <Text style={styles.videos_pdfs_header}>PDFs</Text>
       {pdfs.map((pdf,i)=>(
-        <PdfItem pdf={pdf} previewPdfHandler={previewPdfHandler} downloadPdfHandler={downloadPdfHandler}></PdfItem>
+        <PdfItem key = {i} pdf={pdf} previewPdfHandler={previewPdfHandler} downloadPdfHandler={downloadPdfHandler}></PdfItem>
       ))}
       <Divider style={styles.dividerStyle}/>
     </View>

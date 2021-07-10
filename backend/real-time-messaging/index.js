@@ -27,7 +27,6 @@ io.on("connection", (socket) => {
     users.push(socket.userId);
   }
   socket.emit("users", users);
-
   // notify existing users
   socket.broadcast.emit("user connected", socket.userId);
 
