@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Text,TouchableOpacity , TouchableNativeFeedback} from "react-native";
+import { View, StyleSheet, FlatList, Text,TouchableOpacity , TouchableNativeFeedback,Platform} from "react-native";
 import { Button,Divider  } from "react-native-elements";
 import { getAllPosts, uploadPost ,getPDFs,getVideos,materialUri,previewPdf} from "../Interface/Interface";
 import { connect } from "react-redux";
