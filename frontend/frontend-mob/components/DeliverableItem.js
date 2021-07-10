@@ -1,38 +1,43 @@
-import React from "react";
-import { View, StyleSheet, Text, TouchableNativeFeedback } from "react-native";
-import { Avatar } from "react-native-elements";
+import React, { useState,useEffect } from "react";
+import {
+    View,
+    ScrollView,
+    TouchableOpacity,
+    TouchableNativeFeedback,
+    Platform,
+    Text,
+    StyleSheet
+  } from "react-native";
+  import { FontAwesome } from '@expo/vector-icons';
+  import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+  import { connect } from "react-redux";
+  const DeliverableItem = (props) => {
+    let TouchableCmp = TouchableOpacity;
+    if (Platform.OS === 'android' && Platform.Version >= 21) {
+      TouchableCmp = TouchableNativeFeedback;
+    }
+    const previewDeliverableHandler = () =>{
+      props.previewDeliverableHandler(props.deliverable)
+    }
 
-const DeliverableItem = (props) => {
-  const Deliverable = props.Deliverable;
-  const navigation = props.navigation;
-  return (
-    <View style={{ margin: 10 }}>
-      <TouchableNativeFeedback
-      onPress={() =>
-        navigation.navigate({
-          routeName: "DeliverableDescription",
-          params: { deliverableName: Deliverable.name, Deliverable: Deliverable },
-        })
-      }
-      >
-        <View style={{ flexDirection: "row" }}>
-          <Avatar
-            rounded
-            size="xlarge"
-            source={{
-              uri: Deliverable.coursePicURI,
-            }}
-          />
-          <View style={{ justifyContent: "center", padding: 15 }}>
-            <Text>{Deliverable.name}</Text>
-            <Text>{Deliverable.type}</Text>
-            <Text>{Deliverable.course}</Text>
-            <Text>Deadline: {Deliverable.deadline}</Text>
-          </View>
-        </View>
-      </TouchableNativeFeedback>
+    return(
+      <View style={{marginLeft:15,flexDirection:'row',justifyContent : 'space-between',marginTop:10}}>
+      <TouchableCmp onPress = {previewDeliverableHandler}>
+      <View style={{flexDirection:'row'}}>
+      <FontAwesome name="folder-open" size={20} style={{marginRight:6,opacity:0.7}}/>
+      <Text>{props.deliverable.deliverable_name}</Text>
+      </View>
+      </TouchableCmp>
     </View>
-  );
-};
-
-export default DeliverableItem;
+    )
+  }
+  const styles = StyleSheet.create({
+    iconStyle:{
+      marginLeft:11,
+      opacity:0.8
+    },
+    dividerStyle:{
+      margin:20
+    }
+  });
+  export default connect(mapStateToProps, mapDispatchToProps)(DeliverableItem);

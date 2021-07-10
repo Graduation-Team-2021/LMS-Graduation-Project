@@ -27,4 +27,4 @@ Mobile TODO:
 
 
 For David:
-    Materials get (needed URL) David and Michel
+    Make a loading while uploading

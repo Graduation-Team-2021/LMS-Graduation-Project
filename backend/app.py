@@ -72,7 +72,7 @@ from views.relations.messages import Messages_Relation, DeleteMessageById, Messa
 from views.relations.delivers import Delivers_Relation, Delete_Delivers_Relation, Upload_Deliverable_File, Download_Deliverable_File, Student_Deliverables
 from views.course.deliverables_results import Deliverable_Results
 
-from views.course.deliverables import Deliverable_view, All_Deliverables,Students_Deliverables
+from views.course.deliverables import Deliverable_view, All_Deliverables,Students_Deliverables,Course_Deliverables
 from views.course.events import Event, Events
 from views.course.exams.questions import Question, Questions
 from views.course.exams.answers import Answers, Answer,Get_All_Right_Answers,Get_All_Wrong_Answers
@@ -195,6 +195,7 @@ get Deliverable
 api.add_resource(All_Deliverables, '/deliverables')
 api.add_resource(Deliverable_view, '/deliverables/<deliverable_id>')
 api.add_resource(Student_Deliverables, '/students/<student_id>/deliverables/<deliverable_id>')
+api.add_resource(Course_Deliverables, '/courses/<course_code>/deliverables')
 
 """
 Events

@@ -1,8 +1,9 @@
 import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
+export const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const instance = axios.create({
-  baseURL: "http://192.168.1.68:5000",
+  baseURL: azure,
 });
 //Template for all Functions
 export const f1 = async () => {
@@ -351,21 +352,28 @@ export const getStudentsByCourse = async (id) => {
   return res.data["names"];
 };
 
-export const getDeliv = async (id) => {
-  //TODO: Integrate the Deliverables backend
+export const getAllCourseDeliverables = async (id) => {
   if (id) {
-    /* const res = await instance.get(`/course/${id}/students`, {
+    console.log(`Getting Deliverables of Course ${id}`);
+    const res = await instance.get(`/courses/${id}/deliverables`, {
       headers: {
         "Content-Type": "application/json",
       },
-    }); */
-    console.log(`Getting Deliverables of Course ${id}`);
+    });
+    return res.data['deliverables']
   }
   else{
     console.log(`Getting Deliverables of All Courses`);
   }
-  /* console.log(res);
-  return res.data["names"]; */
+};
+
+export const postNewDeliverable = async (Data) => {
+  const res = await instance.post(`/deliverables`, Data, {
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  return res.data["status_code"] === 200;
 };
 
 export const getPDFs = async (course_code) => {
