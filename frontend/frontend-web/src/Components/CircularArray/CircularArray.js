@@ -5,7 +5,7 @@ import CircularNumber from "./CircularNumber/CircularNumber";
 import filler from "../../assets/Filler.png";
 
 class CircularArray extends Component {
-  //This is how to programmatically do Responsive Web site
+  //TODO: This is how to programmatically do Responsive Web site
   constructor(props) {
     super(props);
     this.state = { windowWidth: window.innerWidth };

@@ -1,5 +1,5 @@
-import React from "react";
-import Card from "../Components/Card/Card";
+import React, {useState, useEffect} from "react";
+import { getOnePDF } from "../Interface/Interface";
 import classes from "./Pdf_reader.module.css";
 // import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 
@@ -148,12 +148,23 @@ import classes from "./Pdf_reader.module.css";
 //     )
 // }
 
-const pdf = () => {
+const PDF = (props) => {
+  const [src, setSrc] = useState("https://www.cambridgeenglish.org/images/young-learners-sample-papers-2018-vol1.PDF")
+
+  useEffect(() => {
+    //TODO: Load Data
+    getOnePDF(props.match.params.id).then((res)=>{
+      console.log(res);
+      setSrc("http://localhost:5000"+"/static/courses/123/materials/7/Technical%20Writing.pdf");
+    })
+  }, [])
+
   return (
     <span className={classes.Main}>
+    {console.log(src)}
       <iframe
         title="PDF"
-        src="https://www.cambridgeenglish.org/images/young-learners-sample-papers-2018-vol1.pdf"
+        src={"http://localhost:5000"+"/static/courses/123/materials/7/Technical%20Writing.pdf"}
         frameBorder="0"
         height="100%"
         width="100%"
@@ -163,4 +174,4 @@ const pdf = () => {
   );
 };
 
-export default pdf;
+export default PDF;

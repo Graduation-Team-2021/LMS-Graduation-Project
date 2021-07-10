@@ -8,7 +8,8 @@ export const getCancelToken = () => {
 const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const instance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: azure,
+  //"http://localhost:5000",
 });
 
 //Template for all Functions
@@ -371,15 +372,26 @@ export const getDeliv = async (id) => {
 
 export const getPDFs = async (id) => {
   //TODO: Integrate the PDFs backend
-  /* const res = await instance.get(`/course/${id}/students`, {
+  const res = await instance.get(`/courses/${id}/materials/pdf`, {
       headers: {
         "Content-Type": "application/json",
       },
-    }); */
+    });
   console.log(`Getting PDFs of Course ${id}`);
+  var materials = res.data["materials"]; 
+  return materials
+};
 
-  /* console.log(res);
-  return res.data["names"]; */
+export const getOnePDF = async (id) => {
+  //TODO: Integrate the PDFs backend
+  const res = await instance.get(`/materials/${id}/uri`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  console.log(`Getting PDF of id: ${id}`);
+  var materials = res.data['url'];
+  return materials
 };
 
 export const AddNewDeliv = async (Data) => {

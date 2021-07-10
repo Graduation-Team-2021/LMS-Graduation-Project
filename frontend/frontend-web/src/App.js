@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 import MainPage from "./Containers/MainPage/MainPage";
 import Home from "./Containers/HomePage/HomePage";
@@ -22,6 +22,7 @@ import ResetPass from "./Containers/ResetPass/ResetPass";
 
 import { mapStateToProps, mapDispatchToProps } from "./store/reduxMaps";
 import { connect } from "react-redux";
+import jwt_decode from "jwt-decode";
 
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import Search from "./Containers/SearchPage/SearchPage";
@@ -57,7 +58,7 @@ const App = (props) => {
                 <Route path="/Deliv/Quiz/:id" exact component={Deliv} />
                 <Route path="/Deliv/Assignment/:id" exact component={Deliv} />
                 <Route path="/Course/:id/Deliv" exact component={Deliv} />
-                <Route path="/Course/:id/PDFs/:id" exact component={PDF} />
+                <Route path="/Course/:cid/PDFs/:id" exact component={PDF} />
                 <Route
                   path="/Course/:id/newDeliv"
                   exact
