@@ -1,8 +1,9 @@
 import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
+export const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const instance = axios.create({
-  baseURL: "http://192.168.1.68:5000",
+  baseURL: azure,
 });
 //Template for all Functions
 export const f1 = async () => {

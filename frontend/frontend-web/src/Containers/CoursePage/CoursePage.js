@@ -180,6 +180,7 @@ const CoursePage = (props) => {
           </Card>
           <div className={classes.large}>
             <CourseDescription
+              Role={props.userData.Role}
               desc={Desc}
               CourseID={courseID}
               Title={Title}
