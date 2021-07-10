@@ -1,6 +1,8 @@
-import React, {useState, useEffect} from "react";
-import { getOnePDF } from "../Interface/Interface";
+import React, { useState, useEffect } from "react";
+import Waiting from "../Components/Waiting/Waiting";
+import { getOnePDF, url } from "../Interface/Interface";
 import classes from "./Pdf_reader.module.css";
+
 // import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 
 // import samplePDF from './projectdatabase.pdf';
@@ -149,28 +151,30 @@ import classes from "./Pdf_reader.module.css";
 // }
 
 const PDF = (props) => {
-  const [src, setSrc] = useState("https://www.cambridgeenglish.org/images/young-learners-sample-papers-2018-vol1.PDF")
-
+  const [src, setSrc] = useState(
+    "https://www.cambridgeenglish.org/images/young-learners-sample-papers-2018-vol1.PDF"
+  );
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     //TODO: Load Data
-    getOnePDF(props.match.params.id).then((res)=>{
-      console.log(res);
-      //TODO: Get Michel to Add URL and Function in Backend
-      setSrc("http://lmsproj.centralus.cloudapp.azure.com:5000"+res);
-    })
-  }, [])
+    getOnePDF(props.match.params.id).then((res) => {
+      setLoading(false);
+      setSrc(url + res);
+    });
+  }, []);
 
   return (
     <span className={classes.Main}>
-    {console.log(src)}
-      <iframe
-        title="PDF"
-        src={src}
-        frameBorder="0"
-        height="100%"
-        width="100%"
-        allowFullScreen
-      ></iframe>
+      <Waiting Loading={loading}>
+        <iframe
+          title="PDF"
+          src={src}
+          frameBorder="0"
+          height="100%"
+          width="100%"
+          allowFullScreen
+        />
+      </Waiting>
     </span>
   );
 };
