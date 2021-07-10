@@ -1,18 +1,33 @@
-.Button{
+.Button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 0;
     border-radius: 10px;
-    background-color: white;
-    color: red;
-    font-size: large;
+    background-color: rgb(129, 8, 228);
+    color: rgb(250, 250, 250);
+    font-size: x-large;
     font-weight: bold;
-    width: 45%;
-    height: 50px;
+    min-width: 60px;
+    width: fit-content;
+    padding: 1% 5%;
+    min-height: 60px;
+    height: fit-content;
     outline: none;
-    margin: 0;
     transition: 200ms;
+    box-shadow: 0px 5px 10px grey;
+    cursor: pointer;
 }
 
-.Active{
-    background-color: red;
-    color:white;
+.Button:hover,
+.Button:active {
+    background-color: rgb(250, 250, 250);
+    color: rgb(129, 8, 228);
+    /* box-shadow: 0px 10px 20px grey; */
+}
+
+.Button:disabled {
+    background-color: rgb(97, 97, 97);
+    color: rgb(185, 185, 185);
+    box-shadow: 0 0 0 0;
 }

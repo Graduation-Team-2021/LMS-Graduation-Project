@@ -7,6 +7,7 @@ import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
 import CourseDescription from "../CourseDesc/CourseDesc.js";
 import NewPostCard from "../../Components/New Post/NewPost";
+import Button from '../../Components/Button/Button'
 import classes from "./CoursePage.module.css";
 import {
   getAllPosts,
@@ -126,10 +127,7 @@ const CoursePage = (props) => {
               >
                 {isJoined === "true" ? (
                   Role === "professor" ? (
-                    <input
-                      type="button"
-                      value="See Grades"
-                      className={classes.Join}
+                    <Button
                       onClick={() =>
                         props.history.push({
                           pathname: `/Course/${courseID}/Marks`,
@@ -138,34 +136,31 @@ const CoursePage = (props) => {
                           },
                         })
                       }
-                    />
+                    >See Grades</Button>
                   ) : null
                 ) : (
-                  <input
-                    type="button"
-                    value="Enroll"
-                    className={classes.Join}
+                  <Button
                     onClick={props.Joining.bind(this, courseID)}
-                  />
+                  >Enroll</Button>
                 )}
                 {Role === "student" && isJoined === "true" ? (
-                  <button
-                    className={classes.Join}
+                  <Button
+                    
                     onClick={() => {
                       loadDeliverables();
                     }}
                   >
                     Check Deliverables
-                  </button>
+                  </Button>
                 ) : isJoined === "true" ? (
-                  <button
-                    className={classes.Join}
+                  <Button
+                   
                     onClick={() => {
                       addDeliverables();
                     }}
                   >
                     Add New Deliverable
-                  </button>
+                  </Button>
                 ) : null}
               </div>
             </div>

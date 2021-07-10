@@ -4,7 +4,7 @@
     align-items: flex-start;
     text-align: start;
     position: relative;
-    width: 50%;
+    width: fit-content;
     font-size: larger;
 }
 

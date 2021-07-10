@@ -19,3 +19,11 @@
     width: 1000px;
     transform:translate(30%,80%);
 }
+.Container{
+    width: 100%;
+}
+.Container .Holder{
+    font-size: 100%;
+    width: 100%;
+    margin: 0 0 10% 0;
+}

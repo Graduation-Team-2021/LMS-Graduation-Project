@@ -11,6 +11,8 @@ const LoginField = (props) => {
         onChange={props.onChange}
       />
       <PasswordTextField
+        onKeyDown={props.onKeyDown}
+        EnterToEnter = {true}
         Error={props.PasswordError}
         onChange={props.onChange}
       />
