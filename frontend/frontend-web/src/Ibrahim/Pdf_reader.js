@@ -155,7 +155,8 @@ const PDF = (props) => {
     //TODO: Load Data
     getOnePDF(props.match.params.id).then((res)=>{
       console.log(res);
-      setSrc("http://localhost:5000"+"/static/courses/123/materials/7/Technical%20Writing.pdf");
+      //TODO: Get Michel to Add URL and Function in Backend
+      //setSrc(res);
     })
   }, [])
 
