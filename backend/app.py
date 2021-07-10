@@ -65,7 +65,7 @@ from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile,
 from views.user.professors import Professor, Professors
 from views.user.students import Students, Student,Student_result_calculation
 from views.course.courses import Course, Courses, My_Courses,SearchCourseByName
-from views.course.materials import material, materials, download_material, upload_material,preview_material,materials_pdfs,materials_videos
+from views.course.materials import material, materials, download_material, upload_material,materials_pdfs,materials_videos
 from views.relations.teaches import Professor_Course_Relation, UpdateAndDelete_professor_Courses_Relation
 from views.relations.learns import Student_Course_Relation, Student_Courses_Relation
 from views.relations.messages import Messages_Relation, DeleteMessageById, Messages
@@ -152,9 +152,8 @@ Materials
 """
 api.add_resource(material, '/materials/<id>')
 api.add_resource(materials, '/courses/<course_code>/materials')
-api.add_resource(download_material, '/materials/<id>/download')
+api.add_resource(download_material, '/materials/<id>/uri')
 api.add_resource(upload_material, '/courses/<course_code>/materials/upload')
-api.add_resource(preview_material,'/materials/<id>/preview')
 api.add_resource(materials_videos,'/courses/<course_code>/materials/videos')
 api.add_resource(materials_pdfs,'/courses/<course_code>/materials/pdf')
 """

@@ -32,7 +32,7 @@ import {
             <TouchableCmp onPress = {previewPdfHandler}>
               <FontAwesome name="eye" size={20} style={styles.iconStyle}/>
             </TouchableCmp>
-            <TouchableCmp onPress = {previewPdfHandler}>
+            <TouchableCmp onPress = {downloadPdfHandler}>
               <FontAwesome name="download" size={20} style={styles.iconStyle}/>
             </TouchableCmp>
           </View>

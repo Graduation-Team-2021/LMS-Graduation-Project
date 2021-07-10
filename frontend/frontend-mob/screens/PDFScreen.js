@@ -1,13 +1,21 @@
 import * as React from 'react'
 import { View ,Text} from 'react-native'
 import PDFReader from 'rn-pdf-reader-js'
+import { materialUri } from "../Interface/Interface";
+
 
 const PdfReader = (props)=>{
-    const pdfStream = props.navigation.state.params.pdfStream
+    const pdfId = props.navigation.state.params.pdfId
+    const [pdfUri,setPdfUri] = React.useState("")
+    React.useEffect(()=>{
+      materialUri(pdfId).then((res) => {
+          setPdfUri(res)
+      });
+    },[])
     return (
       <PDFReader
         source={{
-          base64:"data:application/pdf;base64,"+pdfStream,
+          uri:"http://192.168.1.68:5000"+pdfUri,
         }}
       />
     )

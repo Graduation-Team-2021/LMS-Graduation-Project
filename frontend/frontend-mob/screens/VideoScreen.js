@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet, Button, ProgressViewIOSComponent ,Text} from 'react-native';
 import { Video, AVPlaybackStatus } from 'expo-av';
-import { downloadFile} from "../Interface/Interface";
+import { materialUri} from "../Interface/Interface";
 
 export default function VideoScreen(props) {
   const videoId = props.navigation.state.params.videoId
@@ -9,7 +9,7 @@ export default function VideoScreen(props) {
   const [status, setStatus] = React.useState({});
   const [videoUrl,setVideoUrl] = React.useState("")
   React.useEffect(()=>{
-    downloadFile(videoId).then((res) => {
+    materialUri(videoId).then((res) => {
         setVideoUrl(res)
     });
 },[])
@@ -20,7 +20,7 @@ export default function VideoScreen(props) {
         ref={video}
         style={styles.video}
         source={{
-          uri:"http://lmsproj.centralus.cloudapp.azure.com:5000"+videoUrl,
+          uri:"http://192.168.1.68:5000"+videoUrl,
         }}
         useNativeControls
         resizeMode="contain"

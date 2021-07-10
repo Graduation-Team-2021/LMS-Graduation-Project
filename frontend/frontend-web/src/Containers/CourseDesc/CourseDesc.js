@@ -84,7 +84,7 @@ class CourseDesc extends Component {
           </Card>
         </div>
       </div>
-        {this.props.Role === "student" ? (
+        {this.props.Role === "professor" ? (
           <React.Fragment>
             <AddEvent>
               <div
