@@ -10,6 +10,7 @@ import Waiting from "../../Components/Waiting/Waiting";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setCourse } from "../../Models/Course";
 import { getCurrentCourses } from "../../Interface/Interface";
+import Button from "../../Components/Button/Button";
 
 class CoursesArea extends Component {
   state = {
@@ -77,53 +78,45 @@ class CoursesArea extends Component {
       <div className={classes.CoursesArea}>
         <div className={classes.Title}>
           Courses You're Taking
-          <div
-            style={{
-              display: "flex",
-              width: "50%",
-              justifyContent: "space-between",
-            }}
-          >
-            <button
+          <div className={classes.Container}>
+            <Button
               className={classes.Join}
               onClick={() => {
                 this.loadDeliverables();
               }}
             >
               Check Deliverables
-            </button>
-            <button
+            </Button>
+            <Button
               className={classes.Join}
               onClick={() => {
                 this.loadCourses();
               }}
             >
               See All Courses
-            </button>
+            </Button>
           </div>
         </div>
         <Waiting Loading={this.state.Loading}>
           <SwipeList>{courses}</SwipeList>
         </Waiting>
-        <div style={{
-           display: "flex"
-        }}>
-        <button
-              className={classes.Join2}
-              onClick={() => {
-                this.loadDeliverables();
-              }}
-            >
-              Check Deliverables
-            </button>
-        <button
-          className={classes.Join2}
-          onClick={() => {
-            this.loadCourses();
-          }}
-        >
-          See All Courses
-        </button>
+        <div className={classes.Container2}>
+          <Button
+            className={classes.Join2}
+            onClick={() => {
+              this.loadDeliverables();
+            }}
+          >
+            Check Deliverables
+          </Button>
+          <Button
+            className={classes.Join2}
+            onClick={() => {
+              this.loadCourses();
+            }}
+          >
+            See All Courses
+          </Button>
         </div>
       </div>
     );

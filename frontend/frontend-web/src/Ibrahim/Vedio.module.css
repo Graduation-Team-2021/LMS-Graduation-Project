@@ -1,0 +1,81 @@
+/* .container { 
+    /* border: 2px solid  darkblue; 
+    /* border-radius: 5%; 
+    padding: 10px;
+    margin: 15px;
+    background-color: violet;
+}*/
+
+.container{
+    display: flex;
+    flex-flow: column;
+    flex:1;
+    height: 100%;
+}
+
+.Vedio {
+    /* background-color: black; */
+    display: flex;
+    /* margin: 0px 70px; */
+    width: 100%;
+    height: 100vh;
+}
+
+.Vedio .vediolist{
+    /*border: 3px olive solid;*/
+    display: flex;
+    flex-direction: column;
+    color: blanchedalmond;
+    min-width: 20%;
+    background-color: purple;
+    margin-top: 0;
+    margin-left: 40px;
+    padding: 0;
+    height: 100%;
+}
+
+.list{
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.holder{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.holder .Button{
+    text-overflow: ellipsis;
+    text-align: center;
+    margin-bottom: 5%;
+    width: 80%;
+}
+
+.vediolist .Back{
+    align-self: center;
+    justify-self: flex-end;
+}
+
+
+@media (max-width : 700px) {
+    .Vedio {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .list{
+        height: 50%;
+    }
+
+    .Vedio .vediolist {
+        width: 100%;
+        flex-direction: column;
+        margin-left: 0;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+}

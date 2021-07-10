@@ -97,6 +97,7 @@ class LoginPage extends Component {
             <h1 className={classes.MainTitle}>Get Started</h1>
             <div className={classes.LoginMain}>
               <LoginField
+                onKeyDown={this.signin}
                 EmailError={this.state.EmailError}
                 onChange={this.changeInput}
                 PasswordError={this.state.PasswordError}

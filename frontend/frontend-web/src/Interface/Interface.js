@@ -218,6 +218,9 @@ export const uploadFile = async (Token, file, CourseID) => {
       },
     }
   );
+  console.log(res);
+  /* if(res.data['status_code']===200) return true
+  else return false */
 };
 
 export const Like = async (Token, userID, postID) => {
@@ -394,6 +397,31 @@ export const getOnePDF = async (id) => {
       },
     });
   console.log(`Getting PDF of id: ${id}`);
+  var materials = res.data['url'];
+  return materials
+};
+
+export const getVideos = async (id) => {
+  //TODO: Integrate the PDFs backend
+  const res = await instance.get(`/courses/${id}/materials/videos`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  console.log(`Getting Videos of Course ${id}`);
+  var materials = res.data["materials"]; 
+  console.log(materials);
+  return materials
+};
+
+export const getOneVideo = async (id) => {
+  //TODO: Integrate the PDFs backend
+  const res = await instance.get(`/materials/${id}/uri`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  console.log(`Getting Video of id: ${id}`);
   var materials = res.data['url'];
   return materials
 };

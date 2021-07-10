@@ -11,6 +11,7 @@ const PasswordTextField = (props) => {
         <h2 className={classes.Title}>Password</h2>
         <input
         required
+        onKeyDown={props.EnterToEnter?(event)=>{if(event.key==="Enter")props.onKeyDown()}:null}
           type="password"
           name="Password"
           className={Field}

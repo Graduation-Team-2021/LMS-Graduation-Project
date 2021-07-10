@@ -14,6 +14,7 @@ import { withRouter } from "react-router-dom";
 
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
 import ImageHolder from "../ImageHolder/ImageHolder";
+import Button from "../../Components/Button/Button";
 
 const MiniMenu = (props) => {
   const [Notif, setNotif] = useState(false);
@@ -24,7 +25,7 @@ const MiniMenu = (props) => {
   return (
     <div
       className={classes.full}
-      tabIndex="0"
+      tabIndex={0}
       onBlur={() => {
         setMenu(false);
         setMessages(false);
@@ -32,7 +33,7 @@ const MiniMenu = (props) => {
       }}
     >
       <div className={classes.Main}>
-        <div
+        <Button
           className={classes.holder}
           onClick={() => {
             setMenu(false);
@@ -42,8 +43,8 @@ const MiniMenu = (props) => {
           }}
         >
           <FontAwesomeIcon icon={faHome} className={classes.Icon} fixedWidth />
-        </div>
-        <div
+        </Button>
+        <Button
           className={classes.holder}
           onClick={() => {
             setMenu(false);
@@ -56,8 +57,8 @@ const MiniMenu = (props) => {
             <div className={classes.notif}>{props.notif}</div>
           ) : null}
           <FontAwesomeIcon icon={faBell} className={classes.Icon} fixedWidth />
-        </div>
-        <div
+        </Button>
+        <Button
           className={classes.holder}
           onClick={() => {
             setMenu(false);
@@ -74,8 +75,8 @@ const MiniMenu = (props) => {
             className={classes.Icon}
             fixedWidth
           />
-        </div>
-        <div
+        </Button>
+        <Button
           className={classes.holder}
           onClick={() => {
             setMessages(false);
@@ -86,7 +87,7 @@ const MiniMenu = (props) => {
           <div className={classes.status} />
           <div className={classes.Back} />
           <ImageHolder className={classes.UserImage} filler={filler} />
-        </div>
+        </Button>
       </div>
       <div className={classes.large}>
         {Notif || Messages || Menu ? (

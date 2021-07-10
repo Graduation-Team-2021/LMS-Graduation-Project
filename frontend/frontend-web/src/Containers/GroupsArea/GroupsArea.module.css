@@ -60,6 +60,9 @@
 }
 
 .Title {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
     text-align: start;
     font-size: xx-large;
     font-weight: bold;
@@ -73,6 +76,12 @@
 }
 
 @media (max-width : 800px) {
+    .Title{
+        flex-flow: column;
+    }
+    .Title .Button{
+        align-self: center;
+    }
     .GroupsArea {
         padding-bottom: 5px;
     }

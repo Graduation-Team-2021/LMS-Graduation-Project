@@ -8,6 +8,7 @@
 
 .info {
     padding: 0 10%;
+    flex:1;
     font-size: 200%;
     font-weight: bold;
 }
