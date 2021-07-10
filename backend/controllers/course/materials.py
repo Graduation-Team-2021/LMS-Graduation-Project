@@ -71,7 +71,7 @@ class materials_controller():
         Materials.delete(deleted_Materials)
         return
 
-    def download_material(self, material_id):
+    def get_material_uri(self, material_id):
         try:
             material = self.get_material_with_id(material_id)
             material_type = material['material_type']
@@ -91,29 +91,29 @@ class materials_controller():
                 'status_code': 404
             })
 
-    def preview_material(self, material_id):
-        try:
-            material = self.get_material_with_id(material_id)
-            material_type = material['material_type']
-            material_name = material['material_name']
-            course_code = material['course_material']
+    # def preview_material(self, material_id):
+    #     try:
+    #         material = self.get_material_with_id(material_id)
+    #         material_type = material['material_type']
+    #         material_name = material['material_name']
+    #         course_code = material['course_material']
             
-            file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
-                                     f"materials\{material_id}\{material_name}{material_type.lower()}")
-            data = self.generate(file_path)
+    #         file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
+    #                                  f"materials\{material_id}\{material_name}{material_type.lower()}")
+    #         data = self.generate(file_path)
             
-            return data
-        except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
-            raise ErrorHandler({
-                'description': error,
-                'status_code': 500
-            })
-        except FileNotFoundError:
-            raise ErrorHandler({
-                'description': "File not found.",
-                'status_code': 404
-            })
+    #         return data
+    #     except SQLAlchemyError as e:
+    #         error = str(e.__dict__['orig'])
+    #         raise ErrorHandler({
+    #             'description': error,
+    #             'status_code': 500
+    #         })
+    #     except FileNotFoundError:
+    #         raise ErrorHandler({
+    #             'description': "File not found.",
+    #             'status_code': 404
+    #         })
         
     
     def post_Materials(self, materials):

@@ -68,27 +68,27 @@ class materials_videos(Resource):
              
         },**materials}
 
-# /materials/<id>/download
+# /materials/<id>/uri
 class download_material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
 
     def get(self, id):
         try:
-            return {"url":controller_object.download_material(id)}
+            return {"url":controller_object.get_material_uri(id)}
         except ErrorHandler as e:
             return e.error
 
-# /materials/<id>/preview
-class preview_material(Resource):
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
+# # /materials/<id>/preview
+# class preview_material(Resource):
+#     def __init__(self):
+#         self.reqparse = reqparse.RequestParser()
 
-    def get(self, id):
-        try:
-            return {"byte_stream":str(controller_object.preview_material(id))[1:].replace("'",""),"status_code":200}
-        except ErrorHandler as e:
-            return e.error
+#     def get(self, id):
+#         try:
+#             return {"byte_stream":str(controller_object.preview_material(id))[1:].replace("'",""),"status_code":200}
+#         except ErrorHandler as e:
+#             return e.error
 
 # /courses/<course_code>/materials/upload
 class upload_material(Resource):
