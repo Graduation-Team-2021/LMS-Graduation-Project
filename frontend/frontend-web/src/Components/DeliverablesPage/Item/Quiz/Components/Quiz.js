@@ -51,7 +51,6 @@ const btnCSS = `
 `;
 
 const Quiz = (props) => {
-
     useEffect(() => {
 
         axios.get('https://opentdb.com/api.php?amount=5&category=18&difficulty=easy&type=multiple')
@@ -70,17 +69,23 @@ const Quiz = (props) => {
 
     }, []);
 
-    useEffect(()=> {
-        if (props.finished && number<=quiz.length) {
+    useEffect(() => {
+        if (props.finished && number <= quiz.length) {
             Finish();
-            setNumber(quiz.length+1)
+            setNumber(quiz.length + 1)
+            //also, we need to send the answers to the database
         }
     }, [props.finished])
+
+    ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
 
     const [quiz, setQuiz] = useState([]);
     const [number, setNumber] = useState(0);
     const [userAnswers, setAnswers] = useState({ 0: 'hi' });
 
+    ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
     const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
 
     const pickAnswer = (e) => {
@@ -100,39 +105,41 @@ const Quiz = (props) => {
         setNumber(number + 1);
         let pts = 0;
         quiz.forEach((x, i) => {
+            console.log(x.answer, userAnswers[i])
             if (x.answer === userAnswers[i]) { pts++; }
         })
         props.setScore(pts)
-        props.setFinished({finished:true})
+        props.setFinished({ finished: true })
     }
+
+    ///////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
 
     return (
         <QuizWindow>
             {quiz[number] &&
-
                 <>
                     <Question dangerouslySetInnerHTML={{ __html: quiz[number].question }}></Question>
-
                     <Options>
                         {number ? <Button onClick={goBack} css={btnCSS}>Go back</Button> : null}
                         {
                             quiz[number].options.map((item, index) => (
                                 <Option key={index}
+                                    dangerouslySetInnerHTML={{ __html: item }}
                                     onClick={pickAnswer}
-                                    color={item === userAnswers[number] ? '#616A94' : '#161A31'}>{item}</Option>
+                                    color={item === userAnswers[number] ? '#616A94' : '#161A31'} />
                             ))}
                     </Options>
                 </>
-
             }
             {
-                number === quiz.length && <>
+                (number === quiz.length && number > 0) && <>
                     <Button onClick={goBack} css={btnCSS}>Go back</Button>
                     <Button onClick={Finish} css={btnCSS}>Finish</Button>
                 </>
             }
             {
-                number === quiz.length + 1 && <GameOver pts={props.score} />
+                number === quiz.length + 1 && <GameOver pts={props.score} user={userAnswers} data={quiz}/>
             }
         </QuizWindow>
     )
