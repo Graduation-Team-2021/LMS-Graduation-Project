@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { View ,Text} from 'react-native'
 import PDFReader from 'rn-pdf-reader-js'
-import { materialUri } from "../Interface/Interface";
+import { materialUri,azure } from "../Interface/Interface";
 
 
 const PdfReader = (props)=>{
@@ -15,7 +15,7 @@ const PdfReader = (props)=>{
     return (
       <PDFReader
         source={{
-          uri:"http://192.168.1.68:5000"+pdfUri,
+          uri:azure+pdfUri,
         }}
       />
     )

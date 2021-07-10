@@ -19,23 +19,16 @@ import {
     const previewPdfHandler = () =>{
         props.previewPdfHandler(props.pdf.material_id)
     }
-    const downloadPdfHandler = () =>{
-        props.downloadPdfHandler(props.pdf.material_id)
-    }
+
     return(
         <View style={{marginLeft:15,flexDirection:'row',justifyContent : 'space-between',marginTop:10}}>
+          <TouchableCmp onPress = {previewPdfHandler}>
           <View style={{flexDirection:'row'}}>
             <FontAwesome name="file-pdf-o" size={20} style={{marginRight:6}}/>
             <Text>{props.pdf.material_name}{props.pdf.material_type}</Text>
           </View>
-          <View style={{flexDirection:'row',marginRight:12}}>
-            <TouchableCmp onPress = {previewPdfHandler}>
-              <FontAwesome name="eye" size={20} style={styles.iconStyle}/>
-            </TouchableCmp>
-            <TouchableCmp onPress = {downloadPdfHandler}>
-              <FontAwesome name="download" size={20} style={styles.iconStyle}/>
-            </TouchableCmp>
-          </View>
+          </TouchableCmp>
+          
         </View>
     )
   }
