@@ -110,3 +110,15 @@ class Students_Deliverables(Resource):
         except ErrorHandler as e:
             return e.error
         return student_deliverables
+
+#/course/<course_code>deliverables
+class Course_Deliverables(Resource):
+    def get(self, course_code):
+        try:
+            course_deliverables = controller_object.get_all_course_deliverables(course_code)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'status_code':200,
+            'deliverables':course_deliverables
+        })
