@@ -156,7 +156,7 @@ const PDF = (props) => {
     getOnePDF(props.match.params.id).then((res)=>{
       console.log(res);
       //TODO: Get Michel to Add URL and Function in Backend
-      //setSrc(res);
+      setSrc("http://lmsproj.centralus.cloudapp.azure.com:5000"+res);
     })
   }, [])
 
@@ -165,7 +165,7 @@ const PDF = (props) => {
     {console.log(src)}
       <iframe
         title="PDF"
-        src={"http://localhost:5000"+"/static/courses/123/materials/7/Technical%20Writing.pdf"}
+        src={src}
         frameBorder="0"
         height="100%"
         width="100%"
