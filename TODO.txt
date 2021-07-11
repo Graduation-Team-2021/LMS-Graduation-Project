@@ -1,7 +1,7 @@
 NEW TODO:
 2. get users of Course/Group 
 3. Join Courses with a deadline *******************************************
-4. Search Page with categories for each entity
+4. Search Page with categories for each entity (Basic Sturcture only)
 5. Deliverables integration (Michel,David)
 6. Quizzes (create quiz)
 7. يوم النتيجة
