@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import Quiz from './Quiz/Quiz';
 import { Prompt } from 'react-router'
@@ -7,6 +7,7 @@ import cls from "./Item.module.css";
 
 function Page(props) {
   let ele = props.location.state.data;
+  const clockRef = useRef();
   ////////////////////////////////////////////////////////
   const [timer, setTimer] = useState(null);
   const [clicked, setClicked] = useState({ clicked: false })
@@ -33,6 +34,7 @@ function Page(props) {
             Date.now() + ele.leeway.slice(0, ele.leeway.indexOf(" ")) * 60 * 1000
           }
           onComplete={onCompleteHandler}
+          ref={clockRef}
         >
           <div className={cls.timer}>Time's up!</div>
         </Countdown>
@@ -43,6 +45,7 @@ function Page(props) {
   ////////////////////////////////////////////////////////
   useEffect(()=>{
     if (finished.finished){
+      clockRef.current.stop();
       //send student score to the database!!!!!
       // score is in score state
     }
@@ -67,11 +70,11 @@ function Page(props) {
         <h2>
           <b>Allowed time: {ele.leeway}</b>
         </h2>
-        <button className={cls.button} onClick={onClickHandler}>
+        {finished.finished?null:<button className={cls.button} onClick={onClickHandler}>
           <h2>
             <b>Begin!</b>
           </h2>
-        </button>
+        </button>}
         {timer}
       </div>
       {clicked.clicked?<Quiz fin={finished.finished} setFin = {setFinished} setSec={setScore} sec={score}/>:null}
