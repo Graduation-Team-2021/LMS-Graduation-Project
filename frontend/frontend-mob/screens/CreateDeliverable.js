@@ -3,12 +3,14 @@ import { TouchableWithoutFeedback, Keyboard,View,StyleSheet,ScrollView} from "re
 import { Input, Text ,Button,Divider} from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { postNewDeliverable} from "../Interface/Interface";
+import {showMessage, hideMessage}from "react-native-flash-message";
 
 const CreateDeliverable = (props) => {
   const [mark,setMark] = useState([])
   const [date, setDate] = useState(new Date());
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
+  const [error,setError] = useState(true)
   var today = new Date();
   let Data = {}
   const onDateChange = (event, selectedDate) => {
@@ -16,7 +18,6 @@ const CreateDeliverable = (props) => {
     setDate(currentDate);
   };
   
-
   const createNewDeliverableHandler = () =>{
     Data = {
       mark:mark,
@@ -26,21 +27,33 @@ const CreateDeliverable = (props) => {
       description:description,
       course_deliverables: props.navigation.getParam("courseId")
     }
-    postNewDeliverable(Data).then((res) => {
-      props.navigation.pop()
+    if(!mark||!date||!name||!description){
+    showMessage({
+      message: "Please fill all the information.",
+      type: "danger",
+      duration:"3000"
     });
+    }
+    else{
+    postNewDeliverable(Data).then((res) => {
+      props.navigation.getParam('updateDeliverables')()
+      props.navigation.pop()
+      props.navigation.getParam('alertDeliverableCreated')()
+    });
+  }
   }
 
   return (
     <ScrollView style={styles.container}>
-        <Text style={styles.header}>Deliverable Name:</Text>
+        <Text style={styles.header}>Deliverable Name</Text>
         <Input
    placeholder="Python Experiment"
    style={styles.placeholder}
    onChangeText={value => setName(value)}
    require={true}
   />
-        <Text style={styles.header}>Description:</Text>
+  
+        <Text style={styles.header}>Description</Text>
         <Input
    placeholder="In this assignment you are required..."
    style={styles.placeholder}
@@ -49,7 +62,7 @@ const CreateDeliverable = (props) => {
    require={true}
    keyboardShouldPersistTaps='handled'
   />
-  <Text style={styles.header}>Mark:</Text>
+  <Text style={styles.header}>Mark</Text>
         <Input
    placeholder="5"
    style={styles.placeholder}
@@ -58,9 +71,11 @@ const CreateDeliverable = (props) => {
    onChangeText={value => setMark(value)}
    require={true}
   />
-  <Text style={styles.header}>Deadline:</Text>
-  <View style={styles.dateContainer}>
-      {(
+  <Text style={styles.header}>Deadline</Text>
+    <View style={styles.dateContainer}>
+  <Text>Date:</Text>
+      {
+      (
         <DateTimePicker
           testID="dateTimePicker"
           value={date}
@@ -72,6 +87,9 @@ const CreateDeliverable = (props) => {
           onChange={onDateChange}
         />
       )}
+    </View>
+    <View style={styles.dateContainer}>
+    <Text>Time:</Text>
       {(
         <DateTimePicker
           testID="dateTimePicker"
@@ -83,30 +101,29 @@ const CreateDeliverable = (props) => {
         />
       )}
     </View>
-    <View>
-        
-    </View>
     <Button
       title="Submit Form"
       buttonStyle={{minWidth:200, width:"70%", maxWidth:250, alignSelf: 'center',marginBottom:40,marginTop:30}}
       type="outline"
       onPress={createNewDeliverableHandler}
       />
-    
+
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   dateContainer:{
+    flexDirection:"row",
+    alignItems:"center",
+    marginTop:12
   },
   date:{
     width:200,
-    marginTop:20
+    marginLeft:10
   },
   header:{
-    fontSize:20,
-    color:"rgb(140,153,163)",
+    fontSize:17,
     fontWeight:"600"
   },
   dividerStyle:{
@@ -116,8 +133,7 @@ const styles = StyleSheet.create({
     fontWeight:"200"
   },
   container:{
-    padding:10,
-    color:"#A6B0B7"
+    padding:10
   }
 });
 
