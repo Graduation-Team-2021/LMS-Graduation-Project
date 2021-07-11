@@ -121,7 +121,6 @@ export default connect(
   /////////////////////////////////////////////////////////////////
   const getConversations = () => {
     getAllConversations(props.userData.Token).then((res) => {
-      setLoading(false);
       const temp = [];
       res.forEach((ele) => {
         ele["user"]["photo"] = filler;
@@ -136,6 +135,7 @@ export default connect(
         temp.push(data);
       });
       setOldConv(temp);
+      setLoading(false);
     });
     getAllUsers().then((res) => {
       const temp = [];

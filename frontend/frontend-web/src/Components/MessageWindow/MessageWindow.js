@@ -144,7 +144,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
       console.log(props.Current, props.isNew);
       if (!props.isNew) {
         getAllMessages(props.userData.Token, props.Current.ID).then(res => {
-          setLoading(false)
           const temp = []
           res.forEach(
             (ele, index) => {
@@ -158,7 +157,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
               })
             }
           )
-          setMessages(temp)
+          setMessages(temp);
+          setLoading(false);
         });
       } else {
         setMessages([])

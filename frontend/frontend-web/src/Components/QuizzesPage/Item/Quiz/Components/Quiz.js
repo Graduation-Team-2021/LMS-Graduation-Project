@@ -55,7 +55,6 @@ const Quiz = (props) => {
 
         axios.get('https://opentdb.com/api.php?amount=5&category=18&difficulty=easy&type=multiple')
             .then(res => {
-                setLoading(false);
                 setQuiz(res.data.results.map(item => (
 
                     {
@@ -65,6 +64,7 @@ const Quiz = (props) => {
                     }
 
                 )));
+                setLoading(false);
             })
             .catch(err => console.error(err))
 
@@ -106,10 +106,9 @@ const Quiz = (props) => {
     const Finish = () => {
         setNumber(number + 1);
         let pts = 0;
-        let temp ='';
+        let temp = '';
         quiz.forEach((x, i) => {
-            temp=decodeHTMLEntities(x.answer);
-            console.log(x.answer,temp, userAnswers[i]);
+            temp = decodeHTMLEntities(x.answer);
             if (temp === userAnswers[i]) { pts++; }
         })
         props.setScore(pts)
@@ -133,21 +132,23 @@ const Quiz = (props) => {
 
     return (
         <QuizWindow>
-            {quiz[number] &&
-                <Waiting Loading = {loading}>
-                    <Question dangerouslySetInnerHTML={{ __html: quiz[number].question }}></Question>
-                    <Options>
-                        {number ? <Button onClick={goBack} css={btnCSS}>Go back</Button> : null}
-                        {
-                            quiz[number].options.map((item, index) => (
-                                <Option key={index}
-                                    dangerouslySetInnerHTML={{ __html: item }}
-                                    onClick={pickAnswer}
-                                    color={item === userAnswers[number] ? '#616A94' : '#161A31'} />
-                            ))}
-                    </Options>
-                </Waiting>
-            }
+            <Waiting Loading={loading}>
+                {quiz[number] &&
+                    <div>
+                        <Question dangerouslySetInnerHTML={{ __html: quiz[number].question }}></Question>
+                        <Options>
+                            {number ? <Button onClick={goBack} css={btnCSS}>Go back</Button> : null}
+                            {
+                                quiz[number].options.map((item, index) => (
+                                    <Option key={index}
+                                        dangerouslySetInnerHTML={{ __html: item }}
+                                        onClick={pickAnswer}
+                                        color={item === userAnswers[number] ? '#616A94' : '#161A31'} />
+                                ))}
+                        </Options>
+                    </div>
+                }
+            </Waiting>
             {
                 (number === quiz.length && number > 0) && <div>
                     <Button onClick={goBack} css={btnCSS}>Go back</Button>
