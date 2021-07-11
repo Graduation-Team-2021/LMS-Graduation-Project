@@ -17,7 +17,7 @@
     flex-flow: column;
     align-items: flex-end;
     z-index: 200;
-    border: 10px solid;
+    /* border: 10px solid; */
 }
 
 .Main .holder {
