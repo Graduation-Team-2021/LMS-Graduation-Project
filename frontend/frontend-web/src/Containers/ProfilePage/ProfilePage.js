@@ -50,7 +50,6 @@ const ProfilePage = (props) => {
 
   useEffect(() => {
     getUser(ID).then(res=>{
-      console.log(res);
       setuserSelf(res)
     })
   }, [ID])
@@ -86,7 +85,7 @@ const ProfilePage = (props) => {
             <div className={classes.small}>
               <Card shadow className={classes.Note}>
                 <h2>Passed Courses</h2>
-                <h1>50{/*get from database*/}</h1>
+                <h1>{Finished.length}</h1>
               </Card>
               <Card shadow className={classes.Note}>
                 <h2>Total Grade</h2>

@@ -12,10 +12,11 @@ import {
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
-
+import { connect } from "react-redux";
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
 import ImageHolder from "../ImageHolder/ImageHolder";
 import Button from "../../Components/Button/Button";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 const MiniMenu = (props) => {
   const [Notif, setNotif] = useState(false);
@@ -94,7 +95,10 @@ const MiniMenu = (props) => {
           >
             <div className={classes.status} />
             <div className={classes.Back} />
-            <ImageHolder className={classes.UserImage} filler={filler} />
+            <ImageHolder
+              className={classes.UserImage}
+              filler={props.userData.Data.picture || filler}
+            />
           </Button>
         </span>
         <div className={classes.large}>
@@ -195,8 +199,9 @@ const MiniMenu = (props) => {
                             fixedWidth
                             color="purple"
                           />
+
                           <ImageHolder
-                            src={filler}
+                            src={props.userData.Data.picture || filler}
                             alt=""
                             className={classes.Image}
                           />
@@ -231,4 +236,6 @@ const MiniMenu = (props) => {
   );
 };
 
-export default withRouter(MiniMenu);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(MiniMenu)
+);

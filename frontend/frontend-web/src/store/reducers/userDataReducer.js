@@ -1,6 +1,6 @@
 import jwt_decode from "jwt-decode";
 
-import { SET_TOKEN,SET_NAME,SET_ID,SET_ROLE, SET_DATA } from "../actions/userDataActions";
+import { SET_TOKEN,SET_NAME,SET_ID,SET_ROLE, SET_DATA, SET_DATA_DATA } from "../actions/userDataActions";
 
 const intialState = {
   Name: localStorage.getItem("name"),
@@ -11,6 +11,7 @@ const intialState = {
     ? jwt_decode(localStorage.getItem("token")).id
     : null,
   Token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
+  Data: null
 };
 
 const reducer = (state = intialState, action) => {
@@ -45,6 +46,13 @@ const reducer = (state = intialState, action) => {
       Name: action.value.Name,
       Role: action.value.Role,
       ID: action.value.ID,
+      Data: action.value.Data,
+    };
+  }
+  if (action.type === SET_DATA_DATA) {
+    return {
+      ...state,
+      Data: action.value.Data,
     };
   }
   return state;
