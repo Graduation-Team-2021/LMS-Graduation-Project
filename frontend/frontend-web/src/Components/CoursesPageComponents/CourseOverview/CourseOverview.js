@@ -1,13 +1,31 @@
-import React from "react";
+import React, {useState} from "react";
 import { Button } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import classes from "./CourseOverview.module.css";
+import Enroll from "../../../Components/Enroll/Enroll";
+import Modal from "../../../Components/Modal/Modal";
 
-const courseOverview = (props) => {
+const CourseOverview = (props) => {
   let imageTest = props.CoursePicture;
+
+  const [show, setShow] = useState(false)
+
+  const dismiss=()=>{
+    alert("Enroll Canceled")
+    setShow(false)
+  }
+
+  const accept=()=>{
+    //enroll in course
+    props.Enroll()
+    setShow(false)
+  }
 
   return (
     <div className={classes.CourseOverview}>
+      <Modal show={show} onClick={dismiss}>
+        <Enroll onCancel={dismiss} onAccept={accept}/>
+      </Modal>
       <img src={imageTest} alt="tst" className={classes.CoursePicture} />
       <h3>{props.CourseName}</h3>
       <p>{props.CourseDescription}</p>
@@ -27,7 +45,7 @@ const courseOverview = (props) => {
                 },
               });
             } else {
-              console.log("Must Enroll First");
+              setShow(true)
             }
           }}
         >
@@ -47,4 +65,4 @@ const courseOverview = (props) => {
   );
 };
 
-export default withRouter(courseOverview);
+export default withRouter(CourseOverview);

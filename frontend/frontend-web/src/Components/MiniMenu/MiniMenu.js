@@ -111,96 +111,120 @@ const MiniMenu = (props) => {
             />
           ) : null}
         </div>
+
         <div className={classes.drowpdown}>
-          <button
-            className={classes.dropbtn}
-            onClick={() => setCLicked(!CLicked)}
-          >
-            <FontAwesomeIcon icon={faBars} />
-          </button>
-          <div className={classes.dropdown_content}>
-            <div className={classes.Main2}>
-              <div
-                className={classes.holder}
+          <ClickOutside onClickOutside={() => setCLicked(false)}>
+            <span
+              style={{
+                display: "flex",
+                flexFlow: "column",
+                alignItems: "flex-end",
+              }}
+            >
+              <button
+                className={classes.dropbtn}
                 onClick={() => {
-                  setMenu(false);
-                  setMessages(false);
-                  setNotif(false);
-                  props.history.push("/");
+                  console.log(CLicked);
+                  setCLicked(!CLicked);
                 }}
               >
-                <FontAwesomeIcon icon={faHome} size="4x" fixedWidth />
-              </div>
-              <div
-                className={classes.holder}
-                onClick={() => {
-                  setMenu(false);
-                  setMessages(false);
-                  setNotif(!Notif);
-                  props.onNotifClick();
-                }}
-              >
-                {props.notif !== 0 ? (
-                  <div className={classes.notif}>{props.notif}</div>
-                ) : null}
-                <FontAwesomeIcon icon={faBell} size="4x" fixedWidth />
-              </div>
-              <div
-                className={classes.holder}
-                onClick={() => {
-                  setMenu(false);
-                  setNotif(false);
-                  setMessages(!Messages);
-                  props.onMessageClick();
-                }}
-              >
-                {props.message !== 0 ? (
-                  <div className={classes.notif}>{props.message}</div>
-                ) : null}
-                <FontAwesomeIcon icon={faCommentDots} size="4x" fixedWidth />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-                onClick={() => {
-                  setMessages(false);
-                  setNotif(false);
-                  setMenu(!Menu);
-                }}
-              >
-                <div className={classes.holder}>
-                  <div className={classes.status} />
-                  <FontAwesomeIcon icon={faSquare} fixedWidth color="purple" />
-                  <img
-                    src={filler}
-                    alt=""
-                    style={{
-                      maxWidth: "80%",
-                      position: "absolute",
-                      zIndex: "10",
-                    }}
-                  />
-                </div>
-                <FontAwesomeIcon icon={faChevronDown} />
-              </div>
-            </div>
-            <div className={classes.small}>
-              {Notif || Messages || Menu ? (
-                <DropDownMenu
-                  onClick={() => {
-                    setMenu(false);
-                    setMessages(false);
-                    setNotif(false);
-                  }}
-                  TokenError={props.TokenError}
-                  Notif={props.Notif}
-                  choice={Notif ? "Notif" : Messages ? "Messages" : "Menu"}
-                />
+                <FontAwesomeIcon icon={faBars} />
+              </button>
+              {CLicked ? (
+                <React.Fragment>
+                  <div className={classes.dropdown_content}>
+                    <div className={classes.Main2}>
+                      <div
+                        className={classes.holder}
+                        onClick={() => {
+                          setMenu(false);
+                          setMessages(false);
+                          setNotif(false);
+                          props.history.push("/");
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faHome} size="4x" fixedWidth />
+                      </div>
+                      <div
+                        className={classes.holder}
+                        onClick={() => {
+                          setMenu(false);
+                          setMessages(false);
+                          setNotif(!Notif);
+                          props.onNotifClick();
+                        }}
+                      >
+                        {props.notif !== 0 ? (
+                          <div className={classes.notif}>{props.notif}</div>
+                        ) : null}
+                        <FontAwesomeIcon icon={faBell} size="4x" fixedWidth />
+                      </div>
+                      <div
+                        className={classes.holder}
+                        onClick={() => {
+                          setMenu(false);
+                          setNotif(false);
+                          setMessages(!Messages);
+                          props.onMessageClick();
+                        }}
+                      >
+                        {props.message !== 0 ? (
+                          <div className={classes.notif}>{props.message}</div>
+                        ) : null}
+                        <FontAwesomeIcon
+                          icon={faCommentDots}
+                          size="4x"
+                          fixedWidth
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                        onClick={() => {
+                          setMessages(false);
+                          setNotif(false);
+                          setMenu(!Menu);
+                        }}
+                      >
+                        <div className={classes.holder}>
+                          <div className={classes.status} />
+                          <FontAwesomeIcon
+                            icon={faSquare}
+                            fixedWidth
+                            color="purple"
+                          />
+                          <ImageHolder
+                            src={filler}
+                            alt=""
+                            className={classes.Image}
+                          />
+                        </div>
+                        <FontAwesomeIcon icon={faChevronDown} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className={classes.small}>
+                    {Notif || Messages || Menu ? (
+                      <DropDownMenu
+                        onClick={() => {
+                          setMenu(false);
+                          setMessages(false);
+                          setNotif(false);
+                        }}
+                        TokenError={props.TokenError}
+                        Notif={props.Notif}
+                        choice={
+                          Notif ? "Notif" : Messages ? "Messages" : "Menu"
+                        }
+                      />
+                    ) : null}
+                  </div>
+                </React.Fragment>
               ) : null}
-            </div>
-          </div>
+            </span>
+          </ClickOutside>
         </div>
       </div>
     </ClickOutside>
