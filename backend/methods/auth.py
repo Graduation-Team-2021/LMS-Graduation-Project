@@ -5,7 +5,7 @@ from functools import wraps
 from methods.errors import ErrorHandler
 import datetime, jwt, os
 
-secret_key = os.environ['SECRET_KEY']
+secret_key = "ANy HABDDDDDDDDD"
 
 
 def encode_auth_token(user_id, role):

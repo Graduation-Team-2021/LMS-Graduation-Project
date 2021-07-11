@@ -6,7 +6,7 @@ export const getCancelToken = () => {
 };
 
 const instance = axios.create({
-  baseURL: "http://0.0.0.0:5000",
+  baseURL: "http://lmsproj.centralus.cloudapp.azure.com:5000/",
 });
 
 //Template for all Functions
