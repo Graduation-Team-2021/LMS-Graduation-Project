@@ -103,10 +103,9 @@ const Quiz = (props) => {
     const Finish = () => {
         setNumber(number + 1);
         let pts = 0;
-        let temp ='';
+        let temp = '';
         quiz.forEach((x, i) => {
-            temp=decodeHTMLEntities(x.answer);
-            console.log(x.answer,temp, userAnswers[i]);
+            temp = decodeHTMLEntities(x.answer);
             if (temp === userAnswers[i]) { pts++; }
         })
         props.setScore(pts)
