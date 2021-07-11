@@ -2,6 +2,7 @@ import React from "react";
 import HomeNav from "./navigators/AuthNavigator";
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
+import { Provider as PaperProvider } from "react-native-paper";
 
 import userDataReducer from "./store/reducers/userDataReducer";
 import currentCoursesReducer from "./store/reducers/currentCoursesReducer";
@@ -23,8 +24,10 @@ const store = createStore(rootReducer);
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <HomeNav />
-    </Provider>
+    <PaperProvider>
+      <Provider store={store}>
+        <HomeNav />
+      </Provider>
+    </PaperProvider>
   );
 }

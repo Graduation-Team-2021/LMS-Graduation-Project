@@ -11,10 +11,11 @@ import DeliverableSubmetionScreen from "../screens/DeliverableSubmetionScreen";
 import ResultsNavigator from "./ResultNavigator";
 import PdfReader from "../screens/PDFScreen"
 import CreateDeliverable from "../screens/CreateDeliverable";
+import checkConnectivity from "../hocs/checkConnectivity";
 
 const HomeStack = createStackNavigator({
   Home: {
-    screen: HomeScreen,
+    screen: checkConnectivity(HomeScreen),
     navigationOptions: (navData) => {
       let studentName = navData.navigation.getParam('studentName');
       return {
@@ -23,7 +24,7 @@ const HomeStack = createStackNavigator({
     },
   },
   CreateDeliverable :{
-    screen: CreateDeliverable,
+    screen: checkConnectivity(CreateDeliverable),
     navigationOptions: (navData) => {
       return {
         title:"Deliverable Form"
@@ -32,19 +33,19 @@ const HomeStack = createStackNavigator({
   },
 
   Course: {
-    screen: CourseScreen,
+    screen: checkConnectivity(CourseScreen),
     navigationOptions: (navData) => {
       return {
         title: `${navData.navigation.getParam("course").CourseName}`,
       };
     },
   },
-  Video: { screen: VideoScreen },
-  Pdf: { screen: PdfReader },
-  CourseList: { screen: CourseListScreen },
-  DeliverableList: { screen: DeliverableList },
+  Video: { screen: checkConnectivity(VideoScreen) },
+  Pdf: { screen: checkConnectivity(PdfReader) },
+  CourseList: { screen: checkConnectivity(CourseListScreen) },
+  DeliverableList: { screen: checkConnectivity(DeliverableList) },
   CourseDescription: {
-    screen: CourseDescriptionScreen,
+    screen: checkConnectivity(CourseDescriptionScreen),
     navigationOptions: (navData) => {
       return {
         title: `${navData.navigation.getParam("courseName")} Details`,
@@ -52,7 +53,7 @@ const HomeStack = createStackNavigator({
     },
   },
   DeliverableDescription: {
-    screen: DeliverableDescriptionScreen,
+    screen: checkConnectivity(DeliverableDescriptionScreen),
     navigationOptions: (navData) => {
       return {
         title: `${navData.navigation.getParam("deliverable_name")} Details`,
@@ -60,7 +61,7 @@ const HomeStack = createStackNavigator({
     },
   },
   DeliverableSubmetion: {
-    screen: DeliverableSubmetionScreen,
+    screen: checkConnectivity(DeliverableSubmetionScreen),
     navigationOptions: (navData) => {
       return {
         title: `${navData.navigation.getParam(

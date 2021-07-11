@@ -15,6 +15,7 @@ import { setCourse } from "../Models/Course";
 import { setGroup } from "../Models/Group";
 import { setFullPost } from "../Models/Post";
 import * as SQLite from "expo-sqlite";
+import checkConnectivity from "../hocs/checkConnectivity";
 
 const DCourses = [
   {
