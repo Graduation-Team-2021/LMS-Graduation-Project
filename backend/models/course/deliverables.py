@@ -27,9 +27,7 @@ class Deliverables(db.Model, Base):
             'deliverable_name': self.deliverable_name,
             'deadline': self.deadline,
             'description': self.description,
-
             "course_deliverables": self.course_deliverables, # this is the course code foreign key that references course table
-
             "students_number": self.students_number,
             "mark": self.mark
         }

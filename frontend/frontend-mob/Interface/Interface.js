@@ -367,6 +367,35 @@ export const getAllCourseDeliverables = async (id) => {
   }
 };
 
+export const studentsSubmissions = async(user_id,deliverable_id) =>{
+  const res = await instance.get(`/students/${user_id}/deliverables/${deliverable_id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data;
+}
+
+export const uploadDeliverable = async (Token, file, delivers_id,setUploadPercentage) => {
+  let data = new FormData();
+  data.append("file", file);
+  const res = await instance.post(
+    `/my_deliverables/${delivers_id}/upload`,
+    data,
+    {
+      onUploadProgress: (progressEvent) => {
+        const {loaded, total} = progressEvent;
+        let percent = Math.floor( (loaded * 100) / total )
+          setUploadPercentage(percent/100)
+      },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + Token,
+      },
+    }
+  );
+};
+
 export const postNewDeliverable = async (Data) => {
   const res = await instance.post(`/deliverables`, Data, {
     headers: {
@@ -375,6 +404,20 @@ export const postNewDeliverable = async (Data) => {
   });
   return res.data["status_code"] === 200;
 };
+
+export const getDeliversRelation = async(deliverable_id,Token) =>{
+  const res = await instance.post(`/my_deliverables`,{deliverable_id:deliverable_id}, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["delivers_id"];
+}
 
 export const getPDFs = async (course_code) => {
   const res = await instance.get(`/courses/${course_code}/materials/pdf`, {
