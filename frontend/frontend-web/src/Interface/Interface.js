@@ -11,7 +11,7 @@ const local = "http://localhost:5000";
 
 export const url = azure;
 const instance = axios.create({
-  baseURL: azure,
+  baseURL: local,
   //"http://localhost:5000",
 });
 
@@ -364,6 +364,12 @@ export const getDeliv = async (id, Token) => {
   var res;
   //TODO: Integrate the Deliverables backend
   if (id) {
+    res = await instance.get(`/courses/${id}/deliverables`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
     console.log(`Getting Deliverables of Course ${id}`);
   } else {
     res = await instance.get(`/deliverables`, {
@@ -375,24 +381,32 @@ export const getDeliv = async (id, Token) => {
     console.log(`Getting Deliverables of All Courses`);
   }
   console.log(res);
-  /*return res.data["names"]; */
+  return res.data.deliverables;
 };
 
 export const getDelivByID = async (id, Token) => {
-  var res;
+  //TODO: LOAD Single Deliverable filez
+  const res = await instance.get(`/deliverables/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(`Getting Deliverables of Course ${id}`);
+  console.log(res.data);
+  /*return res.data["names"]; */
+};
+
+export const SubmitDelivByID = async (id, Token) => {
   //TODO: Integrate the Deliverables backend
-  if (id) {
-    console.log(`Getting Deliverables of Course ${id}`);
-  } else {
-    res = await instance.get(`/deliverables`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + Token,
-      },
-    });
-    console.log(`Getting Deliverables of All Courses`);
-  }
-  console.log(res);
+  const res = await instance.get(`/deliverables/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(`Getting Deliverables of Course ${id}`);
+  console.log(res.data);
   /*return res.data["names"]; */
 };
 

@@ -19,12 +19,12 @@ delivers_controller_object = delivers_controller()
 class deliverable_controller:
     def get_deliverable(self, deliverable_id):
         deliverable = Deliverables.query.filter_by(deliverable_id=deliverable_id).first()
-        deliverable.deadline = json.dumps(deliverable.deadline, default=str).replace("\"", "")
         if not deliverable:
             raise ErrorHandler({
                 'description': 'deliverable does not exist.',
                 'status_code': 404
             })
+        deliverable.deadline = json.dumps(deliverable.deadline, default=str).replace("\"", "")
         return deliverable.serialize()
 
     def post_deliverable(self, deliverable):

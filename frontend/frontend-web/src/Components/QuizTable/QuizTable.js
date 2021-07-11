@@ -43,15 +43,13 @@ export default function DeliverableList(props) {
   const [rows, setRows] = useState(cRows);
 
   useEffect(() => {
-    console.log();
-    //TODO: Load Data
     getQuizzes(props.id).then((res) => {
       const temp = [];
       res.forEach((value) =>
         temp.push({
           id: value["event_id"],
           name: value["event_name"],
-          leeway: value["event_duration"],
+          leeway: value["event_duration"]+" Hours",
           date: value['event_date'], 
           status: "Completed"
         })

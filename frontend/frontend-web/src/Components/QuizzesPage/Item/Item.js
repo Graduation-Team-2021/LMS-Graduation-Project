@@ -1,7 +1,7 @@
-import React,{ useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { withRouter } from "react-router-dom";
-import Quiz from './Quiz/Quiz';
-import { Prompt } from 'react-router'
+import Quiz from "./Quiz/Quiz";
+import { Prompt } from "react-router";
 import Countdown from "react-countdown";
 import cls from "./Item.module.css";
 
@@ -10,28 +10,34 @@ function Page(props) {
   const clockRef = useRef();
   ////////////////////////////////////////////////////////
   const [timer, setTimer] = useState(null);
-  const [clicked, setClicked] = useState({ clicked: false })
-  const [finished, setFinished] = useState({ finished: false })
-  const [score, setScore] = useState(0)
+  const [clicked, setClicked] = useState({ clicked: false });
+  const [finished, setFinished] = useState({ finished: false });
+  const [score, setScore] = useState(0);
   ////////////////////////////////////////////////////////
   useEffect(() => {
     if (clicked.clicked && !finished.finished) {
-      window.onbeforeunload = () => true
+      window.onbeforeunload = () => true;
     } else {
-      window.onbeforeunload = undefined
+      window.onbeforeunload = undefined;
     }
   });
   ////////////////////////////////////////////////////////
   const onCompleteHandler = () => {
-    setFinished({finished:true})
-  }
+    setFinished({ finished: true });
+  };
   const onClickHandler = () => {
     if (!clicked.clicked) {
       setTimer(
         <Countdown
           className={cls.timer}
           date={
-            Date.now() + ele.leeway.slice(0, ele.leeway.indexOf(" ")) * 60 * 1000
+            Date.now() +
+            ele.leeway.slice(0, ele.leeway.indexOf(" ")) *
+              60 *
+              1000 *
+              (ele.leeway.slice(1, ele.leeway.indexOf(" ")) === "Minutes"
+                ? 1
+                : 60)
           }
           onComplete={onCompleteHandler}
           ref={clockRef}
@@ -39,17 +45,18 @@ function Page(props) {
           <div className={cls.timer}>Time's up!</div>
         </Countdown>
       );
-      setClicked({ clicked: true })
+      setClicked({ clicked: true });
     }
   };
   ////////////////////////////////////////////////////////
-  useEffect(()=>{
-    if (finished.finished){
+  useEffect(() => {
+    if (finished.finished) {
       clockRef.current.stop();
-      //send student score to the database!!!!!
+      //TODO: send student score to the database!!!!!
       // score is in score state
+      //TODO: Switch state to completed
     }
-  }, [finished])
+  }, [finished]);
   ////////////////////////////////////////////////////////
   return (
     <div className={cls.page}>
@@ -57,7 +64,7 @@ function Page(props) {
         when={clicked.clicked && !finished.finished}
         message="You haven't finished yet, are you sure you want to leave?"
       />
-      <button className={cls.button} onClick={() => props.history.push("/Deliv/")}>
+      <button className={cls.button} onClick={() => props.history.goBack()}>
         <h2>
           <b>Go Back...</b>
         </h2>
@@ -70,14 +77,23 @@ function Page(props) {
         <h2>
           <b>Allowed time: {ele.leeway}</b>
         </h2>
-        {finished.finished?null:<button className={cls.button} onClick={onClickHandler}>
-          <h2>
-            <b>Begin!</b>
-          </h2>
-        </button>}
+        {finished.finished ? null : (
+          <button className={cls.button} onClick={onClickHandler}>
+            <h2>
+              <b>Begin!</b>
+            </h2>
+          </button>
+        )}
         {timer}
       </div>
-      {clicked.clicked?<Quiz fin={finished.finished} setFin = {setFinished} setSec={setScore} sec={score}/>:null}
+      {clicked.clicked ? (
+        <Quiz
+          fin={finished.finished}
+          setFin={setFinished}
+          setSec={setScore}
+          sec={score}
+        />
+      ) : null}
     </div>
   );
 }
