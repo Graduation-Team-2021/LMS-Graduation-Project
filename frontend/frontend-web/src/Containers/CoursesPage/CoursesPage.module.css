@@ -31,9 +31,18 @@
 }
 
 .CourseOverview {
-  display: flex;
-  justify-content: center;
-  width: 70%;
-  max-width: 70vw;
-  height: 100%;
+  flex: 2;
+  height: 100vh;
 }
+
+
+@media (max-width : 1325px) {
+  .CoursesList {
+    flex-direction: row ;
+    padding-right: 100px;
+  }
+  .CoursesPage {
+    flex-direction: column;
+  }
+}
+

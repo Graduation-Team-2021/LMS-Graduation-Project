@@ -42,3 +42,28 @@
   flex-direction: row;
   margin-bottom: 5%;
 }
+
+@media (max-width : 1325px) {
+    .Tringle {
+      display: none;
+    }
+}
+
+
+@media (max-width : 1070px) {
+  .CourseItemListContainer{
+    width: 24vw;
+  }
+  .CourseImage {
+    width: 100px;
+  }
+}
+
+@media (max-width : 700px) {
+  .ItemContainer{
+    flex-direction: column;
+  }
+  .CourseImage {
+    width: 80px;
+  }
+}
