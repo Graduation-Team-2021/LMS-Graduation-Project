@@ -4,6 +4,9 @@ import cls from "./DelivTable.module.css";
 import Summary from "./DelivSummary/Summary";
 import { getDeliv } from "../../Interface/Interface";
 
+import { connect } from "react-redux";
+import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
+
 const columns = [
   { field: "name", headerName: "Name", width: 340 },
   { field: "type", headerName: "Type", width: 140 },
@@ -19,7 +22,7 @@ const rows = [
   {
     name: "Sever Deployment",
     type: "Assignment",
-    status: "Not Started",
+    status: "In Progress",
     course: "Software Engineering",
     coursecode: "CSE412",
     deadline: "09-04-2021",
@@ -84,13 +87,13 @@ const rows = [
   },
 ];
 
-export default function DeliverableList(props) {
+export default connect(mapStateToProps, mapDispatchToProps)(function DeliverableList(props) {
 
     useEffect(() => {
         console.log();
         //TODO: Load Data
-        getDeliv(props.id).then(()=>{
-            console.log('Quizzes Collected Successfully');
+        getDeliv(props.id, props.userData.Token).then(()=>{
+            console.log('Deliverables Collected Successfully');
         })
     }, [props.id])
 
@@ -111,19 +114,19 @@ export default function DeliverableList(props) {
       newArrayOfObjects.findIndex((Ar) => {
         return Ar.status === "Completed";
       })
-    ].count;
+    ]?.count||0;
   let progressN =
     newArrayOfObjects[
       newArrayOfObjects.findIndex((Ar) => {
         return Ar.status === "In Progress";
       })
-    ].count;
+    ]?.count||0;
   let notN =
     newArrayOfObjects[
       newArrayOfObjects.findIndex((Ar) => {
         return Ar.status === "Not Started";
       })
-    ].count;
+    ]?.count||0;
 
   /////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////
@@ -148,4 +151,4 @@ export default function DeliverableList(props) {
       </div>
     </div>
   );
-}
+})

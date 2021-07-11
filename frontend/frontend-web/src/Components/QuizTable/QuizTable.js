@@ -1,19 +1,21 @@
 import { DataGrid } from "@material-ui/data-grid";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import cls from "./DelivTable.module.css";
 import Summary from "./DelivSummary/Summary";
-import { getDeliv } from "../../Interface/Interface";
+import { getQuizzes } from "../../Interface/Interface";
 
 const columns = [
   { field: "name", headerName: "Name", width: 340 },
+  { field: "date", headerName: "Upload Time", width: 180 },
   { field: "status", headerName: "Status", width: 180 },
   { field: "leeway", headerName: "Allowed Time", width: 150 },
   { field: "mark", headerName: "Mark", width: 130 },
 ];
 
-const rows = [
+const cRows = [
   {
     name: "Creating FSD",
+    date: "Now",
     status: "Not Started",
     leeway: "1 minutes",
     mark: "N/A",
@@ -21,6 +23,7 @@ const rows = [
   },
   {
     name: "Configuration analysis",
+    date: "Now",
     status: "Completed",
     leeway: "40 minutes",
     mark: "7",
@@ -32,15 +35,28 @@ const rows = [
     leeway: "40 minutes",
     mark: "N/A",
     id: 8,
+    date: "Now",
   },
 ];
 
 export default function DeliverableList(props) {
+  const [rows, setRows] = useState(cRows);
+
   useEffect(() => {
     console.log();
     //TODO: Load Data
-    getDeliv(props.id).then(() => {
-      console.log("Quizzes Collected Successfully");
+    getQuizzes(props.id).then((res) => {
+      const temp = [];
+      res.forEach((value) =>
+        temp.push({
+          id: value["event_id"],
+          name: value["event_name"],
+          leeway: value["event_duration"],
+          date: value['event_date'], 
+          status: "Completed"
+        })
+      );
+      setRows(temp)
     });
   }, [props.id]);
 
@@ -61,13 +77,13 @@ export default function DeliverableList(props) {
       newArrayOfObjects.findIndex((Ar) => {
         return Ar.status === "Completed";
       })
-    ].count;
+    ]?.count||0;
   let notN =
     newArrayOfObjects[
       newArrayOfObjects.findIndex((Ar) => {
         return Ar.status === "Not Started";
       })
-    ].count;
+    ]?.count||0;
 
   /////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////
@@ -75,11 +91,7 @@ export default function DeliverableList(props) {
   return (
     <div className={cls.content}>
       <div className={cls.title}>{props.name} Quizzes</div>
-      <Summary
-        total={rows.length}
-        complete={completedN}
-        notS={notN}
-      />
+      <Summary total={rows.length} complete={completedN} notS={notN} />
       <div className={cls.title}>Quizzes List</div>
       <div className={cls.list}>
         <DataGrid

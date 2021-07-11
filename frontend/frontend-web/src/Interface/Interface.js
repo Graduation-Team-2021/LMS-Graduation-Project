@@ -5,12 +5,11 @@ export const getCancelToken = () => {
   return axios.CancelToken.source();
 };
 
-
 const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
-const local = "http://localhost:5000"
+const local = "http://localhost:5000";
 
-export const url = azure
+export const url = azure;
 const instance = axios.create({
   baseURL: azure,
   //"http://localhost:5000",
@@ -361,69 +360,123 @@ export const getStudentsByCourse = async (id) => {
   return res.data["names"];
 };
 
-export const getDeliv = async (id) => {
+export const getDeliv = async (id, Token) => {
+  var res;
   //TODO: Integrate the Deliverables backend
   if (id) {
-    /* const res = await instance.get(`/course/${id}/students`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }); */
     console.log(`Getting Deliverables of Course ${id}`);
   } else {
+    res = await instance.get(`/deliverables`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
     console.log(`Getting Deliverables of All Courses`);
   }
-  /* console.log(res);
-  return res.data["names"]; */
+  console.log(res);
+  /*return res.data["names"]; */
+};
+
+export const getDelivByID = async (id, Token) => {
+  var res;
+  //TODO: Integrate the Deliverables backend
+  if (id) {
+    console.log(`Getting Deliverables of Course ${id}`);
+  } else {
+    res = await instance.get(`/deliverables`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    console.log(`Getting Deliverables of All Courses`);
+  }
+  console.log(res);
+  /*return res.data["names"]; */
+};
+
+export const getQuizzes = async (id, Token) => {
+  //TODO: Integrate the Quizzes backend
+
+  const res = await instance.get(`/courses/${id}/events`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  const result = res.data.events.filter(
+    (value) => value["event_type"] === "exam"
+  );
+  console.log(result);
+  return result;
+};
+
+export const getQuizByID = async (id, Token) => {
+  var res;
+  //TODO: Integrate the Quizzes backend
+  if (id) {
+    console.log(`Getting Quizzes of Course ${id}`);
+  } else {
+    res = await instance.get(`/Quizzes`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    console.log(`Getting Quizzes of All Courses`);
+  }
+  console.log(res);
+  /*return res.data["names"]; */
 };
 
 export const getPDFs = async (id) => {
   //TODO: Integrate the PDFs backend
   const res = await instance.get(`/courses/${id}/materials/pdf`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   console.log(`Getting PDFs of Course ${id}`);
-  var materials = res.data["materials"]; 
-  return materials
+  var materials = res.data["materials"];
+  return materials;
 };
 
 export const getOnePDF = async (id) => {
   //TODO: Integrate the PDFs backend
   const res = await instance.get(`/materials/${id}/uri`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   console.log(`Getting PDF of id: ${id}`);
-  var materials = res.data['url'];
-  return materials
+  var materials = res.data["url"];
+  return materials;
 };
 
 export const getVideos = async (id) => {
   //TODO: Integrate the PDFs backend
   const res = await instance.get(`/courses/${id}/materials/videos`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   console.log(`Getting Videos of Course ${id}`);
-  var materials = res.data["materials"]; 
+  var materials = res.data["materials"];
   console.log(materials);
-  return materials
+  return materials;
 };
 
 export const getOneVideo = async (id) => {
   //TODO: Integrate the PDFs backend
   const res = await instance.get(`/materials/${id}/uri`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   console.log(`Getting Video of id: ${id}`);
-  var materials = res.data['url'];
-  return materials
+  var materials = res.data["url"];
+  return materials;
 };
 
 export const AddNewDeliv = async (Data) => {
@@ -458,36 +511,40 @@ export const getUser = async (id) => {
   return res.data;
 };
 
-export const changePassword = async(id, pass)=>{
-  const res = await instance.post(`/reset/password`,{user_id: id, password:pass}, {
+export const changePassword = async (id, pass) => {
+  const res = await instance.post(
+    `/reset/password`,
+    { user_id: id, password: pass },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return res.data;
+};
+
+export const searchUsers = async (text) => {
+  const res = await instance.get(`/users/search/${text}`, {
     headers: {
       "Content-Type": "application/json",
     },
   });
   return res.data;
-}
-
-export const searchUsers = async(text)=>{
-  const res = await instance.get(`/users/search/${text}`,{
+};
+export const searchCourses = async (text) => {
+  const res = await instance.get(`/courses/search/${text}`, {
     headers: {
       "Content-Type": "application/json",
     },
-  })
-  return res.data
-}
-export const searchCourses = async(text)=>{
-  const res = await instance.get(`/courses/search/${text}`,{
+  });
+  return res.data;
+};
+export const searchGroups = async (text) => {
+  const res = await instance.get(`/groups/search/${text}`, {
     headers: {
       "Content-Type": "application/json",
     },
-  })
-  return res.data
-}
-export const searchGroups = async(text)=>{
-  const res = await instance.get(`/groups/search/${text}`,{
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-  return res.data
-}
+  });
+  return res.data;
+};

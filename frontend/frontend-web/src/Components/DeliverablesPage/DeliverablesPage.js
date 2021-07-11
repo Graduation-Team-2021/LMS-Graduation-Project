@@ -42,7 +42,6 @@ function DeliverablesPage(props) {
       <Switch>
         <Route path="/Deliv" exact render={() => <Table onRowHand={onRowClickHandler} />} />
         <Route path="/Course/:id/Deliv" exact render={() => <Table name={props.location.state.name} id={props.match.params.id} onRowHand={onRowClickHandler} />} />
-        <Route path="/Deliv/Quiz/:id" exact component={Item} />
         <Route path="/Deliv/Assignment/:id" exact component={Assignment} />
       </Switch>
     </Card>
