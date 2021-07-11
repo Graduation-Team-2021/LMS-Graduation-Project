@@ -15,7 +15,6 @@
   text-align: center;
   align-items: center;
   justify-content: center;
-  overflow: auto;
 }
 
 .ButtonsRow {
@@ -38,7 +37,9 @@
 
 @media (max-width : 950px) {
   .CourseOverview {
-    width: 70vw;
-    height: 50vh;
+    width: 100%;
+  }
+  .Button{
+    width: 40%;
   }
 }
