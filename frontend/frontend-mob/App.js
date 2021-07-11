@@ -9,7 +9,7 @@ import currentGroupsReducer from "./store/reducers/currentGroupsReducer";
 import recentEventsReducer from "./store/reducers/recentEventsReducer";
 import finishedCoursesReducer from "./store/reducers/finishedCoursesReducer";
 import recentUserPostsReducer from "./store/reducers/recentUserPostsReducer";
-
+import FlashMessage from "react-native-flash-message";
 const rootReducer = combineReducers({
   userDataReducer: userDataReducer,
   currentCoursesReducer: currentCoursesReducer,
@@ -25,6 +25,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <HomeNav />
+      <FlashMessage position="top" /> 
     </Provider>
   );
 }

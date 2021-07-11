@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView,View, StyleSheet, FlatList, Text,TouchableOpacity , TouchableNativeFeedback} from "react-native";
+import { ScrollView,View, StyleSheet, FlatList, Text,TouchableOpacity ,ActivityIndicator, TouchableNativeFeedback} from "react-native";
 import { Button,Divider  } from "react-native-elements";
 import { getAllPosts, uploadPost ,getPDFs,getVideos, getAllCourseDeliverables} from "../Interface/Interface";
 import { connect } from "react-redux";
@@ -11,6 +11,7 @@ import VideoItem from '../components/VideoItem'
 import About from "../components/About";
 import NewPost from "../components/NewPost";
 import DeliverableItem from "../components/DeliverableItem";
+import {showMessage, hideMessage}from "react-native-flash-message";
 
 const data = ["sklahjdlsa"];
 const CourseScreen = (props) => {
@@ -19,6 +20,9 @@ const CourseScreen = (props) => {
   const [pdfs,setPdfs] = useState([]);
   const [videos,setVideos] = useState([]);
   const [deliverables,setDeliverables] = useState([])
+  const [deliverablesLoaded,setDeliverablesLoaded] = useState(false)
+  const [videosLoaded,setVideosLoaded] = useState(false)
+  const [pdfsLoaded,setPdfsLoaded] = useState(false)
   const role = props.userData.Role
 
   useEffect(() => {
@@ -36,6 +40,8 @@ const CourseScreen = (props) => {
     });
   }, []);
 
+  
+
   useEffect(()=>{
     getAllCourseDeliverables(myCourse.CourseID).then(res => {
         const temp = []
@@ -51,6 +57,7 @@ const CourseScreen = (props) => {
           }
         )
         setDeliverables(temp)
+        setDeliverablesLoaded(true)
     });
 },[])
   useEffect(()=>{
@@ -66,6 +73,7 @@ const CourseScreen = (props) => {
             }
           )
           setPdfs(temp)
+          setPdfsLoaded(true)
       });
   },[])
   useEffect(()=>{
@@ -81,12 +89,37 @@ const CourseScreen = (props) => {
           }
         )
         setVideos(temp)
+        setVideosLoaded(true)
     });
 },[])
   
 
   const [post, setPost] = useState("");
-
+  const alertDeliverableCreated = () =>{
+    showMessage({
+      message: "Deliverable created successfuly.",
+      type: "success",
+      duration:"3000"
+    });
+  }
+  const updateDeliverables = () =>{
+    getAllCourseDeliverables(myCourse.CourseID).then(res => {
+      const temp = []
+      res.forEach(
+        (ele, index) => {
+          temp.push({
+            deliverable_name: ele['deliverable_name'],
+            mark: ele['mark'],
+            description: ele['description'],
+            deadline: ele['deadline'],
+            id: ele['deliverable_id']
+          })
+        }
+      )
+      setDeliverables(temp)
+      setDeliverablesLoaded(true)
+  });
+  }
   const Submit = async () => {
     let postdata = setNewPost(post, myCourse.CourseName, props.userData.Name);
     let id = await uploadPost(
@@ -116,7 +149,7 @@ const previewPdfHandler = (pdf_id) =>{
   const previewDeliverableHandler = (deliverable) =>{
     props.navigation.navigate({
       routeName: "DeliverableDescription",
-      params: {deliverable_id:deliverable.deliverable_id,deliverable_name:deliverable.deliverable_name,mark:deliverable.mark,deadline:deliverable.deadline,description:deliverable.description}})
+      params: {deliverable_id:deliverable.id,deliverable_name:deliverable.deliverable_name,mark:deliverable.mark,deadline:deliverable.deadline,description:deliverable.description}})
   }
   
   const previewVideoHandler = (video_id) =>{
@@ -127,32 +160,41 @@ const previewPdfHandler = (pdf_id) =>{
   const createNewDeliverableHandler = () =>{
     props.navigation.navigate({
       routeName:"CreateDeliverable",
-      params: {courseId:myCourse.CourseID}
+      params: {courseId:myCourse.CourseID,alertDeliverableCreated:alertDeliverableCreated,updateDeliverables:updateDeliverables}
     })
   }
   const materialsDetails = (
     <View style={styles.materialsContainer}>
       <Divider style={styles.dividerStyle}/>
       <Text style={styles.videos_pdfs_header}>Deliverables</Text>
-      {deliverables.map((deliverable,i)=>(
+      {deliverablesLoaded &&
+      deliverables.map((deliverable,i)=>(
         <DeliverableItem key ={i} deliverable={deliverable} previewDeliverableHandler={previewDeliverableHandler}></DeliverableItem>
-      ))}
-      {role=="professor" && <Button
-      title="Create Deliverable"
-      buttonStyle={{minWidth:150, width:"70%", maxWidth:200, alignSelf: 'center',marginTop:20}}
       
+        )) 
+      
+      }
+      {!deliverablesLoaded&&<ActivityIndicator size="small" />}
+      {role=="professor" && <Button
+      title="CREATE DELIVERABLE"
+      buttonStyle={{minWidth:150, width:"70%", maxWidth:200, alignSelf: 'center',marginTop:20}}
+      titleStyle={{fontSize:"12"}}
       onPress={createNewDeliverableHandler}
       />}
       <Divider style={styles.dividerStyle}/>
       <Text style={styles.videos_pdfs_header}>Videos</Text>
-      {videos.map((video,i)=>(
+      {videosLoaded &&
+      videos.map((video,i)=>(
         <VideoItem key ={i} video={video} previewVideoHandler={previewVideoHandler}></VideoItem>
-      ))}
+      ))
+      }
+      {!videosLoaded && <ActivityIndicator size="small" />}
       <Divider style={styles.dividerStyle}/>
       <Text style={styles.videos_pdfs_header}>PDFs</Text>
-      {pdfs.map((pdf,i)=>(
+      {pdfsLoaded&&pdfs.map((pdf,i)=>(
         <PdfItem key = {i} pdf={pdf} previewPdfHandler={previewPdfHandler}></PdfItem>
       ))}
+      {!pdfsLoaded && <ActivityIndicator size="small" />}
       <Divider style={styles.dividerStyle}/>
       
     </View>
@@ -181,7 +223,7 @@ const previewPdfHandler = (pdf_id) =>{
       {groupflag ? null : materialsDetails}
       
       <View style={{ width: "90%", flex: 1 }}>
-        <FlatList
+        <FlatList 
           data={Data}
           renderItem={renederitem}
           keyExtractor={(_, index) => `${index}`}
