@@ -117,7 +117,7 @@ const Quiz = (props) => {
     return (
         <QuizWindow>
             {quiz[number] &&
-                <>
+                <div>
                     <Question dangerouslySetInnerHTML={{ __html: quiz[number].question }}></Question>
                     <Options>
                         {number ? <Button onClick={goBack} css={btnCSS}>Go back</Button> : null}
@@ -129,13 +129,13 @@ const Quiz = (props) => {
                                     color={item === userAnswers[number] ? '#616A94' : '#161A31'} />
                             ))}
                     </Options>
-                </>
+                </div>
             }
             {
-                (number === quiz.length && number > 0) && <>
+                (number === quiz.length && number > 0) && <div>
                     <Button onClick={goBack} css={btnCSS}>Go back</Button>
                     <Button onClick={Finish} css={btnCSS}>Finish</Button>
-                </>
+                </div>
             }
             {
                 number === quiz.length + 1 && <GameOver pts={props.score} user={userAnswers} data={quiz}/>
