@@ -25,12 +25,12 @@ const MiniMenu = (props) => {
   return (
     <div
       className={classes.full}
-      tabIndex={0}
+     /*  tabIndex={0}
       onBlur={() => {
         setMenu(false);
         setMessages(false);
         setNotif(false);
-      }}
+      }} */
     >
       <div className={classes.Main}>
         <Button
