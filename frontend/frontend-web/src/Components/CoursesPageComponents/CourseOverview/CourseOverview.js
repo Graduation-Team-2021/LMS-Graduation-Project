@@ -1,15 +1,31 @@
-import React from "react";
+import React, {useState} from "react";
 import { Button } from "@material-ui/core";
-import {withRouter} from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 import classes from "./CourseOverview.module.css";
+import Enroll from "../../../Components/Enroll/Enroll";
+import Modal from "../../../Components/Modal/Modal";
 
-const courseOverview = (props) => {
+const CourseOverview = (props) => {
   let imageTest = props.CoursePicture;
 
-  console.log(props);
+  const [show, setShow] = useState(false)
+
+  const dismiss=()=>{
+    alert("Enroll Canceled")
+    setShow(false)
+  }
+
+  const accept=()=>{
+    //enroll in course
+    props.Enroll()
+    setShow(false)
+  }
 
   return (
     <div className={classes.CourseOverview}>
+      <Modal show={show} onClick={dismiss}>
+        <Enroll onCancel={dismiss} onAccept={accept}/>
+      </Modal>
       <img src={imageTest} alt="tst" className={classes.CoursePicture} />
       <h3>{props.CourseName}</h3>
       <p>{props.CourseDescription}</p>
@@ -20,16 +36,22 @@ const courseOverview = (props) => {
           color="primary"
           className={classes.Button}
           onClick={() => {
-            props.history.push({
-              pathname: `/Course/${props.CourseID}`,
-              state: {
-                Data: props.Course,
-                isJoined: props.isEnrolled,
-              },
-            });
+            if (props.isEnrolled === "true") {
+              props.history.push({
+                pathname: `/Course/${props.CourseID}`,
+                state: {
+                  Data: props.Course,
+                  isJoined: props.isEnrolled,
+                },
+              });
+            } else {
+              setShow(true)
+            }
           }}
         >
-          Go to {props.CourseName}
+          {props.isEnrolled === "true"
+            ? `Go to ${props.CourseName}`
+            : "Enroll First"}
         </Button>
         <Button
           color="secondary"
@@ -43,4 +65,4 @@ const courseOverview = (props) => {
   );
 };
 
-export default withRouter(courseOverview);
+export default withRouter(CourseOverview);

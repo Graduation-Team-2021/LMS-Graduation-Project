@@ -1,5 +1,5 @@
 import { DataGrid } from "@material-ui/data-grid";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import cls from "./DelivTable.module.css";
 import Summary from "./DelivSummary/Summary";
 import { getDeliv } from "../../Interface/Interface";
@@ -23,7 +23,7 @@ const rows = [
     course: "Software Engineering",
     coursecode: "CSE412",
     deadline: "09-04-2021",
-    leeway: "40 minutes",
+    leeway: "1 minutes",
     mark: "N/A",
     id: 1,
   },

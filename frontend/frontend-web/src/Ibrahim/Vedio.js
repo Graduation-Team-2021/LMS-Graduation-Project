@@ -1,101 +1,79 @@
 import React, { Component } from "react";
 import ReactPlayer from "react-player";
-//import Navbar from '../navbar/Navbar';
-import "./Vedio.css";
+import Card from "../Components/Card/Card";
+import classes from "./Vedio.module.css";
+import Button from "../Components/Button/Button";
 import { withRouter } from "react-router-dom";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import CoursePage from "../Containers/CoursePage/CoursePage";
+import { getVideos, url, getOneVideo } from "../Interface/Interface";
 
 class Vedioplayer extends Component {
-  // axios.get()
-  
   state = {
-    url: "https://www.youtube.com/watch?v=A3Ffwsnad0k&list=PLl-gb0E4MII28GykmtuBXNUNoej-vY5Rz&index=1",
-    windowWidth: window.innerWidth - 100 
+    url: null,
+    windowWidth: window.innerWidth - 100,
+    list: [],
+    ready: false,
   };
   handleResize = (e) => {
     this.setState({ windowWidth: window.innerWidth - 50 });
-    };
-    componentDidMount() {
+  };
+  componentDidMount() {
     window.addEventListener("resize", this.handleResize);
-    }
-    componentWillUnmount() {
+    getVideos(this.props.match.params.id).then((res) => {
+      const l = [];
+      res.forEach((value, index) => {
+        l.push(
+          <span className={classes.holder}>
+            <Button
+              className={classes.Button}
+              key={index}
+              onClick={() => this.loadVideo(value["material_id"])}
+            >
+              {value["material_name"]}
+            </Button>
+          </span>
+        );
+      });
+      this.setState({ list: l });
+    });
+  }
+  componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
-    }
-  mathurl = () => {
-    this.setState({
-      url:
-        // "https://youtu.be/8zuE3Rtm1Eo?list=PLQkyODvJ8ywuGxYwN0BfMSvembIJkNQH1"
-        "https://www.youtube.com/watch?v=MZLkCsa1YfE",
-    });
-    // alert("math");
-    console.log(this.state.url);
-  };
-  Phyurl = () => {
-    this.setState({
-      url:
-        "https://www.youtube.com/watch?v=cJZQczEEWkc",
-    });
-    // alert("phy");
-    console.log(this.state.url);
-  };
-  compurl = () => {
-    this.setState({
-      url:
-        "https://www.youtube.com/watch?v=u16K5eWI9Rk",
-    });
-    // alert("comp");
-    console.log(this.state.url);
-  };
-  softwre = () => {
-    setTimeout(
-      this.setState({
-        url:
-          "https://www.youtube.com/watch?v=xzjStyEDPM0",
-      }),
-      3000
-    );
+  }
 
-    // alert("software");
-    console.log(this.state.url);
+  loadVideo = (id) => {
+    getOneVideo(id).then((res) => {
+      console.log(res);
+      this.setState({ url: url + res });
+    });
   };
+
   nulling = () => {
-    console.log(this.props.location.state);
     this.props.history.push({
       pathname: `/Course/${this.props.location.state.Data.CourseID}`,
       state: {
         Data: this.props.location.state.Data,
         isJoined: "true",
       },
-    })
+    });
   };
-  
-  start = () => {
-    alert("you can start now your vedio");
-    console.log(this.state.screen_length)
-  };
-  finish = () => {
-    alert("you have finished your vedio keeo going");
-  };
-  change = () => {
-    alert("you can start now a new your vedio");
-  };
+
   render() {
     return (
-      <div className="container">
-        <div className="Vedio">
-
-          <ReactPlayer
-            controls
-            width= {this.state.windowWidth}
-            height="600px"
-            url={this.state.url}
-            onReady={this.start}
-            onEnded={this.finish}
-            onchange={this.change}
-            onError={this.nulling}
-          />
-          {/* <ReactPlayer
+      <div className={classes.container}>
+        <Card shadow className={classes.Card}>
+          <div className={classes.Vedio}>
+            {this.state.url ? (
+              <ReactPlayer
+                controls
+                width={this.state.windowWidth}
+                height="100%"
+                url={this.state.url}
+                onError={this.nulling}
+              />
+            ) : (
+              <Card shadow>Please Choose A Video from The List</Card>
+            )}
+            {/* <ReactPlayer
             controls
             width="1500px"
             height="600px"
@@ -105,27 +83,37 @@ class Vedioplayer extends Component {
             onchange={this.change}
             onError={this.nulling}
           /> */}
-          <ul className="vediolist">
-            <li>
-              <p> Your courses vedio :</p>
-            </li>
-            <li>
-              <p onClick={this.mathurl}> Math</p>
-            </li>
-            <li>
-              <p onClick={this.Phyurl}> Physices</p>
-            </li>
-            <li>
-              <p onClick={this.compurl}> Compliers</p>
-            </li>
-            <li>
-              <p onClick={this.softwre}> Software</p>
-            </li>
-            <li>
-              <p onClick={this.nulling}> Back to courese page</p>
-            </li>
-          </ul>
-        </div>
+
+            <div className={classes.vediolist}>
+              <p>Your Course Videos</p>
+              {/* <li>
+                <p onClick={this.mathurl}> Math</p>
+              </li>
+              <li>
+                <p onClick={this.Phyurl}> Physices</p>
+              </li>
+              <li>
+                <p onClick={this.compurl}> Compliers</p>
+              </li>
+              <li>
+                <p onClick={this.softwre}> Software</p>
+              </li> */}
+              <div className={classes.list}>{this.state.list}</div>
+              <span
+                style={{
+                  padding: "5% 0",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Button className={classes.Back} onClick={this.nulling}>
+                  Back to Course page
+                </Button>
+              </span>
+            </div>
+          </div>
+        </Card>
       </div>
     );
   }

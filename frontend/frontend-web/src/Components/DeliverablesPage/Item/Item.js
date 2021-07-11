@@ -1,29 +1,62 @@
-import { useState, useEffect } from "react";
-import { useParams, withRouter } from "react-router-dom";
+import React,{ useState, useEffect, useRef } from "react";
+import { withRouter } from "react-router-dom";
+import Quiz from './Quiz/Quiz';
+import { Prompt } from 'react-router'
 import Countdown from "react-countdown";
 import cls from "./Item.module.css";
 
 function Page(props) {
   let ele = props.location.state.data;
+  const clockRef = useRef();
+  ////////////////////////////////////////////////////////
   const [timer, setTimer] = useState(null);
-
+  const [clicked, setClicked] = useState({ clicked: false })
+  const [finished, setFinished] = useState({ finished: false })
+  const [score, setScore] = useState(0)
+  ////////////////////////////////////////////////////////
+  useEffect(() => {
+    if (clicked.clicked && !finished.finished) {
+      window.onbeforeunload = () => true
+    } else {
+      window.onbeforeunload = undefined
+    }
+  });
+  ////////////////////////////////////////////////////////
+  const onCompleteHandler = () => {
+    setFinished({finished:true})
+  }
   const onClickHandler = () => {
-    setTimer(
-      <Countdown
-        className={cls.timer}
-        date={
-          Date.now() + ele.leeway.slice(0, ele.leeway.indexOf(" ")) * 60 * 1000
-        }
-      >
-        <div className={cls.timer}>Time's up, Bucko!</div>
-      </Countdown>
-    );
+    if (!clicked.clicked) {
+      setTimer(
+        <Countdown
+          className={cls.timer}
+          date={
+            Date.now() + ele.leeway.slice(0, ele.leeway.indexOf(" ")) * 60 * 1000
+          }
+          onComplete={onCompleteHandler}
+          ref={clockRef}
+        >
+          <div className={cls.timer}>Time's up!</div>
+        </Countdown>
+      );
+      setClicked({ clicked: true })
+    }
   };
-
-  console.log("quiz loaded");
-
+  ////////////////////////////////////////////////////////
+  useEffect(()=>{
+    if (finished.finished){
+      clockRef.current.stop();
+      //send student score to the database!!!!!
+      // score is in score state
+    }
+  }, [finished])
+  ////////////////////////////////////////////////////////
   return (
     <div className={cls.page}>
+      <Prompt
+        when={clicked.clicked && !finished.finished}
+        message="You haven't finished yet, are you sure you want to leave?"
+      />
       <button className={cls.button} onClick={() => props.history.push("/Deliv/")}>
         <h2>
           <b>Go Back...</b>
@@ -37,13 +70,14 @@ function Page(props) {
         <h2>
           <b>Allowed time: {ele.leeway}</b>
         </h2>
-        <button className={cls.button} onClick={onClickHandler}>
+        {finished.finished?null:<button className={cls.button} onClick={onClickHandler}>
           <h2>
             <b>Begin!</b>
           </h2>
-        </button>
+        </button>}
         {timer}
       </div>
+      {clicked.clicked?<Quiz fin={finished.finished} setFin = {setFinished} setSec={setScore} sec={score}/>:null}
     </div>
   );
 }

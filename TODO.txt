@@ -1,18 +1,19 @@
 NEW TODO:
-1. Materials get/update
 2. get users of Course/Group 
 3. Join Courses with a deadline *******************************************
-4. Search Page with categories for each entity
+4. Search Page with categories for each entity (Basic Sturcture only)
 5. Deliverables integration (Michel,David)
-6. Quizzes ( create quiz)
+6. Quizzes (to be properly integrated), (create quizzes), (Quiz only Page)
 7. يوم النتيجة
 8. THe passed courses and the total grade is not connected to the backend يا ديفيد
 9. Frontend error handling (John, David)
-10. Notification View(Michel,David)
+10.Notification View(Michel,David)
 11.The ability to sort course material chronologically, alphabetically and by dependence (Frontend,Adham and David)
 12.The  ability  for  teachers  to  add  comments  on  specific  segments  of  the  video,  and  for  students to make an enquiry about a specific segment of the video.
 13.Courses page will show a compact detail box for each course.
 14.The  ability  to  send  direct  messages  to  other  users  which  will  be  accessible  from  everywhere through a button like Messenger chat heads (Hazim)
+15.Notifications should be Clickable (Post/Messages)
+16.Improve the dropdown menu design (make the 2 menus into one)
 
 Mobile TODO:
 1. in Mobile app, Handle the tablet screen
@@ -24,6 +25,7 @@ Mobile TODO:
 7.The  ability  to  send  direct  messages  to  other  users  which  will  be  accessible  from  everywhere through a button like Messenger chat heads
 
 
-*************************************************
-1. Online Courses
-2. QR Code (By Adham)
+
+
+For David:
+    Make a loading while uploading

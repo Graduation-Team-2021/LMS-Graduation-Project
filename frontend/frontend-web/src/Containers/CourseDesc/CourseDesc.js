@@ -2,14 +2,20 @@ import React, { Component } from "react";
 import classes from "./CourseDesc.module.css";
 import Card from "../../Components/Card/Card";
 import Minibar from "../../Components/Minibar/Minibar";
+import Modal from "../../Components/Modal/Modal";
+
 import { faVideo, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
 import AddEvent from "../AddEventPage/AddEvent";
 import { uploadFile } from "../../Interface/Interface";
+import Waiting from "../../Components/Waiting/Waiting";
+import Button from "../../Components/Button/Button";
 
 class CourseDesc extends Component {
   state = {
     file: null,
+    clicked: false,
+    done: true,
   };
 
   handleFIleUpload = (event) => {
@@ -30,79 +36,93 @@ class CourseDesc extends Component {
 
   Submit = () => {
     console.log(this.state.file);
-    uploadFile(this.props.Token, this.state.file, this.props.CourseID);
+    this.setState({ clicked: true, done: false });
+    uploadFile(
+      this.props.Token,
+      this.state.file,
+      this.props.CourseID
+    ).then(() => this.setState({ done: true, file: null }));
   };
+
+  Uploading = (
+    <Waiting Loading={!this.state.done}>
+      <div
+        style={{
+          display: "flex",
+          flexFlow: "column",
+          alignItems: "center",
+        }}
+      >
+        <h2>Upload Successful</h2>
+        <Button
+          value="Close"
+          onClick={() => this.setState({ clicked: false })}
+        />
+      </div>
+    </Waiting>
+  );
 
   render() {
     return (
       <div className={classes.upcoming}>
-        <div className={classes.Title}>About</div> 
+        <Modal show={this.state.clicked}>{this.Uploading}</Modal>
+        <div className={classes.Title}>About</div>
         <div className={classes.EventTitle}>{this.props.desc}</div>
-        <div className = {classes.Container}>
-        <div
-          style={{
-            padding: "0 0 10% 0",
-          }}
-          onClick={() => {
-            this.props.history.push({
-              pathname: `/Course/${this.props.CourseID}/Videos`,
-              state: {
-                Data: this.props.Course
-              },
-            });
-          }}
-        >
-          <Card
-            shadow
-            style={{
-              padding: "5% 0",
+        <div className={classes.Container}>
+          <Button
+            className={classes.Holder}
+            onClick={() => {
+              this.props.history.push({
+                pathname: `/Course/${this.props.CourseID}/Videos`,
+                state: {
+                  Data: this.props.Course,
+                },
+              });
             }}
           >
             <Minibar icon={faVideo} color=" rgb(0, 102, 255)" info="Videos" />
-          </Card>
-        </div>
-        <div
-          style={{
-            padding: "0 0 10% 0",
-          }}
-          onClick={() => {
-            this.props.history.push({
-              pathname: `/Course/${this.props.CourseID}/PDFs`,
-              state: {
-                name: this.props.Title,
-              },
-            });
-          }}
-        >
-          <Card
-            shadow
-            style={{
-              padding: "5% 0",
+          </Button>
+          <Button
+            className={classes.Holder}
+            onClick={() => {
+              this.props.history.push({
+                pathname: `/Course/${this.props.CourseID}/PDFs`,
+                state: {
+                  name: this.props.Title,
+                },
+              });
             }}
           >
-            <Minibar icon={faFilePdf} color=" red" info="Pdfs" />
-          </Card>
+            <Minibar icon={faFilePdf} color="red" info="Pdfs" />
+          </Button>
         </div>
-      </div>
-        {this.props.Role === "student" ? (
+        {this.props.Role === "professor" ? (
           <React.Fragment>
-            <AddEvent>
-              <div
-                style={{
-                  padding: "0 0 10% 0",
-                }}
-              >
-                <Card
-                  shadow
+            <span
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <AddEvent>
+                <div
                   style={{
-                    padding: "5% 0",
+                    padding: "0 0 10% 0",
                   }}
                 >
-                  <Minibar icon={faFilePdf} color=" red" info="test" />
-                </Card>
-              </div>
-            </AddEvent>
+                  <Card
+                    shadow
+                    style={{
+                      padding: "5% 0",
+                    }}
+                  >
+                    <Minibar icon={faFilePdf} color="red" info="test" />
+                  </Card>
+                </div>
+              </AddEvent>
+            </span>
             <div
+              className={classes.Container2}
               style={{
                 padding: "10% 0",
               }}
@@ -110,15 +130,21 @@ class CourseDesc extends Component {
               <Card
                 shadow
                 style={{
-                  padding: "10%",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  padding: "5%",
                 }}
               >
                 <label
                   style={{
+                    alignSelf: "flex-start",
                     padding: "0 0 10% 0",
+                    fontSize: "200%",
+                    fontWeight: 'bold',
                   }}
                 >
-                  Select files:
+                  Upload Material:
                 </label>
                 <input
                   type="file"
@@ -128,7 +154,9 @@ class CourseDesc extends Component {
                   onChange={this.handleFIleUpload}
                 />
                 <br></br>
-                <input type="submit" onClick={this.Submit} />
+                <Button className={classes.Button} onClick={this.Submit}>
+                  Submit
+                </Button>
               </Card>
             </div>
           </React.Fragment>

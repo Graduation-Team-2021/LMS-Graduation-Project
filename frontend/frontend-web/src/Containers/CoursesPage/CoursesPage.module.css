@@ -1,16 +1,14 @@
 .Center {
   width: 100%;
   display: flex;
+  flex-flow: column;
+  height: 73vh;
 }
 
 .Center .Card {
   align-items: flex-start;
   flex: 3;
-  height: fit-content;
-}
-
-.Home {
-  flex: 3;
+  height: 100%;
 }
 
 .CoursesPage {
@@ -23,17 +21,43 @@
 }
 
 .CoursesList {
-  flex: 1;
+  padding: 1% 0 0 1%;
   display: flex;
   flex-direction: column;
-  justify-self: space-between;
+  justify-content: space-between;
   align-items: flex-start;
-  height: 100vh;
-  width: 100%;
-
+  height: 100%;
+  width: 30%;
+  max-width: 25vw;
+  overflow-y: auto;
 }
 
 .CourseOverview {
   flex: 2;
-  height: 100vh;
+  height: 100%;
 }
+
+
+@media (max-width : 1325px) {
+  .Center{
+    flex-flow: column;
+    flex:1
+  }
+  .CoursesList {
+    flex-direction: row ;
+    min-height: 30%;
+    max-width: 100%;
+    width: 100%;
+    overflow-y: hidden;
+    padding: 1% 0 0 1%;
+  }
+  .CourseOverview{
+    flex:0;
+    width: 100%;
+    height: 62%;
+  }
+  .CoursesPage {
+    flex-direction: column;
+  }
+}
+
