@@ -1,15 +1,20 @@
 .CoursePicture {
-  height: 50%;
+  height: 40%;
   box-sizing: border-box;
   border-radius: 10%;
   margin: 4% 1%;
   width: 90%;
+  object-fit: contain;
 }
 
 .CourseOverview {
+  display: flex;
+  flex-flow: column;
   height: 100%;
   width: 100%;
   text-align: center;
+  align-items: center;
+  justify-content: center;
   overflow: auto;
 }
 
@@ -18,7 +23,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-
+    align-self: flex-end;
 }
 .Button{
     margin: 2% 5%;

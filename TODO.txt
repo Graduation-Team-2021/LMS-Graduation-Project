@@ -1,5 +1,4 @@
 NEW TODO:
-1. Materials get/update
 2. get users of Course/Group 
 3. Join Courses with a deadline *******************************************
 4. Search Page with categories for each entity

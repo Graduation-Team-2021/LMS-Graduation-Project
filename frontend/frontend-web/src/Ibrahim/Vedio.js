@@ -48,7 +48,6 @@ class Vedioplayer extends Component {
   };
 
   nulling = () => {
-    console.log(this.props.location.state);
     this.props.history.push({
       pathname: `/Course/${this.props.location.state.Data.CourseID}`,
       state: {
@@ -63,7 +62,6 @@ class Vedioplayer extends Component {
       <div className={classes.container}>
         <Card shadow className={classes.Card}>
           <div className={classes.Vedio}>
-            {console.log(this.state.url)}
             {this.state.url ? (
               <ReactPlayer
                 controls
@@ -100,24 +98,7 @@ class Vedioplayer extends Component {
               <li>
                 <p onClick={this.softwre}> Software</p>
               </li> */}
-              <div className={classes.list}>
-                {[
-                  ...this.state.list,
-                  <span className={classes.holder}>
-                    <Button
-                      className={classes.Button}
-                      onClick={() =>
-                        this.setState({
-                          url:
-                            "https://www.youtube.com/watch?v=9PyOlQ-1y6g&list=PLo62-7UV0K9OFD7GQAcR2TUAFd2TlinjR&index=2",
-                        })
-                      }
-                    >
-                      {"Testing....."}
-                    </Button>
-                  </span>,
-                ]}
-              </div>
+              <div className={classes.list}>{this.state.list}</div>
               <span
                 style={{
                   padding: "5% 0",

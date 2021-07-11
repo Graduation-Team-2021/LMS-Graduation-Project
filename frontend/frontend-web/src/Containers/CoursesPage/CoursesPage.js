@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import Card from "../../Components/Card/Card";
 import CourseListItem from "../../Components/CoursesPageComponents/CourseListItem/CourseListItem";
 import CourseOverView from "../../Components/CoursesPageComponents/CourseOverview/CourseOverview";
+import Waiting from "../../Components/Waiting/Waiting";
 
 import { getCourses } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
@@ -17,6 +18,7 @@ const HomePage = (props) => {
   const { TokenError } = props.userDataActions;
   const { currentCourses } = props.currentCourses;
   const { finishedCourses } = props.finishedCourses;
+  const [loading, setLoading] = useState(true);
 
   const selectingCourseHandler = (courseid) => {
     setdisplayedCourse(courseid);
@@ -28,6 +30,7 @@ const HomePage = (props) => {
 
   useEffect(() => {
     getCourses(Token).then((res) => {
+      setLoading(false);
       if (res) {
         let Courses = new Map();
         res.forEach((id, index) => {
@@ -38,13 +41,7 @@ const HomePage = (props) => {
               ? "https://cdn.britannica.com/w:1100/50/190450-131-527BAEF7/series-Elementary-Particles-subject-forms-nuclear-physics.jpg"
               : "https://i.pinimg.com/736x/c8/e5/75/c8e5753370bad54c7977d485e0a0e29d.jpg";
           id["isenrolled"] = "false";
-          if (
-            Array.from(currentCourses.keys()).includes(
-              id["course_code"]
-            ) ||
-            //TODO: Fix Major Bug Here (Finished Courses may not be Loaded First)
-            finishedCourses.includes(id["course_code"])
-          ) {
+          if (Array.from(currentCourses.keys()).includes(id["course_code"])) {
             id["isenrolled"] = "true";
           }
           Courses.set(id["course_code"], setCourse(id));
@@ -85,14 +82,12 @@ const HomePage = (props) => {
   return (
     <div className={classes.Center}>
       <Card shadow className={classes.Card}>
-        {Courses.size !== 0 ? (
+        <Waiting Loading={loading}>
           <div className={classes.CoursesPage}>
             <div className={classes.CoursesList}>{loadedCourses}</div>
             {stage}
           </div>
-        ) : (
-          <h1>Loading.....</h1>
-        )}
+        </Waiting>
       </Card>
     </div>
   );
