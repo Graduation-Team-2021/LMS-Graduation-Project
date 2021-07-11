@@ -1,0 +1,15 @@
+.Holder1 {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.Holder2{
+    display: flex;
+    justify-content: center;
+    width: 70%;
+}
+
+.Holder1 .Button, .Holder2 .Button{
+    width: 40%;
+}
