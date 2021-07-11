@@ -4,4 +4,5 @@
     max-height: 40vh;
     overflow: auto;
     position: relative;
+    outline: none;
 }
