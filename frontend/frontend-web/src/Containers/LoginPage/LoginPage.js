@@ -34,7 +34,6 @@ class LoginPage extends Component {
             Role: jwt_decode(res.Token).permissions,
           };
           this.props.userDataActions.onSetData(Data);
-          console.log(this.props.userData, Data);
           this.props.history.push("/");
         } else alert("Login Failed");
       });
@@ -98,6 +97,7 @@ class LoginPage extends Component {
             <h1 className={classes.MainTitle}>Get Started</h1>
             <div className={classes.LoginMain}>
               <LoginField
+                onKeyDown={this.signin}
                 EmailError={this.state.EmailError}
                 onChange={this.changeInput}
                 PasswordError={this.state.PasswordError}

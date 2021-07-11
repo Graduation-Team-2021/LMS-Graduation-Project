@@ -1,16 +1,19 @@
 import jwt_decode from "jwt-decode";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { SET_TOKEN,SET_NAME,SET_ID,SET_ROLE, SET_DATA } from "../actions/userDataActions";
+import {
+  SET_TOKEN,
+  SET_NAME,
+  SET_ID,
+  SET_ROLE,
+  SET_DATA,
+} from "../actions/userDataActions";
 
 const intialState = {
-  Name: localStorage.getItem("name"),
-  Role: localStorage.getItem("token")
-    ? jwt_decode(localStorage.getItem("token")).permissions
-    : null,
-  ID: localStorage.getItem("token")
-    ? jwt_decode(localStorage.getItem("token")).id
-    : null,
-  Token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
+  Name: null,
+  Role: null,
+  ID: null,
+  Token: null,
 };
 
 const reducer = (state = intialState, action) => {

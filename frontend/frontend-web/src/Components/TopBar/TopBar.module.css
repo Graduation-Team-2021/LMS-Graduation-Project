@@ -6,6 +6,7 @@
     padding: 0 0 1%;
     height: fit-content;
     position: relative;
+    width: 100%;
 }
 
 @media (max-width : 590px) {

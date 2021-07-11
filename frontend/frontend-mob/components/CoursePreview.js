@@ -9,8 +9,9 @@ const CoursePreview = (props) => {
         props.navigation.navigate({
           routeName: "Course",
           params: {
-            courseName: props.Course.CourseName,
-            groupflag : props.groupflag
+            course: props.Course,
+            groupflag : props.groupflag, 
+          
           },
         })
       }

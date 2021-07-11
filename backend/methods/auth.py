@@ -10,7 +10,7 @@ secret_key = "ANy HABDDDDDDDDD"
 
 def encode_auth_token(user_id, role):
     payload = {
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
         'iat': datetime.datetime.utcnow(),
         'id': user_id,
         'permissions': role

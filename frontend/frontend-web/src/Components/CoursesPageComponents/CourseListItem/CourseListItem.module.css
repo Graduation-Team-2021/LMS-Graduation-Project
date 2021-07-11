@@ -37,8 +37,10 @@
 }
 
 .CourseItemListContainer{
+  cursor: pointer;
   display: flex;
   flex-direction: row;
+  margin-bottom: 5%;
 }
 
 @media (max-width : 1325px) {

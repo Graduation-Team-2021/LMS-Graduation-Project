@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, ScrollView, Dimensions } from "react-native";
-import { Input, Image, Button } from "react-native-elements";
+import { View, StyleSheet, ScrollView, Dimensions, Alert } from "react-native";
+import { Image, Button } from "react-native-elements";
+import { TextInput } from "react-native-paper";
+import * as Interface from "../Interface/Interface";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+import { connect } from "react-redux";
+import jwt_decode from "jwt-decode";
 
-const LoginScreen = () => {
+const LoginScreen = (props) => {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [EmailError, setEmailError] = useState(false);
@@ -43,14 +49,67 @@ const LoginScreen = () => {
           />
         </View>
         <View style={styles.inputsContainer}>
-          <Text style={styles.h1}>Getting Started</Text>
-          <Input placeholder="Emails..." label="Email" />
-          <Input placeholder="Password..." label="Password" />
+          <View style={{ width: "100%", padding: 10 }}>
+            <TextInput
+              label="Email"
+              value={Email}
+              onChangeText={(newEmail) => setEmail(newEmail)}
+              error={EmailError}
+            />
+          </View>
+          <View style={{ width: "100%", padding: 10 }}>
+            <TextInput
+              label="password"
+              value={Password}
+              onChangeText={(newPassword) => setPassword(newPassword)}
+              error={PasswordError}
+              secureTextEntry
+            />
+          </View>
+
           <Button
             title="Submit"
             onPress={() => {
-              //TODO: Implement this when connecting to the server
-              console.log("[submeit button] would be impelemented");
+              
+              let err = false;
+              if (Email.length <= 0) {
+                setEmailError(true);
+                err = true;
+              }
+              if (Password.length <= 0) {
+                setPasswordError(true);
+                err = true;
+              }
+              if (!err) {
+                console.log(Email, Password);
+                Interface.Login({ email: Email, password: Password }).then(
+                  async (value) => {
+                    console.log(value);
+                    if (value !== null) {
+                      await AsyncStorage.setItem("token", value.Token);
+                      await AsyncStorage.setItem("name", value.name);
+                      let Data = {
+                        Token: value.Token,
+                        Name: value.name,
+                        ID: jwt_decode(value.Token).id,
+                        Role: jwt_decode(value.Token).permissions,
+                      };
+                      props.userDataActions.onSetData(Data);
+                      props.navigation.navigate({
+                        routeName: "MainNavigator",
+                        params: { studentName: value.name },
+                      });
+                    } else {
+                      //TODO : show a modal to inform the user about in valid login with a snackbar
+                      Alert.alert(
+                        "Log in Failed",
+                        "You have entered wrong password or email, please try again later",
+                        [{ text: "Okay", style: "destructive" }]
+                      );
+                    }
+                  }
+                );
+              }
             }}
             buttonStyle={styles.submitButton}
             containerStyle={styles.submitButtonContiner}
@@ -68,7 +127,6 @@ const styles = StyleSheet.create({
   screenL: {
     flexDirection: "row-reverse",
     paddingTop: 50,
-    
   },
   screenP: {
     flexDirection: "column",
@@ -80,7 +138,7 @@ const styles = StyleSheet.create({
   },
   imageContainerL: {
     height: "100%",
-    flex: 1
+    flex: 1,
   },
   image: {
     width: "100%",
@@ -101,7 +159,7 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   submitButton: {
-    width: 200 ,
+    width: 200,
   },
   submitButtonContiner: {
     justifyContent: "center",
@@ -110,4 +168,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-export default LoginScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

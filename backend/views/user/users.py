@@ -144,6 +144,7 @@ class Sign_Up(Resource):
         self.reqparse.add_argument('student_year', type=str, location='json')
         self.reqparse.add_argument('scientific_degree', type=str, location='json')
         self.reqparse.add_argument('role', type=str, location='json')
+        self.reqparse.add_argument('picture', type=str, location='json')
 
     def post(self):
         args = self.reqparse.parse_args()
@@ -156,6 +157,7 @@ class Sign_Up(Resource):
             'national_id': args['national_id'],
             'birthday': args['birthday'],
             'password': generate_hash(args['password']),
+            "picture": args['picture']
         }
         controller_object.add_new_user(user,student_year,scientific_degree,role)
 

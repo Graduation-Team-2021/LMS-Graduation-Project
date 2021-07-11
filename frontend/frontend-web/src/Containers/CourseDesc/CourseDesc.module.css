@@ -13,6 +13,16 @@
     font-weight: bold;
 }
 
+.Container .Holder{
+    font-size: 100%;
+    width: 100%;
+    margin: 0 0 10% 0;
+}
+
+.Container2 .Button{
+    width: 40%;
+}
+
 .EventTitle {
     text-align: start;
     padding: 5vh 0;

@@ -1,12 +1,23 @@
-import React from 'react';
-import { View,Text, StyleSheet} from 'react-native';
- import {} from 'react-native-elements';
+import * as React from 'react'
+import { View ,Text} from 'react-native'
+import PDFReader from 'rn-pdf-reader-js'
+import { materialUri,azure } from "../Interface/Interface";
 
- const PDFScreen = (props) => {
-     return ( <View>
-        <Text>This is PDF Screen To be implemented</Text>
 
-     </View> );
- }
-  
- export default PDFScreen;
+const PdfReader = (props)=>{
+    const pdfId = props.navigation.state.params.pdfId
+    const [pdfUri,setPdfUri] = React.useState("")
+    React.useEffect(()=>{
+      materialUri(pdfId).then((res) => {
+          setPdfUri(res)
+      });
+    },[])
+    return (
+      <PDFReader
+        source={{
+          uri:azure+pdfUri,
+        }}
+      />
+    )
+}
+export default PdfReader;

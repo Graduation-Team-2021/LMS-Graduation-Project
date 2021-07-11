@@ -1,34 +1,29 @@
 NEW TODO:
-5. Materials get/update
-2036. Ask Dr. Hoda for The shape of the Document
-15. Edit profile Pic (done with Bug, Can't use image if not in assets folder) 
-16. get users of Course/Group 
-17. Join Courses with a deadline *******************************************
-2. Search Page with categories for each entity
-12. real time Comments/like
-29. Enable Dark Mode
-
-10. Deliverables integration
-18. Quizzes ( create quiz)
-20. Responsive view (75% DONE)
-22. Authentication/Security
-25. يوم النتيجة
-26. speak with the mentor about the server testing
-27. THe passed courses and the total grade is not connected to the backend يا ديفيد
-23. Frontend error handling
-
+2. get users of Course/Group 
+3. Join Courses with a deadline *******************************************
+4. Search Page with categories for each entity
+5. Deliverables integration (Michel,David)
+6. Quizzes (create quiz)
+7. يوم النتيجة
+8. THe passed courses and the total grade is not connected to the backend يا ديفيد
+9. Frontend error handling (John, David)
+10. Notification View(Michel,David)
+11.The ability to sort course material chronologically, alphabetically and by dependence (Frontend,Adham and David)
+12.The  ability  for  teachers  to  add  comments  on  specific  segments  of  the  video,  and  for  students to make an enquiry about a specific segment of the video.
+13.Courses page will show a compact detail box for each course.
+14.The  ability  to  send  direct  messages  to  other  users  which  will  be  accessible  from  everywhere through a button like Messenger chat heads (Hazim)
 
 Mobile TODO:
 1. in Mobile app, Handle the tablet screen
-2.over All Navigation(Done)
-3. Delivralbes(compute real data)
-4. integration
-5.Search Dialog in the App bar
-6. Video/PDF in the App
-7. Search results screen
-8. Redux in the mobile application
+2. integration(David,Adham)
+3. Video/PDF in the App (Done by Michel)
+4. Push notification for the mobile in case of new event occurs(David,Adham)
+5. For SQLite, check the dublicate Data before inserting it(David,Adham)
+6. Modify the interface file to check the SQLite also(David,Adham)
+7.The  ability  to  send  direct  messages  to  other  users  which  will  be  accessible  from  everywhere through a button like Messenger chat heads
 
 
-*************************************************
-1. Online Courses
-2. QR Code (By Adham)
+
+
+For David:
+    Make a loading while uploading

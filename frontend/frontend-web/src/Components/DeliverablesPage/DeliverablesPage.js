@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import cls from './DeliverablesPage.module.css';
 import Table from '../DelivTable/DelivTable'
 import Modal from '../Modal/Modal'

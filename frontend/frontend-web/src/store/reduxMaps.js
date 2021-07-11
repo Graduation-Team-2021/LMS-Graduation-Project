@@ -21,7 +21,11 @@ export const mapDispatchToProps = (dispatch) => {
     return {
       userDataActions: {
         onSetToken: (newToken) => dispatch(userDataActionFunctions.setToken(newToken)),
-        tokenError: () => dispatch(userDataActionFunctions.setToken(null)),
+        tokenError: () => {
+          localStorage.removeItem('token')
+          localStorage.removeItem('name')
+          dispatch(userDataActionFunctions.setToken(null))
+        },
         onSetName: (newName) => dispatch(userDataActionFunctions.setName(newName)),
         onSetId: (newId) => dispatch(userDataActionFunctions.setID(newId)),
         onSetRole: (newRole) => dispatch(userDataActionFunctions.setRole(newRole)),

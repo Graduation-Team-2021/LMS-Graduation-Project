@@ -8,19 +8,39 @@ import CourseDescriptionScreen from "../screens/CourseDescriptionScreen";
 import DeliverableList from "../screens/DeliverableList";
 import DeliverableDescriptionScreen from "../screens/DeliverableDescriptionScreen";
 import DeliverableSubmetionScreen from "../screens/DeliverableSubmetionScreen";
-const studentName = "Ibrahim";
+import ResultsNavigator from "./ResultNavigator";
+import PdfReader from "../screens/PDFScreen"
+import CreateDeliverable from "../screens/CreateDeliverable";
 
 const HomeStack = createStackNavigator({
-  Home: { screen: HomeScreen, navigationOptions: { title: `${studentName}` } },
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: (navData) => {
+      let studentName = navData.navigation.getParam('studentName');
+      return {
+        title:studentName
+      }
+    },
+  },
+  CreateDeliverable :{
+    screen: CreateDeliverable,
+    navigationOptions: (navData) => {
+      return {
+        title:"Deliverable Form"
+      }
+    },
+  },
+
   Course: {
     screen: CourseScreen,
     navigationOptions: (navData) => {
       return {
-        title: `${navData.navigation.getParam("courseName")}`,
+        title: `${navData.navigation.getParam("course").CourseName}`,
       };
     },
   },
   Video: { screen: VideoScreen },
+  Pdf: { screen: PdfReader },
   CourseList: { screen: CourseListScreen },
   DeliverableList: { screen: DeliverableList },
   CourseDescription: {
@@ -35,7 +55,7 @@ const HomeStack = createStackNavigator({
     screen: DeliverableDescriptionScreen,
     navigationOptions: (navData) => {
       return {
-        title: `${navData.navigation.getParam("deliverableName")} Details`,
+        title: `${navData.navigation.getParam("deliverable_name")} Details`,
       };
     },
   },
@@ -49,6 +69,7 @@ const HomeStack = createStackNavigator({
       };
     },
   },
+  SearchReasult: ResultsNavigator,
 });
 
 export default HomeStack;

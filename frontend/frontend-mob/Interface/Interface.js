@@ -1,8 +1,9 @@
 import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
+export const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const instance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: azure,
 });
 //Template for all Functions
 export const f1 = async () => {
@@ -31,6 +32,8 @@ export const Login = async (Data) => {
       "Content-Type": "application/json",
     },
   });
+
+  console.log('[Interface:35]',res.data);
   if (res.data["status_code"] === 200) {
     return { Token: res.data["token"], name: res.data["name"] };
   } else {
@@ -86,7 +89,6 @@ export const getRecentPosts = async (Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -144,7 +146,6 @@ export const getAllPosts = async (Token, owner) => {
       Authorization: "Bearer " + Token,
     },
   });
-
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -167,7 +168,7 @@ export const uploadPost = async (Token, writer, owner, post) => {
       },
     }
   );
-
+    console.log(res.data)
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -206,6 +207,15 @@ export const uploadFile = async (Token, file, CourseID) => {
   );
 };
 
+  export const materialUri = async (material_id) => {
+    const res = await instance.get(`/materials/${material_id}/uri`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return res.data['url']
+  };
+
 export const Like = async (Token, userID, postID) => {
   const res = await instance.post(`/like/${userID}/${postID}`, {
     headers: {
@@ -213,7 +223,6 @@ export const Like = async (Token, userID, postID) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
 };
 
 export const UnLike = async (Token, userID, postID) => {
@@ -223,7 +232,6 @@ export const UnLike = async (Token, userID, postID) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
 };
 
 export const Comment = async (Token, userID, postID, text) => {
@@ -344,36 +352,56 @@ export const getStudentsByCourse = async (id) => {
   return res.data["names"];
 };
 
-export const getDeliv = async (id) => {
-  //TODO: Integrate the Deliverables backend
+export const getAllCourseDeliverables = async (id) => {
   if (id) {
-    /* const res = await instance.get(`/course/${id}/students`, {
+    console.log(`Getting Deliverables of Course ${id}`);
+    const res = await instance.get(`/courses/${id}/deliverables`, {
       headers: {
         "Content-Type": "application/json",
       },
-    }); */
-    console.log(`Getting Deliverables of Course ${id}`);
+    });
+    return res.data['deliverables']
   }
   else{
     console.log(`Getting Deliverables of All Courses`);
   }
-  /* console.log(res);
-  return res.data["names"]; */
 };
 
-export const getPDFs = async (id) => {
-  //TODO: Integrate the PDFs backend
-    /* const res = await instance.get(`/course/${id}/students`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }); */
-    console.log(`Getting PDFs of Course ${id}`);
-  
-  
-  /* console.log(res);
-  return res.data["names"]; */
+export const postNewDeliverable = async (Data) => {
+  const res = await instance.post(`/deliverables`, Data, {
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  return res.data["status_code"] === 200;
 };
+
+export const getPDFs = async (course_code) => {
+  const res = await instance.get(`/courses/${course_code}/materials/pdf`, {
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["materials"];
+};
+
+export const getVideos = async (course_code) => {
+  const res = await instance.get(`/courses/${course_code}/materials/videos`, {
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["materials"];
+};
+
 
 export const AddNewDeliv = async (Data) => {
   //TODO: Integrate the PDFs backend

@@ -65,14 +65,14 @@ from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile,
 from views.user.professors import Professor, Professors
 from views.user.students import Students, Student,Student_result_calculation
 from views.course.courses import Course, Courses, My_Courses,SearchCourseByName
-from views.course.materials import material, materials, download_material, upload_material
+from views.course.materials import material, materials, download_material, upload_material,materials_pdfs,materials_videos
 from views.relations.teaches import Professor_Course_Relation, UpdateAndDelete_professor_Courses_Relation
 from views.relations.learns import Student_Course_Relation, Student_Courses_Relation
 from views.relations.messages import Messages_Relation, DeleteMessageById, Messages
 from views.relations.delivers import Delivers_Relation, Delete_Delivers_Relation, Upload_Deliverable_File, Download_Deliverable_File, Student_Deliverables
 from views.course.deliverables_results import Deliverable_Results
 
-from views.course.deliverables import Deliverable_view, All_Deliverables,Students_Deliverables
+from views.course.deliverables import Deliverable_view, All_Deliverables,Students_Deliverables,Course_Deliverables
 from views.course.events import Event, Events
 from views.course.exams.questions import Question, Questions
 from views.course.exams.answers import Answers, Answer,Get_All_Right_Answers,Get_All_Wrong_Answers
@@ -152,9 +152,10 @@ Materials
 """
 api.add_resource(material, '/materials/<id>')
 api.add_resource(materials, '/courses/<course_code>/materials')
-api.add_resource(download_material, '/materials/<id>/download')
+api.add_resource(download_material, '/materials/<id>/uri')
 api.add_resource(upload_material, '/courses/<course_code>/materials/upload')
-
+api.add_resource(materials_videos,'/courses/<course_code>/materials/videos')
+api.add_resource(materials_pdfs,'/courses/<course_code>/materials/pdf')
 """
 Exams
 """
@@ -194,6 +195,7 @@ get Deliverable
 api.add_resource(All_Deliverables, '/deliverables')
 api.add_resource(Deliverable_view, '/deliverables/<deliverable_id>')
 api.add_resource(Student_Deliverables, '/students/<student_id>/deliverables/<deliverable_id>')
+api.add_resource(Course_Deliverables, '/courses/<course_code>/deliverables')
 
 """
 Events

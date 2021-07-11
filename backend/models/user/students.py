@@ -16,7 +16,7 @@ class Student(db.Model, Base):
         return {
             'id': self.user_id,
             'student_year': self.student_year,
-            'group_project':self.group_project_id
+            #'group_project':self.group_project_id
         }
 
     def insert(self):

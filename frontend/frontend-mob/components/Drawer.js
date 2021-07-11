@@ -6,6 +6,7 @@ import { DrawerItems } from "react-navigation-drawer";
 import Icon from "react-native-vector-icons/AntDesign";
 
 import { Avatar, Button } from "react-native-elements";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Drawer = (props) => {
   return (
@@ -33,13 +34,23 @@ const Drawer = (props) => {
           </View>
         </View>
         <DrawerItems {...props} />
-        <View style={{ height: "45%"}}></View>
         <Button
-          icon={<Icon name="logout" size={15} color="white" style={{padding: 10}} />}
+          icon={
+            <Icon
+              name="logout"
+              size={15}
+              color="white"
+              style={{ padding: 10 }}
+            />
+          }
           title="Logout"
-        />  
+          onPress={() => {
+            AsyncStorage.removeItem("token").then((value) => {
+              props.navigation.navigate("Login");
+            });
+          }}
+        />
       </View>
-      
     </SafeAreaView>
   );
 };
