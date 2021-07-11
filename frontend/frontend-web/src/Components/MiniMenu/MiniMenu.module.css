@@ -5,7 +5,7 @@
     align-items: center;
     height: 4vw;
     position: relative;
-    width: 25vw;
+    width: 20vw;
     font-size: medium;
 }
 
@@ -25,6 +25,7 @@
 }
 
 .Main .holder {
+    border-radius: 50%;
     font-size: small;
     justify-content: center;
     align-items: center;
@@ -43,8 +44,8 @@
     text-justify: center;
     text-align: center;
     position: absolute;
-    right: 5%;
-    top: 5%;
+    right: 10%;
+    top: 10%;
     font-size: 1vw;
 }
 
@@ -177,5 +178,5 @@
 }
 
 .Icon {
-    font-size: 4vw;
+    font-size: 3vw;
 }
