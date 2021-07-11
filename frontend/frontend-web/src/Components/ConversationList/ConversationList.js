@@ -9,6 +9,7 @@ import filler from "../../assets/Filler.png";
 import SearchItem from "../ConversationList/SearchItem/SearchItem";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import msngrskt from "../../sockets/msngrskts";
+import Waiting from '../Waiting/Waiting'
 
 export default connect(
   mapStateToProps,
@@ -24,6 +25,7 @@ export default connect(
   const [CurrentActiveUsers, setCurrentActiveUsers] = useState([]);
   const [oldConv, setOldConv] = useState([]);
   const [newMessage, setNewMessage] = useState(null);
+  const [loading, setLoading] = useState(true);
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
 
@@ -104,7 +106,7 @@ export default connect(
           props.hideList();
         }
       }
-  
+
       // Bind the event listener
       document.addEventListener("mousedown", handleClickOutside);
       return () => {
@@ -119,6 +121,7 @@ export default connect(
   /////////////////////////////////////////////////////////////////
   const getConversations = () => {
     getAllConversations(props.userData.Token).then((res) => {
+      setLoading(false);
       const temp = [];
       res.forEach((ele) => {
         ele["user"]["photo"] = filler;
@@ -278,26 +281,28 @@ export default connect(
       {searchbb}
       {addbb}
 
-      <div className={cls.scrollableList}>
-        {
-          !(addBarVis.showBar && Query !== "") ?
-            (!(searchVis.showSearch && oldQuery !== "") ?
-              conversations.map((conversation, index) => (
-                <ConversationListItem
-                  onClick={() => {
-                    props.setIsNew(false);
-                    props.setCurrent(conversation);
-                    props.setVis();
-                  }}
-                  isOnline={CurrentActiveUsers.includes(conversation.ID)}
-                  key={index}
-                  data={conversation}
-                  isCurrent={props.Current === null ? false : props.Current.ID === conversation.ID}
-                />
-              )) : oldResults)
-            : SearchResult
-        }
-      </div>
+      <Waiting Loading={loading}>
+        <div className={cls.scrollableList}>
+          {
+            !(addBarVis.showBar && Query !== "") ?
+              (!(searchVis.showSearch && oldQuery !== "") ?
+                conversations.map((conversation, index) => (
+                  <ConversationListItem
+                    onClick={() => {
+                      props.setIsNew(false);
+                      props.setCurrent(conversation);
+                      props.setVis();
+                    }}
+                    isOnline={CurrentActiveUsers.includes(conversation.ID)}
+                    key={index}
+                    data={conversation}
+                    isCurrent={props.Current === null ? false : props.Current.ID === conversation.ID}
+                  />
+                )) : oldResults)
+              : SearchResult
+          }
+        </div>
+      </Waiting>
     </div>
   );
 });

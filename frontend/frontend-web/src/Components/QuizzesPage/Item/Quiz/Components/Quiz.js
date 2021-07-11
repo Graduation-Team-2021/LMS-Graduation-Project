@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Button from "./Button";
 import GameOver from "./GameOver";
+import Waiting from "../../../../Waiting/Waiting";
 
 const QuizWindow = styled.div`
   text-align: center;
@@ -54,6 +55,7 @@ const Quiz = (props) => {
 
         axios.get('https://opentdb.com/api.php?amount=5&category=18&difficulty=easy&type=multiple')
             .then(res => {
+                setLoading(false);
                 setQuiz(res.data.results.map(item => (
 
                     {
@@ -82,6 +84,7 @@ const Quiz = (props) => {
     const [quiz, setQuiz] = useState([]);
     const [number, setNumber] = useState(0);
     const [userAnswers, setAnswers] = useState({ 0: 'hi' });
+    const [loading, setLoading] = useState(true)
     let element = document.createElement('div');
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -131,7 +134,7 @@ const Quiz = (props) => {
     return (
         <QuizWindow>
             {quiz[number] &&
-                <div>
+                <Waiting Loading = {loading}>
                     <Question dangerouslySetInnerHTML={{ __html: quiz[number].question }}></Question>
                     <Options>
                         {number ? <Button onClick={goBack} css={btnCSS}>Go back</Button> : null}
@@ -143,7 +146,7 @@ const Quiz = (props) => {
                                     color={item === userAnswers[number] ? '#616A94' : '#161A31'} />
                             ))}
                     </Options>
-                </div>
+                </Waiting>
             }
             {
                 (number === quiz.length && number > 0) && <div>
