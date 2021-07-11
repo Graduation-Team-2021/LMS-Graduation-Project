@@ -5,16 +5,18 @@ NEW TODO:
 5. Deliverables integration (Michel,David)
 6. Quizzes (integrate with backend), (create quizzes)
 7. يوم النتيجة
-8. THe passed courses and the total grade is not connected to the backend يا ديفيد
-9. Frontend error handling (John, David)
-10.Notification View(Michel,David)
-11.The ability to sort course material chronologically, alphabetically and by dependence (Frontend,Adham and David)
+8. The total grade is not connected to the backend يا ديفيد
+9. Frontend error handling (John, David) (in progress)
+10.Notification View (Michel,David)
+11.The ability to sort course material chronologically, alphabetically and by dependence (Frontend,Adham and David) (done for PDFS, Quizzes and Assignments not Videos)
 12.The  ability  for  teachers  to  add  comments  on  specific  segments  of  the  video,  and  for  students to make an enquiry about a specific segment of the video.
 13.Courses page will show a compact detail box for each course.
 14.The  ability  to  send  direct  messages  to  other  users  which  will  be  accessible  from  everywhere through a button like Messenger chat heads (Hazim)
 15.Notifications should be Clickable (Post/Messages)
 16.Improve the dropdown menu design (make the 2 menus into one)
-
+17.Improve the Triangle
+18.Improve the Search Page
+ 
 Mobile TODO:
 1. in Mobile app, Handle the tablet screen
 2. integration(David,Adham)
