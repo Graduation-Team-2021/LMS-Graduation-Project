@@ -1,4 +1,5 @@
 import cls from "./Searchbar.module.css";
+import React from 'react';
 
 export default function ConversationSearch({ searchQuery, setSearchQuery, fillerText }) {
   return (

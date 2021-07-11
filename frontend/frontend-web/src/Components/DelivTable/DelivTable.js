@@ -1,5 +1,5 @@
 import { DataGrid } from "@material-ui/data-grid";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import cls from "./DelivTable.module.css";
 import Summary from "./DelivSummary/Summary";
 import { getDeliv } from "../../Interface/Interface";

@@ -1,5 +1,5 @@
 import { DataGrid } from "@material-ui/data-grid";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import cls from "./PDFsPage.module.css";
 import { getPDFs } from "../../Interface/Interface";
 import Card from "../Card/Card";

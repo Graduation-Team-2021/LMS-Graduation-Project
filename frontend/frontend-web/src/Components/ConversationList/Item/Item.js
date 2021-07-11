@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import shave from 'shave';
 import cls from './Item.module.css';
 
