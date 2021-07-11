@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import Waiting from '../../Components/Waiting/Waiting'
+import Waiting from "../../Components/Waiting/Waiting";
 import Card from "../../Components/Card/Card";
 import Modal from "../../Components/Modal/Modal";
 import NewPost from "../NewPost/NewPost";
@@ -62,7 +62,7 @@ const CoursePage = (props) => {
   useEffect(() => {
     //Loading Data from Server
     getAllPosts(Token, postID).then((value) => {
-      setPostLoading(false)
+      setPostLoading(false);
       const Posts = [];
       if (value) {
         value.forEach((ele) => {
@@ -90,23 +90,6 @@ const CoursePage = (props) => {
     hide();
   };
 
-  const loadDeliverables = () => {
-    //TODO: use this for routing
-    props.history.push({
-      pathname: `/Course/${courseID}/Deliv`,
-      state: {
-        name: Title,
-      },
-    });
-  };
-
-  const addDeliverables = () => {
-    //TODO: use this for routing
-    props.history.push({
-      pathname: `/Course/${courseID}/newDeliv`,
-    });
-  };
-
   return (
     <React.Fragment>
       <Modal show={clicked} onClick={hide}>
@@ -130,43 +113,11 @@ const CoursePage = (props) => {
                   justifyContent: "space-between",
                 }}
               >
-                {isJoined === "true" ? (
-                  Role === "professor" ? (
-                    <Button
-                      onClick={() =>
-                        props.history.push({
-                          pathname: `/Course/${courseID}/Marks`,
-                          state: {
-                            name: Title,
-                          },
-                        })
-                      }
-                    >
-                      See Grades
-                    </Button>
-                  ) : null
-                ) : (
+                {isJoined === "true" ? null : (
                   <Button onClick={props.Joining.bind(this, courseID)}>
                     Enroll
                   </Button>
                 )}
-                {Role === "student" && isJoined === "true" ? (
-                  <Button
-                    onClick={() => {
-                      loadDeliverables();
-                    }}
-                  >
-                    Check Deliverables
-                  </Button>
-                ) : isJoined === "true" ? (
-                  <Button
-                    onClick={() => {
-                      addDeliverables();
-                    }}
-                  >
-                    Add New Deliverable
-                  </Button>
-                ) : null}
               </div>
             </div>
             <div className={classes.small}>

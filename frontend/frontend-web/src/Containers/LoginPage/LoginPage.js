@@ -104,7 +104,7 @@ class LoginPage extends Component {
               />
             </div>
             <div className={classes.ButtonArea}>
-              <Button value="Sign in" onClick={this.signin} />
+              <Button onClick={this.signin} >Sign in</Button>
             </div>
           </div>
           <div className={classes.Blue}>

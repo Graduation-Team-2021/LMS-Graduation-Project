@@ -4,7 +4,13 @@ import Card from "../../Components/Card/Card";
 import Minibar from "../../Components/Minibar/Minibar";
 import Modal from "../../Components/Modal/Modal";
 
-import { faVideo, faFilePdf, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faVideo,
+  faFilePdf,
+  faQuestionCircle,
+  faClipboardList,
+  faPercent
+} from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
 import AddEvent from "../AddEventPage/AddEvent";
 import { uploadFile } from "../../Interface/Interface";
@@ -80,7 +86,7 @@ class CourseDesc extends Component {
               });
             }}
           >
-            <Minibar icon={faVideo} color=" rgb(0, 102, 255)" info="Videos" />
+            <Minibar icon={faVideo} color="rgb(0, 102, 255)" info="Videos" />
           </Button>
           <Button
             className={classes.Holder}
@@ -108,6 +114,78 @@ class CourseDesc extends Component {
           >
             <Minibar icon={faQuestionCircle} color="orange" info="Quizzes" />
           </Button>
+          <Button
+            className={classes.Holder}
+            onClick={() => {
+              this.props.history.push({
+                pathname: `/Course/${this.props.CourseID}/Deliv`,
+                state: {
+                  name: this.props.Title,
+                },
+              });
+            }}
+          >
+            <Minibar
+              icon={faClipboardList}
+              color="purple"
+              info="Deliverables"
+            />
+          </Button>
+          {this.props.Role === "professor" ? (
+            <React.Fragment>
+              <Button
+                className={classes.Holder}
+                onClick={() => {
+                  this.props.history.push({
+                    pathname: `/Course/${this.props.CourseID}/Quiz`,
+                    state: {
+                      name: this.props.Title,
+                    },
+                  });
+                }}
+              >
+                <Minibar
+                  icon={faQuestionCircle}
+                  color="rgb(0, 102, 255)"
+                  info="Add Quiz"
+                />
+              </Button>
+              <Button
+                className={classes.Holder}
+                onClick={() => {
+                  this.props.history.push({
+                    pathname: `/Course/${this.props.CourseID}/newDeliv`,
+                    state: {
+                      name: this.props.Title,
+                    },
+                  });
+                }}
+              >
+                <Minibar
+                  icon={faClipboardList}
+                  color="red"
+                  info="Add Deliverable"
+                />
+              </Button>
+              <Button
+                className={classes.Holder}
+                onClick={() => {
+                  this.props.history.push({
+                    pathname: `/Course/${this.props.CourseID}/Marks`,
+                    state: {
+                      name: this.props.Title,
+                    },
+                  });
+                }}
+              >
+                <Minibar
+                  icon={faPercent}
+                  color="orange"
+                  info="Edit Grades"
+                />
+              </Button>
+            </React.Fragment>
+          ) : null}
         </div>
         {this.props.Role === "professor" ? (
           <React.Fragment>
@@ -154,7 +232,7 @@ class CourseDesc extends Component {
                     alignSelf: "flex-start",
                     padding: "0 0 10% 0",
                     fontSize: "200%",
-                    fontWeight: 'bold',
+                    fontWeight: "bold",
                   }}
                 >
                   Upload Material:
