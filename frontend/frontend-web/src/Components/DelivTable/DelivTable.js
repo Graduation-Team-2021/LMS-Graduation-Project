@@ -17,17 +17,6 @@ const columns = [
 
 const rows = [
   {
-    name: "Creating FSD",
-    type: "Quiz",
-    status: "In Progress",
-    course: "Software Engineering",
-    coursecode: "CSE412",
-    deadline: "09-04-2021",
-    leeway: "1 minutes",
-    mark: "N/A",
-    id: 1,
-  },
-  {
     name: "Sever Deployment",
     type: "Assignment",
     status: "Not Started",
@@ -37,17 +26,6 @@ const rows = [
     leeway: "N/A",
     mark: "N/A",
     id: 2,
-  },
-  {
-    name: "Configuration analysis",
-    type: "Quiz",
-    status: "Completed",
-    course: "Software Engineering",
-    coursecode: "CSE412",
-    deadline: "09-04-2021",
-    leeway: "40 minutes",
-    mark: "7",
-    id: 3,
   },
   {
     name: "Data Architecture",
@@ -63,7 +41,7 @@ const rows = [
   {
     name: "Data Architecture",
     type: "Assignment",
-    status: "Not Started",
+    status: "In Progress",
     course: "Software Engineering",
     coursecode: "CSE412",
     deadline: "09-04-2021",
@@ -94,17 +72,6 @@ const rows = [
     id: 7,
   },
   {
-    name: "Genetic Breeding model",
-    type: "Quiz",
-    status: "In Progress",
-    course: "Software Engineering",
-    coursecode: "CSE412",
-    deadline: "09-04-2021",
-    leeway: "40 minutes",
-    mark: "N/A",
-    id: 8,
-  },
-  {
     name: "Phenomenological model",
     type: "Assignment",
     status: "Completed",
@@ -123,7 +90,7 @@ export default function DeliverableList(props) {
         console.log();
         //TODO: Load Data
         getDeliv(props.id).then(()=>{
-            console.log('Deliverables Collected Successfully');
+            console.log('Quizzes Collected Successfully');
         })
     }, [props.id])
 
@@ -163,7 +130,7 @@ export default function DeliverableList(props) {
 
   return (
     <div className={cls.content}>
-      <div className={cls.title}>My Deliverables</div>
+      <div className={cls.title}>{props.name?props.name:"My"} Deliverables</div>
       <Summary
         total={rows.length}
         complete={completedN}

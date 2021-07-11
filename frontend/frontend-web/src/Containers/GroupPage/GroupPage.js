@@ -1,5 +1,6 @@
 import classes from "./GroupPage.module.css";
 
+import Waiting from '../../Components/Waiting/Waiting'
 import Card from "../../Components/Card/Card";
 import Modal from "../../Components/Modal/Modal";
 import NewPost from "../NewPost/NewPost";
@@ -27,6 +28,7 @@ const GroupPage = (props) => {
   ];
   const [clicked, setclicked] = useState(false);
   const [Posts, setPosts] = useState([]);
+  const [PostsLoading, setPostsLoading] = useState(true)
 
   const hide = () => {
     setclicked(false);
@@ -42,6 +44,7 @@ const GroupPage = (props) => {
 
   useEffect(() => {
     getAllPosts(Token, postID).then((value) => {
+      setPostsLoading(false)
       const Posts = [];
       if (value) {
         value.forEach((ele) => {
@@ -99,9 +102,11 @@ const GroupPage = (props) => {
               ) : null}
             </div>
             {isJoined === "true" ? <NewPostCard Focus={Focus} /> : null}
-            <div className={classes.PostsHolder}>
-              <div className={classes.posts}>{Posts}</div>
-            </div>
+            <Waiting Loading={PostsLoading}>
+              <div className={classes.PostsHolder}>
+                <div className={classes.posts}>{Posts}</div>
+              </div>
+            </Waiting>
           </Card>
         </div>
         <div className={classes.large}>

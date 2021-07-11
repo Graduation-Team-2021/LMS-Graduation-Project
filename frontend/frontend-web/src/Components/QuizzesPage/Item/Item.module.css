@@ -1,0 +1,49 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.button {
+    float: left;
+    display: block;
+    background-color: rgb(224, 224, 224);
+    color: black;
+    padding: 8px;
+    margin: 10px;
+    width: fit-content;
+    border: 1px solid black;
+    border-radius: 15px;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  /* Change background color of buttons on hover */
+  .button:hover {
+    background-color: rgba(27, 27, 27, 0.3);
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .timer {
+    font-size: 16pt;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    float: right;
+    background-color: rgba(38, 42, 52);
+    width: fit-content;
+    height: fit-content;
+    border-radius: 1vh;
+    border: 1px hidden black;
+    color: white;
+    padding: 15px;
+  }

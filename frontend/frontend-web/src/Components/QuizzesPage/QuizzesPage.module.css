@@ -1,0 +1,21 @@
+.button {
+  float: right;
+  display: block;
+  background-color: rgba(236, 236, 236);
+  color: black;
+  padding: 8px;
+  margin: 10px;
+  width: fit-content;
+  border: 1px hidden black;
+  border-radius: 15px;
+  outline: none;
+  text-align: left;
+  font-size: 18pt;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.button:hover {
+  background-color: rgb(202, 202, 202);
+}

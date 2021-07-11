@@ -4,7 +4,7 @@ import Card from "../../Components/Card/Card";
 import Minibar from "../../Components/Minibar/Minibar";
 import Modal from "../../Components/Modal/Modal";
 
-import { faVideo, faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { faVideo, faFilePdf, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
 import AddEvent from "../AddEventPage/AddEvent";
 import { uploadFile } from "../../Interface/Interface";
@@ -94,6 +94,19 @@ class CourseDesc extends Component {
             }}
           >
             <Minibar icon={faFilePdf} color="red" info="Pdfs" />
+          </Button>
+          <Button
+            className={classes.Holder}
+            onClick={() => {
+              this.props.history.push({
+                pathname: `/Course/${this.props.CourseID}/Quiz`,
+                state: {
+                  name: this.props.Title,
+                },
+              });
+            }}
+          >
+            <Minibar icon={faQuestionCircle} color="orange" info="Quizzes" />
           </Button>
         </div>
         {this.props.Role === "professor" ? (
