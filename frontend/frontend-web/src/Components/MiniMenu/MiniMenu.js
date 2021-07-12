@@ -201,7 +201,7 @@ const MiniMenu = (props) => {
                           />
 
                           <ImageHolder
-                            src={props.userData.Data.picture || filler}
+                            src={props.userData.Pic || filler}
                             alt=""
                             className={classes.Image}
                           />

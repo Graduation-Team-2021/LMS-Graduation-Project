@@ -24,6 +24,7 @@ const Menu = (props) => {
           props.history.push("/changePass");
         }}>Reset Password</h2>
       <h2>Enroll in Courses</h2>
+      {/*TODO: onclick => GO To Enroll*/}
       <h2 onClick={
         () => {
           localStorage.removeItem('token');
