@@ -11,6 +11,12 @@
     align-items: center;
 }
 
+.results h1{
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid;
+}
+
 .results {
     display: flex;
     flex-flow: column;
