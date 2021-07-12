@@ -75,36 +75,6 @@ const SearchPage = (props) => {
     <span className={classes.Holder}>
       <Card shadow className={classes.Card}>
         <Search setQuery={setQuery} />
-        {/* <div className={classes.choice}>
-          <div>
-            <input
-              type="radio"
-              value="User"
-              checked={option === "User"}
-              onChange={onChange}
-            />
-            <label>User</label>
-          </div>
-          <div>
-            <input
-              type="radio"
-              value="Course"
-              checked={option === "Course"}
-              onChange={onChange}
-            />
-            <label>Course</label>
-          </div>
-          <div>
-            <input
-              type="radio"
-              value="Group"
-              checked={option === "Group"}
-              onChange={onChange}
-            />
-            <label>Group</label>
-          </div>
-        </div>
-        <div className={classes.results}>{results}</div> */}
         <Spacer height="25px" />
         <TabContext value={option}>
           <AppBar position="static">

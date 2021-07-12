@@ -11,19 +11,11 @@
     align-items: center;
 }
 
-.choice {
-    font-size: x-large;
-    padding: 2% 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-}
-
 .results {
     display: flex;
     flex-flow: column;
     align-items: center;
     width: 100%;
-    flex: 1;
+    height: 46vh;
     overflow: auto;
 }
