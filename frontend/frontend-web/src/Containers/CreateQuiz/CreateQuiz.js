@@ -22,21 +22,37 @@ class CreateQuiz extends Component {
 
   onSubmit = () => {
     //TODO: Connect Add Quizzes to Backend
-    const Q = setQuiz(this.state);
-    AddQuiz(Q).then((res) => {
-      if (res) {
-        alert("Exam Created Successfully");
-        this.setState({
-          Course: this.props.match.params.id,
-          Duration: 0,
-          Unit: [{ value: "Minutes", name: "Minutes" }],
-          CurrentQuestion: 0,
-          Questions: [new Question()],
-        });
-      } else {
-        alert("Failed to create, please try again");
+    const QE = this.state.Questions.find((value) => value.Text === "");
+    const DE = this.state.Duration === 0;
+    var AE = this.state.Questions.find((value) => value.Answers.length === 0);
+    const CE = this.state.Questions.find(
+      (value) => value.CorrectAnswers.length === 0
+    );
+    for (let index = 0; index < this.state.Questions.length; index++) {
+      if (this.state.Questions[index].Answers.find((value) => value === "")) {
+        AE = true;
+        break;
       }
-    });
+    }
+    if (QE || DE || AE || CE) {
+      alert("Please Complete Exam First");
+    } else {
+      const Q = setQuiz(this.state);
+      AddQuiz(Q).then((res) => {
+        if (res) {
+          alert("Exam Created Successfully");
+          this.setState({
+            Course: this.props.match.params.id,
+            Duration: 0,
+            Unit: [{ value: "Minutes", name: "Minutes" }],
+            CurrentQuestion: 0,
+            Questions: [new Question()],
+          });
+        } else {
+          alert("Failed to create, please try again");
+        }
+      });
+    }
   };
 
   onSelect = (List, Option, Name) => {
@@ -305,15 +321,26 @@ class CreateQuiz extends Component {
       }
     );
 
-    const Buttons = this.state.Questions.map((value, index) => (
-      <Button
-        className={classes.Circle}
-        type={index === this.state.CurrentQuestion ? "correct" : null}
-        onClick={() => this.setState({ CurrentQuestion: index })}
-      >
-        {index + 1}
-      </Button>
-    ));
+    const Buttons = this.state.Questions.map((value, index) => {
+      const QE = value.Text === "";
+      var AE =  value.Answers.length === 0;
+      const CE = value.CorrectAnswers.length === 0;
+      for (let index = 0; index < this.state.Questions.length; index++) {
+        if (this.state.Questions[index].Answers.find((value) => value === "")) {
+          AE = true;
+          break;
+        }
+      }
+      return (
+        <Button
+          className={classes.Circle}
+          type={index === this.state.CurrentQuestion ? "correct" :(AE || QE ||CE)?'cancel': null}
+          onClick={() => this.setState({ CurrentQuestion: index })}
+        >
+          {index + 1}
+        </Button>
+      );
+    });
 
     return (
       <span className={classes.Holder}>
@@ -390,7 +417,5 @@ class CreateQuiz extends Component {
     );
   }
 }
-/* Top: Duration
- Bottom: List of Questions
- Questions: 2 Types (one/MultiChoice Choice/True or false "2 Choices only") */
+
 export default CreateQuiz;
