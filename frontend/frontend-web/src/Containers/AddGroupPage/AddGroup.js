@@ -231,7 +231,7 @@ class AddGroupPage extends Component {
             <h1 className={classes.MainTitle}>Add New Group</h1>
             <div className={classes.Field}>{AddCourseField}</div>
             <div className={classes.ButtonArea}>
-              <Button value="Add Group" onClick={this.onAddGroup} />
+              <Button onClick={this.onAddGroup} >Add Group</Button>
             </div>
           </div>
           <div className={classes.Blue}>

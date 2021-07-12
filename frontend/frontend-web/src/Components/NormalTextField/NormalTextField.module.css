@@ -3,6 +3,8 @@
     font-weight: 100;
     color: rgb(132, 0, 255);
     font-weight: normal;
+    padding: 0 1% 0 0;
+    width: 25%;
 }
 
 .Field{

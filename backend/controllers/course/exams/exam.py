@@ -25,9 +25,17 @@ student_answers_controller = student_answers_controller()
 class exams_controller():
 
     def post_exam(self, exam):
+        temp={
+            "course_id": exam["course_id"],
+            "exam_duration":exam["exam_duration"],
+            'exam_marks':exam["exam_marks"]
+        }
         try:
-            new_exam = Exams(**exam)
+            print("inserting")
+            new_exam = Exams(**temp)
+            print(new_exam)
             new_exam = Exams.insert(new_exam)
+            print(new_exam)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({

@@ -11,7 +11,7 @@ const local = "http://localhost:5000";
 
 export const url = azure;
 const instance = axios.create({
-  baseURL: azure,
+  baseURL: local,
   //"http://localhost:5000",
 });
 
@@ -559,5 +559,18 @@ export const searchGroups = async (text) => {
       "Content-Type": "application/json",
     },
   });
+  return res.data;
+};
+
+export const AddQuiz = async (Data) => {
+  const res = await instance.post(
+    `/Courses/${Data.course_id}/exams`,
+    {data:Data},
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return res.data;
 };

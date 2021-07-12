@@ -27,6 +27,7 @@ import jwt_decode from "jwt-decode";
 
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import Search from "./Containers/SearchPage/SearchPage";
+import CreateQuiz from "./Containers/CreateQuiz/CreateQuiz";
 
 
 const App = (props) => {
@@ -69,6 +70,11 @@ const App = (props) => {
                 <Route path='/changePass' exact component={ResetPass}/>
                 <Route path='/Search' exact component={Search}/>
                 {/* TODO: ADD Enroll Route */}
+                <Route
+                  path="/Course/:id/newQuiz"
+                  exact
+                  component={CreateQuiz}
+                />
                 <Redirect path="/login" to="/" />
               </React.Fragment>
             ) : (

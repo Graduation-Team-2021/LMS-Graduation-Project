@@ -4,27 +4,23 @@ from controllers.course.exams.student_questions import student_questions_control
 from methods.errors import *
 from methods.auth import *
 from flask_restful import Resource, reqparse
-from flask import current_app, jsonify
+from flask import current_app, json, jsonify
 
 controller_object = exams_controller()
 
 
-# /events/<event_id>/exams
+# /Courses/<course_id>/exams
 class Exams(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('actual_mark', type=str, location='json')
-
-    def post(self, event_id):
+        self.reqparse.add_argument('data', type=dict, location='json')
+        
+    def post(self, course_id):
 
         args = self.reqparse.parse_args()
-        new_exam = {
-            "actual_mark": args["actual_mark"],
-            "event_id": event_id,
-        }
+        new_exam = args["data"]
         try:
             controller_object.post_exam(new_exam)
-
         except ErrorHandler as e:
             return e.error
         return jsonify({
