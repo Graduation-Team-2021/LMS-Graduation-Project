@@ -3,7 +3,7 @@ export const SET_NAME = "SET_NAME";
 export const SET_ID = "SET_ID";
 export const SET_ROLE = "SET_ROLE";
 export const SET_DATA = "SET_DATA";
-export const SET_DATA_DATA = "SET_DATA_DATA";
+export const SET_PIC = "SET_PIC";
 
 export const setToken = (newToken) => {
   return {
@@ -12,9 +12,9 @@ export const setToken = (newToken) => {
   };
 };
 
-export const setDataData = (newData) => {
+export const setPic = (newData) => {
   return {
-    type: SET_DATA_DATA,
+    type: SET_PIC,
     value: newData,
   };
 };

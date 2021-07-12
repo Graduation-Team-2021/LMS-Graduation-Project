@@ -9,7 +9,6 @@ const Menu = (props) => {
     <React.Fragment>
       <h2 color='blue' onClick={
         () => {
-          console.log('Clicked')
           props.onClick()
           props.history.push("/Profile");
         }
