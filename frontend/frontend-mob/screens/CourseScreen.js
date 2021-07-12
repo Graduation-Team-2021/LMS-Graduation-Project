@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-
 import { ScrollView,View, StyleSheet, FlatList, Text,TouchableOpacity ,ActivityIndicator, TouchableNativeFeedback} from "react-native";
-
 import { Button,Divider  } from "react-native-elements";
-import { getAllPosts, uploadPost ,getPDFs,getVideos, getAllCourseDeliverables} from "../Interface/Interface";
+import { getAllPosts, uploadPost ,getPDFs,getVideos, getAllCourseDeliverables,uploadFile} from "../Interface/Interface";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import { setLocationPost, setNewPost } from "../Models/Post";
@@ -13,7 +11,10 @@ import VideoItem from '../components/VideoItem'
 import About from "../components/About";
 import NewPost from "../components/NewPost";
 import DeliverableItem from "../components/DeliverableItem";
-import {showMessage, hideMessage}from "react-native-flash-message";
+import * as Progress from 'react-native-progress';
+import {showMessage, hideMessage} from "react-native-flash-message";
+import * as DocumentPicker from 'expo-document-picker';
+import { Ionicons,AntDesign,Entypo} from '@expo/vector-icons';
 
 const data = ["sklahjdlsa"];
 const CourseScreen = (props) => {
@@ -25,6 +26,9 @@ const CourseScreen = (props) => {
   const [deliverablesLoaded,setDeliverablesLoaded] = useState(false)
   const [videosLoaded,setVideosLoaded] = useState(false)
   const [pdfsLoaded,setPdfsLoaded] = useState(false)
+  const [file,setFile] = useState("")
+  const [uploadedFiles,setUploadedFiles] = useState()
+  const [uploadPercentage,setUploadPercentage] = useState(0)
   const role = props.userData.Role
 
   useEffect(() => {
@@ -63,37 +67,62 @@ const CourseScreen = (props) => {
     });
 },[])
   useEffect(()=>{
-      getPDFs(myCourse.CourseID).then(res => {
-          const temp = []
-          res.forEach(
-            (ele, index) => {
-              temp.push({
-                material_id: ele['material_id'],
-                material_name: ele['material_name'],
-                material_type: ele['material_type'],
-              })
-            }
-          )
-          setPdfs(temp)
-          setPdfsLoaded(true)
-      });
+      retrievePdfs()
   },[])
   useEffect(()=>{
-    getVideos(myCourse.CourseID).then(res => {
-        const temp = []
-        res.forEach(
-          (ele, index) => {
-            temp.push({
-              material_id: ele['material_id'],
-              material_name: ele['material_name'],
-              material_type: ele['material_type'],
-            })
-          }
-        )
-        setVideos(temp)
-        setVideosLoaded(true)
-    });
+    retrieveVideos()
 },[])
+let retrievePdfs = () =>{
+  getPDFs(myCourse.CourseID).then(res => {
+    const temp = []
+    res.forEach(
+      (ele, index) => {
+        temp.push({
+          material_id: ele['material_id'],
+          material_name: ele['material_name'],
+          material_type: ele['material_type'],
+        })
+      }
+    )
+    setPdfs(temp)
+    setPdfsLoaded(true)
+});
+}
+let retrieveVideos = () =>{
+  getVideos(myCourse.CourseID).then(res => {
+    const temp = []
+    res.forEach(
+      (ele, index) => {
+        temp.push({
+          material_id: ele['material_id'],
+          material_name: ele['material_name'],
+          material_type: ele['material_type'],
+        })
+      }
+    )
+    setVideos(temp)
+    setVideosLoaded(true)
+});
+}
+let uploadFileHandler = () =>{
+
+  uploadFile(props.userData.Token,file,myCourse.CourseID,setUploadPercentage).then((res)=>{
+        setFile("")
+        showMessage({
+          message: "File uploaded successfully.",
+          type: "success",
+          duration:"3000"
+        });
+        setUploadPercentage(0)
+        retrievePdfs()
+        retrieveVideos()
+        showMessage({
+          message: "Material uploaded successfully.",
+          type: "success",
+          duration:"3000"
+        });
+      })
+}
   
 
   const [post, setPost] = useState("");
@@ -103,6 +132,14 @@ const CourseScreen = (props) => {
       type: "success",
       duration:"3000"
     });
+  }
+  let pickDocumentHandler = async () => {
+    let result = await DocumentPicker.getDocumentAsync({
+      multiple: true,
+    });
+    if(result.type!="cancel"){
+      setFile(result)
+    }
   }
   const updateDeliverables = () =>{
     getAllCourseDeliverables(myCourse.CourseID).then(res => {
@@ -198,6 +235,31 @@ const previewPdfHandler = (pdf_id) =>{
       ))}
       {!pdfsLoaded && <ActivityIndicator size="small" />}
       <Divider style={styles.dividerStyle}/>
+      {role=="professor" && <View>
+        <Text style={styles.videos_pdfs_header}>Upload Material</Text>
+      <Button
+      title="Choose File" 
+      buttonStyle={{minWidth:150, width:"70%", maxWidth:200, alignSelf: 'center',margin:10}}
+      titleStyle={{fontSize:"12"}}
+      onPress={pickDocumentHandler}
+      icon = {<AntDesign name="addfile" size={20} color="white" />}
+      />
+      <View style={{flexDirection:"row",justifyContent:"center"}}>
+      {!file||file.name=="" ?<Text>No file is chosen</Text>:<Text>{file.name}</Text>}
+      </View>
+    <Button
+      title="Upload File" 
+      disabled = {file=="" ? true:false}
+      buttonStyle={{minWidth:150, width:"70%", maxWidth:200, alignSelf: 'center',margin:10}}
+      titleStyle={{fontSize:12}}
+      onPress={uploadFileHandler}
+      icon = {<AntDesign name="upload" size={20} color="white" />}
+      />
+      {uploadPercentage ==0? <Text></Text>:
+      <View style={{alignItems:"center"}}>
+    <Progress.Bar progress={uploadPercentage} width={150}/>
+    </View>
+      }</View>}
       
     </View>
   );
@@ -239,6 +301,9 @@ const previewPdfHandler = (pdf_id) =>{
 const styles = StyleSheet.create({
   materialsContainer:{
     textAlign:'center'
+  },
+  submissionContainer:{
+    marginLeft:20
   },
   screen: {
     flex: 1,

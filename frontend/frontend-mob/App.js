@@ -29,6 +29,7 @@ export default function App() {
       <Provider store={store}>
         <HomeNav />
       </Provider>
+      <FlashMessage/>
     </PaperProvider>
 
   );
