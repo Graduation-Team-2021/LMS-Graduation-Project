@@ -12,6 +12,7 @@ import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setCourse } from "../../Models/Course";
 
 const HomePage = (props) => {
+
   const [Courses, setCourses] = useState({});
   const [displayedCourse, setdisplayedCourse] = useState(null);
   const { Token } = props.userData;
@@ -22,7 +23,7 @@ const HomePage = (props) => {
 
   const Enroll = () => {
     //TODO:enroll in Backend
-    var temp = {...Courses};
+    var temp = { ...Courses };
     temp[displayedCourse].isEnrolled = "true";
     setCourses(temp);
     alert("Enroll Successful");
@@ -42,18 +43,23 @@ const HomePage = (props) => {
       if (res) {
         let Courses = new Map();
         res.forEach((id, index) => {
-          id["pic"] =
-            index % 3 === 0
-              ? "https://miro.medium.com/max/2560/1*tYxWuyksovxA1Thu8PggPQ.jpeg"
-              : index % 3 === 1
-              ? "https://cdn.britannica.com/w:1100/50/190450-131-527BAEF7/series-Elementary-Particles-subject-forms-nuclear-physics.jpg"
-              : "https://i.pinimg.com/736x/c8/e5/75/c8e5753370bad54c7977d485e0a0e29d.jpg";
+          id["pic"] ='https://picsum.photos/200/300'
+            
           id["isenrolled"] = "false";
           if (Array.from(currentCourses.keys()).includes(id["course_code"])) {
             id["isenrolled"] = "true";
           }
-          Courses[id["course_code"]] = setCourse(id);
+          if (props.location.state) {
+            if (id["isenrolled"]=="false") {
+              Courses[id["course_code"]] = setCourse(id);
+            }
+          } else {
+            Courses[id["course_code"]] = setCourse(id);
+          }
         });
+        console.log('====================================');
+        console.log(Courses);
+        console.log('====================================');
         setCourses(Courses);
       } else {
         TokenError();

@@ -1,6 +1,6 @@
 import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
-export const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
+export const azure = "http://192.168.1.68:5000";
 
 const instance = axios.create({
   baseURL: azure,
@@ -191,7 +191,7 @@ export const getCourseByID = async (Token, CourseID) => {
   return res.data["course"];
 };
 
-export const uploadFile = async (Token, file, CourseID) => {
+export const uploadFile = async (Token, file, CourseID,setUploadPercentage) => {
   console.log(file);
   let data = new FormData();
   data.append("file", file);
@@ -199,6 +199,11 @@ export const uploadFile = async (Token, file, CourseID) => {
     `/courses/${CourseID}/materials/upload`,
     data,
     {
+      onUploadProgress: (progressEvent) => {
+        const {loaded, total} = progressEvent;
+        let percent = Math.floor( (loaded * 100) / total )
+          setUploadPercentage(percent/100)
+      },
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: "Bearer " + Token,

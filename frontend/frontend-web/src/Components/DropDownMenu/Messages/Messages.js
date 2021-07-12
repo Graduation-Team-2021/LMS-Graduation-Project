@@ -1,4 +1,5 @@
 import React from "react";
+import List from './List/ConversationList'
 
 import { withRouter } from "react-router-dom";
 
@@ -11,14 +12,7 @@ const Messages = (props) => {
           overflow: "auto",
         }}
       >
-        <h1>{"Message"}</h1>
-        <h1>{"Message"}</h1>
-        <h1>{"Message"}</h1>
-        <h1>{"Message"}</h1>
-        <h1>{"Message"}</h1>
-        <h1>{"Message"}</h1>
-        <h1>{"Message"}</h1>
-        <h1>{"Message"}</h1>
+        <List />
       </div>
       <div
         onClick={() => {

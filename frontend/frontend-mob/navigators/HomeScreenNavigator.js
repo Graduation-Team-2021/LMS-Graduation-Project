@@ -45,7 +45,7 @@ const HomeStack = createStackNavigator({
   CourseList: { screen: checkConnectivity(CourseListScreen) },
   DeliverableList: { screen: checkConnectivity(DeliverableList) },
   CourseDescription: {
-    screen: checkConnectivity(CourseDescriptionScreen),
+    screen: CourseDescriptionScreen,
     navigationOptions: (navData) => {
       return {
         title: `${navData.navigation.getParam("courseName")} Details`,
