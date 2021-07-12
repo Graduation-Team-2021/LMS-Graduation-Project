@@ -115,6 +115,7 @@ export default connect(
           {
             conversations.map((conversation, index) => (
               <ConversationListItem
+                onClick = {()=>{props.currentMessageActions.onSetCurrentMessage(conversation)}}
                 isOnline={CurrentActiveUsers.includes(conversation.ID)}
                 key={index}
                 data={conversation}

@@ -4,6 +4,7 @@ import * as currentGroupsActionFunctions from './actions/currentGroupsActions'
 import * as recentEventActionFunctions from './actions/recentEventActions'
 import * as finishedCoursesActionFunctions from './actions/finishedCoursesActions'
 import * as recentUserPostsActionsFunctions from './actions/recentUserPostsActions'
+import * as currentMessageActionFunctions from './actions/currentMessageAction'
 
 
 export const mapStateToProps = (state) => {
@@ -13,7 +14,8 @@ export const mapStateToProps = (state) => {
       finishedCourses:state.finishedCoursesReducer,
       recentEvent:state.recentEventsReducer,
       currentGroups:state.currentGroupsReducer,
-      recentUserPosts:state.recentUserPostsReducer
+      recentUserPosts:state.recentUserPostsReducer,
+      currentMessage:state.currentMessageReducer
     };
   };
   
@@ -46,6 +48,9 @@ export const mapDispatchToProps = (dispatch) => {
       },
       recentUserPostsActions:{
         onSetRecentUserPosts:(newUserPosts)=> dispatch(recentUserPostsActionsFunctions.setUserRecentPosts(newUserPosts)),
+      },
+      currentMessageActions:{
+        onSetCurrentMessage:(newMessage) => dispatch(currentMessageActionFunctions.setCurrentMessage(newMessage))
       }
     };
   };

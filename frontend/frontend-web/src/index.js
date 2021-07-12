@@ -12,6 +12,7 @@ import currentGroupsReducer from './store/reducers/currentGroupsReducer'
 import recentEventsReducer from './store/reducers/recentEventsReducer'
 import finishedCoursesReducer from './store/reducers/finishedCoursesReducer'
 import recentUserPostsReducer from './store/reducers/recentUserPostsReducer'
+import currentMessageReducer from './store/reducers/currentMessageReducer'
 
 
 const rootReducer = combineReducers({
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   recentEventsReducer: recentEventsReducer,
   finishedCoursesReducer: finishedCoursesReducer,
   recentUserPostsReducer: recentUserPostsReducer,
+  currentMessageReducer: currentMessageReducer
 });
 
 const store = createStore(rootReducer);
