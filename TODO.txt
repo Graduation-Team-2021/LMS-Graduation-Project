@@ -5,7 +5,6 @@ NEW TODO:
 5. Deliverables integration (Michel,David)
 6. Quizzes (integrate with backend)
 7. يوم النتيجة
-8. The total grade is not connected to the backend يا ديفيد
 9. Frontend error handling (John, David) (in progress)
 10.Notification View (Michel,David)
 11.The ability to sort course material chronologically, alphabetically and by dependence (Frontend,Adham and David) (done for PDFS, Quizzes and Assignments not Videos)
