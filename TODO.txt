@@ -1,7 +1,7 @@
 NEW TODO:
 2. get users of Course/Group 
 3. Join Courses with a deadline *******************************************
-4. Search Page with categories for each entity (Basic Sturcture only)
+4. Search Page with categories for each entity (Clickable Results)
 5. Deliverables integration (Michel,David)
 6. Quizzes (integrate with backend), (create quizzes)
 7. يوم النتيجة
@@ -16,6 +16,8 @@ NEW TODO:
 16.Improve the dropdown menu design (make the 2 menus into one)
 17.Improve the Triangle
 18.Improve the Search Page
+19.Responsive Posts
+20.Fix the Click Outside black magic
  
 Mobile TODO:
 1. in Mobile app, Handle the tablet screen
@@ -25,9 +27,3 @@ Mobile TODO:
 5. For SQLite, check the dublicate Data before inserting it(David,Adham)
 6. Modify the interface file to check the SQLite also(David,Adham)
 7.The  ability  to  send  direct  messages  to  other  users  which  will  be  accessible  from  everywhere through a button like Messenger chat heads
-
-
-
-
-For David:
-    Make a loading while uploading

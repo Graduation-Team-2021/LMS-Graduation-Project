@@ -68,6 +68,7 @@ const App = (props) => {
                 />
                 <Route path='/changePass' exact component={ResetPass}/>
                 <Route path='/Search' exact component={Search}/>
+                {/* TODO: ADD Enroll Route */}
                 <Redirect path="/login" to="/" />
               </React.Fragment>
             ) : (
