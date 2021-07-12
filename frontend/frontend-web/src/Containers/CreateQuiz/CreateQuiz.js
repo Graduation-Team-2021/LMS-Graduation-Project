@@ -17,16 +17,26 @@ class CreateQuiz extends Component {
       Unit: [{ value: "Minutes", name: "Minutes" }],
       CurrentQuestion: 0,
       Questions: [new Question()],
-      Fields: this.Fields,
-      Error: true,
     };
   }
 
   onSubmit = () => {
     //TODO: Connect Add Quizzes to Backend
     const Q = setQuiz(this.state);
-    console.log(Q);
-    AddQuiz(Q);
+    AddQuiz(Q).then((res) => {
+      if (res) {
+        alert("Exam Created Successfully");
+        this.setState({
+          Course: this.props.match.params.id,
+          Duration: 0,
+          Unit: [{ value: "Minutes", name: "Minutes" }],
+          CurrentQuestion: 0,
+          Questions: [new Question()],
+        });
+      } else {
+        alert("Failed to create, please try again");
+      }
+    });
   };
 
   onSelect = (List, Option, Name) => {

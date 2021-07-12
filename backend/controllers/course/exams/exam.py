@@ -30,12 +30,26 @@ class exams_controller():
             "exam_duration":exam["exam_duration"],
             'exam_marks':exam["exam_marks"]
         }
+        questions = exam['questions']
         try:
-            print("inserting")
             new_exam = Exams(**temp)
-            print(new_exam)
             new_exam = Exams.insert(new_exam)
-            print(new_exam)
+            for q in questions:
+                t2={
+                    "question":q['question'],
+                    "mark":q['mark'],
+                    "exam_id":new_exam,
+                }
+                qid = questions_controller.post_question(t2)
+                answers = q['answers']
+                for a in answers:
+                    t3={
+                        "answer": a['answer'],
+                        "right_answer": a['right_answer'],
+                        'question_id': qid
+                    }
+                    answers_controller.post_answer(t3)
+            
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({

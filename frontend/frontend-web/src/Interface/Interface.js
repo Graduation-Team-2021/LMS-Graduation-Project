@@ -572,5 +572,10 @@ export const AddQuiz = async (Data) => {
       },
     }
   );
-  return res.data;
+  console.log(res.data);
+  if (res.data['status_code']===200) {
+    return true
+  } else {
+    return false
+  }
 };

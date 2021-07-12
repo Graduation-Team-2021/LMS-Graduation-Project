@@ -24,6 +24,7 @@ class Exams(db.Model, Base):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self.exam_id
 
     def update(self):
         db.session.merge(self)
