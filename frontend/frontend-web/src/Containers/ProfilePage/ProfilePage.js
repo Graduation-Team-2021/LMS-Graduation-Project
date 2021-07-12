@@ -16,6 +16,7 @@ import {
   getRecentUserPosts,
   getRecentEvent,
   getUser,
+  getGradeSoFar,
 } from "../../Interface/Interface";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 import { setFullUserPost } from "../../Models/Post";
@@ -25,6 +26,8 @@ const ProfilePage = (props) => {
   const [Finished, setFinished] = useState([]);
 
   const [userSelf, setuserSelf] = useState(null);
+  
+  const [grade, setGrade] = useState(0)
 
   const { Token, ID, Role, Name } = props.userData;
 
@@ -66,6 +69,13 @@ const ProfilePage = (props) => {
     });
   }, [Token, ID, Role]);
 
+  useEffect(() => {
+    getGradeSoFar(ID).then((res)=>{
+      setGrade(res.reduce((a,b)=>a+b['course_mark'],0));
+    })
+    
+  }, [ID])
+
   return (
     <div className={classes.Center}>
       <Card shadow className={classes.Container}>
@@ -93,7 +103,7 @@ const ProfilePage = (props) => {
               </Card>
               <Card shadow className={classes.Note}>
                 <h2>Total Grade</h2>
-                <h1>50{/*get from database*/}</h1>
+                <h1>{grade}{/*get from database*/}</h1>
               </Card>
             </div>
           </div>

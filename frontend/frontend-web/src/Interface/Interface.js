@@ -579,3 +579,12 @@ export const AddQuiz = async (Data) => {
     return false
   }
 };
+
+export const getGradeSoFar=async (id)=>{
+  const res = await instance.get(`/student/${id}/finishedCourses`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data['courses'];
+}
