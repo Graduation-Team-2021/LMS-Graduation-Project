@@ -2,7 +2,6 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import classes from "./Search.module.css";
-import Card from "../Card/Card";
 
 const Search = (props) => {
   const [Main, setMain] = useState(classes.Main);
@@ -30,7 +29,7 @@ const Search = (props) => {
           onBlur={Abort}
         />
         <div>
-          <FontAwesomeIcon icon={faSearch} size="2x" onClick={props.onSearch}/>
+          <FontAwesomeIcon icon={faSearch} size="2x"/>
         </div>
       </div>
     </div>

@@ -97,7 +97,7 @@ const MiniMenu = (props) => {
             <div className={classes.Back} />
             <ImageHolder
               className={classes.UserImage}
-              filler={props.userData.Data.picture || filler}
+              filler={props.userData.Pic || filler}
             />
           </Button>
         </span>

@@ -15,7 +15,7 @@ import {
   getFinishedCourses,
   getRecentUserPosts,
   getRecentEvent,
-  getUser
+  getUser,
 } from "../../Interface/Interface";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 import { setFullUserPost } from "../../Models/Post";
@@ -35,7 +35,6 @@ const ProfilePage = (props) => {
   const RecentEvent = recentEvent.recentEvent;
 
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
-  
 
   useEffect(() => {
     if (!RecentEvent)
@@ -49,10 +48,10 @@ const ProfilePage = (props) => {
   }, [Token, ID, Role, TokenError, RecentEvent, setRecentEvent]);
 
   useEffect(() => {
-    getUser(ID).then(res=>{
-      setuserSelf(res)
-    })
-  }, [ID])
+    getUser(ID).then((res) => {
+      setuserSelf(res);
+    });
+  }, [ID]);
 
   useEffect(() => {
     getFinishedCourses(Token, ID, Role).then((res) => {
@@ -74,7 +73,12 @@ const ProfilePage = (props) => {
           <div className={classes.background}>{/*insert your image here*/}</div>
           <div className={classes.User}>
             <div className={classes.main}>
-              <ImageHolder className={classes.Pic} filler={userSelf?userSelf['picture']:filler} />
+              <ImageHolder
+                className={classes.Pic}
+                filler={
+                  userSelf && userSelf["picture"] ? userSelf["picture"] : filler
+                }
+              />
               <div className={classes.Details}>
                 <div className={classes.filler} />
                 <div className={classes.Name}>{props.userData.Name}</div>
@@ -103,7 +107,7 @@ const ProfilePage = (props) => {
           <PostsArea
             Title="Your Posts"
             LoadingPosts={getRecentUserPosts}
-            setPost={(ele, ID)=>setFullUserPost(ele, ID, Name)}
+            setPost={(ele, ID) => setFullUserPost(ele, ID, Name)}
           />
         </div>
       </Card>
