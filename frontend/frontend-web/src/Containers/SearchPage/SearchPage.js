@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import classes from "./SearchPage.module.css";
 import Card from "../../Components/Card/Card";
 import Search from "../../Components/Search/Search";
-
+import Waiting from "../../Components/Waiting/Waiting";
 import {
   searchUsers,
   searchCourses,
@@ -25,14 +25,12 @@ const SearchPage = (props) => {
   const [started, setStarted] = useState(false);
 
   const onChange = (event, value) => {
-    console.log(value);
     setOption(value);
-    setLoading(true);
   };
 
   const onSearch = () => {
     if (query !== "") {
-      setStarted(true);
+      if (!started) setStarted(true);
       if (option === "User") {
         searchUsers(query).then((res) => {
           setLoading(false);
@@ -64,10 +62,19 @@ const SearchPage = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (query !== "") {
+      setLoading(true);
+      onSearch();
+    } else {
+      setResults([]);
+    }
+  }, [option, query]);
+
   return (
     <span className={classes.Holder}>
       <Card shadow className={classes.Card}>
-        <Search setQuery={setQuery} onSearch={onSearch} />
+        <Search setQuery={setQuery} />
         {/* <div className={classes.choice}>
           <div>
             <input
@@ -98,7 +105,7 @@ const SearchPage = (props) => {
           </div>
         </div>
         <div className={classes.results}>{results}</div> */}
-        <Spacer height="10px"/>
+        <Spacer height="25px" />
         <TabContext value={option}>
           <AppBar position="static">
             <TabList onChange={onChange} centered>
@@ -107,9 +114,27 @@ const SearchPage = (props) => {
               <Tab label="Group" value="Group" />
             </TabList>
           </AppBar>
-          <TabPanel value="1">Users</TabPanel>
-          <TabPanel value="2">Courses</TabPanel>
-          <TabPanel value="3">Groups</TabPanel>
+          <span
+            style={{
+              width: "100%",
+            }}
+          >
+            <TabPanel value="User">
+              <Waiting Loading={Loading}>
+                <div className={classes.results}>{results}</div>
+              </Waiting>
+            </TabPanel>
+            <TabPanel value="Course">
+              <Waiting Loading={Loading}>
+                <div className={classes.results}>{results}</div>
+              </Waiting>
+            </TabPanel>
+            <TabPanel value="Group">
+              <Waiting Loading={Loading}>
+                <div className={classes.results}>{results}</div>
+              </Waiting>
+            </TabPanel>
+          </span>
         </TabContext>
       </Card>
     </span>
