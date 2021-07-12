@@ -2,6 +2,7 @@ import React from "react";
 import { Multiselect } from "multiselect-react-dropdown";
 
 import classes from "./NormalTextField.module.css";
+import PropTypes from "prop-types";
 
 /* <select
         value={props.value}
@@ -35,8 +36,8 @@ const TextField = (props) => {
         singleSelect={!props.multiple}
         options={props.DataList}
         selectedValues={props.value}
-        onSelect={(List, Item)=>props.onSelect(List, Item, props.Name)}
-        onRemove={(List, Item)=>props.onRemove(List, Item, props.Name)}
+        onSelect={(List, Item) => props.onSelect(List, Item, props.Name)}
+        onRemove={(List, Item) => props.onRemove(List, Item, props.Name)}
         displayValue="name"
       />
     ) : (
@@ -68,6 +69,17 @@ const TextField = (props) => {
       ) : null}
     </React.Fragment>
   );
+};
+
+TextField.propTypes = {
+  Error: PropTypes.bool.isRequired,
+  type: PropTypes.oneOf(["textArea", 'select',]),
+  Name: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  multiple: PropTypes.bool,
+  DataList: PropTypes.array,
+  onSelect: PropTypes.func
 };
 
 export default TextField;

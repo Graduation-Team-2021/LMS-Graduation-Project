@@ -97,4 +97,17 @@ class Student_Exam_Results(Resource):
             return e.error
         return my_results
 
+#/exams_by_course/<course_id>
+class ExamByCourseID(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+
+    def get(self,course_id):
+        return controller_object.get_exam_by_course_id(course_id)
+    
+    def post(self,course_id):
+       args = self.reqparse.parse_args()
+       exam={'course_id':course_id,'exam_duration':args['exam_duration']}
+       controller_object.post_exam(exam)
+       return "Exam added successfully"
 
