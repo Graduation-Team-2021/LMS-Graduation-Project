@@ -16,9 +16,9 @@ setup_db(app)
 
 def app_setup(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:48691412@localhost:3306/lms"
-    app.config['SECRET_KEY'] = "ANy HABDDDDDDDDD"
-    app.config['STATIC_PATH'] = "/home/LMSUser/LMS-Graduation-Project/backend/static"
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_PATH')
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['STATIC_PATH'] = os.getenv('STATIC_PATH')
     app.config['ALLOWED_EXTENSIONS'] = ['jpg', 'jpeg', 'png']
     app.config['DEBUG'] = True
     app.config['CORS_HEADERS'] = 'Content-Type'

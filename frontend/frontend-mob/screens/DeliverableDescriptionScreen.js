@@ -7,7 +7,7 @@ import { getDeliversRelation,uploadDeliverable,studentsSubmissions} from "../Int
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import * as Progress from 'react-native-progress';
-import {showMessage, hideMessage}from "react-native-flash-message";
+
 const DeliverableDescription = (props) => {
   const [file,setFile] = useState("")
   const [uploadedFiles,setUploadedFiles] = useState()
@@ -91,12 +91,14 @@ const DeliverableDescription = (props) => {
       title="Upload File" 
       disabled = {file=="" ? true:false}
       buttonStyle={{minWidth:150, width:"70%", maxWidth:200, alignSelf: 'center',margin:10}}
-      titleStyle={{fontSize:"12"}}
+      titleStyle={{fontSize:12}}
       onPress={uploadFileHandler}
       icon = {<AntDesign name="upload" size={20} color="white" />}
       />
       {uploadPercentage ==0? <Text></Text>:
+      <View style={{alignItems:"center"}}>
     <Progress.Bar progress={uploadPercentage} width={150}/>
+    </View>
       }
       </View>:<Text>render student submissions</Text>}
 
