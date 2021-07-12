@@ -82,7 +82,7 @@ const Quiz = (props) => {
     const [quiz, setQuiz] = useState([]);
     const [number, setNumber] = useState(0);
     const [userAnswers, setAnswers] = useState({ 0: 'hi' });
-
+    let element = document.createElement('div');
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
     const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
@@ -103,12 +103,26 @@ const Quiz = (props) => {
     const Finish = () => {
         setNumber(number + 1);
         let pts = 0;
+        let temp ='';
         quiz.forEach((x, i) => {
-            console.log(x.answer, userAnswers[i])
-            if (x.answer === userAnswers[i]) { pts++; }
+            temp=decodeHTMLEntities(x.answer);
+            console.log(x.answer,temp, userAnswers[i]);
+            if (temp === userAnswers[i]) { pts++; }
         })
         props.setScore(pts)
         props.setFinished({ finished: true })
+    }
+
+    const decodeHTMLEntities = (str) => {
+        if (str && typeof str === 'string') {
+            // strip script/html tags
+            str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+            str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+            element.innerHTML = str;
+            str = element.textContent;
+            element.textContent = '';
+        }
+        return str;
     }
 
     ///////////////////////////////////////////////////////
@@ -138,7 +152,7 @@ const Quiz = (props) => {
                 </div>
             }
             {
-                number === quiz.length + 1 && <GameOver pts={props.score} user={userAnswers} data={quiz}/>
+                number === quiz.length + 1 && <GameOver pts={props.score} user={userAnswers} data={quiz} />
             }
         </QuizWindow>
     )

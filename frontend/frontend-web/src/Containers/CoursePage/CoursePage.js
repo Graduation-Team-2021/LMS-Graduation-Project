@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
+import Waiting from "../../Components/Waiting/Waiting";
 import Card from "../../Components/Card/Card";
 import Modal from "../../Components/Modal/Modal";
 import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
 import CourseDescription from "../CourseDesc/CourseDesc.js";
 import NewPostCard from "../../Components/New Post/NewPost";
-import Button from '../../Components/Button/Button'
+import Button from "../../Components/Button/Button";
 import classes from "./CoursePage.module.css";
 import {
   getAllPosts,
@@ -36,6 +37,8 @@ const CoursePage = (props) => {
   const [Course, setCourse] = useState(null);
   const [clicked, setclicked] = useState(false);
   const [Posts, setPosts] = useState([]);
+  const [MainLoading, setMainLoading] = useState(true);
+  const [PostLoading, setPostLoading] = useState(true);
 
   const hide = () => {
     setclicked(false);
@@ -51,6 +54,7 @@ const CoursePage = (props) => {
 
   useEffect(() => {
     getCourseByID(Token, courseID).then((res) => {
+      setMainLoading(false);
       setCourse(res);
     });
   }, [Token, courseID]);
@@ -58,6 +62,7 @@ const CoursePage = (props) => {
   useEffect(() => {
     //Loading Data from Server
     getAllPosts(Token, postID).then((value) => {
+      setPostLoading(false);
       const Posts = [];
       if (value) {
         value.forEach((ele) => {
@@ -85,29 +90,12 @@ const CoursePage = (props) => {
     hide();
   };
 
-  const loadDeliverables = () => {
-    //TODO: use this for routing
-    props.history.push({
-      pathname: `/Course/${courseID}/Deliv`,
-      state: {
-        id: courseID,
-      },
-    });
-  };
-
-  const addDeliverables = () => {
-    //TODO: use this for routing
-    props.history.push({
-      pathname: `/Course/${courseID}/newDeliv`,
-    });
-  };
-
   return (
     <React.Fragment>
       <Modal show={clicked} onClick={hide}>
         <NewPost submit={SubmitPost} dismiss={hide} />
       </Modal>
-      {Course ? (
+      <Waiting Loading={MainLoading}>
         <div className={classes.Center}>
           <Card shadow className={classes.Course}>
             <div
@@ -125,43 +113,11 @@ const CoursePage = (props) => {
                   justifyContent: "space-between",
                 }}
               >
-                {isJoined === "true" ? (
-                  Role === "professor" ? (
-                    <Button
-                      onClick={() =>
-                        props.history.push({
-                          pathname: `/Course/${courseID}/Marks`,
-                          state: {
-                            name: Title,
-                          },
-                        })
-                      }
-                    >See Grades</Button>
-                  ) : null
-                ) : (
-                  <Button
-                    onClick={props.Joining.bind(this, courseID)}
-                  >Enroll</Button>
+                {isJoined === "true" ? null : (
+                  <Button onClick={props.Joining.bind(this, courseID)}>
+                    Enroll
+                  </Button>
                 )}
-                {Role === "student" && isJoined === "true" ? (
-                  <Button
-                    
-                    onClick={() => {
-                      loadDeliverables();
-                    }}
-                  >
-                    Check Deliverables
-                  </Button>
-                ) : isJoined === "true" ? (
-                  <Button
-                   
-                    onClick={() => {
-                      addDeliverables();
-                    }}
-                  >
-                    Add New Deliverable
-                  </Button>
-                ) : null}
               </div>
             </div>
             <div className={classes.small}>
@@ -169,9 +125,11 @@ const CoursePage = (props) => {
             </div>
 
             {isJoined === "true" ? <NewPostCard Focus={Focus} /> : null}
-            <div className={classes.PostsHolder}>
-              <div className={classes.posts}>{Posts}</div>
-            </div>
+            <Waiting Loading={PostLoading}>
+              <div className={classes.PostsHolder}>
+                <div className={classes.posts}>{Posts}</div>
+              </div>
+            </Waiting>
           </Card>
           <div className={classes.large}>
             <CourseDescription
@@ -183,9 +141,7 @@ const CoursePage = (props) => {
             />
           </div>
         </div>
-      ) : (
-        <h1>Loading.......</h1>
-      )}
+      </Waiting>
     </React.Fragment>
   );
 };

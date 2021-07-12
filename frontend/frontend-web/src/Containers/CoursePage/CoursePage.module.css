@@ -10,6 +10,11 @@
     align-items: center;
 }
 
+.large {
+    flex: 1;
+    padding: 0 0 0 1%;
+}
+
 .Join {
     display: flex;
     align-items: center;
@@ -58,11 +63,13 @@
     .large {
         display: none;
     }
+
     .Center .Course .small {
         display: flex;
         flex-direction: row;
     }
-    .Center .Course{
+
+    .Center .Course {
         width: 100%;
     }
 }

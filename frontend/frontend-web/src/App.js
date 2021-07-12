@@ -14,6 +14,7 @@ import SignUp from "./Containers/SignUpPage/SignUpPage";
 import AddCourse from "./Containers/AddCoursePage/AddCourse";
 import AddGroup from "./Containers/AddGroupPage/AddGroup";
 import Deliv from "./Components/DeliverablesPage/DeliverablesPage";
+import Quiz from "./Components/QuizzesPage/QuizzesPage";
 import PDFs from "./Components/PDFsPage/PDFsPage";
 import PDF from "./Ibrahim/Pdf_reader";
 import AddDelivPage from "./Containers/AddDelivPage/AddDeliv";
@@ -55,9 +56,10 @@ const App = (props) => {
                 <Route path="/Course/:id/PDFs" exact component={PDFs} />
                 <Route path="/AddGroup" exact component={AddGroup} />
                 <Route path="/Deliv" exact component={Deliv} />
-                <Route path="/Deliv/Quiz/:id" exact component={Deliv} />
+                <Route path="/Quiz/:id" exact component={Quiz} />
                 <Route path="/Deliv/Assignment/:id" exact component={Deliv} />
                 <Route path="/Course/:id/Deliv" exact component={Deliv} />
+                <Route path="/Course/:id/Quiz" exact component={Quiz} />
                 <Route path="/Course/:cid/PDFs/:id" exact component={PDF} />
                 <Route
                   path="/Course/:id/newDeliv"

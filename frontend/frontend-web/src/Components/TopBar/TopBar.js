@@ -21,7 +21,6 @@ const TopBar = (props) => {
   return (
     <div className={classes.Main}>
       <Welcome Name={props.Name} />
-      {/* <Search /> */}
       <MiniMenu
         TokenError={props.TokenError}
         id={props.id}

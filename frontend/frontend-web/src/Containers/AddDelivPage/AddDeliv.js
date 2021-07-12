@@ -14,7 +14,7 @@ class AddDelivPage extends Component {
   Fields = {
     "Deliverable Name": "text",
     "Max Number of Students": "number",
-    "Description": "textArea",
+    Description: "textArea",
     //'List of Doctors'
   };
 
@@ -158,18 +158,18 @@ class AddDelivPage extends Component {
       </React.Fragment>
     );
     return (
-        <Card row shadow>
-          <div className={classes.Login}>
-            <h1 className={classes.MainTitle}>Add New Deliverable</h1>
-            <div className={classes.Field}>{AddDelivField}</div>
-            <div className={classes.ButtonArea}>
-              <Button value="Add Deliv" onClick={this.onAddDeliv} />
-            </div>
+      <Card row shadow>
+        <div className={classes.Login}>
+          <h1 className={classes.MainTitle}>Add New Deliverable</h1>
+          <div className={classes.Field}>{AddDelivField}</div>
+          <div className={classes.ButtonArea}>
+            <Button onClick={this.onAddDeliv}>Submit</Button>
           </div>
-          <div className={classes.Blue}>
-            <ImageHolder filler={image} />
-          </div>
-        </Card>
+        </div>
+        <div className={classes.Blue}>
+          <ImageHolder filler={image} />
+        </div>
+      </Card>
     );
   }
 }

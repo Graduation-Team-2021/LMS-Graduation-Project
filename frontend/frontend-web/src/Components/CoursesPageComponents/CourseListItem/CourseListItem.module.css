@@ -22,21 +22,21 @@
 }
 
 .selected {
+  width: 100%;
   background-color: cyan;
-  filter: drop-shadow(0px 0 20px rgba(0,0,0,.5));
-
-
+  filter: drop-shadow(0px 0 20px rgba(0, 0, 0, .5));
 }
+
 .Tringle {
   width: 0;
   height: 0;
   border-top: 75px solid transparent;
   border-left: 90px solid cyan;
   border-bottom: 75px solid transparent;
-  filter: drop-shadow(21px 0 15px rgba(0,0,0,0.3));
+  filter: drop-shadow(21px 0 15px rgba(0, 0, 0, 0.3));
 }
 
-.CourseItemListContainer{
+.CourseItemListContainer {
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -44,26 +44,57 @@
 }
 
 @media (max-width : 1325px) {
-    .Tringle {
-      display: none;
-    }
+
+  .Tringle {
+    border-left: 9em solid transparent;
+    border-top: 2.5em solid cyan;
+    border-right: 9em solid transparent;
+  }
+
+  .CourseItemListContainer {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  .selected {
+    width: 100%;
+  }
 }
 
 
 @media (max-width : 1070px) {
-  .CourseItemListContainer{
-    width: 24vw;
+  .Tringle {
+    width: 0;
+    height: 0;
+    border-left: 2.8em solid transparent;
+    border-top: 2.5em solid cyan;
+    border-right: 2.8em solid transparent;
   }
+  .CourseItemListContainer {
+    margin-bottom: 0;
+    width: 100%;
+    
+  }
+
   .CourseImage {
     width: 100px;
   }
 }
 
 @media (max-width : 700px) {
-  .ItemContainer{
+  .ItemContainer {
     flex-direction: column;
+    align-items: center;
+    margin-bottom: 0;
+    width: fit-content;
   }
+
   .CourseImage {
     width: 80px;
+    height: 80px;
   }
 }

@@ -9,12 +9,19 @@ controller_object = delivers_controller()
 
 # /my_deliverables
 class Delivers_Relation(Resource):
+    method_decorators = {'post': [requires_auth_identity("")]}
+
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('deliverable_id', type=int, location='json')
 
-    def post(self):
-        student_id = 3  # change to auth id later
+    def post(self, user_id, role):
+        student_id = user_id
+        if (role=="professor"):
+            return jsonify({
+                "message": "Only students can upload deliverables",
+                "status_code":401
+            })
         args = self.reqparse.parse_args()
         delivers_relation = {
             "deliverable_id": args["deliverable_id"],

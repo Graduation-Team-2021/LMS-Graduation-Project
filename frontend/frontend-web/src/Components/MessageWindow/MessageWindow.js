@@ -5,6 +5,7 @@ import Message from "./Message/Message";
 import moment from "moment";
 import SearchBar from "../ConversationList/SearchBar/SearchBar";
 import Compose from "./Compose/Compose";
+import Waiting from '../Waiting/Waiting'
 import cls from "./MessageWindow.module.css";
 import { getAllMessages, sendMessage } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
@@ -22,6 +23,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   const [searchVis, setSearchVis] = useState({ showSearch: false });
   const [newMes, setNewMes] = useState(null)
   const [Query, setQuery] = useState("");
+  const [loading, setLoading] = useState(true)
   ////////////////////////////////////////////////////////////////////////////////////////
   //var tempMessages1 = [
   //  {
@@ -42,6 +44,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
 
   useEffect(() => {
     getMessages();
+    setLoading(true);
   }, [props.Current, newMes]);
 
   useEffect(() => {
@@ -94,9 +97,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
 
   const onFileChange = (e) => {
     const file = e.target.files[0];
-    console.log(file.name);
-    console.log(file.size);
-    console.log(file.type);
   };
   //////////////////////////////////////////////////////////////////////////////////
   const [messIn, setMess] = useState({ text: "" });
@@ -157,7 +157,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
               })
             }
           )
-          setMessages(temp)
+          setMessages(temp);
+          setLoading(false);
         });
       } else {
         setMessages([])
@@ -251,7 +252,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
           {searchbb}
           {
             !(searchVis.showSearch && Query !== "") ?
-              <div className={cls.container}>{renderMessages(messages)}</div> :
+              <Waiting Loading={loading}><div className={cls.container}>{renderMessages(messages)}</div></Waiting> :
               <div className={cls.container}>{renderMessages(searchResults)}</div>
           }
           <Compose

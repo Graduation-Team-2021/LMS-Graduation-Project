@@ -12,13 +12,21 @@ import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setCourse } from "../../Models/Course";
 
 const HomePage = (props) => {
-  const [Courses, setCourses] = useState(new Map());
+  const [Courses, setCourses] = useState({});
   const [displayedCourse, setdisplayedCourse] = useState(null);
   const { Token } = props.userData;
   const { TokenError } = props.userDataActions;
   const { currentCourses } = props.currentCourses;
   const { finishedCourses } = props.finishedCourses;
   const [loading, setLoading] = useState(true);
+
+  const Enroll = () => {
+    //TODO:enroll in Backend
+    var temp = {...Courses};
+    temp[displayedCourse].isEnrolled = "true";
+    setCourses(temp);
+    alert("Enroll Successful");
+  };
 
   const selectingCourseHandler = (courseid) => {
     setdisplayedCourse(courseid);
@@ -44,7 +52,7 @@ const HomePage = (props) => {
           if (Array.from(currentCourses.keys()).includes(id["course_code"])) {
             id["isenrolled"] = "true";
           }
-          Courses.set(id["course_code"], setCourse(id));
+          Courses[id["course_code"]] = setCourse(id);
         });
         setCourses(Courses);
       } else {
@@ -54,10 +62,10 @@ const HomePage = (props) => {
   }, [Token, TokenError, currentCourses, finishedCourses]);
 
   let loadedCourses = [];
-  Array.from(Courses.keys()).forEach((key) => {
+  Array.from(Object.keys(Courses)).forEach((key) => {
     loadedCourses.push(
       <CourseListItem
-        {...Courses.get(key)}
+        {...Courses[key]}
         key={key}
         id={key}
         getSelected={selectingCourseHandler}
@@ -69,9 +77,10 @@ const HomePage = (props) => {
   let stage = (
     <div className={classes.CourseOverview}>
       <CourseOverView
-        Course={Courses.get(displayedCourse)}
-        {...Courses.get(displayedCourse)}
+        Course={Courses[displayedCourse]}
+        {...Courses[displayedCourse]}
         removeHandler={removingFromTheStageHandler}
+        Enroll={Enroll}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 .Main {
     display: flex;
     height: fit-content;
-    padding: 0 5%;
+    padding: 0 1%;
     width: 100%;
     align-items: center;
 }

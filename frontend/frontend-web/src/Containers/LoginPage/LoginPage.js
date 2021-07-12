@@ -9,7 +9,7 @@ import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 import { withRouter } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
-import { Login } from "../../Interface/Interface";
+import { getUser, Login } from "../../Interface/Interface";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
@@ -33,8 +33,11 @@ class LoginPage extends Component {
             ID: jwt_decode(res.Token).id,
             Role: jwt_decode(res.Token).permissions,
           };
-          this.props.userDataActions.onSetData(Data);
-          this.props.history.push("/");
+          getUser(Data.ID).then((res2) => {
+            Data["Data"] = res2;
+            this.props.userDataActions.onSetData(Data);
+            this.props.history.push("/");
+          });
         } else alert("Login Failed");
       });
     });
@@ -104,7 +107,7 @@ class LoginPage extends Component {
               />
             </div>
             <div className={classes.ButtonArea}>
-              <Button value="Sign in" onClick={this.signin} />
+              <Button onClick={this.signin}>Sign in</Button>
             </div>
           </div>
           <div className={classes.Blue}>
