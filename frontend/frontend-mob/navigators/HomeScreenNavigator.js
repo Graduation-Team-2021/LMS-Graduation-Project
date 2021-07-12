@@ -33,7 +33,7 @@ const HomeStack = createStackNavigator({
   },
 
   Course: {
-    screen: checkConnectivity(CourseScreen),
+    screen: CourseScreen,
     navigationOptions: (navData) => {
       return {
         title: `${navData.navigation.getParam("course").CourseName}`,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { View, FlatList, StyleSheet, Text } from "react-native";
 import { PieChart } from "react-native-svg-charts";
 
@@ -141,14 +141,14 @@ const AllDelivList = (props) => {
   ////////////////////////////////////////////////////////////////
 
   return (
-    <View style={{ flex: 1 }}>
+    <Fragment>
       <PieChart style={{ height: 200 }} data={pieData} />
       <FlatList
         data={Deliverables}
         renderItem={renderItem}
         keyExtractor={(_, index) => `${index}`}
       />
-    </View>
+    </Fragment>
   );
 };
 
