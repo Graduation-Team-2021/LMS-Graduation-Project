@@ -7,7 +7,6 @@ import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
 import Card from "../../Components/Card/Card";
 import classes from "./HomePage.module.css";
-import ChatWindow from '../../Components/PopupChatWindow/Window'
 
 import { getRecentPosts } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
@@ -29,7 +28,6 @@ const HomePage = (props) => {
             setPosts={setPosts}
             setPost={setFullPost}
           />
-          <ChatWindow />
         </Card>
       </div>
         <Upcoming />

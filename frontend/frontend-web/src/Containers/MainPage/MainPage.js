@@ -2,6 +2,8 @@ import classes from "./MainPage.module.css";
 import React, { useState } from "react";
 import Card from "../../Components/Card/Card";
 import TopBar from "../../Components/TopBar/TopBar";
+import ChatWindow from '../../Components/PopupChatWindow/Window'
+
 
 const MainPage = (props) => {
 
@@ -11,6 +13,7 @@ const MainPage = (props) => {
       <Card className={classes.David}>
         <TopBar Name={props.Name}/>
         {props.children}
+        <ChatWindow />
       </Card>
     </div>
   );
