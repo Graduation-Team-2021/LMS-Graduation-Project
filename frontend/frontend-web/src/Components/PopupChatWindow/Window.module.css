@@ -74,13 +74,15 @@
 }
 
 .hideList {
-  display: none;
-  transform: translateX(-200%);
+  transform: translateX(-500%);
   transition: all .3s cubic-bezier(0, .52, 0, 1);
 }
 
 .minimize {
-  display: none;
-  transform: translateX(-200%);
+  transform: translateX(-500%);
   transition: all .3s cubic-bezier(0, .52, 0, 1);
+}
+
+.NONE{
+  display: none;
 }

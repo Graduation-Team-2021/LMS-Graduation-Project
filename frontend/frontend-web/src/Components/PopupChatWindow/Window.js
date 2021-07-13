@@ -26,6 +26,7 @@ export default connect(
   const [loading, setLoading] = useState(true);
   const [messIn, setMess] = useState({ text: "" });
   const [dismissed, setDismissed] = useState({ dismissed: false });
+  const [Animation, setAnimation] = useState(false)
   ///////////////////////////////////////////////////////////////////////////////////////
   let listCls = [cls.hideList]; //TODO: Fix the Animation
   if (props.currentMessage.currentMessage.ID) {
@@ -33,8 +34,11 @@ export default connect(
   } else {
     listCls = [cls.list, cls.hideList];
   }
-  if (dismissed.dismissed) {
+  if (dismissed.dismissed && Animation) {
     listCls = [cls.list, cls.minimize];
+  }
+  if (dismissed.dismissed && !Animation){
+    listCls = [cls.list, cls.NONE]
   }
   ///////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
@@ -105,6 +109,8 @@ export default connect(
   //////////////////////////////////////////////////////////////////////////////////
   const Dismiss = () => {
     setDismissed({ dismissed: !dismissed.dismissed });
+    setAnimation(true)
+    setTimeout(()=>setAnimation(false))
   };
 
   const toggleSearch = () => {
