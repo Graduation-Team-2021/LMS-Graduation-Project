@@ -108,7 +108,7 @@ const Quiz = (props) => {
         return (
             <Button
                 key={index}
-                className={userAnswers[index] ? classes.Done : classes.Circle}
+                className={index===number?classes.Active:(userAnswers[index]?classes.Done:classes.Circle)}
                 onClick={() => changeQuestion(index)}
             >
                 {index + 1}
