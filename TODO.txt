@@ -11,7 +11,7 @@ NEW TODO:
 12.The  ability  for  teachers  to  add  comments  on  specific  segments  of  the  video,  and  for  students to make an enquiry about a specific segment of the video.
 13.Courses page will show a compact detail box for each course.
 14.The  ability  to  send  direct  messages  to  other  users  which  will  be  accessible  from  everywhere through a button like Messenger chat heads (Hazim)
-15.Notifications should be Clickable (Post/Messages)
+15.Notifications should be Clickable (Post)
 16.Improve the dropdown menu design (make the 2 menus into one)
 17.Improve the Triangle
 18.Responsive Posts
