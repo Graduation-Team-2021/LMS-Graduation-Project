@@ -21,7 +21,6 @@ const DCourses = [
   {
     CourseName: "Tst1",
     CoursePicture: "https://images5.alphacoders.com/903/903845.png",
-    
   },
   {
     CourseName: "Tst2",
@@ -89,16 +88,22 @@ const HomeScreen = (props) => {
     //   )
     // );
 
-    Interface.getCurrentCourses(props.userData.Token).then((res) => {
-      const Courses = [];
-      if (res) {
-        res.forEach((element) => {
-          let currentCourse = setCourse(element);
-          Courses.push(currentCourse);
-        });
-        setCurrentCourses(Courses);
-      }
-    });
+    Interface.getCurrentCourses(props.userData.Token)
+      .then((res) => {
+        const Courses = [];
+        if (res) {
+          res.forEach((element) => {
+            let currentCourse = setCourse(element);
+            Courses.push(currentCourse);
+          });
+          setCurrentCourses(Courses);
+        }
+      })
+      .catch((err) => {
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
+      });
   }, []);
 
   useEffect(() => {
