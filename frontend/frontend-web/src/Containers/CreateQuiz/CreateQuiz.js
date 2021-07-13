@@ -265,14 +265,14 @@ class CreateQuiz extends Component {
         ));
         return (
           <span>
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "0 2%",
-                borderBottom: "10px solid purple",
-                borderRadius: "50px",
-              }}
+            <span className={classes.AddQuesteons}
+              // style={{
+              //   display: "flex",
+              //   alignItems: "center",
+              //   padding: "0 2%",
+              //   borderBottom: "10px solid purple",
+              //   borderRadius: "50px",
+              // }}
             >
               <Input
                 Name={`Question ${index + 1}`}
@@ -349,6 +349,7 @@ class CreateQuiz extends Component {
             style={{
               display: "flex",
               alignItems: "center",
+              flexDirection: "column",
             }}
           >
             <h1 className={classes.MainTitle}>
@@ -380,7 +381,7 @@ class CreateQuiz extends Component {
           </span>
           {
             /* TODO: Add Per Page Question (Add Animation Later) */
-            <Card shadow>
+            <Card shadow >
               {Questions[this.state.CurrentQuestion]}
               {
                 /* Add Question Numbered Dots for access */

@@ -70,6 +70,17 @@
     justify-self: center;
 }
 
+.koko {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5%;
+}
+
+.addevint {
+    display: flex;
+    justify-content: center;
+}
 @media (max-width : 600px) {
     .upcoming {
         display: flex;
@@ -79,9 +90,22 @@
     .Container {
         display: flex;
         justify-content: space-between;
-        width: 200px;
+        width: 150px;
+        flex-direction: column;
     }
     .EventTitle {
         display: none;
+    }
+    /* .Container2 {
+        width: 100px;
+    } */
+    .Container2 .Button {
+        width: 60%;
+    }
+    .koko {
+        width: 273px;
+    }
+    .addevint{
+        width: 150px;
     }
 }
