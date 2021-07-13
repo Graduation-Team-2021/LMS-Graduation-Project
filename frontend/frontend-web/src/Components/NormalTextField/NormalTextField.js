@@ -2,18 +2,7 @@ import React from "react";
 import { Multiselect } from "multiselect-react-dropdown";
 
 import classes from "./NormalTextField.module.css";
-
-/* <select
-        value={props.value}
-        name={props.Name}
-        className={Field}
-        placeholder={"Enter Your " + props.Name + " Here"}
-        onChange={props.onChange}
-        multiple={props.multiple}
-        required
-        >
-        {props.DataList.map((value, index)=><option key={index} value={value.value}>{value.name}</option>)}
-        </select> */
+import PropTypes from "prop-types";
 
 const TextField = (props) => {
   const Field = !props.Error
@@ -35,9 +24,16 @@ const TextField = (props) => {
         singleSelect={!props.multiple}
         options={props.DataList}
         selectedValues={props.value}
-        onSelect={(List, Item)=>props.onSelect(List, Item, props.Name)}
-        onRemove={(List, Item)=>props.onRemove(List, Item, props.Name)}
+        onSelect={(List, Item) => props.onSelect(List, Item, props.Name)}
+        onRemove={(List, Item) => props.onRemove(List, Item, props.Name)}
         displayValue="name"
+        style={{
+          searchBox: {
+            fontWeight: 'bold',
+            height: "50%",
+            fontSize: '1em',
+          },
+        }}
       />
     ) : (
       <input
@@ -54,8 +50,10 @@ const TextField = (props) => {
     inputField = props.children;
   }
   return (
-    <React.Fragment>
-      <h2 className={classes.Title}>{props.Name}</h2>
+    <span
+      style={{ display: "flex", alignItems: "center", flex: props.flex || 1 }}
+    >
+      {!props.hide ? <h2 className={classes.Title}>{props.Name}</h2> : null}
       {inputField}
       {props.Error ? (
         <p
@@ -63,11 +61,23 @@ const TextField = (props) => {
             color: "red",
           }}
         >
-          Please Insert Valid Data
+          Invalid Data
         </p>
       ) : null}
-    </React.Fragment>
+    </span>
   );
+};
+
+TextField.propTypes = {
+  Error: PropTypes.bool.isRequired,
+  type: PropTypes.oneOf(["textArea", "select", "text"]),
+  Name: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  onChange: PropTypes.func.isRequired,
+  multiple: PropTypes.bool,
+  DataList: PropTypes.array,
+  onSelect: PropTypes.func,
+  flex: PropTypes.number,
 };
 
 export default TextField;

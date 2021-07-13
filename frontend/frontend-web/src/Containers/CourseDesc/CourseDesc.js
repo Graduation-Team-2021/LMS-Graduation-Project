@@ -137,7 +137,7 @@ class CourseDesc extends Component {
                 className={classes.Holder}
                 onClick={() => {
                   this.props.history.push({
-                    pathname: `/Course/${this.props.CourseID}/Quiz`,
+                    pathname: `/Course/${this.props.CourseID}/newQuiz`,
                     state: {
                       name: this.props.Title,
                     },

@@ -15,7 +15,8 @@ import {
   getFinishedCourses,
   getRecentUserPosts,
   getRecentEvent,
-  getUser
+  getUser,
+  getGradeSoFar,
 } from "../../Interface/Interface";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 import { setFullUserPost } from "../../Models/Post";
@@ -25,6 +26,8 @@ const ProfilePage = (props) => {
   const [Finished, setFinished] = useState([]);
 
   const [userSelf, setuserSelf] = useState(null);
+  
+  const [grade, setGrade] = useState(0)
 
   const { Token, ID, Role, Name } = props.userData;
 
@@ -35,7 +38,6 @@ const ProfilePage = (props) => {
   const RecentEvent = recentEvent.recentEvent;
 
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
-  
 
   useEffect(() => {
     if (!RecentEvent)
@@ -49,10 +51,10 @@ const ProfilePage = (props) => {
   }, [Token, ID, Role, TokenError, RecentEvent, setRecentEvent]);
 
   useEffect(() => {
-    getUser(ID).then(res=>{
-      setuserSelf(res)
-    })
-  }, [ID])
+    getUser(ID).then((res) => {
+      setuserSelf(res);
+    });
+  }, [ID]);
 
   useEffect(() => {
     getFinishedCourses(Token, ID, Role).then((res) => {
@@ -67,6 +69,13 @@ const ProfilePage = (props) => {
     });
   }, [Token, ID, Role]);
 
+  useEffect(() => {
+    getGradeSoFar(ID).then((res)=>{
+      setGrade(res.reduce((a,b)=>a+b['course_mark'],0));
+    })
+    
+  }, [ID])
+
   return (
     <div className={classes.Center}>
       <Card shadow className={classes.Container}>
@@ -74,7 +83,12 @@ const ProfilePage = (props) => {
           <div className={classes.background}>{/*insert your image here*/}</div>
           <div className={classes.User}>
             <div className={classes.main}>
-              <ImageHolder className={classes.Pic} filler={userSelf?userSelf['picture']:filler} />
+              <ImageHolder
+                className={classes.Pic}
+                filler={
+                  userSelf && userSelf["picture"] ? userSelf["picture"] : filler
+                }
+              />
               <div className={classes.Details}>
                 <div className={classes.filler} />
                 <div className={classes.Name}>{props.userData.Name}</div>
@@ -89,7 +103,7 @@ const ProfilePage = (props) => {
               </Card>
               <Card shadow className={classes.Note}>
                 <h2>Total Grade</h2>
-                <h1>50{/*get from database*/}</h1>
+                <h1>{grade}{/*get from database*/}</h1>
               </Card>
             </div>
           </div>
@@ -103,7 +117,7 @@ const ProfilePage = (props) => {
           <PostsArea
             Title="Your Posts"
             LoadingPosts={getRecentUserPosts}
-            setPost={(ele, ID)=>setFullUserPost(ele, ID, Name)}
+            setPost={(ele, ID) => setFullUserPost(ele, ID, Name)}
           />
         </div>
       </Card>

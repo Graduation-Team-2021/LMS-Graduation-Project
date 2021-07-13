@@ -149,7 +149,7 @@ class ResetPass extends Component {
             <h1 className={classes.MainTitle}>Reset Password</h1>
             <div className={classes.Field}>{ChangePasswordField}</div>
             <div className={classes.ButtonArea}>
-              <Button value="Reset Password" onClick={this.onChangePassword} />
+              <Button onClick={this.onChangePassword}>Reset Password</Button>
             </div>
           </div>
           <div className={classes.Blue}>

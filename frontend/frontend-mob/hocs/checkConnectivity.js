@@ -19,9 +19,8 @@ const checkConnectivity = (WrappedComponnent) => {
           setVisiable(true);
         }
         if (!newState.isConnected) {
-          showDialog()
-        }
-        else{
+          showDialog();
+        } else {
           hideDialog();
         }
       });
@@ -66,8 +65,8 @@ const checkConnectivity = (WrappedComponnent) => {
             </Dialog.Actions>
           </Dialog>
         </Portal>
-        <WrappedComponnent {...props} />
-      </View>
+          <WrappedComponnent {...props} />
+        </View>
     );
   };
   ModifiedComponenect.navigationOptions = WrappedComponnent.navigationOptions;

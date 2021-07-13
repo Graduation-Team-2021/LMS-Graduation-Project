@@ -8,19 +8,23 @@ Base = declarative_base()
 class Exams(db.Model, Base):
     __tablename__ = 'exams'
     exam_id = db.Column(db.Integer, primary_key=True)
-    actual_mark = db.Column(db.Float)
-    event_id = db.Column(db.Integer, ForeignKey('events.event_id', ondelete='CASCADE', onupdate="CASCADE"),
-                         nullable=False, unique=True)
+    course_id = db.Column(db.String(7), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
+                         nullable=False)
+    exam_duration=db.Column(db.String(7))
+    exam_marks = db.Column(db.Integer)
 
     def serialize(self):
         return {
-            "actual_mark": self.actual_mark,
-            "event_id": self.event_id
+            "exam_id":self.exam_id,
+            "course_id": self.course_id,
+            "exam_duration":self.exam_duration,
+            'exam_marks':self.exam_marks
         }
 
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self.exam_id
 
     def update(self):
         db.session.merge(self)

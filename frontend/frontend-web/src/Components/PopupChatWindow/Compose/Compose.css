@@ -1,0 +1,34 @@
+.compose {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    background: white;
+    border-top: 1px solid #eeeef1;
+    flex-wrap: wrap;
+  }
+  
+  
+  .compose-input {
+    flex: 1;
+    border: none;
+    font-size: 14px;
+    height: 40px;
+    width: 55vw;
+    background: none;
+    border: 1px solid #bbb;
+    border-radius: 30px;
+    outline: none;
+  }
+  
+  .compose-input::placeholder {
+    opacity: 0.3;
+  }
+  
+  .compose .toolbar-button {
+    color: #bbbbbf;
+    margin-left: 15px;
+  }
+  
+  .compose .toolbar-button:hover {
+    color: #99999c;
+  }

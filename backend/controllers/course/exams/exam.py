@@ -25,9 +25,31 @@ student_answers_controller = student_answers_controller()
 class exams_controller():
 
     def post_exam(self, exam):
+        temp={
+            "course_id": exam["course_id"],
+            "exam_duration":exam["exam_duration"],
+            'exam_marks':exam["exam_marks"]
+        }
+        questions = exam['questions']
         try:
-            new_exam = Exams(**exam)
+            new_exam = Exams(**temp)
             new_exam = Exams.insert(new_exam)
+            for q in questions:
+                t2={
+                    "question":q['question'],
+                    "mark":q['mark'],
+                    "exam_id":new_exam,
+                }
+                qid = questions_controller.post_question(t2)
+                answers = q['answers']
+                for a in answers:
+                    t3={
+                        "answer": a['answer'],
+                        "right_answer": a['right_answer'],
+                        'question_id': qid
+                    }
+                    answers_controller.post_answer(t3)
+            
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
@@ -51,6 +73,22 @@ class exams_controller():
                 'status_code': 404
             })
         return exam.serialize()
+    
+    def get_exam_by_course_id(self, course_id):
+        try:
+            exam_list = Exams.query.filter_by(course_id=course_id).all()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        if exam_list is None:
+            raise ErrorHandler({
+                'description': 'Exams do not exist.',
+                'status_code': 404
+            })
+        return [d.serialize() for d in exam_list]
 
     def update_exam(self, exam_id, exam):
         try:

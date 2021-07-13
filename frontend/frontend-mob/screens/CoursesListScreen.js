@@ -109,13 +109,11 @@ const AllCoursesList = (props) => {
     return <CourseListItem Course={item} navigation={props.navigation} />;
   };
   return (
-    <View style={{ flex: 1 }}>
       <FlatList
         data={AllCourses}
         renderItem={renderItem}
         keyExtractor={(_, index) => `${index}`}
       />
-    </View>
   );
 };
 

@@ -114,7 +114,6 @@ export const getRecentUserPosts = async (Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -562,3 +561,30 @@ export const searchGroups = async (text) => {
   });
   return res.data;
 };
+
+export const AddQuiz = async (Data) => {
+  const res = await instance.post(
+    `/Courses/${Data.course_id}/exams`,
+    {data:Data},
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  console.log(res.data);
+  if (res.data['status_code']===200) {
+    return true
+  } else {
+    return false
+  }
+};
+
+export const getGradeSoFar=async (id)=>{
+  const res = await instance.get(`/student/${id}/finishedCourses`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data['courses'];
+}

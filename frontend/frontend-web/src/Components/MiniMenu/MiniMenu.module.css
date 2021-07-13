@@ -16,8 +16,7 @@
     display: flex;
     flex-flow: column;
     align-items: flex-end;
-    width: 50%;
-    z-index: 200;
+    z-index: 1500;
 }
 
 .Main {
@@ -55,7 +54,7 @@
 }
 
 .status {
-    z-index: 500;
+    z-index: 2000;
     background-color: rgb(0, 255, 0);
     border-radius: 100%;
     width: 20%;

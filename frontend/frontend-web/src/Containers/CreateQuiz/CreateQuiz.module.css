@@ -1,0 +1,67 @@
+.MainTitle {
+    font-size: 200%;
+    color: red;
+    flex: 1
+}
+
+.Duration {
+    display: flex;
+    justify-self: flex-end;
+    flex: 2;
+}
+
+.Answer {
+    padding: 1% 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.BArray {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.BArray .Button{
+    height: 40px;
+    width: 25%;
+}
+
+.Guidance{
+    height: 50%;
+    display: flex;
+    overflow: auto;
+    padding: 1% 2%;
+    margin: 1% 0;
+    border-radius: 50px;
+    border: 5px solid silver;
+    background-color: gray;
+}
+
+.Guidance .Circle{
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0 1% 0 0;
+}
+
+.Answer .Button {
+    width: 20%;
+}
+
+.Holder {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    flex: 1
+}
+
+.Holder .Card {
+    flex: 1;
+}
