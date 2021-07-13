@@ -159,7 +159,10 @@ class Sign_Up(Resource):
             'password': generate_hash(args['password']),
             "picture": args['picture']
         }
-        controller_object.add_new_user(user,student_year,scientific_degree,role)
+        try:
+            controller_object.add_new_user(user,student_year,scientific_degree,role)
+        except ErrorHandler as e:
+            return e.error
 
         # return encode_auth_token(id, role)
         return jsonify({
@@ -190,7 +193,10 @@ class Sign_Up_Using_Excel(Resource):
             entry.pop('scientific_degree',None)
             entry.pop('role',None)
             user = entry
-            controller_object.add_new_user(user,student_year,scientific_degree,role)
+            try:
+                controller_object.add_new_user(user,student_year,scientific_degree,role)
+            except ErrorHandler as e:
+                return e.error
 
         return jsonify({
             'message': 'Users Added successfully',
@@ -242,9 +248,12 @@ class Reset_password(Resource):
 
     def post(self):
         args = self.reqparse.parse_args()
-        if controller_object.reset_password(args['user_id'], args['password']):
-            return jsonify({"message": 'an email has been sent to you.'})
-        return jsonify("wrong national id , please re-check your data.")
+        try:
+            if controller_object.reset_password(args['user_id'], args['password']):
+                return jsonify({"message": 'an email has been sent to you.'})
+            return jsonify("wrong national id , please re-check your data.")
+        except ErrorHandler as e:
+            return e.error
 
 
 # /users/<user_id>/profile
@@ -279,4 +288,7 @@ class updatePic(Resource):
         
     def post(self, user_id):
         args = self.reqparse.parse_args()
-        return controller_object.update_profile_pic(user_id, args['pic'])
+        try:
+            return controller_object.update_profile_pic(user_id, args['pic'])
+        except ErrorHandler as e:
+            return e.error
