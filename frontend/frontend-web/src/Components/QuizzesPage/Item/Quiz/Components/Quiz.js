@@ -10,6 +10,7 @@ const QuizWindow = styled.div`
     text-align: center;
     font-size: clamp(20px, 2.5vw, 24px);
     margin-top: 20px;
+    width: 100%
 `;
 
 const Options = styled.div`

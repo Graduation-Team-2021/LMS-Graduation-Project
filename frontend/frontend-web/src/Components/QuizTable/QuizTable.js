@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import cls from "./DelivTable.module.css";
 import Summary from "./DelivSummary/Summary";
 import { getQuizzes } from "../../Interface/Interface";
+import Waiting from '../../Components/Waiting/Waiting'
 
 const columns = [
   { field: "name", headerName: "Name", width: 340 },
@@ -12,7 +13,7 @@ const columns = [
   { field: "mark", headerName: "Mark", width: 130 },
 ];
 
-const cRows = [
+/* const cRows = [
   {
     name: "Creating FSD",
     date: "Now",
@@ -37,10 +38,12 @@ const cRows = [
     id: 8,
     date: "Now",
   },
-];
+]; */
 
 export default function DeliverableList(props) {
-  const [rows, setRows] = useState(cRows);
+  const [rows, setRows] = useState([]);
+
+  const [Loading, setLoading] = useState(true);
 
   useEffect(() => {
     getQuizzes(props.id).then((res) => {
@@ -49,14 +52,16 @@ export default function DeliverableList(props) {
         temp.push({
           id: value["event_id"],
           name: value["event_name"],
-          leeway: value["event_duration"]+" Hours",
-          date: value['event_date'], 
-          status: "Completed"
+          leeway: value["event_duration"] + " Hours",
+          date: value["event_date"],
+          status: "Completed",
+          course: props.name
         })
       );
-      setRows(temp)
+      setRows(temp);
+      setLoading(false);
     });
-  }, [props.id]);
+  }, [props.id, props.name]);
 
   let newArrayOfObjects = Object.values(
     rows.reduce((mapping, item) => {
@@ -75,13 +80,13 @@ export default function DeliverableList(props) {
       newArrayOfObjects.findIndex((Ar) => {
         return Ar.status === "Completed";
       })
-    ]?.count||0;
+    ]?.count || 0;
   let notN =
     newArrayOfObjects[
       newArrayOfObjects.findIndex((Ar) => {
         return Ar.status === "Not Started";
       })
-    ]?.count||0;
+    ]?.count || 0;
 
   /////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////
@@ -89,16 +94,18 @@ export default function DeliverableList(props) {
   return (
     <div className={cls.content}>
       <div className={cls.title}>{props.name} Quizzes</div>
-      <Summary total={rows.length} complete={completedN} notS={notN} />
-      <div className={cls.title}>Quizzes List</div>
-      <div className={cls.list}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={6}
-          onRowClick={(rowData) => props.onRowHand(rowData)}
-        />
-      </div>
+      <Waiting Loading={Loading}>
+        <Summary total={rows.length} complete={completedN} notS={notN} />
+        <div className={cls.title}>Quizzes List</div>
+        <div className={cls.list}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={6}
+            onRowClick={(rowData) => props.onRowHand(rowData)}
+          />
+        </div>
+      </Waiting>
     </div>
   );
 }
