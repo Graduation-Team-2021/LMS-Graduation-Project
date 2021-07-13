@@ -189,12 +189,7 @@ class CourseDesc extends Component {
         </div>
         {this.props.Role === "professor" ? (
           <React.Fragment>
-            <span
-              style={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
+            <span className={classes.addevint} >
               <AddEvent>
                 <div
                   style={{
@@ -218,14 +213,8 @@ class CourseDesc extends Component {
                 padding: "10% 0",
               }}
             >
-              <Card
+              <Card className={classes.koko}
                 shadow
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  padding: "5%",
-                }}
               >
                 <label
                   style={{

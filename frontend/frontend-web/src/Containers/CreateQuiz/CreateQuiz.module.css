@@ -65,3 +65,45 @@
 .Holder .Card {
     flex: 1;
 }
+
+.AddQuesteons{
+    display: flex;
+    align-items: center;
+    padding: 0 2%;
+    border-bottom: 10px solid purple;
+    border-radius: 50px;
+}
+@media  (max-width : 1253px) {
+    .Duration {
+        flex-direction: column;
+        font-size: 14px;
+    }
+    .BArray {
+        flex-direction: column;
+        align-items: center;
+        /*padding: 20%;*/
+    }
+    .BArray .Button {
+        width: 100%;
+        padding: 40px;
+        margin: 10px;
+    }
+    .Answer {
+        flex-direction: column;
+    }
+    .Answer .Button {
+        width: 100%;
+        margin: 5px;
+    }
+    .AddQuesteons {
+        flex-direction: column;
+        font-size: 14px;
+        
+    }
+}
+
+@media  (max-width : 392px) {
+    .Duration {
+        font-size: 14px;
+    }
+}

@@ -121,7 +121,13 @@ const CoursePage = (props) => {
               </div>
             </div>
             <div className={classes.small}>
-              <CourseDescription desc={Desc} CourseID={courseID} />
+            <CourseDescription
+              Role={props.userData.Role}
+              desc={Desc}
+              CourseID={courseID}
+              Title={Title}
+              Course={props.location.state.Data}
+            />
             </div>
 
             {isJoined === "true" ? <NewPostCard Focus={Focus} /> : null}

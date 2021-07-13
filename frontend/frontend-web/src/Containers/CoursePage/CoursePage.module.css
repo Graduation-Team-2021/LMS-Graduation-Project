@@ -65,8 +65,7 @@
     }
 
     .Center .Course .small {
-        display: flex;
-        flex-direction: row;
+        display: block;
     }
 
     .Center .Course {
