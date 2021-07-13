@@ -1,6 +1,6 @@
 import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
-export const azure = "http://192.168.1.68:5000";
+export const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000"; //NEVER CHANGE THIS CONSTANT
 
 const instance = axios.create({
   baseURL: azure,
@@ -27,6 +27,7 @@ export const SignUp = async (Data) => {
 };
 
 export const Login = async (Data) => {
+  console.log(instance.defaults.baseURL);
   const res = await instance.post("/login", Data, {
     headers: {
       "Content-Type": "application/json",
@@ -488,4 +489,29 @@ export const AddNewDeliv = async (Data) => {
     console.log(Data)
   /* console.log(res);
   return res.data["names"]; */
+};
+
+export const searchUsers = async (text) => {
+  const res = await instance.get(`/users/search/${text}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data;
+};
+export const searchCourses = async (text) => {
+  const res = await instance.get(`/courses/search/${text}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data;
+};
+export const searchGroups = async (text) => {
+  const res = await instance.get(`/groups/search/${text}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data;
 };

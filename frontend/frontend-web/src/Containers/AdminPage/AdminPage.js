@@ -98,16 +98,12 @@ const AdminPage = (props) => {
           <div className={classes.Buttons}>
             <Button
               className={classes.Button}
-              value="Add User"
-              type="button"
               onClick={Transition.bind(this, "/SignUp")}
-            />
+            >Add User</Button>
             <Button
               className={classes.Button}
-              value="Add Course"
-              type="button"
               onClick={Transition.bind(this, "/AddCourse")}
-            />
+            >Add Course</Button>
           </div>
         </div>
       </Card>

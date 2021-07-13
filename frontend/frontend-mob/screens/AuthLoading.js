@@ -31,22 +31,7 @@ const AuthLoadingScreen = (props) => {
         props.navigation.navigate("Login");
       }
     });
-    db.transaction((tx) => {
-      tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS answers(answer_id INTEGER PRIMARY KEY,answer TEXT NOT NULL, question_id INTEGER NOT NULL, FOREIGN KEY(question_id) REFERENCES questions(question_id) ON DELETE CASCADE ON UPDATE CASCADE);",
-        [],
-        (_, res) => {
-          console.log("[creating answers table is done with result]", res);
-        },(_,err)=>{console.log('[creating answers table failed with error',err)}
-      );
-      tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS exams(exam_id INTEGER PRIMARY KEY,answer TEXT NOT NULL, question_id INTEGER NOT NULL, FOREIGN KEY(question_id) REFERENCES questions(question_id) ON DELETE CASCADE ON UPDATE CASCADE);",
-        [],
-        (_, res) => {
-          console.log("[creating answers table is done with result]", res);
-        },(_,err)=>{console.log('[creating answers table failed with error',err)}
-      );
-    });
+    
   };
   useEffect(() => bootStrapAsync(), []);
   return (
