@@ -35,17 +35,15 @@ const Quiz = (props) => {
         axios.get('https://opentdb.com/api.php?amount=5&category=18&difficulty=easy&type=multiple')
             .then(res => {
                 setQuiz(res.data.results.map(item => (
-
                     {
                         question: item.question,
                         options: shuffle([...item.incorrect_answers, item.correct_answer]),
-                        answer: item.correct_answer
+                        answer: [item.correct_answer, item.incorrect_answers[0]]
                     }
 
                 )));
             })
             .catch(err => console.error(err))
-
     }, []);
 
     useEffect(() => {
@@ -55,28 +53,45 @@ const Quiz = (props) => {
             //also, we need to send the answers to the database
         }
     }, [props.finished])
-
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
-
     const [quiz, setQuiz] = useState([]);
     const [number, setNumber] = useState(0);
     const [userAnswers, setAnswers] = useState({});
     let element = document.createElement('div');
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
+
     const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
 
     const pickAnswer = (e) => {
         let userAnswer = e.target.outerText;
-        let temp = userAnswers;
-        temp[number] = userAnswer;
-        setAnswers(temp);
-        setNumber(number + 1);
+        let temp = { ...userAnswers };
+        if (quiz[number].answer.length === 1) {
+            let t2 = [userAnswer];
+            temp[number] = t2;
+            setAnswers(temp);
+            setNumber(number + 1);
+        }
+        else {
+            let t2;
+            if (temp[number] === undefined) {
+                t2 = [userAnswer]
+            }
+            else {
+                t2 = [...temp[number], userAnswer]
+            }
+            temp[number] = t2;
+            setAnswers(temp);
+        }
     }
 
     const changeQuestion = (num) => {
         setNumber(num);
+    }
+
+    const Next = () => {
+        setNumber(number + 1);
     }
 
     const Finish = () => {
@@ -84,8 +99,16 @@ const Quiz = (props) => {
         let pts = 0;
         let temp = '';
         quiz.forEach((x, i) => {
-            temp = decodeHTMLEntities(x.answer);
-            if (temp === userAnswers[i]) { pts++; }
+            if (x.answer.length === 1) {
+                temp = decodeHTMLEntities(x.answer.toString());
+                if (temp === userAnswers[i][0]) { pts++; }
+            }
+            else {
+                console.log(x.answer, userAnswers[i])
+                userAnswers[i].forEach((y) => {
+                    if (x.answer.includes(y)) { pts++; }
+                })
+            }
         })
         props.setScore(pts)
         props.setFinished({ finished: true })
@@ -102,7 +125,6 @@ const Quiz = (props) => {
         }
         return str;
     }
-
     ///////////////////////////////////////////////////////
     const Buttons = quiz.map((value, index) => {
         return (
@@ -116,6 +138,11 @@ const Quiz = (props) => {
         );
     });
     //////////////////////////////////////////////////////
+    let totalScore = 0;
+    quiz.forEach((x) => {
+        totalScore += x.answer.length;
+    })
+    //////////////////////////////////////////////////////
 
     return (
         <QuizWindow>
@@ -123,13 +150,17 @@ const Quiz = (props) => {
                 <div>
                     <Question dangerouslySetInnerHTML={{ __html: quiz[number].question }}></Question>
                     <Options>
+                        <Question>{quiz[number].answer.length === 1 ? null : `Choose ${quiz[number].answer.length} answers`}</Question>
                         {
                             quiz[number].options.map((item, index) => (
                                 <button key={index}
                                     className={classes.Question}
                                     dangerouslySetInnerHTML={{ __html: item }}
                                     onClick={pickAnswer}
-                                    style={{ backgroundColor: decodeHTMLEntities(item) === userAnswers[number] ? '#616A94' : '#161A31' }} />
+                                    style={{
+                                        backgroundColor: (userAnswers[number] != undefined) ?
+                                            userAnswers[number].includes(decodeHTMLEntities(item)) ? '#616A94' : '#161A31' : '#161A31'
+                                    }} />
                             ))}
                     </Options>
                 </div>
@@ -137,11 +168,15 @@ const Quiz = (props) => {
             {number < quiz.length + 1 &&
                 <div>
                     <div className={classes.Guidance}>{Buttons}</div>
-                    <Button onClick={Finish} css={btnCSS}>Submit</Button>
+                    {
+                        number < quiz.length ?
+                            <Button onClick={Next} css={btnCSS}>Next</Button> :
+                            <Button onClick={Finish} css={btnCSS}>Submit</Button>
+                    }
                 </div>
             }
             {
-                number === quiz.length + 1 && <GameOver pts={props.score} user={userAnswers} data={quiz} />
+                number === quiz.length + 1 && <GameOver pts={props.score} user={userAnswers} data={quiz} totalScore={totalScore} />
             }
         </QuizWindow>
     )
