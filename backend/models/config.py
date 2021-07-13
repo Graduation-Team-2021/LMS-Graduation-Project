@@ -22,6 +22,7 @@ def app_setup(app):
     app.config['ALLOWED_EXTENSIONS'] = ['jpg', 'jpeg', 'png']
     app.config['DEBUG'] = True
     app.config['CORS_HEADERS'] = 'Content-Type'
+    "Hiiiii"
 
     #This allows front end to link with back end
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
