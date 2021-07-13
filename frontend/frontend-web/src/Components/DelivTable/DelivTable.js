@@ -8,21 +8,7 @@ import { getDeliv } from "../../Interface/Interface";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
 
-const columns = [
-  { field: "name", headerName: "Name", width: 200 },
-  { field: "status", headerName: "Status", width: 180 },
-  { field: "deadline", headerName: "Deadline", width: 200 },
-  { field: "course", headerName: "Course", width: 250 },
-  { field: "coursecode", headerName: "Coursecode", width: 130 },
-  { field: "mark", headerName: "Mark", width: 130 },
-];
 
-const perCourseColumn = [
-  { field: "name", headerName: "Name", width: 200 },
-  { field: "status", headerName: "Status", width: 180 },
-  { field: "deadline", headerName: "Deadline", width: 200 },
-  { field: "mark", headerName: "Mark", width: 130 },
-];
 
 const cRows = [
   {
@@ -97,6 +83,28 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(function DeliverableList(props) {
+
+  const columns = [
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "status", headerName: "Status", width: 180 },
+    { field: "deadline", headerName: "Deadline", width: 200 },
+    { field: "course", headerName: "Course", width: 250 },
+    { field: "coursecode", headerName: "Coursecode", width: 130 },
+    { field: "mark", headerName: "Mark", width: 130 },
+  ];
+  
+  const perCourseColumn = [
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "status", headerName: "Status", width: 180 },
+    { field: "deadline", headerName: "Deadline", width: 200 },
+    { field: "mark", headerName: "Mark", width: 130 },
+  ];
+
+  if (props.userData.Role!=='student') {
+    columns.splice(1,1)
+    perCourseColumn.splice(1,1)
+  }
+
   const [Loading, setLoading] = useState(true);
 
   const [rows, setRows] = useState([]);
