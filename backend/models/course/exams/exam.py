@@ -10,7 +10,7 @@ class Exams(db.Model, Base):
     exam_id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.String(7), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                          nullable=False)
-    exam_duration=db.Column(db.String(7))
+    exam_duration=db.Column(db.String(50))
     exam_marks = db.Column(db.Integer)
 
     def serialize(self):

@@ -4,6 +4,9 @@ import axios from "axios";
 import Button from "./Button";
 import GameOver from "./GameOver";
 import classes from "./Quiz.module.css"
+import { getQuizByID } from "../../../../../Interface/Interface";
+import { mapDispatchToProps, mapStateToProps } from "../../../../../store/reduxMaps";
+import { connect } from "react-redux";
 
 const QuizWindow = styled.div`
     align-content: center;
@@ -32,6 +35,7 @@ const btnCSS = `
 const Quiz = (props) => {
     useEffect(() => {
         //TODO: Load EXAM Data HERE
+        getQuizByID(props.id, props.userData.Token)
         axios.get('https://opentdb.com/api.php?amount=5&category=18&difficulty=easy&type=multiple')
             .then(res => {
                 setQuiz(res.data.results.map(item => (
@@ -148,4 +152,4 @@ const Quiz = (props) => {
     )
 }
 
-export default Quiz;
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz);

@@ -9,8 +9,7 @@ function QuizContainer(props) {
 
   return (
     <div className={cls.Quiz}>
-    {console.log(props)}
-      { start ? <Quiz finished={props.fin} setFinished={props.setFin} setScore={props.setSec} score={props.sec}/> : <Start props={setStart} />} 
+      { start ? <Quiz id={props.id} finished={props.fin} setFinished={props.setFin} setScore={props.setSec} score={props.sec}/> : <Start props={setStart} />} 
     </div>
   );
 }

@@ -96,5 +96,4 @@ class courses_controller():
 
     def search_for_a_course(self,name_string):
         data=Course.query.filter(Course.course_name.ilike(f'%{name_string}%')).all()
-        print([d.serialize() for d in data])
         return [d.serialize() for d in data]

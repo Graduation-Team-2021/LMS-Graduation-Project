@@ -427,19 +427,14 @@ export const getQuizzes = async (id, Token) => {
 };
 
 export const getQuizByID = async (id, Token) => {
-  var res;
-  //TODO: Integrate the Quizzes backend
-  if (id) {
-    console.log(`Getting Quizzes of Course ${id}`);
-  } else {
-    res = await instance.get(`/Quizzes`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + Token,
-      },
-    });
-    console.log(`Getting Quizzes of All Courses`);
-  }
+  const res = await instance.get(`/exams/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(`Getting Quizzes of All Courses`);
+
   console.log(res);
   /*return res.data["names"]; */
 };
@@ -495,13 +490,11 @@ export const getOneVideo = async (id) => {
 
 export const AddNewDeliv = async (Data) => {
   //TODO: Integrate the Deliverables backend
-  const res = await instance.post(`/deliverables`, 
-  Data,
-  {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const res = await instance.post(`/deliverables`, Data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   console.log(res.data);
   return res.data;
 };
@@ -567,7 +560,7 @@ export const searchGroups = async (text) => {
 export const AddQuiz = async (Data) => {
   const res = await instance.post(
     `/Courses/${Data.course_id}/exams`,
-    {data:Data},
+    { data: Data },
     {
       headers: {
         "Content-Type": "application/json",
@@ -575,18 +568,18 @@ export const AddQuiz = async (Data) => {
     }
   );
   console.log(res.data);
-  if (res.data['status_code']===200) {
-    return true
+  if (res.data["status_code"] === 200) {
+    return true;
   } else {
-    return false
+    return false;
   }
 };
 
-export const getGradeSoFar=async (id)=>{
+export const getGradeSoFar = async (id) => {
   const res = await instance.get(`/student/${id}/finishedCourses`, {
     headers: {
       "Content-Type": "application/json",
     },
   });
-  return res.data['courses'];
-}
+  return res.data["courses"];
+};

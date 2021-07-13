@@ -88,6 +88,7 @@ function Page(props) {
       </div>
       {clicked.clicked ? (
         <Quiz
+          id ={ele.id}
           fin={finished.finished}
           setFin={setFinished}
           setSec={setScore}
