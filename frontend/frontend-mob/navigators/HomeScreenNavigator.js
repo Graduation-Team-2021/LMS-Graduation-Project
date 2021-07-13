@@ -40,8 +40,8 @@ const HomeStack = createStackNavigator({
       };
     },
   },
-  Video: { screen: checkConnectivity(VideoScreen) },
-  Pdf: { screen: checkConnectivity(PdfReader) },
+  Video: { screen: VideoScreen },
+  Pdf: { screen: PdfReader },
   CourseList: { screen: checkConnectivity(CourseListScreen) },
   DeliverableList: { screen: checkConnectivity(DeliverableList) },
   CourseDescription: {
