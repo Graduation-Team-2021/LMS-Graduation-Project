@@ -32,7 +32,7 @@ export default connect(
   if (props.currentMessage.currentMessage.ID) {
     listCls = [cls.list];
   } else {
-    listCls = [cls.list, cls.hideList];
+    listCls = [cls.list, cls.NONE];
   }
   if (dismissed.dismissed && Animation) {
     listCls = [cls.list, cls.minimize];

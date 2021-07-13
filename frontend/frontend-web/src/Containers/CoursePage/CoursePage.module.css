@@ -66,6 +66,7 @@
 
     .Center .Course .small {
         display: block;
+        width: 100%;
     }
 
     .Center .Course {

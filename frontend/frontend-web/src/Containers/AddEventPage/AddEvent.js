@@ -49,11 +49,13 @@ class AddEvent extends Component {
   render() {
     return (
       <Fragment>
-        <span className={classes.Container}>
-          <Button onClick={this.openModal} className={classes.Holder}>
-            <Minibar icon={faCalendarDay} color="green" info="Add Event" />
-          </Button>
-        </span>
+        <Button
+          className={this.props.className}
+          onClick={this.openModal}
+        >
+          <Minibar icon={faCalendarDay} color="green" info="Add Event" />
+        </Button>
+
         <Modal
           open={this.state.openedModal}
           onClose={this.closeModal}

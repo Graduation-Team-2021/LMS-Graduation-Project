@@ -9,7 +9,7 @@ import {
   faFilePdf,
   faQuestionCircle,
   faClipboardList,
-  faPercent
+  faPercent,
 } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
 import AddEvent from "../AddEventPage/AddEvent";
@@ -178,19 +178,14 @@ class CourseDesc extends Component {
                   });
                 }}
               >
-                <Minibar
-                  icon={faPercent}
-                  color="orange"
-                  info="Edit Grades"
-                />
+                <Minibar icon={faPercent} color="orange" info="Edit Grades" />
               </Button>
             </React.Fragment>
           ) : null}
-        </div>
-        {this.props.Role === "professor" ? (
-          <React.Fragment>
-            <span className={classes.addevint} >
-              <AddEvent>
+
+          {this.props.Role === "professor" ? (
+            <React.Fragment>
+              <AddEvent className={classes.Holder}>
                 <div
                   style={{
                     padding: "0 0 10% 0",
@@ -206,40 +201,40 @@ class CourseDesc extends Component {
                   </Card>
                 </div>
               </AddEvent>
-            </span>
-            <div
-              className={classes.Container2}
-              style={{
-                padding: "10% 0",
-              }}
-            >
-              <Card className={classes.koko}
-                shadow
+            </React.Fragment>
+          ) : null}
+        </div>
+        {this.props.Role === "professor" ? (
+          <div
+            className={classes.Container2}
+            style={{
+              padding: "10% 0",
+            }}
+          >
+            <Card className={classes.koko} shadow>
+              <label
+                style={{
+                  alignSelf: "flex-start",
+                  padding: "0 0 10% 0",
+                  fontSize: "200%",
+                  fontWeight: "bold",
+                }}
               >
-                <label
-                  style={{
-                    alignSelf: "flex-start",
-                    padding: "0 0 10% 0",
-                    fontSize: "200%",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Upload Material:
-                </label>
-                <input
-                  type="file"
-                  id="myfile"
-                  name="myfile"
-                  multiple
-                  onChange={this.handleFIleUpload}
-                />
-                <br></br>
-                <Button className={classes.Button} onClick={this.Submit}>
-                  Submit
-                </Button>
-              </Card>
-            </div>
-          </React.Fragment>
+                Upload Material:
+              </label>
+              <input
+                type="file"
+                id="myfile"
+                name="myfile"
+                multiple
+                onChange={this.handleFIleUpload}
+              />
+              <br/>
+              <Button className={classes.Button} onClick={this.Submit}>
+                Submit
+              </Button>
+            </Card>
+          </div>
         ) : null}
       </div>
     );

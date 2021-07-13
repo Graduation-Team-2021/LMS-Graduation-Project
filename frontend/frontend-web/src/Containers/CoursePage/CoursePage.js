@@ -115,19 +115,19 @@ const CoursePage = (props) => {
               >
                 {isJoined === "true" ? null : (
                   <Button onClick={props.Joining.bind(this, courseID)}>
-                    Enroll
+                    Enroll  
                   </Button>
                 )}
               </div>
             </div>
             <div className={classes.small}>
-            <CourseDescription
-              Role={props.userData.Role}
-              desc={Desc}
-              CourseID={courseID}
-              Title={Title}
-              Course={props.location.state.Data}
-            />
+              <CourseDescription
+                Role={props.userData.Role}
+                desc={Desc}
+                CourseID={courseID}
+                Title={Title}
+                Course={props.location.state.Data}
+              />
             </div>
 
             {isJoined === "true" ? <NewPostCard Focus={Focus} /> : null}
