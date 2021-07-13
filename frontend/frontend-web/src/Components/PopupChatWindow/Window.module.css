@@ -1,82 +1,86 @@
 .list {
-    position: absolute;
-    background-color: white;
-    border-radius: 5%;
-    border: 2px solid black;
-    bottom: 0;
-    right: 110px;
-    margin: 10px;
-    padding: 10px;
-    display: flex;
-    flex-flow: column;
-    width: 30%;
-    height: 500px;
-    transition: all .3s cubic-bezier(0, .52, 0, 1);
-    z-index: 100;
-  }
+  background-color: white;
+  border-radius: 5%;
+  border: 2px solid black;
+  bottom: 0;
+  right: 110px;
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  flex-flow: column;
+  width: 30%;
+  height: 500px;
+  transform: translateX(0);
+  transition: all .3s cubic-bezier(0, .52, 0, 1);
+  z-index: 100;
+}
 
-  .ButtCls {
-    position: absolute;
-    border: 2px solid black;
-    bottom: 2%;
-    right: 30px;
-    margin: 10px;
-    padding: 10px;
-    background: #910ba3;
-    color: white;
-    font-size: 17px;
-    border: 1px hidden;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-    z-index: 50;
-  }
+.ButtCls {
+  height: 5%;
+  border: 2px solid black;
+  bottom: 2%;
+  right: 30px;
+  margin: 10px;
+  padding: 10px;
+  background: #910ba3;
+  color: white;
+  font-size: 17px;
+  border: 1px hidden;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  z-index: 50;
+  outline: none;
+}
 
-  .ButtCls:hover {
-    background: #d312ec;
-  }
-  
-  .container {
-    margin: 10px;
-    padding: 10px;
-    height: 100%;
-    overflow-y: auto;
-  }
-  
-  .title {
-    color: black;
-    border-radius: 10px;
-    background-color: rgb(187, 29, 192);
-    font-size: 18pt;
-    font-weight: bold;
-    margin: 5px;
-    text-transform: capitalize;
-    text-indent: 3%;
-  }
-  
-  .search {
-    float: right;
-    width: fit-content;
-    margin: 10px;
-    padding: 10px;
-    background: #dddddd;
-    color: white;
-    font-size: 17px;
-    border: 1px hidden;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .search:hover {
-    background: #a8a8a8;
-  }
-  
-  .hideList {
-    transform: translateX(-200%);
-    transition: all .3s cubic-bezier(0, .52, 0, 1);
-  }
-  .minimize {
-    transform: translateX(-200%);
-    transition: all .3s cubic-bezier(0, .52, 0, 1);
-  }
+.ButtCls:hover {
+  background: #d312ec;
+}
+
+.container {
+  margin: 10px;
+  padding: 10px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.title {
+  color: black;
+  border-radius: 10px;
+  background-color: rgb(187, 29, 192);
+  font-size: 18pt;
+  font-weight: bold;
+  margin: 5px;
+  text-transform: capitalize;
+  text-indent: 3%;
+}
+
+.search {
+  float: right;
+  width: fit-content;
+  margin: 10px;
+  padding: 10px;
+  background: #dddddd;
+  color: white;
+  font-size: 17px;
+  border: 1px hidden;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.search:hover {
+  background: #a8a8a8;
+}
+
+.hideList {
+  display: none;
+  transform: translateX(-200%);
+  transition: all .3s cubic-bezier(0, .52, 0, 1);
+}
+
+.minimize {
+  display: none;
+  transform: translateX(-200%);
+  transition: all .3s cubic-bezier(0, .52, 0, 1);
+}

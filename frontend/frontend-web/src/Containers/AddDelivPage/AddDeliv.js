@@ -13,6 +13,8 @@ import { setNewDeliv } from "../../Models/Deliv";
 class AddDelivPage extends Component {
   Fields = {
     "Deliverable Name": "text",
+    "Marks": 'number',
+    "DeadLine": 'datetime-local',
     "Max Number of Students": "number",
     Description: "textArea",
     //'List of Doctors'
@@ -102,7 +104,6 @@ class AddDelivPage extends Component {
       } else {
         alert("Adding Deliv failed");
       }
-      this.initAddDeliv();
     }
   };
 
@@ -158,18 +159,20 @@ class AddDelivPage extends Component {
       </React.Fragment>
     );
     return (
-      <Card row shadow>
-        <div className={classes.Login}>
-          <h1 className={classes.MainTitle}>Add New Deliverable</h1>
-          <div className={classes.Field}>{AddDelivField}</div>
-          <div className={classes.ButtonArea}>
-            <Button onClick={this.onAddDeliv}>Submit</Button>
+      <span className={classes.Holder}>
+        <Card className={classes.Main} row shadow>
+          <div className={classes.Login}>
+            <h1 className={classes.MainTitle}>Add New Deliverable</h1>
+            <div className={classes.Field}>{AddDelivField}</div>
+            <div className={classes.ButtonArea}>
+              <Button onClick={this.onAddDeliv}>Submit</Button>
+            </div>
           </div>
-        </div>
-        <div className={classes.Blue}>
-          <ImageHolder filler={image} />
-        </div>
-      </Card>
+          <div className={classes.Blue}>
+            <ImageHolder filler={image} />
+          </div>
+        </Card>
+      </span>
     );
   }
 }

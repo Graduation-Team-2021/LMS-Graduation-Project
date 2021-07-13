@@ -1,12 +1,10 @@
-.Main {
-    background-color: gainsboro;
-    padding: 10vh 7vw;
-    min-height: 100vh;
+.Holder .Main {
+    flex: 1;
 }
 
 .Blue {
     padding: 2%;
-    flex: 5;
+    flex: 2;
 }
 
 .ButtonArea {

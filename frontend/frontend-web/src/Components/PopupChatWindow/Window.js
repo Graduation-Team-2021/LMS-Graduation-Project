@@ -5,36 +5,36 @@ import Message from "./Message/Message";
 import moment from "moment";
 import SearchBar from "../ConversationList/SearchBar/SearchBar";
 import Compose from "./Compose/Compose";
-import Waiting from '../Waiting/Waiting'
+import Waiting from "../Waiting/Waiting";
 import cls from "./Window.module.css";
 import { getAllMessages, sendMessage } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 // TODO: initialize the socket-io client here
 import msngrskt from "../../sockets/msngrskts";
 
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(function MessageList(props) {
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(function MessageList(props) {
   const MY_USER_ID = props.userData.ID;
   //////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////
   const [messages, setMessages] = useState([]);
   const [searchVis, setSearchVis] = useState({ showSearch: false });
-  const [newMes, setNewMes] = useState(null)
+  const [newMes, setNewMes] = useState(null);
   const [Query, setQuery] = useState("");
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const [messIn, setMess] = useState({ text: "" });
-  const [dismissed, setDismissed] = useState({ dismissed: false })
+  const [dismissed, setDismissed] = useState({ dismissed: false });
   ///////////////////////////////////////////////////////////////////////////////////////
-  let listCls = [cls.hideList];
+  let listCls = [cls.hideList]; //TODO: Fix the Animation
   if (props.currentMessage.currentMessage.ID) {
     listCls = [cls.list];
-  }
-  else {
-    listCls = [cls.hideList];
+  } else {
+    listCls = [cls.list, cls.hideList];
   }
   if (dismissed.dismissed) {
-    listCls = [cls.minimize];
+    listCls = [cls.list, cls.minimize];
   }
   ///////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
@@ -45,37 +45,48 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
 
   useEffect(() => {
     msngrskt.on("private message", (res) => setNewMes(res));
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if (newMes && props.currentMessage.currentMessage && newMes.from === props.currentMessage.currentMessage.ID) {
-      const Temp = [...messages, {
-        id: messages.length,
-        author: newMes.from,
-        message: newMes.content.text,
-        timestamp: new Date(newMes.content.sent_time).getTime()
-      }]
-      setMessages(Temp)
+    if (
+      newMes &&
+      props.currentMessage.currentMessage &&
+      newMes.from === props.currentMessage.currentMessage.ID
+    ) {
+      const Temp = [
+        ...messages,
+        {
+          id: messages.length,
+          author: newMes.from,
+          message: newMes.content.text,
+          timestamp: new Date(newMes.content.sent_time).getTime(),
+        },
+      ];
+      setMessages(Temp);
     }
-  }, [newMes, props.currentMessage.currentMessage])
+  }, [newMes, props.currentMessage.currentMessage]);
   //////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////
   //TODO: add another useEffect here to add the on recive message call back
   let searchbb = null;
   let searchResults = [];
   if (searchVis.showSearch) {
-    searchbb = <SearchBar searchQuery={Query} setSearchQuery={setQuery} fillerText="Search in current conversation..." />;
+    searchbb = (
+      <SearchBar
+        searchQuery={Query}
+        setSearchQuery={setQuery}
+        fillerText="Search in current conversation..."
+      />
+    );
     if (Query !== "") {
       messages.forEach((value, index) => {
         if (value.message.toLowerCase().includes(Query.toLowerCase())) {
-          searchResults.push(
-            {
-              id: value.id,
-              author: value.author,
-              message: value.message,
-              timestamp: value.timestamp,
-            }
-          );
+          searchResults.push({
+            id: value.id,
+            author: value.author,
+            message: value.message,
+            timestamp: value.timestamp,
+          });
         }
       });
     }
@@ -94,7 +105,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   //////////////////////////////////////////////////////////////////////////////////
   const Dismiss = () => {
     setDismissed({ dismissed: !dismissed.dismissed });
-  }
+  };
 
   const toggleSearch = () => {
     setSearchVis({ showSearch: !searchVis.showSearch });
@@ -113,7 +124,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
     let Time = new Date();
     sendMessage(props.userData.Token, props.currentMessage.currentMessage.ID, {
       text: messIn.text,
-      sent_time: `${Time.toISOString().slice(0, 10)} ${Time.toISOString().slice(11, 19)}`
+      sent_time: `${Time.toISOString().slice(0, 10)} ${Time.toISOString().slice(
+        11,
+        19
+      )}`,
     });
 
     var joined = messages.concat({
@@ -138,25 +152,25 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
 
   const getMessages = () => {
     if (props.currentMessage.currentMessage) {
-      getAllMessages(props.userData.Token, props.currentMessage.currentMessage.ID).then(res => {
-        const temp = []
-        res.forEach(
-          (ele) => {
-            let time = ele['sent_time']
-            let timestamp = new Date(time)
-            temp.push({
-              id: ele['message_id'],
-              author: ele['sender_id'],
-              message: ele['text'],
-              timestamp: timestamp
-            })
-          }
-        )
+      getAllMessages(
+        props.userData.Token,
+        props.currentMessage.currentMessage.ID
+      ).then((res) => {
+        const temp = [];
+        res.forEach((ele) => {
+          let time = ele["sent_time"];
+          let timestamp = new Date(time);
+          temp.push({
+            id: ele["message_id"],
+            author: ele["sender_id"],
+            message: ele["text"],
+            timestamp: timestamp,
+          });
+        });
         setMessages(temp);
         setLoading(false);
       });
     }
-
   };
 
   const renderMessages = (list) => {
@@ -210,7 +224,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
           endsSequence={endsSequence}
           showTimestamp={showTimestamp}
           data={current}
-          isLast={i === (messageCount - 1)}
+          isLast={i === messageCount - 1}
         />
       );
 
@@ -222,18 +236,24 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   };
 
   return (
-    <div>
+    <div
+      style={{
+        position: "absolute",
+        bottom: "10px",
+        right: "20px",
+        display: "flex",
+        flexFlow: "row-reverse",
+        alignItems: "flex-end",
+        width: "fit-content",
+        minWidth: '0',
+      }}
+    >
       <button className={cls.ButtCls} onClick={Dismiss}>
         <i>
-          <img
-            src="/messages.png"
-            width="40"
-            height="40"
-            alt="Chats"
-          />
+          <img src="/messages.png" width="40" height="40" alt="Chats" />
         </i>
       </button>
-      <div className={listCls.join(' ')}>
+      <div className={listCls.join(" ")}>
         <React.Fragment>
           <div className={cls.title}>
             {props.currentMessage.currentMessage.Name}
@@ -249,11 +269,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
             </button>
           </div>
           {searchbb}
-          {
-            !(searchVis.showSearch && Query !== "") ?
-              <Waiting Loading={loading}><div className={cls.container}>{renderMessages(messages)}</div></Waiting> :
-              <div className={cls.container}>{renderMessages(searchResults)}</div>
-          }
+          {!(searchVis.showSearch && Query !== "") ? (
+            <Waiting Loading={loading}>
+              <div className={cls.container}>{renderMessages(messages)}</div>
+            </Waiting>
+          ) : (
+            <div className={cls.container}>{renderMessages(searchResults)}</div>
+          )}
           <Compose
             value={messIn.text}
             onChange={handleInputChanged}
@@ -276,7 +298,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
                 <i>
                   <img src="/send.png" width="20" height="20" alt="send" />
                 </i>
-              </button>
+              </button>,
             ]}
           >
             <input
@@ -291,5 +313,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
       </div>
     </div>
   );
-}
-)
+});

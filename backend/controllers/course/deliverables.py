@@ -17,15 +17,18 @@ from datetime import datetime
 
 delivers_controller_object = delivers_controller()
 
+
 class deliverable_controller:
     def get_deliverable(self, deliverable_id):
-        deliverable = Deliverables.query.filter_by(deliverable_id=deliverable_id).first()
+        deliverable = Deliverables.query.filter_by(
+            deliverable_id=deliverable_id).first()
         if not deliverable:
             raise ErrorHandler({
                 'description': 'deliverable does not exist.',
                 'status_code': 404
             })
-        deliverable.deadline = json.dumps(deliverable.deadline, default=str).replace("\"", "")
+        deliverable.deadline = json.dumps(
+            deliverable.deadline, default=str).replace("\"", "")
         return deliverable.serialize()
 
     def post_deliverable(self, deliverable):
@@ -41,7 +44,8 @@ class deliverable_controller:
         return new_deliverable
 
     def delete_deliverable(self, deliverable_id):
-        deliverable_to_be_deleted = Deliverables.query.filter_by(deliverable_id=deliverable_id).first()
+        deliverable_to_be_deleted = Deliverables.query.filter_by(
+            deliverable_id=deliverable_id).first()
         try:
             Deliverables.delete(deliverable_to_be_deleted)
         except SQLAlchemyError as e:
@@ -53,7 +57,8 @@ class deliverable_controller:
         return True
 
     def update_deliverable(self, deliverable_id, deliverable):
-        old_deliverable = Deliverables.query.filter_by(deliverable_id=deliverable_id).first()
+        old_deliverable = Deliverables.query.filter_by(
+            deliverable_id=deliverable_id).first()
         if not old_deliverable:
             raise ErrorHandler({
                 'description': 'deliverable does not exist.',
@@ -78,15 +83,17 @@ class deliverable_controller:
                 Deliverables.deliverable_id, Deliverables.deliverable_name, Deliverables.course_deliverables,
                 Deliverables.deadline, Course.course_name, Deliverables.description, Deliverables.mark)
             for i in all_deliverables:
-                delivers_relation = Deliver.query.filter(Deliver.deliverable_id==i.deliverable_id).filter(Deliver.student_id==student_id).first()
+                delivers_relation = Deliver.query.filter(Deliver.deliverable_id == i.deliverable_id).filter(
+                    Deliver.student_id == student_id).first()
                 status = ""
-                if(datetime.now()>i.deadline):
+                if(datetime.now() > i.deadline):
                     status = "finished"
                 elif(delivers_relation is not None):
                     status = "delivered"
                 else:
                     status = "not delivered"
-                index = next((index for (index, d) in enumerate(deliverables_list) if d["course_id"] == i[2]), None)
+                index = next((index for (index, d) in enumerate(
+                    deliverables_list) if d["course_id"] == i[2]), None)
                 if index == None:
                     deliverables_list.append(
                         {"course_id": i[2], "course_name": i[4], "deliverables":
@@ -102,7 +109,7 @@ class deliverable_controller:
                                                                      "mark": i[6],
                                                                      "deadline": json.dumps(i[3], default=str).replace(
                                                                          "\"", ""),
-                                                                     "status":status})
+                                                                     "status": status})
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
@@ -111,12 +118,24 @@ class deliverable_controller:
             })
         return {"courses_deliverables": deliverables_list}
 
-    def get_all_course_deliverables(self,course_code):
+    def get_all_course_deliverables(self, course_code, student_id):
         try:
-            deliverable = Deliverables.query.filter_by(course_deliverables=course_code).all()
+            deliverable = Deliverables.query.filter_by(
+                course_deliverables=course_code).all()
             deliverables_formatted = []
             for i in deliverable:
-                deliverables_formatted.append(i.serialize())
+                delivers_relation = Deliver.query.filter(Deliver.deliverable_id == i.deliverable_id).filter(
+                     Deliver.student_id == student_id).first()
+                status = ""
+                if(datetime.now()>i.deadline):
+                    status = "finished"
+                elif(delivers_relation is not None):
+                    status = "delivered"
+                else:
+                    status = "not delivered"
+                temp = i.serialize()
+                temp['status'] = status
+                deliverables_formatted.append(temp)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({

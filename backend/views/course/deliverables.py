@@ -112,9 +112,10 @@ class Students_Deliverables(Resource):
 
 #/course/<course_code>deliverables
 class Course_Deliverables(Resource):
-    def get(self, course_code):
+    method_decorators = {'get': [requires_auth_identity("")]}
+    def get(self, user_id, role, course_code):
         try:
-            course_deliverables = controller_object.get_all_course_deliverables(course_code)
+            course_deliverables = controller_object.get_all_course_deliverables(course_code,user_id)
         except ErrorHandler as e:
             return e.error
         return jsonify({
