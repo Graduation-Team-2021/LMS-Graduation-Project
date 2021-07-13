@@ -2,6 +2,8 @@ import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabase("LMS.db");
 
+function CreateTable ()  {
+
 db.transaction((tx) => {
     tx.executeSql(
         "CREATE TABLE IF NOT EXIST course(course_code TEXT PRIMARY KEY NOT NULL, course_name TEXT , weekly_hours INTEGER , group_number INTEGER UNIQUE , max_students INTEGER , course_description TEXT , post_owner_id INTEGER ,FOREIGN KEY (post_owner_id) REFERENCES post_owner(owner_id) ON UPDATE CASCADE ON DELETE SET NULL );"
@@ -135,3 +137,4 @@ db.transaction((tx) => {
         "CREATE TABLE IF NOT EXIST user(user_id INTEGER PRIMARY KEY ,name TEXT NOT NULL , email TEXT NOT NULL , national_id TEXT NOT NULL UNIQUE , birthday TEXT NOT NULL , password TEXT ,  picture TEXT );"
     );
 });
+};
