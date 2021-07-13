@@ -29,7 +29,7 @@ class MarkEdit extends Component {
     // })
     // // console.log(this.state.marks);
     if (event.target.value > 50 || event.target.value < 0) {
-      console.log("enter a sutuble nim ");
+      console.log("Enter a suitable number ");
     } else {
       const temp = [...this.state.users]
       const user = temp[id]
@@ -88,7 +88,7 @@ class MarkEdit extends Component {
        <div>
       <button className="finish" onClick={this.sumbit}>
       {" "}
-      sumbut the marks
+      Submit
     </button>
     </div>
     </div>

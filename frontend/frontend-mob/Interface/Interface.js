@@ -357,12 +357,13 @@ export const getStudentsByCourse = async (id) => {
   return res.data["names"];
 };
 
-export const getAllCourseDeliverables = async (id) => {
+export const getAllCourseDeliverables = async (id,Token) => {
   if (id) {
     console.log(`Getting Deliverables of Course ${id}`);
     const res = await instance.get(`/courses/${id}/deliverables`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
       },
     });
     return res.data['deliverables']
@@ -371,6 +372,14 @@ export const getAllCourseDeliverables = async (id) => {
     console.log(`Getting Deliverables of All Courses`);
   }
 };
+
+export const deleteDeliverable = async(deliverable_id)=>{
+  const res = await instance.delete(`deliverables/${deliverable_id}`,{
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+}
 
 export const studentsSubmissions = async(user_id,deliverable_id) =>{
   const res = await instance.get(`/students/${user_id}/deliverables/${deliverable_id}`, {
@@ -422,6 +431,24 @@ export const getDeliversRelation = async(deliverable_id,Token) =>{
     return null;
   }
   return res.data["delivers_id"];
+}
+
+export const getAllStudentsDeliverables = async(Token)=>{
+  const res = await instance.get("/deliverables",{
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  })
+  return res.data['courses_deliverables']
+}
+
+export const deleteMaterial = async(material_id) =>{
+  const res = await instance.delete(`/materials/${material_id}`,{
+    headers: {
+      "Content-Type": "application/json"
+    },
+  })
 }
 
 export const getPDFs = async (course_code) => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView,View, StyleSheet, FlatList, Text,TouchableOpacity ,ActivityIndicator, TouchableNativeFeedback} from "react-native";
 import { Button,Divider  } from "react-native-elements";
-import { getAllPosts, uploadPost ,getPDFs,getVideos, getAllCourseDeliverables,uploadFile} from "../Interface/Interface";
+import { getAllPosts, uploadPost,deleteMaterial,deleteDeliverable ,getPDFs,getVideos, getAllCourseDeliverables,uploadFile} from "../Interface/Interface";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import { setLocationPost, setNewPost } from "../Models/Post";
@@ -49,22 +49,7 @@ const CourseScreen = (props) => {
   
 
   useEffect(()=>{
-    getAllCourseDeliverables(myCourse.CourseID).then(res => {
-        const temp = []
-        res.forEach(
-          (ele, index) => {
-            temp.push({
-              deliverable_name: ele['deliverable_name'],
-              mark: ele['mark'],
-              description: ele['description'],
-              deadline: ele['deadline'],
-              id: ele['deliverable_id']
-            })
-          }
-        )
-        setDeliverables(temp)
-        setDeliverablesLoaded(true)
-    });
+    updateDeliverables()
 },[])
   useEffect(()=>{
       retrievePdfs()
@@ -104,6 +89,51 @@ let retrieveVideos = () =>{
     setVideosLoaded(true)
 });
 }
+const deleteDeliverableHandler = (deliverable_id) =>{ 
+  deleteDeliverable(deliverable_id).then(res=>{
+    let new_deliverables = [...deliverables]
+    var index = new_deliverables.findIndex(function(element){
+      return element.deliverable_id === deliverable_id;
+    })
+  if (index !== -1){
+    new_deliverables.splice(index, 1);
+    setDeliverables(new_deliverables)}
+  showMessage({
+    message: "Deliverable deleted successfully.",
+    type: "success",
+    duration:"3000"
+  });
+  })
+  
+  
+}
+const deleteMaterialHandler = (material_id,material_type)=>{
+  deleteMaterial(material_id).then(res=>{
+    if(material_type=="pdf"){
+      let new_pdfs = [...pdfs]
+      var index = new_pdfs.findIndex(function(element){
+        return element.material_id === material_id;
+      })
+      if (index !== -1){
+      new_pdfs.splice(index, 1);
+      setPdfs(new_pdfs)}
+      }
+    else{
+      let new_videos = [...videos]
+      var index = new_videos.findIndex(function(element){
+        return element.material_id === material_id;
+      })
+      if (index !== -1){
+      new_videos.splice(index, 1);
+      setVideos(new_videos)}
+    }
+    showMessage({
+      message: "Material deleted successfully.",
+      type: "success",
+      duration:"3000"
+    });
+  })
+}
 let uploadFileHandler = () =>{
 
   uploadFile(props.userData.Token,file,myCourse.CourseID,setUploadPercentage).then((res)=>{
@@ -142,7 +172,7 @@ let uploadFileHandler = () =>{
     }
   }
   const updateDeliverables = () =>{
-    getAllCourseDeliverables(myCourse.CourseID).then(res => {
+    getAllCourseDeliverables(myCourse.CourseID,props.userData.Token).then(res => {
       const temp = []
       res.forEach(
         (ele, index) => {
@@ -151,7 +181,8 @@ let uploadFileHandler = () =>{
             mark: ele['mark'],
             description: ele['description'],
             deadline: ele['deadline'],
-            id: ele['deliverable_id']
+            deliverable_id: ele['deliverable_id'],
+            status: ele['status']
           })
         }
       )
@@ -188,7 +219,7 @@ const previewPdfHandler = (pdf_id) =>{
   const previewDeliverableHandler = (deliverable) =>{
     props.navigation.navigate({
       routeName: "DeliverableDescription",
-      params: {deliverable_id:deliverable.id,deliverable_name:deliverable.deliverable_name,mark:deliverable.mark,deadline:deliverable.deadline,description:deliverable.description}})
+      params: {deliverable_id:deliverable.deliverable_id,deliverable_name:deliverable.deliverable_name,mark:deliverable.mark,deadline:deliverable.deadline,description:deliverable.description,status:deliverable.status,updateDeliverables:updateDeliverables}})
   }
   
   const previewVideoHandler = (video_id) =>{
@@ -208,31 +239,39 @@ const previewPdfHandler = (pdf_id) =>{
       <Text style={styles.videos_pdfs_header}>Deliverables</Text>
       {deliverablesLoaded &&
       deliverables.map((deliverable,i)=>(
-        <DeliverableItem key ={i} deliverable={deliverable} previewDeliverableHandler={previewDeliverableHandler}></DeliverableItem>
+        <DeliverableItem key ={i} deliverable={deliverable} previewDeliverableHandler={previewDeliverableHandler} deleteDeliverableHandler={deleteDeliverableHandler}></DeliverableItem>
       
         )) 
-      
+      }
+      {
+        deliverablesLoaded&&(deliverables).length==0&&<Text style={{alignSelf:"center"}}>There are no deliverables.</Text>
       }
       {!deliverablesLoaded&&<ActivityIndicator size="small" />}
       {role=="professor" && <Button
       title="CREATE DELIVERABLE"
       buttonStyle={{minWidth:150, width:"70%", maxWidth:200, alignSelf: 'center',marginTop:20}}
-      titleStyle={{fontSize:"12"}}
+      titleStyle={{fontSize:12}}
       onPress={createNewDeliverableHandler}
       />}
       <Divider style={styles.dividerStyle}/>
       <Text style={styles.videos_pdfs_header}>Videos</Text>
       {videosLoaded &&
       videos.map((video,i)=>(
-        <VideoItem key ={i} video={video} previewVideoHandler={previewVideoHandler}></VideoItem>
+        <VideoItem key ={i} video={video} previewVideoHandler={previewVideoHandler} deleteMaterialHandler={deleteMaterialHandler}></VideoItem>
       ))
+      }
+      {
+        videosLoaded&&(videos).length==0&&<Text style={{alignSelf:"center"}}>There are no videos.</Text>
       }
       {!videosLoaded && <ActivityIndicator size="small" />}
       <Divider style={styles.dividerStyle}/>
       <Text style={styles.videos_pdfs_header}>PDFs</Text>
       {pdfsLoaded&&pdfs.map((pdf,i)=>(
-        <PdfItem key = {i} pdf={pdf} previewPdfHandler={previewPdfHandler}></PdfItem>
+        <PdfItem key = {i} pdf={pdf} previewPdfHandler={previewPdfHandler} deleteMaterialHandler={deleteMaterialHandler}></PdfItem>
       ))}
+      {
+        pdfsLoaded&&(pdfs).length==0&&<Text style={{alignSelf:"center"}}>There are no videos.</Text>
+      }
       {!pdfsLoaded && <ActivityIndicator size="small" />}
       <Divider style={styles.dividerStyle}/>
       {role=="professor" && <View>
@@ -240,7 +279,7 @@ const previewPdfHandler = (pdf_id) =>{
       <Button
       title="Choose File" 
       buttonStyle={{minWidth:150, width:"70%", maxWidth:200, alignSelf: 'center',margin:10}}
-      titleStyle={{fontSize:"12"}}
+      titleStyle={{fontSize:12}}
       onPress={pickDocumentHandler}
       icon = {<AntDesign name="addfile" size={20} color="white" />}
       />
@@ -281,11 +320,12 @@ const previewPdfHandler = (pdf_id) =>{
     <View style={styles.screen}>
       <ScrollView>
       <View style={styles.topContainer}>
-        <About description={myCourse.CourseDescription} />
+        <Text style={styles.courseHeader}>{myCourse.CourseName}</Text>
+        {/* <About description={myCourse.CourseDescription} /> */}
       </View>
       
       {groupflag ? null : materialsDetails}
-      
+      </ScrollView>
       <View style={{ width: "90%", flex: 1 }}>
         <FlatList 
           data={Data}
@@ -293,7 +333,7 @@ const previewPdfHandler = (pdf_id) =>{
           keyExtractor={(_, index) => `${index}`}
         />
       </View> 
-      </ScrollView>
+      
     </View>
   );
 };
@@ -313,7 +353,7 @@ const styles = StyleSheet.create({
   topContainer: {
     flexDirection: "column",
     justifyContent: "space-between",
-    width: "70%",
+    alignItems:"center"
   },
   buttonContainer: {
     paddingVertical: 5,
@@ -326,7 +366,13 @@ const styles = StyleSheet.create({
   },
   videos_pdfs_header:{
     textAlign:'center',
-    fontSize:20,marginBottom:10
+    fontSize:20,
+    marginBottom:10
+  },
+  courseHeader:{
+    fontSize:23,
+    fontWeight:"500",
+    marginTop:10
   }
 });
 
