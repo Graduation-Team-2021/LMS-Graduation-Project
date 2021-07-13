@@ -50,6 +50,7 @@ const Menu = (props) => {
           localStorage.removeItem("name");
           props.userDataActions.onSetToken(null);
           props.onClick();
+          props.currentMessageActions.onSetCurrentMessage({});
           props.history.push("/login");
         }}
       >
