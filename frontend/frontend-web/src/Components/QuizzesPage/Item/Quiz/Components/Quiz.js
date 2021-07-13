@@ -3,41 +3,20 @@ import styled from "styled-components";
 import axios from "axios";
 import Button from "./Button";
 import GameOver from "./GameOver";
+import classes from "./Quiz.module.css"
 
 const QuizWindow = styled.div`
-  text-align: center;
-  font-size: clamp(20px, 2.5vw, 24px);
-  margin-top: 10vh;
+    align-content: center;
+    text-align: center;
+    font-size: clamp(20px, 2.5vw, 24px);
+    margin-top: 20px;
 `;
 
 const Options = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 90%;
   margin: 2em auto;
-  @media screen and (min-width: 1180px) {
-    width: 50%;
-  }
-`;
-
-const Option = styled.button`
-  display: block;
-  border: 1px solid #616a94;
-  border-radius: 15px;
-  padding: 15px 30px;
-  text-decoration: none;
-  color: white;
-  background-color: ${(props) => props.color};
-  transition: 0.3s;
-  font-size: 1em;
-  outline: none;
-  user-select: none;
-  margin-top: 1em;
-  cursor: pointer;
-  &:hover {
-    color: white;
-    background-color: #616a94;
-  }
 `;
 
 const Question = styled.div`
@@ -81,7 +60,7 @@ const Quiz = (props) => {
 
     const [quiz, setQuiz] = useState([]);
     const [number, setNumber] = useState(0);
-    const [userAnswers, setAnswers] = useState({ 0: 'hi' });
+    const [userAnswers, setAnswers] = useState({});
     let element = document.createElement('div');
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -95,9 +74,8 @@ const Quiz = (props) => {
         setNumber(number + 1);
     }
 
-    const goBack = () => {
-        if (number)
-            setNumber(number - 1);
+    const changeQuestion = (num) => {
+        setNumber(num);
     }
 
     const Finish = () => {
@@ -125,6 +103,17 @@ const Quiz = (props) => {
     }
 
     ///////////////////////////////////////////////////////
+    const Buttons = quiz.map((value, index) => {
+        return (
+            <Button
+                key={index}
+                className={userAnswers[index] ? classes.Done : classes.Circle}
+                onClick={() => changeQuestion(index)}
+            >
+                {index + 1}
+            </Button>
+        );
+    });
     //////////////////////////////////////////////////////
 
     return (
@@ -133,21 +122,22 @@ const Quiz = (props) => {
                 <div>
                     <Question dangerouslySetInnerHTML={{ __html: quiz[number].question }}></Question>
                     <Options>
-                        {number ? <Button onClick={goBack} css={btnCSS}>Go back</Button> : null}
                         {
                             quiz[number].options.map((item, index) => (
-                                <Option key={index}
+                                <button key={index}
+                                    className={classes.Question}
                                     dangerouslySetInnerHTML={{ __html: item }}
                                     onClick={pickAnswer}
-                                    color={item === userAnswers[number] ? '#616A94' : '#161A31'} />
+                                    style={{backgroundColor: decodeHTMLEntities(item) === userAnswers[number] ? '#616A94' : '#161A31'}} />
                             ))}
+                        <div className={classes.Guidance}>{Buttons}</div>
                     </Options>
                 </div>
             }
             {
                 (number === quiz.length && number > 0) && <div>
-                    <Button onClick={goBack} css={btnCSS}>Go back</Button>
                     <Button onClick={Finish} css={btnCSS}>Finish</Button>
+                    <div className={classes.Guidance}>{Buttons}</div>
                 </div>
             }
             {
