@@ -8,23 +8,7 @@ import { getDeliv } from "../../Interface/Interface";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
 
-const columns = [
-  { field: "name", headerName: "Name", width: 200 },
-  { field: "type", headerName: "Type", width: 140 },
-  { field: "status", headerName: "Status", width: 180 },
-  { field: "deadline", headerName: "Deadline", width: 200 },
-  { field: "course", headerName: "Course", width: 250 },
-  { field: "coursecode", headerName: "Coursecode", width: 130 },
-  { field: "mark", headerName: "Mark", width: 130 },
-];
 
-const perCourseColumn = [
-  { field: "name", headerName: "Name", width: 340 },
-  { field: "type", headerName: "Type", width: 140 },
-  { field: "status", headerName: "Status", width: 180 },
-  { field: "deadline", headerName: "Deadline", width: 200 },
-  { field: "mark", headerName: "Mark", width: 130 },
-];
 
 const cRows = [
   {
@@ -99,9 +83,31 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(function DeliverableList(props) {
+
+  const columns = [
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "status", headerName: "Status", width: 180 },
+    { field: "deadline", headerName: "Deadline", width: 200 },
+    { field: "course", headerName: "Course", width: 250 },
+    { field: "coursecode", headerName: "Coursecode", width: 130 },
+    { field: "mark", headerName: "Mark", width: 130 },
+  ];
+  
+  const perCourseColumn = [
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "status", headerName: "Status", width: 180 },
+    { field: "deadline", headerName: "Deadline", width: 200 },
+    { field: "mark", headerName: "Mark", width: 130 },
+  ];
+
+  if (props.userData.Role!=='student') {
+    columns.splice(1,1)
+    perCourseColumn.splice(1,1)
+  }
+
   const [Loading, setLoading] = useState(true);
 
-  const [rows, setRows] = useState([])
+  const [rows, setRows] = useState([]);
 
   useEffect(() => {
     //TODO: Load Data
@@ -109,31 +115,36 @@ export default connect(
       setLoading(false);
       console.log("Deliverables Collected Successfully", res);
       var temp = [];
-      res.forEach((value) =>
-        temp.push(props.id?{
-          name: value["deliverable_name"],
-          type: 'Assignment',
-          status: "Completed",
-          course: props.name,
-          description: value['description'],
-          deadline: value["deadline"],
-          mark: value['mark']||"N/A",
-          id: value["deliverable_id"],
-        }:{
-          name: value["deliverable_name"],
-          type: value["deliverable_name"],
-          status: "Completed",
-          course: "Software Engineering",
-          coursecode: "CSE412",
-          description: "N/A",
-          deadline: value["deadline"],
-          mark: value['mark']||"N/A",
-          id: value["deliverable_id"],
-        })
-      );
-      setRows(temp)
+      res.forEach((value) => {
+        if (props.id) {
+          temp.push({
+            name: value["deliverable_name"],
+            status: value["status"],
+            course: props.name,
+            description: value["description"] || "No Description",
+            deadline: value["deadline"],
+            mark: value["mark"] || "N/A",
+            id: value["deliverable_id"],
+          });
+        } else {
+          var delivs = value["deliverables"];
+          delivs.forEach((v2) =>
+            temp.push({
+              name: v2["deliverable_name"],
+              status: v2["status"],
+              course: value["course_name"], //Need Adjustment
+              coursecode: value["course_id"],
+              description: v2["description"] || "No Description",
+              deadline: v2["deadline"],
+              mark: v2["mark"] || "N/A",
+              id: v2["deliverable_id"],
+            })
+          );
+        }
+      });
+      setRows(temp);
     });
-  }, [props.id]);
+  }, [props.id, props.userData.Token, props.name]);
 
   let newArrayOfObjects = Object.values(
     rows.reduce((mapping, item) => {
@@ -187,7 +198,7 @@ export default connect(
             <div className={cls.list}>
               <DataGrid
                 rows={rows}
-                columns={!props.id?columns:perCourseColumn}
+                columns={!props.id ? columns : perCourseColumn}
                 pageSize={6}
                 onRowClick={(rowData) => props.onRowHand(rowData)}
               />

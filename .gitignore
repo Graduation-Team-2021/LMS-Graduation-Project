@@ -3,3 +3,4 @@
 */static/*
 */.idea/*
 .vscode
+/backend/models/config.py

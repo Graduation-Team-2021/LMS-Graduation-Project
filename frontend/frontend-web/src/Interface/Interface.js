@@ -363,13 +363,14 @@ export const getDeliv = async (id, Token) => {
   var res;
   //TODO: Integrate the Deliverables backend
   if (id) {
-    res = await instance.get(`/courses/${id}/deliverables`, {
+    res = await instance.get(`/courses/${id}/deliverables/`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + Token,
       },
     });
     console.log(`Getting Deliverables of Course ${id}`);
+    return res.data.deliverables;
   } else {
     res = await instance.get(`/deliverables`, {
       headers: {
@@ -378,9 +379,9 @@ export const getDeliv = async (id, Token) => {
       },
     });
     console.log(`Getting Deliverables of All Courses`);
+    console.log(res.data);
+    return res.data["courses_deliverables"];
   }
-  console.log(res);
-  return res.data.deliverables;
 };
 
 export const getDelivByID = async (id, Token) => {
@@ -493,15 +494,16 @@ export const getOneVideo = async (id) => {
 };
 
 export const AddNewDeliv = async (Data) => {
-  //TODO: Integrate the PDFs backend
-  /* const res = await instance.get(`/course/${id}/students`, {
+  //TODO: Integrate the Deliverables backend
+  const res = await instance.post(`/deliverables`, 
+  Data,
+  {
       headers: {
         "Content-Type": "application/json",
       },
-    }); */
-  console.log(Data);
-  /* console.log(res);
-  return res.data["names"]; */
+    });
+  console.log(res.data);
+  return res.data;
 };
 
 export const updatePic = async (id, Pic) => {

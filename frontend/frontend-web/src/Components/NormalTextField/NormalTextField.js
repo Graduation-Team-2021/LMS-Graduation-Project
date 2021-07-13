@@ -70,7 +70,7 @@ const TextField = (props) => {
 
 TextField.propTypes = {
   Error: PropTypes.bool.isRequired,
-  type: PropTypes.oneOf(["textArea", "select", "text"]),
+  type: PropTypes.any,
   Name: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   onChange: PropTypes.func.isRequired,

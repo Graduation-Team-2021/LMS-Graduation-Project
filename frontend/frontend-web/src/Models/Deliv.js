@@ -1,9 +1,11 @@
-export const setNewDeliv=(Deliv,id)=>{
-    let data = {
-        course: id,
-        name: Deliv["Deliverable Name"],
-        no_students: Deliv["Max Number of Students"],
-        Description: Deliv["Description"]
-      }
-    return data
-}
+export const setNewDeliv = (Deliv, id) => {
+  let data = {
+    course_deliverables: id,
+    deliverable_name: Deliv["Deliverable Name"],
+    students_number: Deliv["Max Number of Students"],
+    description: Deliv["Description"],
+    mark: Deliv["Marks"],
+    deadline: Deliv["DeadLine"],
+  };
+  return data;
+};

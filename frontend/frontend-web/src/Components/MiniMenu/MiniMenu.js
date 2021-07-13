@@ -27,6 +27,7 @@ const MiniMenu = (props) => {
   return (
     <ClickOutside
       onClickOutside={() => {
+        console.log("CLICKED");
         setMenu(false);
         setMessages(false);
         setNotif(false);
