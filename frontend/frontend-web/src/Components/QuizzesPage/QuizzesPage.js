@@ -15,7 +15,7 @@ function QuizzesPage(props) {
       content: (
         <div>
           <h2>
-            {rowData["row"].name} - {rowData["row"].type} -{" "}
+            {rowData["row"].name} -{" "}
             {rowData["row"].course}
           </h2>
           <h3>Deadline: {rowData["row"].deadline}</h3>
