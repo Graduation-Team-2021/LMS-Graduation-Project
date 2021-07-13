@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from "react";
-import { View, Image, ScrollView ,StyleSheet} from "react-native";
+import { View, Image, ScrollView ,StyleSheet,ActivityIndicator} from "react-native";
 import { Button ,Text, Divider} from "react-native-elements";
 import * as DocumentPicker from 'expo-document-picker';
 import { Ionicons,AntDesign,Entypo} from '@expo/vector-icons';
@@ -12,6 +12,7 @@ const DeliverableDescription = (props) => {
   const [file,setFile] = useState("")
   const [uploadedFiles,setUploadedFiles] = useState()
   const [uploadPercentage,setUploadPercentage] = useState(0)
+  const [deliverablesLoaded,setDeliverablesLoaded]= useState(false)
   let pickDocumentHandler = async () => {
     let result = await DocumentPicker.getDocumentAsync({
       multiple: true,
@@ -28,7 +29,7 @@ const DeliverableDescription = (props) => {
           showMessage({
             message: "File uploaded successfully.",
             type: "success",
-            duration:"3000"
+            duration:"4000"
           });
           setUploadPercentage(0)
           retrieveStudentSubmissions()
@@ -46,6 +47,8 @@ const DeliverableDescription = (props) => {
           );
         });
         setUploadedFiles(temp)
+        setDeliverablesLoaded(true)
+        props.navigation.getParam('updateDeliverables')()
       }
     });
   }
@@ -67,20 +70,21 @@ const DeliverableDescription = (props) => {
     <View style={styles.bottomContainer}>
 {props.userData.Role=="student"?<View>
     <Text style={styles.submissionHeader}>Submitted Files</Text>
-      {uploadedFiles?<View style={styles.submissionContainer}>
+      {deliverablesLoaded&&<View style={styles.submissionContainer}>
       {uploadedFiles.map((uploadedFile,i)=>(
         <View style={{flexDirection:"row"}}>
           <Text style={{margin:5}}>{<AntDesign name="file1" size={20} color="black" />}{uploadedFile.file_name}{uploadedFile.file_type}</Text> 
         </View>    
         )) }
-      </View>:
-      <Text>You have no submissions</Text>}
+      </View>}
+      {!deliverablesLoaded&&<ActivityIndicator size="small" />}
+      {deliverablesLoaded&&uploadedFiles.length==0&&<Text style={{alignSelf:"center"}}>There are no submitted files.</Text>}
       <Divider style={styles.dividerStyle}/>
       <Text style={styles.submissionHeader}>Upload a file</Text>
       <Button
       title="Choose File" 
       buttonStyle={{minWidth:150, width:"70%", maxWidth:200, alignSelf: 'center',margin:10}}
-      titleStyle={{fontSize:"12"}}
+      titleStyle={{fontSize:12}}
       onPress={pickDocumentHandler}
       icon = {<AntDesign name="addfile" size={20} color="white" />}
       />

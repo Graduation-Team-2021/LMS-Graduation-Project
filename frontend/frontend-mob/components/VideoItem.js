@@ -34,10 +34,10 @@ import {
     return(
       <View style={{marginLeft:15,flexDirection:'row',justifyContent : 'space-between',marginTop:10}}>
       
-      <View style={{ flexDirection: "row",width:"95%"}}>
+      <View style={{ flexDirection: "row"}}>
         <TouchableCmp onPress = {previewVideoHandler} style={{flexDirection:"row"}}>
           <FontAwesome name="file-video-o" size={20} style={{marginRight:6}}/>
-          <Text>{props.video.material_name}{props.video.material_type}</Text>
+          <Text style={{width:"66%"}}>{props.video.material_name}{props.video.material_type}</Text>
         </TouchableCmp>
         {props.userData.Role=="professor"&&(
         <TouchableCmp style={{marginLeft:"auto"}} onPress={deleteAlertHandler}>

@@ -357,12 +357,13 @@ export const getStudentsByCourse = async (id) => {
   return res.data["names"];
 };
 
-export const getAllCourseDeliverables = async (id) => {
+export const getAllCourseDeliverables = async (id,Token) => {
   if (id) {
     console.log(`Getting Deliverables of Course ${id}`);
     const res = await instance.get(`/courses/${id}/deliverables`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
       },
     });
     return res.data['deliverables']
@@ -430,6 +431,16 @@ export const getDeliversRelation = async(deliverable_id,Token) =>{
     return null;
   }
   return res.data["delivers_id"];
+}
+
+export const getAllStudentsDeliverables = async(Token)=>{
+  const res = await instance.get("/deliverables",{
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  })
+  return res.data['courses_deliverables']
 }
 
 export const deleteMaterial = async(material_id) =>{
