@@ -84,7 +84,7 @@ const Quiz = (props) => {
     }
 
     const Finish = () => {
-        setNumber(number + 1);
+        setNumber(quiz.length + 1);
         let pts = 0;
         let temp = '';
         quiz.forEach((x, i) => {
@@ -112,7 +112,7 @@ const Quiz = (props) => {
         return (
             <Button
                 key={index}
-                className={index===number?classes.Active:(userAnswers[index]?classes.Done:classes.Circle)}
+                className={index === number ? classes.Active : (userAnswers[index] ? classes.Done : classes.Circle)}
                 onClick={() => changeQuestion(index)}
             >
                 {index + 1}
@@ -123,7 +123,7 @@ const Quiz = (props) => {
 
     return (
         <QuizWindow>
-            {quiz[number] &&
+            {number < quiz.length &&
                 <div>
                     <Question dangerouslySetInnerHTML={{ __html: quiz[number].question }}></Question>
                     <Options>
@@ -133,16 +133,15 @@ const Quiz = (props) => {
                                     className={classes.Question}
                                     dangerouslySetInnerHTML={{ __html: item }}
                                     onClick={pickAnswer}
-                                    style={{backgroundColor: decodeHTMLEntities(item) === userAnswers[number] ? '#616A94' : '#161A31'}} />
+                                    style={{ backgroundColor: decodeHTMLEntities(item) === userAnswers[number] ? '#616A94' : '#161A31' }} />
                             ))}
-                        <div className={classes.Guidance}>{Buttons}</div>
                     </Options>
                 </div>
             }
-            {
-                (number === quiz.length && number > 0) && <div style={{width: "100%"}}>
-                    <Button onClick={Finish} css={btnCSS}>Finish</Button>
+            {number < quiz.length + 1 &&
+                <div>
                     <div className={classes.Guidance}>{Buttons}</div>
+                    <Button onClick={Finish} css={btnCSS}>Submit</Button>
                 </div>
             }
             {
