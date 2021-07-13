@@ -3,6 +3,7 @@ from flask_restful import Resource, reqparse
 import werkzeug
 from flask import jsonify
 from methods.errors import *
+from methods.auth import *
 
 controller_object = deliverable_controller()
 
@@ -59,6 +60,7 @@ class Deliverable_view(Resource):
 
 # /deliverables
 class All_Deliverables(Resource):
+    method_decorators = {'get': [requires_auth_identity("")]}
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('deliverable_name', type=str, location='json')
@@ -68,16 +70,13 @@ class All_Deliverables(Resource):
         self.reqparse.add_argument('description', type=str, location='json')
         self.reqparse.add_argument('mark', type=int, location='json')
 
-    def get(self):
-
-        student_id = 11 #change to auth id later
-        role = 'teacher'
+    def get(self, user_id, role):
 
         try:
             if role == 'student':
-                specific_deliverables = controller_object.get_one_student_all_deliverables(student_id)
+                specific_deliverables = controller_object.get_one_student_all_deliverables(user_id)
             else:
-                specific_deliverables = controller_object.get_one_professor_all_deliverables(11)
+                specific_deliverables = controller_object.get_one_professor_all_deliverables(user_id)
         except ErrorHandler as e:
             return e.error
         return specific_deliverables
