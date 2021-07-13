@@ -34,10 +34,10 @@ import {
     return(
         <View style={{marginLeft:15,flexDirection:'row',justifyContent : 'space-between',marginTop:10}}>
           
-          <View style={{flexDirection:'row',width:"95%"}}>
+          <View style={{flexDirection:'row'}}>
           <TouchableCmp onPress = {previewPdfHandler} style={{flexDirection:"row"}}>
             <FontAwesome name="file-pdf-o" size={20} style={{marginRight:6}}/>
-            <Text>{props.pdf.material_name}{props.pdf.material_type}</Text>
+            <Text style={{width:"66%"}}>{props.pdf.material_name}{props.pdf.material_type}</Text>
           </TouchableCmp>
           {props.userData.Role=="professor"&&(
           <TouchableCmp style={{marginLeft:"auto"}} onPress={deleteAlertHandler}>

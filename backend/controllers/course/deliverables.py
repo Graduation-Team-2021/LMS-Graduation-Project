@@ -111,19 +111,31 @@ class deliverable_controller:
             })
         return {"courses_deliverables": deliverables_list}
 
-    def get_all_course_deliverables(self,course_code):
+    def get_all_course_deliverables(self,course_code,user_id,role):
         try:
             deliverable = Deliverables.query.filter_by(course_deliverables=course_code).all()
             deliverables_formatted = []
+            deliverables_modified = []
             for i in deliverable:
                 deliverables_formatted.append(i.serialize())
+            for i in deliverables_formatted:
+                delivers_relation = Deliver.query.filter(Deliver.deliverable_id==i['deliverable_id']).filter(Deliver.student_id==user_id).first()
+                status = ""
+                if(datetime.now()>i['deadline']):
+                    status = "finished"
+                elif(delivers_relation is not None):
+                    status = "delivered"
+                else:
+                    status = "missing"
+                i['status']=status
+                deliverables_modified.append(i)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
             })
-        return deliverables_formatted
+        return deliverables_modified
     def get_all_deliverables_by_deliverable_id(self, deliverable_id):
         try:
             all_deliverables = Student.query.join(Deliver).join(User).filter(
