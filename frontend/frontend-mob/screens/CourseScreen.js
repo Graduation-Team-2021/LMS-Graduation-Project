@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView,View, StyleSheet, FlatList, Text,TouchableOpacity ,ActivityIndicator, TouchableNativeFeedback} from "react-native";
 import { Button,Divider  } from "react-native-elements";
-import { getAllPosts, uploadPost ,getPDFs,getVideos, getAllCourseDeliverables,uploadFile} from "../Interface/Interface";
+import { getAllPosts, uploadPost,deleteMaterial,deleteDeliverable ,getPDFs,getVideos, getAllCourseDeliverables,uploadFile} from "../Interface/Interface";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import { setLocationPost, setNewPost } from "../Models/Post";
@@ -103,6 +103,40 @@ let retrieveVideos = () =>{
     setVideos(temp)
     setVideosLoaded(true)
 });
+}
+const deleteDeliverableHandler = (deliverable_id) =>{ 
+  deleteDeliverable(deliverable_id).then(res=>{
+    let new_deliverables = [...deliverables]
+    var index = new_deliverables.findIndex(function(element){
+      return element.id === deliverable_id;
+    })
+  if (index !== -1){
+    new_deliverables.splice(index, 1);
+    setDeliverables(new_deliverables)}
+  })
+}
+const deleteMaterialHandler = (material_id,material_type)=>{
+  deleteMaterial(material_id).then(res=>{
+    if(material_type=="pdf"){
+      let new_pdfs = [...pdfs]
+      var index = new_pdfs.findIndex(function(element){
+        return element.material_id === material_id;
+      })
+      if (index !== -1){
+      new_pdfs.splice(index, 1);
+      setPdfs(new_pdfs)}
+      }
+    else{
+      let new_videos = [...videos]
+      var index = new_videos.findIndex(function(element){
+        return element.material_id === material_id;
+      })
+      if (index !== -1){
+      new_videos.splice(index, 1);
+      setVideos(new_videos)}
+    }
+  
+  })
 }
 let uploadFileHandler = () =>{
 
@@ -208,7 +242,7 @@ const previewPdfHandler = (pdf_id) =>{
       <Text style={styles.videos_pdfs_header}>Deliverables</Text>
       {deliverablesLoaded &&
       deliverables.map((deliverable,i)=>(
-        <DeliverableItem key ={i} deliverable={deliverable} previewDeliverableHandler={previewDeliverableHandler}></DeliverableItem>
+        <DeliverableItem key ={i} deliverable={deliverable} previewDeliverableHandler={previewDeliverableHandler} deleteDeliverableHandler={deleteDeliverableHandler}></DeliverableItem>
       
         )) 
       
@@ -224,14 +258,14 @@ const previewPdfHandler = (pdf_id) =>{
       <Text style={styles.videos_pdfs_header}>Videos</Text>
       {videosLoaded &&
       videos.map((video,i)=>(
-        <VideoItem key ={i} video={video} previewVideoHandler={previewVideoHandler}></VideoItem>
+        <VideoItem key ={i} video={video} previewVideoHandler={previewVideoHandler} deleteMaterialHandler={deleteMaterialHandler}></VideoItem>
       ))
       }
       {!videosLoaded && <ActivityIndicator size="small" />}
       <Divider style={styles.dividerStyle}/>
       <Text style={styles.videos_pdfs_header}>PDFs</Text>
       {pdfsLoaded&&pdfs.map((pdf,i)=>(
-        <PdfItem key = {i} pdf={pdf} previewPdfHandler={previewPdfHandler}></PdfItem>
+        <PdfItem key = {i} pdf={pdf} previewPdfHandler={previewPdfHandler} deleteMaterialHandler={deleteMaterialHandler}></PdfItem>
       ))}
       {!pdfsLoaded && <ActivityIndicator size="small" />}
       <Divider style={styles.dividerStyle}/>
