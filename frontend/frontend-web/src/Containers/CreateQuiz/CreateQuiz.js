@@ -23,8 +23,9 @@ class CreateQuiz extends Component {
   onSubmit = () => {
     //TODO: Connect Add Quizzes to Backend
     const QE = this.state.Questions.find((value) => value.Text === "");
-    const DE = this.state.Duration === 0;
+    const DE = this.state.Duration && this.state.Duration === 0;
     var AE = this.state.Questions.find((value) => value.Answers.length === 0);
+    var ME = false;
     const CE = this.state.Questions.find(
       (value) => value.CorrectAnswers.length === 0
     );
@@ -34,7 +35,16 @@ class CreateQuiz extends Component {
         break;
       }
     }
-    if (QE || DE || AE || CE) {
+    for (let index = 0; index < this.state.Questions.length; index++) {
+      if (
+        !this.state.Questions[index].Marks ||
+        this.state.Questions[index].Marks < 0
+      ) {
+        ME = true;
+        break;
+      }
+    }
+    if (QE || DE || AE || CE || ME) {
       alert("Please Complete Exam First");
     } else {
       const Q = setQuiz(this.state);
@@ -265,7 +275,8 @@ class CreateQuiz extends Component {
         ));
         return (
           <span>
-            <span className={classes.AddQuesteons}
+            <span
+              className={classes.AddQuesteons}
               // style={{
               //   display: "flex",
               //   alignItems: "center",
@@ -323,10 +334,14 @@ class CreateQuiz extends Component {
 
     const Buttons = this.state.Questions.map((value, index) => {
       const QE = value.Text === "";
-      var AE =  value.Answers.length === 0;
+      var AE = value.Answers.length === 0;
       const CE = value.CorrectAnswers.length === 0;
+      const ME = !value.Mark || value.Mark < 0;
       for (let index = 0; index < this.state.Questions.length; index++) {
-        if (this.state.Questions[index].Answers.find((value) => value === "")) {
+        if (
+          AE ||
+          this.state.Questions[index].Answers.find((value) => value === "")
+        ) {
           AE = true;
           break;
         }
@@ -334,7 +349,13 @@ class CreateQuiz extends Component {
       return (
         <Button
           className={classes.Circle}
-          type={index === this.state.CurrentQuestion ? "correct" :(AE || QE ||CE)?'cancel': null}
+          type={
+            index === this.state.CurrentQuestion
+              ? "correct"
+              : AE || QE || CE || ME
+              ? "cancel"
+              : null
+          }
           onClick={() => this.setState({ CurrentQuestion: index })}
         >
           {index + 1}
@@ -381,7 +402,7 @@ class CreateQuiz extends Component {
           </span>
           {
             /* TODO: Add Per Page Question (Add Animation Later) */
-            <Card shadow >
+            <Card shadow>
               {Questions[this.state.CurrentQuestion]}
               {
                 /* Add Question Numbered Dots for access */
