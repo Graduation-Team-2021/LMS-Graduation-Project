@@ -43,7 +43,7 @@ export default connect(
       temp.splice(temp.findIndex(el => { return el === response }), 1)
       setCurrentActiveUsers(temp)
     });
-  }, []);
+  }, [CurrentActiveUsers]);
   ///////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
@@ -73,24 +73,25 @@ export default connect(
         setConversations(temp);
       }
     }
-  }, [newMessage]);
+  }, [newMessage, Users, conversations]);
   //////////////////////////////////////////////////////////////////
+  const {hasChanged, Current, newMessID, newText, setChanged,setNewID, setNewText} = props
   useEffect(() => {
-    if (props.hasChanged) {
-      if (conversations.findIndex(Ar => { return Ar.ID === props.newMessID }) != -1) {
-        conversations.splice(conversations.findIndex(Ar => { return Ar.ID === props.newMessID }), 1);
+    if (hasChanged) {
+      if (conversations.findIndex(Ar => { return Ar.ID === newMessID }) !== -1) {
+        conversations.splice(conversations.findIndex(Ar => { return Ar.ID === newMessID }), 1);
       }
-      let newTemp = { ...props.Current }
-      newTemp.text = props.newText
-      newTemp.name = Users[Users.findIndex(Ar => { return Ar.ID === props.newMessID })].Name
+      let newTemp = { ...Current }
+      newTemp.text = newText
+      newTemp.name = Users[Users.findIndex(Ar => { return Ar.ID === newMessID })].Name
       let temp = [newTemp, ...conversations]
       setConversations(temp)
-      props.setChanged(false)
-      props.setNewID(null)
-      props.setNewText("")
+      setChanged(false)
+      setNewID(null)
+      setNewText("")
     }
   },
-    [props.hasChanged, props.newMessID])
+    [Users, conversations, Current, hasChanged, newMessID, newText,setChanged,setNewID, setNewText])
 
   useEffect(() => {
     console.log(props.Current)

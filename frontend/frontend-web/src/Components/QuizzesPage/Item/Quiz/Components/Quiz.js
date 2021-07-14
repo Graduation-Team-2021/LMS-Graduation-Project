@@ -36,7 +36,7 @@ const Quiz = (props) => {
     useEffect(() => {
         //TODO: Load EXAM Data HERE
         getQuizByID(props.id, props.userData.ID).then((res)=>{
-            
+            console.log(res);
         })
         axios.get('https://opentdb.com/api.php?amount=5&category=18&difficulty=easy&type=multiple')
             .then(res => {

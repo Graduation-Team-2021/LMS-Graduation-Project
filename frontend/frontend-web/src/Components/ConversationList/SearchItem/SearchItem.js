@@ -2,7 +2,7 @@ import React from "react";
 
 import cls from "./SearchItem.module.css";
 import ImageHolder from "../../ImageHolder/ImageHolder";
-import filler from "../../../assets/Filler.png";
+
 const Item = (props) => {
   return (
     <div className={cls.SearchResult} onClick={props.onClick}>

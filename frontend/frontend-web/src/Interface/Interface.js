@@ -11,7 +11,7 @@ const local = "http://localhost:5000";
 
 export const url = azure;
 const instance = axios.create({
-  baseURL: local,
+  baseURL: azure,
   //"http://localhost:5000",
 });
 
