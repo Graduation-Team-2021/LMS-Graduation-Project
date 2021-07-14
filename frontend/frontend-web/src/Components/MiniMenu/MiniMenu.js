@@ -18,7 +18,7 @@ import DropDownMenu from "../DropDownMenu/DropDownMenu";
 import ImageHolder from "../ImageHolder/ImageHolder";
 import Button from "../../Components/Button/Button";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
-import {url} from '../../Interface/Interface'
+import { url } from "../../Interface/Interface";
 const MiniMenu = (props) => {
   const [Notif, setNotif] = useState(false);
   const [Menu, setMenu] = useState(false);
@@ -28,7 +28,6 @@ const MiniMenu = (props) => {
   return (
     <ClickOutside
       onClickOutside={() => {
-        console.log("CLICKED");
         setMenu(false);
         setMessages(false);
         setNotif(false);
@@ -39,7 +38,12 @@ const MiniMenu = (props) => {
           {props.location.pathname !== "/" ? (
             <Button
               className={classes.holder}
-              onClick={() => props.history.goBack()}
+              onClick={() => {
+                setMenu(false);
+                setMessages(false);
+                setNotif(false);
+                props.history.goBack();
+              }}
             >
               <FontAwesomeIcon
                 icon={faArrowLeft}
@@ -48,7 +52,14 @@ const MiniMenu = (props) => {
               />
             </Button>
           ) : (
-            <Button className={classes.holder + " " + classes.hidden}>
+            <Button
+              className={classes.holder + " " + classes.hidden}
+              onClick={() => {
+                setMenu(false);
+                setMessages(false);
+                setNotif(false);
+              }}
+            >
               <FontAwesomeIcon
                 icon={faArrowLeft}
                 className={classes.Icon}
@@ -71,24 +82,26 @@ const MiniMenu = (props) => {
               fixedWidth
             />
           </Button>
-          {props.userData.Role!=="admin"?<Button
-            className={classes.holder}
-            onClick={() => {
-              setMenu(false);
-              setMessages(false);
-              setNotif(!Notif);
-              props.onNotifClick();
-            }}
-          >
-            {props.notif !== 0 ? (
-              <div className={classes.notif}>{props.notif}</div>
-            ) : null}
-            <FontAwesomeIcon
-              icon={faBell}
-              className={classes.Icon}
-              fixedWidth
-            />
-          </Button>:null}
+          {props.userData.Role !== "admin" ? (
+            <Button
+              className={classes.holder}
+              onClick={() => {
+                setMenu(false);
+                setMessages(false);
+                setNotif(!Notif);
+                props.onNotifClick();
+              }}
+            >
+              {props.notif !== 0 ? (
+                <div className={classes.notif}>{props.notif}</div>
+              ) : null}
+              <FontAwesomeIcon
+                icon={faBell}
+                className={classes.Icon}
+                fixedWidth
+              />
+            </Button>
+          ) : null}
           <Button
             className={classes.holder}
             onClick={() => {
@@ -119,7 +132,7 @@ const MiniMenu = (props) => {
             <div className={classes.Back} />
             <ImageHolder
               className={classes.UserImage}
-              filler={props.userData.Pic? props.userData.Pic: filler}
+              filler={props.userData.Pic ? props.userData.Pic : filler}
             />
           </Button>
         </span>
