@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import cls from './DeliverablesPage.module.css';
 import Table from '../DelivTable/DelivTable'
 import Modal from '../Modal/Modal'
-import Item from './Item/Item'
 import Assignment from './Assignment/Assignment'
 import { withRouter, Switch, Route } from "react-router-dom";
 import Card from '../Card/Card';

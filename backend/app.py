@@ -169,7 +169,7 @@ api.add_resource(Submit_Exam,'/exams/<exam_id>/submit_exam')
 api.add_resource(Student_Questions, '/student/<student_id>/question')
 api.add_resource(Results,'/students/<student_id>/exams/<exam_id>/results')
 api.add_resource(Student_Exam_Results,'/exams/<exam_id>/my_results')
-api.add_resource(ExamByCourseID,'/exams_by_course/<course_id>')
+api.add_resource(ExamByCourseID,'/exams_by_course/<course_id>/<user_id>')
 """
 Each student deliverables
 """

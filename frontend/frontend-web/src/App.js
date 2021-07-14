@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 
 import MainPage from "./Containers/MainPage/MainPage";
 import Home from "./Containers/HomePage/HomePage";
@@ -23,7 +23,6 @@ import ResetPass from "./Containers/ResetPass/ResetPass";
 
 import { mapStateToProps, mapDispatchToProps } from "./store/reduxMaps";
 import { connect } from "react-redux";
-import jwt_decode from "jwt-decode";
 
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import Search from "./Containers/SearchPage/SearchPage";

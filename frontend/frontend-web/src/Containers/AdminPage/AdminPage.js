@@ -18,7 +18,7 @@ const AdminPage = (props) => {
 
   const [files, setfiles] = useState(null);
 
-  const { Token, ID, Role, Name } = props.userData;
+  const {ID} = props.userData;
 
   const handleFIleUpload = (event) => {
     setfiles(

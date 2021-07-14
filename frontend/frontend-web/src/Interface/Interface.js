@@ -298,13 +298,13 @@ export const getAllMessages = async (Token, otherID) => {
 };
 
 export const sendMessage = async (Token, otherID, Data) => {
+  msngrskt.emit("private message", { content: Data, to: otherID });
   const res = await instance.post(`/users/messages/${otherID}`, Data, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
     },
   });
-  msngrskt.emit("private message", { content: Data, to: otherID });
 };
 
 export const getCourseStudents = async (id) => {
@@ -413,16 +413,12 @@ export const SubmitDelivByID = async (id, Token) => {
 export const getQuizzes = async (id, Token) => {
   //TODO: Integrate the Quizzes backend
 
-  const res = await instance.get(`/courses/${id}/events`, {
+  const res = await instance.get(`/exams_by_course/${id}/${Token}`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
     },
   });
-  const result = res.data.events.filter(
-    (value) => value["event_type"] === "exam"
-  );
-  console.log(result);
+  const result = res.data;
   return result;
 };
 
@@ -434,9 +430,7 @@ export const getQuizByID = async (id, Token) => {
     },
   });
   console.log(`Getting Quizzes of All Courses`);
-
-  console.log(res);
-  /*return res.data["names"]; */
+  return res.data.exam;
 };
 
 export const getPDFs = async (id) => {

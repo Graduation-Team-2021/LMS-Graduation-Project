@@ -7,7 +7,7 @@ import Waiting from '../../Components/Waiting/Waiting'
 
 const columns = [{ field: "name", headerName: "Name", width: 340 }];
 
-const cRows = [
+/* const cRows = [
   {
     name: "Creating FSD",
     id: 1,
@@ -36,7 +36,7 @@ const cRows = [
     name: "noSQL",
     id: 7,
   },
-];
+]; */
 
 export default function PDFsPage(props) {
   const [rows, setRows] = useState([]);

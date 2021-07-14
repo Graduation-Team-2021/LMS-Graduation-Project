@@ -3,14 +3,16 @@ import React, { useEffect, useState } from "react";
 import cls from "./DelivTable.module.css";
 import Summary from "./DelivSummary/Summary";
 import { getQuizzes } from "../../Interface/Interface";
-import Waiting from '../../Components/Waiting/Waiting'
+import Waiting from "../../Components/Waiting/Waiting";
+import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
+import { connect } from "react-redux";
 
 const columns = [
   { field: "name", headerName: "Name", width: 340 },
-  { field: "date", headerName: "Upload Time", width: 180 },
   { field: "status", headerName: "Status", width: 180 },
   { field: "leeway", headerName: "Allowed Time", width: 150 },
   { field: "mark", headerName: "Mark", width: 130 },
+  { field: "smark", headerName: "Your Score", width: 130 },
 ];
 
 /* const cRows = [
@@ -40,28 +42,29 @@ const columns = [
   },
 ]; */
 
-export default function DeliverableList(props) {
+export default connect(mapStateToProps, mapDispatchToProps)(function DeliverableList(props) {
   const [rows, setRows] = useState([]);
 
   const [Loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getQuizzes(props.id).then((res) => {
+    getQuizzes(props.id, props.userData.ID).then((res) => {
       const temp = [];
-      res.forEach((value) =>
+      res.forEach((value, index) =>
         temp.push({
-          id: value["event_id"],
-          name: value["event_name"],
-          leeway: value["event_duration"] + " Hours",
-          date: value["event_date"],
-          status: "Completed",
-          course: props.name
+          id: value["exam_id"],
+          name: `Quiz ${index + 1}`,
+          leeway: value["exam_duration"],
+          status: value["status"],
+          course: props.name,
+          mark: value["exam_marks"],
+          smark: value["marks"],
         })
       );
       setRows(temp);
       setLoading(false);
     });
-  }, [props.id, props.name]);
+  }, [props.id, props.name, props.userData.ID]);
 
   let newArrayOfObjects = Object.values(
     rows.reduce((mapping, item) => {
@@ -108,4 +111,4 @@ export default function DeliverableList(props) {
       </Waiting>
     </div>
   );
-}
+});

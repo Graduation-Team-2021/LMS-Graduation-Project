@@ -19,11 +19,10 @@ import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setNewPost, setLocationPost } from "../../Models/Post";
 
 const CoursePage = (props) => {
-  const [isJoined, Token, userID, Role, Name] = [
+  const [isJoined, Token, userID, Name] = [
     props.location.state.isJoined,
     props.userData.Token,
     props.userData.ID,
-    props.userData.Role,
     props.userData.Name,
   ];
 

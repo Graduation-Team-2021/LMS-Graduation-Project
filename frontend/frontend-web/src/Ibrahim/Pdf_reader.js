@@ -161,7 +161,7 @@ const PDF = (props) => {
       setLoading(false);
       setSrc(url + res);
     });
-  }, []);
+  }, [props.match.params.id]);
 
   return (
     <span className={classes.Main}>
