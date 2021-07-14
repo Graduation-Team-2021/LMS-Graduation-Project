@@ -195,7 +195,7 @@ get Deliverable
 api.add_resource(All_Deliverables, '/deliverables')
 api.add_resource(Deliverable_view, '/deliverables/<deliverable_id>')
 api.add_resource(Student_Deliverables, '/students/<student_id>/deliverables/<deliverable_id>')
-api.add_resource(Course_Deliverables, '/courses/<course_code>/deliverables/')
+api.add_resource(Course_Deliverables, '/courses/<course_code>/deliverable')
 
 """
 Events

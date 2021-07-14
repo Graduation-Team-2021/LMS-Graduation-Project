@@ -5,7 +5,7 @@ from functools import wraps
 from methods.errors import ErrorHandler
 import datetime, jwt, os
 
-secret_key = "ANy HABDDDDDDDDD"
+secret_key = os.getenv('SECRET_KEY')
 
 
 def encode_auth_token(user_id, role):
@@ -90,7 +90,7 @@ def verify_decode_jwt(token):
             secret_key,
             algorithms='HS256'
         )
-
+        
         return payload
 
     except jwt.ExpiredSignatureError:
