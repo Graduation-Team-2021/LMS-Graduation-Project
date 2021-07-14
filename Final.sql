@@ -8,6 +8,8 @@ INSERT INTO `course` (`course_code`,`course_name`,`weekly_hours`,`max_students`,
 
 INSERT INTO `professor` (`user_id`,`scientific_degree`) VALUES (5,'PHD doctorate'),(52,''),(53,''),(56,'DR');
 
+INSERT INTO `student` (`user_id`,`student_year`) VALUES (33,4),(43,4),(44,3);
+
 INSERT INTO `group_project` (`group_id`,`group_name`,`group_description`,`post_owner_id`) VALUES (1,'TeamGrad','David we Zezo',4),(2,'Chicken Dinner',NULL,5),(5,'D','D',10),(30,'1 - Section 1','This is the Group for Section 1 of the 1 Course',59);
 
 INSERT INTO `exams` (`exam_id`,`course_id`,`exam_duration`,`exam_marks`) VALUES (13,'CS88','40 Minutes',3);
@@ -39,8 +41,6 @@ INSERT INTO `post` (`post_id`,`post_writer`,`post_owner`,`post_text`) VALUES (1,
 INSERT INTO `post_commenter` (`comment_id`,`commenter_id`,`post_id`,`comment_text`,`created_date`) VALUES (1,44,1,'dAVID','2021-04-08 18:56:50'),(2,44,1,'David','2021-04-08 18:57:02'),(3,44,20,'dasda','2021-04-15 11:11:57');
 
 INSERT INTO `post_liker` (`liker_id`,`post_id`,`created_date`) VALUES (5,1,'2021-04-03 13:25:17'),(5,2,'2021-04-03 13:25:17'),(33,1,'2021-04-03 13:25:17'),(43,1,'2021-04-03 13:25:17'),(44,2,'2021-04-08 18:31:33'),(44,3,'2021-04-08 18:34:15'),(44,15,'2021-04-10 01:09:29'),(44,20,'2021-04-15 11:11:59');
-
-INSERT INTO `student` (`user_id`,`student_year`) VALUES (33,4),(43,4),(44,3);
 
 INSERT INTO `student_group_relation` (`group_id`,`student_id`) VALUES (1,44);
 
