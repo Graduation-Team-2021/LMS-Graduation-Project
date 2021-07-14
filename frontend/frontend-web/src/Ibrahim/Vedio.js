@@ -107,9 +107,6 @@ class Vedioplayer extends Component {
                   alignItems: "center",
                 }}
               >
-                <Button className={classes.Back} onClick={this.nulling}>
-                  Back to Course page
-                </Button>
               </span>
             </div>
           </div>
