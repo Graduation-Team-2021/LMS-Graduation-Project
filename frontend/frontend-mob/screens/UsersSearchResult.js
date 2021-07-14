@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList, Dimensions } from "react-native";
-import SearchResultItem from "../components/SearchResultItem";
+import { View, StyleSheet } from "react-native";
+import SearchList from "../components/SearchList";
 import { searchUsers } from "../Interface/Interface";
-
+import UsersSearchResultItem from "../components/UsersSearchResultItem";
 const UsersSearchResult = (props) => {
   const searchingQuery = props.navigation.getParam("searchingQuery");
-  const [Result, setResult] = useState([]);
-  const [Orientation, setOrientation] = useState(
-    Dimensions.get("window").width >= Dimensions.get("window").height
-  );
+  const [Result, setResult] = useState(null);
+
   const fetchUsers = () => {
     searchUsers(searchingQuery).then((res) => {
       setResult(res);
@@ -17,24 +15,11 @@ const UsersSearchResult = (props) => {
 
   useEffect(() => {
     fetchUsers();
-    const orientationSetterHandler = ({ window }) => {
-      setOrientation(window.width >= window.height);
-    };
-    Dimensions.addEventListener("change", orientationSetterHandler);
-    return () => {
-      Dimensions.removeEventListener("change", orientationSetterHandler);
-    };
   }, []);
 
   return (
     <View style={styles.screen}>
-      <FlatList
-        data={Result}
-        renderItem={(item) => <SearchResultItem item={item.item} />}
-        keyExtractor={(item, index) => `${index}`}
-        numColumns={Orientation ? 3 : 1}
-        key={Orientation}
-      />
+      <SearchList Result={Result} ResultItemComponent={UsersSearchResultItem} />
     </View>
   );
 };
