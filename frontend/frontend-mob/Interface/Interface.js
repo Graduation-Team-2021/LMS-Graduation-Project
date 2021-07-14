@@ -1,9 +1,9 @@
 import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
 export const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000"; //NEVER CHANGE THIS CONSTANT
-
+export const path = "http://192.168.1.68:5000"
 const instance = axios.create({
-  baseURL: azure,
+  baseURL: path,
 });
 //Template for all Functions
 export const f1 = async () => {
@@ -358,21 +358,32 @@ export const getStudentsByCourse = async (id) => {
   return res.data["names"];
 };
 
+export const getAllDeliveredFilesByStudent = async (deliverable_id,student_id)=>{
+  const res = await instance.get(`/students/${student_id}/deliverables/${deliverable_id}`,null, {
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  return res.data
+}
+export const getAllDeliverablesByDeliverableId = async (deliverable_id) => {
+  const res = await instance.get(`/students_deliverables/${deliverable_id}`,null, {
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  return res.data
+}
+
 export const getAllCourseDeliverables = async (id,Token) => {
-  if (id) {
-    console.log(`Getting Deliverables of Course ${id}`);
-    const res = await instance.get(`/courses/${id}/deliverables`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + Token,
-      },
-    });
-    return res.data['deliverables']
-  }
-  else{
-    console.log(`Getting Deliverables of All Courses`);
-  }
-};
+  instance.defaults.headers.common['Authorization'] = `Bearer ${Token}`
+  const res = await instance.get(`/courses/${id}/deliverable`,null, {
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  return res.data['deliverables']
+}
 
 export const deleteDeliverable = async(deliverable_id)=>{
   const res = await instance.delete(`deliverables/${deliverable_id}`,{
@@ -478,18 +489,6 @@ export const getVideos = async (course_code) => {
   return res.data["materials"];
 };
 
-
-export const AddNewDeliv = async (Data) => {
-  //TODO: Integrate the PDFs backend
-    /* const res = await instance.get(`/course/${id}/students`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }); */
-    console.log(Data)
-  /* console.log(res);
-  return res.data["names"]; */
-};
 
 export const searchUsers = async (text) => {
   const res = await instance.get(`/users/search/${text}`, {

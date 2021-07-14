@@ -3,16 +3,19 @@ import { View, Image, ScrollView ,StyleSheet,ActivityIndicator} from "react-nati
 import { Button ,Text, Divider} from "react-native-elements";
 import * as DocumentPicker from 'expo-document-picker';
 import { Ionicons,AntDesign,Entypo} from '@expo/vector-icons';
-import { getDeliversRelation,uploadDeliverable,studentsSubmissions} from "../Interface/Interface";
+import { getDeliversRelation,uploadDeliverable,studentsSubmissions,getAllDeliverablesByDeliverableId} from "../Interface/Interface";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import * as Progress from 'react-native-progress';
 import {showMessage, hideMessage} from "react-native-flash-message";
+import StudentDeliverableItem from "../components/StudentDeliverableItem"
 const DeliverableDescription = (props) => {
   const [file,setFile] = useState("")
   const [uploadedFiles,setUploadedFiles] = useState()
   const [uploadPercentage,setUploadPercentage] = useState(0)
   const [deliverablesLoaded,setDeliverablesLoaded]= useState(false)
+  const [studentDeliverables,setStudentDeliverables] = useState([])
+
   let pickDocumentHandler = async () => {
     let result = await DocumentPicker.getDocumentAsync({
       multiple: true,
@@ -21,6 +24,7 @@ const DeliverableDescription = (props) => {
       setFile(result)
     }
   }
+
   let uploadFileHandler = () =>{
     getDeliversRelation(props.navigation.getParam('deliverable_id'),props.userData.Token).then((res) => {
       if (res) {
@@ -37,6 +41,12 @@ const DeliverableDescription = (props) => {
       }
     });
   }
+  const StudentSubmissionHandler = (student) =>{
+    props.navigation.navigate({
+    routeName: "StudentSubmission",
+    params: {student:student,deliverable_id:props.navigation.getParam('deliverable_id')}
+  })
+  }
   let retrieveStudentSubmissions = () =>{
     studentsSubmissions(props.userData.ID, props.navigation.getParam('deliverable_id')).then((res) => {
       let temp =[]
@@ -52,6 +62,11 @@ const DeliverableDescription = (props) => {
       }
     });
   }
+  useEffect(() => {
+    getAllDeliverablesByDeliverableId(props.navigation.getParam('deliverable_id')).then((res)=>{
+      setStudentDeliverables(res)
+    })
+  }, []);
   useEffect(() => {
     retrieveStudentSubmissions()
   }, []);
@@ -104,7 +119,15 @@ const DeliverableDescription = (props) => {
     <Progress.Bar progress={uploadPercentage} width={150}/>
     </View>
       }
-      </View>:<Text>render student submissions</Text>}
+      </View>:
+      <View>
+      <Text style={{textAlign:"center",marginBottom:15,fontSize:17,fontWeight:"500"}}>Students' Submissions</Text>
+      {studentDeliverables.map((studentDeliverable,i)=>{
+        return(
+        <StudentDeliverableItem studentDeliverable={studentDeliverable} StudentSubmissionHandler={StudentSubmissionHandler}>
+        </StudentDeliverableItem>)
+      })}
+      </View>}
 
     </View>
     
