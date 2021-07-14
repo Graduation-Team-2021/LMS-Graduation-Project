@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { FilePicker } from "react-file-picker";
 
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 import Card from "../../Components/Card/Card";
@@ -9,42 +10,36 @@ import classes from "./AdminPage.module.css";
 import Button from "../../Components/Button/Button";
 
 import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
-import { updatePic, getUser } from "../../Interface/Interface";
+import { updatePic, getUser, url } from "../../Interface/Interface";
 
 const AdminPage = (props) => {
   const [dismiss, setDismiss] = useState(false);
 
   const [userSelf, setuserSelf] = useState(null);
 
-  const [files, setfiles] = useState(null);
+  const { ID } = props.userData;
 
-  const {ID} = props.userData;
-
-  const handleFIleUpload = (event) => {
-    setfiles(
-      //TODO: enable Multiple Files
-      /* (state, props)=>{
-      let temp = [...state.file]
-      temp.push(event.target.value)
-      return {
-        file: temp
-      }
-    } */
-      event.target.files[0]
-    );
+  const handleFIleUpload = (file) => {
+    Submit(file)
   };
 
   useEffect(() => {
-    getUser(ID).then(res=>{
-      console.log(res['picture']);
-      setuserSelf(res)
-    })
-  }, [ID])
+    getUser(ID).then((res) => {
+      setuserSelf(res);
+    });
+  }, [ID]);
 
-  const Submit = () => {
+  const Submit = (files) => {
     console.log(files);
     //uploadFile(this.props.Token, this.state.file, this.props.CourseID);
-    updatePic(props.userData.ID, files)
+    updatePic(props.userData.ID, files).then((res)=>{
+      if(res){
+        const temp = {...userSelf};
+        temp.picture = url+res.picture
+        setuserSelf(temp)
+        props.userDataActions.onSetPic(url+res.picture)
+      }
+    });
   };
 
   const Transition = (path) => {
@@ -66,32 +61,29 @@ const AdminPage = (props) => {
           <div className={classes.background}>{/*insert your image here*/}</div>
           <div className={classes.User}>
             <div className={classes.main}>
-              <ImageHolder className={classes.Pic} filler={userSelf?userSelf['picture']:filler} />
-              <div className={classes.Details}>
-                <div className={classes.filler} />
-                <div className={classes.Name}>{props.userData.Name}</div>
-                <div>Third Year{/*get from database*/}</div>
-                <div>Computer Engineering{/*get from database*/}</div>
-              </div>
-            </div>
-            <Card shadow className={classes.small}>
-              <label
-                style={{
-                  padding: "0 0 10% 0",
-                }}
-              >
-                Select files:
-              </label>
-              <input
-                type="file"
-                id="myfile"
-                name="myfile"
-                multiple
-                onChange={handleFIleUpload}
+              <ImageHolder
+                className={classes.Pic}
+                filler={
+                  userSelf && userSelf["picture"] ? userSelf["picture"] : filler
+                }
               />
-              <br></br>
-              <input type="submit" onClick={Submit} />
-            </Card>
+              <span className={classes.D}>
+                <div className={classes.Details}>
+                  <div className={classes.filler} />
+                  <div className={classes.Name}>{props.userData.Name}</div>
+                  <FilePicker
+                    onChange={(FileObject) => {
+                      handleFIleUpload(FileObject);
+                    }}
+                    onError={(errMsg) => {
+                      /* do something with err msg string */
+                    }}
+                  >
+                    <Button className={classes.Button2}>Change Pic</Button>
+                  </FilePicker>
+                </div>
+              </span>
+            </div>
           </div>
         </Card>
         <div className={classes.Bottom}>
@@ -99,11 +91,15 @@ const AdminPage = (props) => {
             <Button
               className={classes.Button}
               onClick={Transition.bind(this, "/SignUp")}
-            >Add User</Button>
+            >
+              Add User
+            </Button>
             <Button
               className={classes.Button}
               onClick={Transition.bind(this, "/AddCourse")}
-            >Add Course</Button>
+            >
+              Add Course
+            </Button>
           </div>
         </div>
       </Card>

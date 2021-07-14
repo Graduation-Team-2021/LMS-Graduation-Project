@@ -7,7 +7,7 @@ import "./Menu.module.css";
 const Menu = (props) => {
   return (
     <React.Fragment>
-      <h2
+      {props.userData.Role!=='admin'?<h2
         color="blue"
         onClick={() => {
           props.onClick();
@@ -15,7 +15,7 @@ const Menu = (props) => {
         }}
       >
         View Profile
-      </h2>
+      </h2>: null}
       <h2
         onClick={() => {
           props.onClick();
@@ -32,7 +32,7 @@ const Menu = (props) => {
       >
         Reset Password
       </h2>
-      <h2
+      {props.userData.Role==="student"?<h2
         onClick={() => {
           props.onClick();
           props.history.push({
@@ -42,8 +42,7 @@ const Menu = (props) => {
         }}
       >
         Enroll in Courses
-      </h2>
-      {/*TODO: onclick => GO To Enroll*/}
+      </h2>:null}
       <h2
         onClick={() => {
           localStorage.removeItem("token");

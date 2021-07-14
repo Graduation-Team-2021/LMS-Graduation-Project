@@ -28,6 +28,7 @@
     "react-countdown": "^2.3.1",
     "react-date-picker": "^8.1.1",
     "react-dom": "^17.0.1",
+    "react-file-picker": "^0.0.6",
     "react-google-charts": "^3.0.15",
     "react-loading": "^2.0.3",
     "react-player": "^2.9.0",

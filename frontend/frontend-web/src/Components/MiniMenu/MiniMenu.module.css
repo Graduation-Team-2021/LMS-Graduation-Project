@@ -9,6 +9,14 @@
     font-size: medium;
 }
 
+.Main .UserImage{
+    position: absolute;
+    z-index: 100;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+}
+
 .full {
     outline: none;
     position: absolute;
@@ -17,10 +25,16 @@
     flex-flow: column;
     align-items: flex-end;
     z-index: 1500;
+    width: 20%;
 }
 
 .Main {
-    width: 400px;
+    width: 130%;
+}
+
+.Main .hidden {
+    opacity: 0;
+    cursor: default;
 }
 
 .Main .holder {
@@ -33,6 +47,7 @@
     position: relative;
     min-width: 80px;
     min-height: 80px;
+    
 }
 
 
@@ -89,9 +104,10 @@
 }
 
 @media (max-width: 940px) {
-    .Main{
-        width:120%;
+    .Main {
+        width: 120%;
     }
+
     .Main .holder {
         width: 50px;
         height: 50px;
@@ -178,14 +194,6 @@
     .small {
         display: flex;
     }
-}
-
-.holder .UserImage {
-    position: absolute;
-    z-index: 100;
-    width: 70%;
-    height: 70%;
-    border-radius: 50%;
 }
 
 .Back {

@@ -3,7 +3,7 @@ NEW TODO:
 3. Join Courses with a deadline *******************************************
 4. Search Page with categories for each entity (Clickable Results)
 5. Deliverables integration (Michel,David)
-6. Quizzes (integrate with backend)
+6. Quizzes (integrate with backend "only Submit Quiz is remaining")
 7. يوم النتيجة
 9. Frontend error handling (John, David) (in progress)
 10.Notification View (Michel,David)
@@ -16,6 +16,7 @@ NEW TODO:
 17.Improve the Triangle
 18.Responsive Posts
 19.Fix the Click Outside black magic
+20. add "edit profile pic to all"
  
 Mobile TODO:
 1. in Mobile app, Handle the tablet screen

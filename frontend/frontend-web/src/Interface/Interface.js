@@ -9,9 +9,9 @@ const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const local = "http://localhost:5000";
 
-export const url = azure;
+export const url = local;
 const instance = axios.create({
-  baseURL: azure,
+  baseURL: url,
   //"http://localhost:5000",
 });
 
@@ -502,6 +502,10 @@ export const updatePic = async (id, Pic) => {
     },
   });
   console.log(res);
+  if (res.status===200) {
+    return res.data
+  }
+  return null
 };
 
 export const getUser = async (id) => {

@@ -11,7 +11,7 @@ const intialState = {
     ? jwt_decode(localStorage.getItem("token")).id
     : null,
   Token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
-  Pic: localStorage.getItem("Pic") ? localStorage.getItem("Pic") : null
+  Pic: localStorage.getItem("pic") ? localStorage.getItem("pic") : null
 };
 
 const reducer = (state = intialState, action) => {
@@ -52,7 +52,7 @@ const reducer = (state = intialState, action) => {
   if (action.type === SET_PIC) {
     return {
       ...state,
-      Pic: action.value.Pic,
+      Pic: action.value,
     };
   }
   return state;

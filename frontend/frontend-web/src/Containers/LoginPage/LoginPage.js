@@ -9,7 +9,7 @@ import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 import { withRouter } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
-import { getUser, Login } from "../../Interface/Interface";
+import { getUser, Login, url } from "../../Interface/Interface";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
@@ -35,7 +35,7 @@ class LoginPage extends Component {
           };
           console.log(Data);
           getUser(Data.ID).then((res2) => {
-            Data["Pic"] = res2.picture;
+            Data["Pic"] = url+res2.picture;
             localStorage.setItem('pic', Data['Pic'])
             this.props.userDataActions.onSetData(Data);
             this.props.history.push("/");

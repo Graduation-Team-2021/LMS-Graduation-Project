@@ -113,11 +113,11 @@ class users_controller:
                 'status_code': 404
             })
         if updated_user is None:
-            raise ErrorHandler({
+            raise ErrorHandler({    
                 'description': 'User does not exist.',
                 'status_code': 404
             })
-        updated_user.picture = file_path
+        updated_user.picture = f"/static/users/{user_id}/{pic.filename}"
         updated_user.update()
         return updated_user.serialize()
 

@@ -10,6 +10,7 @@ import {
   faSquare,
   faHome,
   faBars,
+  faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -17,7 +18,7 @@ import DropDownMenu from "../DropDownMenu/DropDownMenu";
 import ImageHolder from "../ImageHolder/ImageHolder";
 import Button from "../../Components/Button/Button";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
-
+import {url} from '../../Interface/Interface'
 const MiniMenu = (props) => {
   const [Notif, setNotif] = useState(false);
   const [Menu, setMenu] = useState(false);
@@ -35,6 +36,26 @@ const MiniMenu = (props) => {
     >
       <div className={classes.full}>
         <span className={classes.Main}>
+          {props.location.pathname !== "/" ? (
+            <Button
+              className={classes.holder}
+              onClick={() => props.history.goBack()}
+            >
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                className={classes.Icon}
+                fixedWidth
+              />
+            </Button>
+          ) : (
+            <Button className={classes.holder + " " + classes.hidden}>
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                className={classes.Icon}
+                fixedWidth
+              />
+            </Button>
+          )}
           <Button
             className={classes.holder}
             onClick={() => {
@@ -50,7 +71,7 @@ const MiniMenu = (props) => {
               fixedWidth
             />
           </Button>
-          <Button
+          {props.userData.Role!=="admin"?<Button
             className={classes.holder}
             onClick={() => {
               setMenu(false);
@@ -67,7 +88,7 @@ const MiniMenu = (props) => {
               className={classes.Icon}
               fixedWidth
             />
-          </Button>
+          </Button>:null}
           <Button
             className={classes.holder}
             onClick={() => {
@@ -98,7 +119,7 @@ const MiniMenu = (props) => {
             <div className={classes.Back} />
             <ImageHolder
               className={classes.UserImage}
-              filler={props.userData.Pic || filler}
+              filler={props.userData.Pic? props.userData.Pic: filler}
             />
           </Button>
         </span>

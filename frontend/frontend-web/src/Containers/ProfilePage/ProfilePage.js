@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { FilePicker } from "react-file-picker";
 
 import filler from "../../assets/Filler.png";
 import classes from "./ProfilePage.module.css";
@@ -9,6 +10,7 @@ import Card from "../../Components/Card/Card";
 import OldCourses from "../OldCourses/OldCourses";
 import PostsArea from "../PostsArea/PostsArea";
 import Upcoming from "../Upcoming/Upcoming";
+import Button from "../../Components/Button/Button";
 
 import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
 import {
@@ -17,6 +19,8 @@ import {
   getRecentEvent,
   getUser,
   getGradeSoFar,
+  url,
+  updatePic,
 } from "../../Interface/Interface";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 import { setFullUserPost } from "../../Models/Post";
@@ -26,8 +30,8 @@ const ProfilePage = (props) => {
   const [Finished, setFinished] = useState([]);
 
   const [userSelf, setuserSelf] = useState(null);
-  
-  const [grade, setGrade] = useState(0)
+
+  const [grade, setGrade] = useState(0);
 
   const { Token, ID, Role, Name } = props.userData;
 
@@ -38,6 +42,24 @@ const ProfilePage = (props) => {
   const RecentEvent = recentEvent.recentEvent;
 
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
+
+  const handleFIleUpload = (file) => {
+    Submit(file);
+  };
+
+  const Submit = (files) => {
+    console.log(files);
+    //uploadFile(this.props.Token, this.state.file, this.props.CourseID);
+    updatePic(props.userData.ID, files).then((res) => {
+      if (res) {
+        const temp = { ...userSelf };
+        temp.picture = url+res.picture;
+        props.userDataActions.onSetPic(url+res.picture)
+        localStorage.setItem('pic', url+res.picture)
+        setuserSelf(temp);
+      }
+    });
+  };
 
   useEffect(() => {
     if (!RecentEvent)
@@ -52,6 +74,7 @@ const ProfilePage = (props) => {
 
   useEffect(() => {
     getUser(ID).then((res) => {
+      res.picture = url + res.picture
       setuserSelf(res);
     });
   }, [ID]);
@@ -70,11 +93,10 @@ const ProfilePage = (props) => {
   }, [Token, ID, Role]);
 
   useEffect(() => {
-    getGradeSoFar(ID).then((res)=>{
-      setGrade(res.reduce((a,b)=>a+b['course_mark'],0));
-    })
-    
-  }, [ID])
+    getGradeSoFar(ID).then((res) => {
+      setGrade(res.reduce((a, b) => a + b["course_mark"], 0));
+    });
+  }, [ID]);
 
   return (
     <div className={classes.Center}>
@@ -86,15 +108,31 @@ const ProfilePage = (props) => {
               <ImageHolder
                 className={classes.Pic}
                 filler={
-                  userSelf && userSelf["picture"] ? userSelf["picture"] : filler
+                  userSelf && userSelf["picture"]
+                    ? userSelf["picture"]
+                    : filler
                 }
               />
-              <div className={classes.Details}>
-                <div className={classes.filler} />
-                <div className={classes.Name}>{props.userData.Name}</div>
-                <div>Third Year{/*get from database*/}</div>
-                <div>Computer Engineering{/*get from database*/}</div>
-              </div>
+              <span className={classes.D}>
+              <div className={classes.filler} />
+                <span className={classes.DD}>
+                  <div className={classes.Details}>
+                    <div className={classes.Name}>{props.userData.Name}</div>
+                    <div>Third Year{/*get from database*/}</div>
+                    <div>Computer Engineering{/*get from database*/}</div>
+                  </div>
+                  <FilePicker
+                    onChange={(FileObject) => {
+                      handleFIleUpload(FileObject);
+                    }}
+                    onError={(errMsg) => {
+                      /* do something with err msg string */
+                    }}
+                  >
+                    <Button className={classes.Button2}>Change Pic</Button>
+                  </FilePicker>
+                </span>
+              </span>
             </div>
             <div className={classes.small}>
               <Card shadow className={classes.Note}>
@@ -103,7 +141,10 @@ const ProfilePage = (props) => {
               </Card>
               <Card shadow className={classes.Note}>
                 <h2>Total Grade</h2>
-                <h1>{grade}{/*get from database*/}</h1>
+                <h1>
+                  {grade}
+                  {/*get from database*/}
+                </h1>
               </Card>
             </div>
           </div>
