@@ -10,7 +10,7 @@ class GroupCourseRelation(db.Model, Base):
     __tablename__ = 'group_course_relation'
     group_id = db.Column(db.Integer, ForeignKey('group_project.group_id', ondelete='CASCADE', onupdate="CASCADE"),
                          primary_key=True)
-    course_id = db.Column(db.String,
+    course_id = db.Column(db.String(5),
                                ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                                primary_key=True)
 
