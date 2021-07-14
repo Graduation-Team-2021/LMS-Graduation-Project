@@ -11,6 +11,7 @@ import { getAllMessages, sendMessage } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 // TODO: initialize the socket-io client here
 import msngrskt from "../../sockets/msngrskts";
+import { useCallback } from "react";
 
 export default connect(
   mapStateToProps,
@@ -26,7 +27,7 @@ export default connect(
   const [loading, setLoading] = useState(true);
   const [messIn, setMess] = useState({ text: "" });
   const [dismissed, setDismissed] = useState({ dismissed: false });
-  const [Animation, setAnimation] = useState(false)
+  const [Animation, setAnimation] = useState(false);
   ///////////////////////////////////////////////////////////////////////////////////////
   let listCls = [cls.hideList]; //TODO: Fix the Animation
   if (props.currentMessage.currentMessage.ID) {
@@ -37,15 +38,39 @@ export default connect(
   if (dismissed.dismissed && Animation) {
     listCls = [cls.list, cls.minimize];
   }
-  if (dismissed.dismissed && !Animation){
-    listCls = [cls.list, cls.NONE]
+  if (dismissed.dismissed && !Animation) {
+    listCls = [cls.list, cls.NONE];
   }
+  ///////////////////////////////////////////////////////////////////////////////////////
+
+  const getMessages = useCallback(() => {
+    if (props.currentMessage.currentMessage) {
+      getAllMessages(
+        props.userData.Token,
+        props.currentMessage.currentMessage.ID
+      ).then((res) => {
+        const temp = [];
+        res.forEach((ele) => {
+          let time = ele["sent_time"];
+          let timestamp = new Date(time);
+          temp.push({
+            id: ele["message_id"],
+            author: ele["sender_id"],
+            message: ele["text"],
+            timestamp: timestamp,
+          });
+        });
+        setMessages(temp);
+        setLoading(false);
+      });
+    }
+  }, [props.currentMessage.currentMessage, props.userData.Token]);
   ///////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     getMessages();
     setLoading(true);
     setDismissed({ dismissed: false });
-  }, [props.currentMessage.currentMessage, newMes]);
+  }, [props.currentMessage.currentMessage, newMes, getMessages]);
 
   useEffect(() => {
     msngrskt.on("private message", (res) => setNewMes(res));
@@ -66,9 +91,10 @@ export default connect(
           timestamp: new Date(newMes.content.sent_time).getTime(),
         },
       ];
+      setNewMes(null);
       setMessages(Temp);
     }
-  }, [newMes, props.currentMessage.currentMessage]);
+  }, [messages, newMes, props.currentMessage.currentMessage]);
   //////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////
   //TODO: add another useEffect here to add the on recive message call back
@@ -104,13 +130,14 @@ export default connect(
   };
 
   const onFileChange = (e) => {
+    //TODO: Send Files via attachments
     const file = e.target.files[0];
   };
   //////////////////////////////////////////////////////////////////////////////////
   const Dismiss = () => {
     setDismissed({ dismissed: !dismissed.dismissed });
-    setAnimation(true)
-    setTimeout(()=>setAnimation(false))
+    setAnimation(true);
+    setTimeout(() => setAnimation(false));
   };
 
   const toggleSearch = () => {
@@ -155,29 +182,6 @@ export default connect(
     }
   };
   /////////////////////////////////////////////////////////////////////////////////
-
-  const getMessages = () => {
-    if (props.currentMessage.currentMessage) {
-      getAllMessages(
-        props.userData.Token,
-        props.currentMessage.currentMessage.ID
-      ).then((res) => {
-        const temp = [];
-        res.forEach((ele) => {
-          let time = ele["sent_time"];
-          let timestamp = new Date(time);
-          temp.push({
-            id: ele["message_id"],
-            author: ele["sender_id"],
-            message: ele["text"],
-            timestamp: timestamp,
-          });
-        });
-        setMessages(temp);
-        setLoading(false);
-      });
-    }
-  };
 
   const renderMessages = (list) => {
     let i = 0;
@@ -251,7 +255,7 @@ export default connect(
         flexFlow: "row-reverse",
         alignItems: "flex-end",
         width: "fit-content",
-        minWidth: '0',
+        minWidth: "0",
       }}
     >
       <button className={cls.ButtCls} onClick={Dismiss}>
@@ -293,7 +297,7 @@ export default connect(
                 onClick={onButtonClick}
               >
                 <i>
-                  <img src="/photo.png" width="20" height="20" alt="photo" />
+                  <img src="/photo.png" width="20" height="20" alt="" />
                 </i>
               </button>,
               <button

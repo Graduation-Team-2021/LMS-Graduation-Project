@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 //import  from ''
 import "./Mark_edit.css";
-import axios from "axios";
 import { getCourseStudents, setCourseStudent } from "../Interface/Interface";
 
 class MarkEdit extends Component {

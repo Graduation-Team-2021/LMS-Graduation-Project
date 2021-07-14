@@ -298,13 +298,13 @@ export const getAllMessages = async (Token, otherID) => {
 };
 
 export const sendMessage = async (Token, otherID, Data) => {
+  msngrskt.emit("private message", { content: Data, to: otherID });
   const res = await instance.post(`/users/messages/${otherID}`, Data, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
     },
   });
-  msngrskt.emit("private message", { content: Data, to: otherID });
 };
 
 export const getCourseStudents = async (id) => {
@@ -419,7 +419,6 @@ export const getQuizzes = async (id, Token) => {
     },
   });
   const result = res.data;
-  console.log(result);
   return result;
 };
 
@@ -431,9 +430,7 @@ export const getQuizByID = async (id, Token) => {
     },
   });
   console.log(`Getting Quizzes of All Courses`);
-
-  console.log(res.data);
-  return res.data;
+  return res.data.exam;
 };
 
 export const getPDFs = async (id) => {

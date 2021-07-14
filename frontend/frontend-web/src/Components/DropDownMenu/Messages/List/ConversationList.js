@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import ConversationListItem from "./Item/Item";
 import cls from "./ConversationList.module.css";
@@ -37,7 +37,7 @@ export default connect(
       temp.splice(temp.findIndex(el => { return el === response }), 1)
       setCurrentActiveUsers(temp)
     });
-  }, []);
+  }, [CurrentActiveUsers]);
   ///////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export default connect(
         setConversations(temp);
       }
     }
-  }, [newMessage]);
+  }, [Users, conversations, newMessage]);
   /////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
   const getConversations = () => {

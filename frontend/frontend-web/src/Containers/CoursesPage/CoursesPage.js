@@ -50,7 +50,7 @@ const HomePage = (props) => {
             id["isenrolled"] = "true";
           }
           if (props.location.state) {
-            if (id["isenrolled"]=="false") {
+            if (id["isenrolled"]==="false") {
               Courses[id["course_code"]] = setCourse(id);
             }
           } else {
@@ -65,7 +65,7 @@ const HomePage = (props) => {
         TokenError();
       }
     });
-  }, [Token, TokenError, currentCourses, finishedCourses]);
+  }, [Token, TokenError, currentCourses, finishedCourses, props.location.state]);
 
   let loadedCourses = [];
   Array.from(Object.keys(Courses)).forEach((key) => {

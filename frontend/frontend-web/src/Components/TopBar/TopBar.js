@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import Search from "../Search/Search";
 import Welcome from "../Welcome/Welcome";
 import MiniMenu from "../MiniMenu/MiniMenu";
 import classes from "./TopBar.module.css";

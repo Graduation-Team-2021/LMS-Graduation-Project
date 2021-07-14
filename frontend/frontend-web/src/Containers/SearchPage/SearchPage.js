@@ -12,6 +12,7 @@ import {
 import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 import { AppBar, Tab } from "@material-ui/core";
 import Spacer from "react-spacer";
+import { useCallback } from "react";
 
 const SearchPage = (props) => {
   const [option, setOption] = useState("User");
@@ -28,7 +29,7 @@ const SearchPage = (props) => {
     setOption(value);
   };
 
-  const onSearch = () => {
+  const onSearch = useCallback(() => {
     if (query !== "") {
       if (!started) setStarted(true);
       if (option === "User") {
@@ -60,7 +61,7 @@ const SearchPage = (props) => {
         });
       }
     }
-  };
+  },[option, query, started])
 
   useEffect(() => {
     if (query !== "") {
@@ -69,7 +70,7 @@ const SearchPage = (props) => {
     } else {
       setResults([]);
     }
-  }, [option, query]);
+  }, [onSearch, option, query]);
 
   return (
     <span className={classes.Holder}>

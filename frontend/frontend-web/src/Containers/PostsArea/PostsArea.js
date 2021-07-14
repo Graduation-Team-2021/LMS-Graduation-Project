@@ -10,7 +10,6 @@ import Waiting from "../../Components/Waiting/Waiting";
 
 import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
 import { getCancelToken } from "../../Interface/Interface";
-import axios from "axios";
 
 class PostsArea extends Component {
   constructor(props) {

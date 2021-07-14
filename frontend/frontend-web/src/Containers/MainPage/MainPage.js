@@ -1,5 +1,5 @@
 import classes from "./MainPage.module.css";
-import React, { useState } from "react";
+import React from "react";
 import Card from "../../Components/Card/Card";
 import TopBar from "../../Components/TopBar/TopBar";
 import ChatWindow from '../../Components/PopupChatWindow/Window'

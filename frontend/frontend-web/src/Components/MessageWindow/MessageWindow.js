@@ -12,6 +12,7 @@ import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 // TODO: initialize the socket-io client here
 import msngrskt from "../../sockets/msngrskts";
+import { useCallback } from "react";
 
 
 
@@ -42,10 +43,37 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   //];
   ///////////////////////////////////////////////////////////////////////////////////////
 
+  const getMessages = useCallback(() => {
+    if (props.Current) {
+      if (!props.isNew) {
+        getAllMessages(props.userData.Token, props.Current.ID).then(res => {
+          const temp = []
+          res.forEach(
+            (ele) => {
+              let time = ele['sent_time']
+              let timestamp = new Date(time)
+              temp.push({
+                id: ele['message_id'],
+                author: ele['sender_id'],
+                message: ele['text'],
+                timestamp: timestamp
+              })
+            }
+          )
+          setMessages(temp);
+          setLoading(false);
+        });
+      } else {
+        setMessages([])
+      }
+    }
+  }, [props.Current, props.isNew, props.userData.Token])
+  //////////////////////////////////////////////////////////////////////////////
+
   useEffect(() => {
-    getMessages();
     setLoading(true);
-  }, [props.Current, newMes]);
+    getMessages();
+  }, [props.Current, getMessages]);
 
   useEffect(() => {
     msngrskt.on("private message", (res) => setNewMes(res));
@@ -59,9 +87,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
         message: newMes.content.text,
         timestamp: new Date(newMes.content.sent_time).getTime()
       }]
+      setNewMes(null)
       setMessages(Temp)
     }
-  }, [newMes, props.Current])
+  }, [messages, newMes, props.Current])
   //////////////////////////////////////////////////////////////////////////////////////
   const toggleSearch = () => {
     setSearchVis({ showSearch: !searchVis.showSearch });
@@ -96,6 +125,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   };
 
   const onFileChange = (e) => {
+    //TODO: For Sending files in Chats
     const file = e.target.files[0];
   };
   //////////////////////////////////////////////////////////////////////////////////
@@ -138,34 +168,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
     }
   };
   /////////////////////////////////////////////////////////////////////////////////
-
-  const getMessages = () => {
-    if (props.Current) {
-      console.log(props.Current, props.isNew);
-      if (!props.isNew) {
-        getAllMessages(props.userData.Token, props.Current.ID).then(res => {
-          const temp = []
-          res.forEach(
-            (ele, index) => {
-              let time = ele['sent_time']
-              let timestamp = new Date(time)
-              temp.push({
-                id: ele['message_id'],
-                author: ele['sender_id'],
-                message: ele['text'],
-                timestamp: timestamp
-              })
-            }
-          )
-          setMessages(temp);
-          setLoading(false);
-        });
-      } else {
-        setMessages([])
-      }
-    }
-
-  };
 
   const renderMessages = (list) => {
     let i = 0;
@@ -276,7 +278,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
                 onClick={onButtonClick}
               >
                 <i>
-                  <img src="/photo.png" width="20" height="20" alt="photo" />
+                  <img src="/photo.png" width="20" height="20" alt="" />
                 </i>
               </button>,
               <button
