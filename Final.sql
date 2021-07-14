@@ -12,6 +12,8 @@ INSERT INTO `group_project` (`group_id`,`group_name`,`group_description`,`post_o
 
 INSERT INTO `exams` (`exam_id`,`course_id`,`exam_duration`,`exam_marks`) VALUES (13,'CS88','40 Minutes',3);
 
+INSERT INTO `questions` (`question_id`,`question`,`mark`,`exam_id`) VALUES (3,'name',2,13),(4,'Done',1,13);
+
 INSERT INTO `answers` (`answer_id`,`answer`,`question_id`,`right_answer`) VALUES (1,'David',3,1),(2,'DJ',3,1),(3,'Sonic',3,0),(4,'True',4,1),(5,'False',4,0);
 
 INSERT INTO `conversations` (`conversation_id`,`first_user`,`second_user`) VALUES (1,44,52),(2,44,43),(3,52,43);
@@ -37,8 +39,6 @@ INSERT INTO `post` (`post_id`,`post_writer`,`post_owner`,`post_text`) VALUES (1,
 INSERT INTO `post_commenter` (`comment_id`,`commenter_id`,`post_id`,`comment_text`,`created_date`) VALUES (1,44,1,'dAVID','2021-04-08 18:56:50'),(2,44,1,'David','2021-04-08 18:57:02'),(3,44,20,'dasda','2021-04-15 11:11:57');
 
 INSERT INTO `post_liker` (`liker_id`,`post_id`,`created_date`) VALUES (5,1,'2021-04-03 13:25:17'),(5,2,'2021-04-03 13:25:17'),(33,1,'2021-04-03 13:25:17'),(43,1,'2021-04-03 13:25:17'),(44,2,'2021-04-08 18:31:33'),(44,3,'2021-04-08 18:34:15'),(44,15,'2021-04-10 01:09:29'),(44,20,'2021-04-15 11:11:59');
-
-INSERT INTO `questions` (`question_id`,`question`,`mark`,`exam_id`) VALUES (3,'name',2,13),(4,'Done',1,13);
 
 INSERT INTO `student` (`user_id`,`student_year`) VALUES (33,4),(43,4),(44,3);
 
