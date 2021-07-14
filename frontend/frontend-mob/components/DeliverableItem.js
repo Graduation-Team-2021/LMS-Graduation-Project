@@ -37,30 +37,31 @@ const DeliverableItem = (props) => {
         marginLeft: 15,
         flexDirection: "row",
         marginTop: 10,
+        paddingRight:20
       }}
     >
       
-        <TouchableCmp onPress = {previewDeliverableHandler} style={{flexDirection:"row"}}>
+        <TouchableCmp onPress = {previewDeliverableHandler} style={{flexDirection:"row",alignItems:"center"}}>
             <FontAwesome
               name="folder-open"
               size={20}
               style={{ marginRight: 6, opacity: 0.7 }}
             />
-            <Text style={{width:"60%"}}>
+            <Text>
               {props.deliverable.deliverable_name}
             </Text>
           </TouchableCmp>
-          <View style={{flexDirection:"row",alignItems:"center"}}>
           {props.userData.Role!="professor"&&(
-          <View style={{flexDirection:"column",alignItems:"center",width:"53%"}}>
-          <AntDesign size={20} color={props.deliverable.status=="delivered"?"orange":props.deliverable.status=="finished"?"green":"red"}name={props.deliverable.status=="missing"?"closecircle":"checkcircle"}></AntDesign>
+          <View style={{flexDirection:"column",alignItems:"center",marginLeft:"auto"}}>
+          <AntDesign size={20} color={props.deliverable.status=="pending"?"orange":props.deliverable.status=="finished"?"green":"red"}name={props.deliverable.status=="missing"?"closecircle":"checkcircle"}></AntDesign>
           <Text>{props.deliverable.status}</Text>
           </View>)}
           {props.userData.Role=="professor"&&(
-          <TouchableCmp  onPress={deleteAlertHandler} style={styles.iconStyle}>
-            <Entypo name="circle-with-cross" size={20} color="red"/>
-          </TouchableCmp>)}
-          </View>
+          <View style={{marginLeft:"auto"}}>
+          <TouchableCmp  onPress={deleteAlertHandler}>
+            <Entypo name="circle-with-cross" size={20} color="red" />
+          </TouchableCmp>
+          </View>)}
             
           
     </View>
@@ -68,7 +69,6 @@ const DeliverableItem = (props) => {
 };
 const styles = StyleSheet.create({
   iconStyle: {
-    marginLeft: "auto",
     opacity: 0.8,
   },
   dividerStyle: {

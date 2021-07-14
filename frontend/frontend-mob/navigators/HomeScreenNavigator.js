@@ -12,6 +12,7 @@ import ResultsNavigator from "./ResultNavigator";
 import PdfReader from "../screens/PDFScreen"
 import CreateDeliverable from "../screens/CreateDeliverable";
 import checkConnectivity from "../hocs/checkConnectivity";
+import StudentSubmissionScreen from "../screens/StudentSubmissionScreen";
 
 const HomeStack = createStackNavigator({
   Home: {
@@ -31,7 +32,6 @@ const HomeStack = createStackNavigator({
       }
     },
   },
-
   Course: {
     screen: CourseScreen,
     navigationOptions: (navData) => {
@@ -41,6 +41,7 @@ const HomeStack = createStackNavigator({
     },
   },
   Video: { screen: VideoScreen },
+  StudentSubmission: { screen: StudentSubmissionScreen  },
   Pdf: { screen: PdfReader },
   CourseList: { screen: checkConnectivity(CourseListScreen) },
   DeliverableList: { screen: checkConnectivity(DeliverableList) },
@@ -60,7 +61,7 @@ const HomeStack = createStackNavigator({
       };
     },
   },
-  DeliverableSubmetion: {
+  DeliverableSubmission: {
     screen: checkConnectivity(DeliverableSubmetionScreen),
     navigationOptions: (navData) => {
       return {
@@ -70,6 +71,7 @@ const HomeStack = createStackNavigator({
       };
     },
   },
+  
   SearchReasult: ResultsNavigator,
 });
 

@@ -54,7 +54,7 @@ const AllDelivList = (props) => {
   const previewDeliverableHandler = (deliverable) =>{
     props.navigation.navigate({
       routeName: "DeliverableDescription",
-      params: {deliverable_id:deliverable.deliverable_id,deliverable_name:deliverable.deliverable_name,mark:deliverable.mark,deadline:deliverable.deadline,description:deliverable.description}})
+      params: {deliverable_id:deliverable.deliverable_id,deliverable_name:deliverable.deliverable_name,mark:deliverable.mark,deadline:deliverable.deadline,description:deliverable.description,status:deliverable.status,updateDeliverables:retrieveStudentDeliverables}})
   }
   const deleteDeliverableHandler = (deliverable_id) =>{ 
     deleteDeliverable(deliverable_id).then(res=>{

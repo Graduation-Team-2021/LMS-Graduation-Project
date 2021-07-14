@@ -174,6 +174,7 @@ let uploadFileHandler = () =>{
   const updateDeliverables = () =>{
     getAllCourseDeliverables(myCourse.CourseID,props.userData.Token).then(res => {
       const temp = []
+      if(res){
       res.forEach(
         (ele, index) => {
           temp.push({
@@ -186,6 +187,7 @@ let uploadFileHandler = () =>{
           })
         }
       )
+      }
       setDeliverables(temp)
       setDeliverablesLoaded(true)
   });
@@ -219,12 +221,12 @@ const previewPdfHandler = (pdf_id) =>{
   const previewDeliverableHandler = (deliverable) =>{
     props.navigation.navigate({
       routeName: "DeliverableDescription",
-      params: {deliverable_id:deliverable.deliverable_id,deliverable_name:deliverable.deliverable_name,mark:deliverable.mark,deadline:deliverable.deadline,description:deliverable.description,status:deliverable.status,updateDeliverables:updateDeliverables}})
+      params: {deliverable_id:deliverable.deliverable_id,deliverable_name:deliverable.deliverable_name,mark:deliverable.mark,deadline:deliverable.deadline,description:deliverable.description,updateDeliverables:updateDeliverables,status:deliverable.status}})
   }
   
   const previewVideoHandler = (video_id) =>{
     props.navigation.navigate({
-    routeName: "Video",
+    routeName: "StudentSubmission",
     params: {videoId:video_id}})
 }
   const createNewDeliverableHandler = () =>{

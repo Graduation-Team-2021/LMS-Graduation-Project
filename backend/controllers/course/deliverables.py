@@ -89,7 +89,7 @@ class deliverable_controller:
                 if(datetime.now() > i.deadline):
                     status = "finished"
                 elif(delivers_relation is not None):
-                    status = "delivered"
+                    status = "pending"
                 else:
                     status = "not delivered"
                 index = next((index for (index, d) in enumerate(
@@ -132,7 +132,7 @@ class deliverable_controller:
                 if(datetime.now()>i['deadline']):
                     status = "finished"
                 elif(delivers_relation is not None):
-                    status = "delivered"
+                    status = "pending"
                 else:
                     status = "missing"
                 i['status']=status
