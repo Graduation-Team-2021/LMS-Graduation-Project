@@ -16,7 +16,6 @@ class Exams(Resource):
         self.reqparse.add_argument('data', type=dict, location='json')
         
     def post(self, course_id):
-
         args = self.reqparse.parse_args()
         new_exam = args["data"]
         try:
@@ -98,8 +97,8 @@ class ExamByCourseID(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
 
-    def get(self,course_id):
-        return controller_object.get_exam_by_course_id(course_id)
+    def get(self, user_id, course_id):
+        return controller_object.get_exam_by_course_id(course_id, user_id)
     
     def post(self,course_id):
        args = self.reqparse.parse_args()

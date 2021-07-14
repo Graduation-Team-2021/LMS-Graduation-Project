@@ -35,7 +35,7 @@ function Page(props) {
             ele.leeway.slice(0, ele.leeway.indexOf(" ")) *
               60 *
               1000 *
-              (ele.leeway.slice(1, ele.leeway.indexOf(" ")) === "Minutes"
+              (ele.leeway.slice(ele.leeway.indexOf(" ")+1) === "Minutes"
                 ? 1
                 : 60)
           }

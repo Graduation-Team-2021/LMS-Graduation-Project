@@ -11,7 +11,7 @@ const local = "http://localhost:5000";
 
 export const url = azure;
 const instance = axios.create({
-  baseURL: azure,
+  baseURL: local,
   //"http://localhost:5000",
 });
 
@@ -413,15 +413,12 @@ export const SubmitDelivByID = async (id, Token) => {
 export const getQuizzes = async (id, Token) => {
   //TODO: Integrate the Quizzes backend
 
-  const res = await instance.get(`/courses/${id}/events`, {
+  const res = await instance.get(`/exams_by_course/${id}/${Token}`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
     },
   });
-  const result = res.data.events.filter(
-    (value) => value["event_type"] === "exam"
-  );
+  const result = res.data;
   console.log(result);
   return result;
 };
@@ -435,8 +432,8 @@ export const getQuizByID = async (id, Token) => {
   });
   console.log(`Getting Quizzes of All Courses`);
 
-  console.log(res);
-  /*return res.data["names"]; */
+  console.log(res.data);
+  return res.data;
 };
 
 export const getPDFs = async (id) => {
