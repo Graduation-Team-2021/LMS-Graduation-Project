@@ -103,6 +103,7 @@ const Quiz = (props) => {
         let pts = 0;
         let temp = '';
         quiz.forEach((x, i) => {
+            if (userAnswers[i]===undefined) {return;}
             if (x.answer.length === 1) {
                 temp = decodeHTMLEntities(x.answer.toString());
                 if (temp === userAnswers[i][0]) { pts++; }
