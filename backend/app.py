@@ -40,7 +40,7 @@ from models.relations.post_liker import Post_liker_relation
 """
 app and database initilization
 """
-app = Flask(__name__,static_folder='../../static')
+app = Flask(__name__,static_folder='../../../static')
 app_setup(app)
 api = Api(app)
 app.app_context().push()
