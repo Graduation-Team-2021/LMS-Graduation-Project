@@ -21,7 +21,7 @@ const GameOver = (props) => {
     return (
         <Dovy>
             <Title>Game Over</Title>
-            <Points>You did {props.pts} out of 5!</Points>
+            <Points>You did {props.pts} out of {props.totalScore}!</Points>
             <h3>Summary:</h3>
             {
                 props.data.map((item, index) => (

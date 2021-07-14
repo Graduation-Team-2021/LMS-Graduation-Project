@@ -60,21 +60,16 @@ class exams_controller():
 
     def get_exam(self, exam_id):
         try:
-            exam = Exams.query.filter_by(exam_id=exam_id).first()
+            questions = questions_controller.get_all_questions(exam_id)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
             })
-        if exam is None:
-            raise ErrorHandler({
-                'description': 'Exam does not exist.',
-                'status_code': 404
-            })
-        return exam.serialize()
+        return questions
     
-    def get_exam_by_course_id(self, course_id):
+    def get_exam_by_course_id(self, course_id, user_id):
         try:
             exam_list = Exams.query.filter_by(course_id=course_id).all()
         except SQLAlchemyError as e:
@@ -88,7 +83,14 @@ class exams_controller():
                 'description': 'Exams do not exist.',
                 'status_code': 404
             })
-        return [d.serialize() for d in exam_list]
+        temp =[]
+        for d in exam_list:
+            t =  d.serialize()
+            results = results_controller.get_student_results(user_id, t["exam_id"])
+            t['status'] = 'Completed' if results['status_code']==200 else 'Not Started'
+            t['marks'] = 0 if results['status_code']!=200 else results['mark']
+            temp.append(t)
+        return temp
 
     def update_exam(self, exam_id, exam):
         try:

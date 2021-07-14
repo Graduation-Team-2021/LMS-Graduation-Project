@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { Avatar, Icon } from "react-native-elements";
+import { Avatar, ListItem } from "react-native-elements";
 import sha256 from "crypto-js/sha512";
 
-const SearchResultItem = (props) => {
+const UsersSearchResultItem = (props) => {
   const hashedItem = sha256(JSON.stringify(props.item));
   let avatarColor = "#";
   for (let index = 0; index < 6; index++) {
@@ -16,26 +16,26 @@ const SearchResultItem = (props) => {
       ? Dimensions.get("window").width * 0.35
       : Dimensions.get("window").width * 0.9;
   return (
-    <View
-      style={{ ...styles.element, width: elementWidth }}
-    >
-      <Avatar
-        size="medium"
-        rounded
-        activeOpacity={0.7}
-        onPress={() => console.log("hello")}
-        containerStyle={{
-          backgroundColor: avatarColor,
-          justifyContent: "center",
-        }}
-        source={
-          props.item.picture !== null ? { uri: props.item.picture } : null
-        }
-        title={props.item.name[0].toUpperCase()}
-      />
-      <View style={{ flex: 1, paddingHorizontal: 10 }}>
-        <Text>{props.item.name}</Text>
-      </View>
+    <View style={{ width: elementWidth, margin: 3 }}>
+      <ListItem>
+        <Avatar
+          size="small"
+          rounded
+          activeOpacity={0.7}
+          containerStyle={{
+            backgroundColor: avatarColor,
+            justifyContent: "center",
+          }}
+          title={props.item.name[0].toUpperCase()}
+          titleStyle={{ fontSize: 20 }}
+          source={
+            props.item.picture != null ? { uri: props.item.picture } : null
+          }
+        />
+        <ListItem.Content>
+          <ListItem.Title>{props.item.name}</ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
     </View>
   );
 };
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchResultItem;
+export default UsersSearchResultItem;

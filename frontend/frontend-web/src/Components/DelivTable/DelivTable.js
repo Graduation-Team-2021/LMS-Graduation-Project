@@ -10,7 +10,7 @@ import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
 
 
 
-const cRows = [
+/* const cRows = [
   {
     name: "Sever Deployment",
     type: "Assignment",
@@ -77,7 +77,7 @@ const cRows = [
     mark: "N/A",
     id: 9,
   },
-];
+]; */
 
 export default connect(
   mapStateToProps,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import cls from "./Assignment.module.css";
 import { getDelivByID } from "../../../Interface/Interface";
 import { mapStateToProps, mapDispatchToProps } from "../../../store/reduxMaps";
@@ -10,17 +10,18 @@ const description =
 
 function Page(props) {
 
+  const ele = props.location.state.data;
+
   useEffect(()=>{
     //TODO: Load Submitted Files By Michel
     getDelivByID(ele.id, props.userData.Token)
-  },[ele.id])
+  },[ele.id, props.userData.Token])
 
   const Submit=()=>{
     //TODO: Submit Assignment by Michel
     console.log("Submitted");
   }
 
-  const ele = props.location.state.data;
   const [comment, setComment] = useState("");
   const [selfile, setFile] = useState(null);
   const onFileChange = (e) => {
