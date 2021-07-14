@@ -41,6 +41,7 @@ class CoursesArea extends Component {
         });
         this.setCurrentCourses(Courses);
       } else {
+        console.log("the courses");
         this.TokenError();
       }
       this.setState({

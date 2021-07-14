@@ -1,6 +1,8 @@
 from controllers.course.courses import courses_controller
 from controllers.relations.teaches import professor_course_relation_controller
 from controllers.relations.learns import student_course_relation_controller
+from controllers.relations.group_course_relation import group_course_controller
+from controllers.course.group_project import GroupProjectController
 from methods.errors import *
 from methods.auth import *
 from flask_restful import Resource, reqparse
@@ -9,9 +11,12 @@ from flask import current_app, jsonify
 controller_object = courses_controller()
 professor_controller_object = professor_course_relation_controller()
 student_controller_object = student_course_relation_controller()
-
+group_course_object = group_course_controller()
+group_object = GroupProjectController()
 
 # /courses/<course_code>
+
+
 class Course(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -50,8 +55,8 @@ class Course(Resource):
             'weekly_hours': args['weekly_hours'],
             'group_number': args['group_number'],
             'max_students': args['max_students'],
-            'course_description':args['course_description'],
-            'post_owner_id':args['post_owner_id']
+            'course_description': args['course_description'],
+            'post_owner_id': args['post_owner_id']
 
         }
         try:
@@ -63,7 +68,7 @@ class Course(Resource):
             'message': 'Course updated successfully',
             'status_code': 200
         })
-        
+
 
 # /courses
 class Courses(Resource):
@@ -74,8 +79,9 @@ class Courses(Resource):
         self.reqparse.add_argument('weekly_hours', type=int, location='json')
         self.reqparse.add_argument('group_number', type=int, location='json')
         self.reqparse.add_argument('max_students', type=int, location='json')
-        self.reqparse.add_argument('course_description', type=str, location='json')
-
+        self.reqparse.add_argument(
+            'course_description', type=str, location='json')
+        self.reqparse.add_argument('doctors', type=list, location='json')
 
     def get(self):
         try:
@@ -83,9 +89,10 @@ class Courses(Resource):
         except ErrorHandler as e:
             return e.error
         return jsonify({
-            'status_code':200,
-            'courses':courses
+            'status_code': 200,
+            'courses': courses
         })
+
     def post(self):
         args = self.reqparse.parse_args()
         course = {
@@ -94,10 +101,22 @@ class Courses(Resource):
             'weekly_hours': args['weekly_hours'],
             'group_number': args['group_number'],
             'max_students': args['max_students'],
-            'course_description':args['course_description']
+            'course_description': args['course_description']
         }
+        doctors = args['doctors']
         try:
             course = controller_object.post_course(course)
+            for doc in doctors:
+                professor_controller_object.post_professor_course_relation({
+                    'professor_id': doc,
+                    'course_code': course
+                })
+            for group in range(args['group_number']):
+                gid = group_object.insert_group({
+                    "group_name": f'{args["course_code"]} - Section {group+1}',
+                    "group_description": f'This is the Group for Section {group+1} of the {args["course_name"]} Course',
+                    })
+                group_course_object.add_group_course(course=course, group=gid)
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -113,42 +132,42 @@ class My_Courses(Resource):
     def get(self, user_id, role):
         if role == 'student':
             try:
-                student_courses = student_controller_object.get_courses_by_student_id(user_id)
+                student_courses = student_controller_object.get_courses_by_student_id(
+                    user_id)
             except ErrorHandler as e:
                 return e.error
-            data_array=list()
-            for i in range(len(student_courses)) :
+            data_array = list()
+            for i in range(len(student_courses)):
                 print(student_courses[i])
                 data_array.append({
                     'course_code': student_courses[i][0],
                     'course_name': student_courses[i][1],
                     'course_description': student_courses[i][2],
-                    'post_owner_id':student_courses[i][3]
+                    'post_owner_id': student_courses[i][3]
 
                 })
             return jsonify({
-            'status_code':200,
-            'courses':data_array
-        })
+                'status_code': 200,
+                'courses': data_array
+            })
         elif role == 'professor':
             try:
-                professor_courses = professor_controller_object.get_courses_by_professor_id(user_id)
+                professor_courses = professor_controller_object.get_courses_by_professor_id(
+                    user_id)
             except ErrorHandler as e:
                 return e.error
-            data_array=list()
-            for i in range(len(professor_courses)) :
+            data_array = list()
+            for i in range(len(professor_courses)):
                 print(professor_courses[i])
-                data_array.append({
-                    'course_code': professor_courses[i][0],
-                    'course_name': professor_courses[i][1],
-                    'course_description': professor_courses[i][2],
-                })
+                data_array.append(professor_courses[i])
             return jsonify({
-            'status_code':200,
-            'courses':data_array
-        })
+                'status_code': 200,
+                'courses': data_array
+            })
 
-#/courses/search
+# /courses/search
+
+
 class SearchCourseByName(Resource):
     # def __init__(self):
     #     self.reqparse = reqparse.RequestParser()

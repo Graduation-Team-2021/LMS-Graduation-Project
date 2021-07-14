@@ -23,7 +23,7 @@
     display: flex;
     flex-flow: column;
     justify-content: space-between;
-    height: -webkit-fill-available;
+    height: fit-content;
 }
 
 .MainTitle {
@@ -34,9 +34,8 @@
 .Field {
     display: block;
     justify-content: center;
-    height: -webkit-fill-available;
+    height: fit-content;
     min-height: 75%;
     width: -webkit-fill-available;
-    overflow: auto;
     transition: all 200ms;
 }

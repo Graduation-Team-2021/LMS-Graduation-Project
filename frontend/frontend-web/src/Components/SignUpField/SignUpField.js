@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import NormalTextField from "../NormalTextField/NormalTextField";
 import PasswordTextField from "../PasswordField/PasswordField";
-import Terms from "../TermsAndConditions/Terms";
 import DatePicker from "react-date-picker";
 import { Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 
@@ -66,12 +65,6 @@ const SignUpField = (props) => {
       value={props.Password}
         Error={props.PasswordError}
         onChange={props.onChange}
-      />
-      <Terms
-      value={props.Agreed}
-        checked={props.checked}
-        onChange={props.changeAgreed}
-        AgreedError={props.AgreedError}
       />
     </React.Fragment>
   );

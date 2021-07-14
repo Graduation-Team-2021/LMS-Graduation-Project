@@ -20,7 +20,11 @@ class professor_course_relation_controller():
             })
         results_array=list()
         for i in courses:
-            results_array.append(i)
+            results_array.append({
+                "course_code": i[0],
+                'course_name': i[1],
+                'course_description': i[2]
+            })
         return results_array
 
     def post_professor_course_relation(self, professor_course_relation):

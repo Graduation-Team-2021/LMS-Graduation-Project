@@ -7,7 +7,7 @@ import Card from "../../Components/Card/Card";
 import NormalTextField from "../../Components/NormalTextField/NormalTextField";
 import Button from "../../Components/Button/Button";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
-import { AddCourse } from "../../Interface/Interface";
+import { AddCourse, getDoctors } from "../../Interface/Interface";
 import { setNewCourse } from "../../Models/Course";
 
 class AddCoursePage extends Component {
@@ -18,7 +18,7 @@ class AddCoursePage extends Component {
     "Number of Groups": "number",
     "Max Number of Students": "number",
     "Course Description": "textArea",
-    //'List of Doctors'
+    "List of Doctors": "select",
   };
 
   constructor(props) {
@@ -44,10 +44,21 @@ class AddCoursePage extends Component {
     };
   }
 
+  componentDidMount() {
+    getDoctors().then((res) => {
+      this.setState({
+        "List of Doctors": res.professors.map((value) => ({
+          name: value.name,
+          value: value.id,
+        })),
+      });
+    });
+  }
+
   initAddCourse = () => {
+    console.log(this.state['List of Doctors'])
     let Data = {};
     let Error = {};
-    let Lists = {};
     Object.keys(this.Fields).forEach((value) => {
       Data[value] = "";
       Error[value] = false;
@@ -55,14 +66,14 @@ class AddCoursePage extends Component {
         Data[value] = 0;
       } else if (this.Fields[value] === "select") {
         Data[value] = [];
-        Lists[value] = [];
       }
     });
     this.setState({
+      //reset: null,
       Data: Data,
       Error: Error,
       Fields: this.Fields,
-      ...Lists,
+      'List of Doctors': [...this.state['List of Doctors']]
     });
   };
 
@@ -95,17 +106,19 @@ class AddCoursePage extends Component {
     return error.every((value) => !value);
   };
 
-  onAddCourse = async () => {
+  onAddCourse = () => {
+    console.log(this.errorHandler(), this.state);
     if (this.errorHandler()) {
       let Course = setNewCourse(this.state.Data);
-      let res = await AddCourse(Course);
-      if (res) {
-        alert("Adding Course Succesful");
-        this.initAddCourse();
-      } else {
-        alert("Adding Course failed");
-      }
-      this.initAddCourse();
+      console.log("Adding Course");
+      AddCourse(Course).then((res) => {
+        if (res) {
+          alert("Adding Course Succesful");
+          this.initAddCourse();
+        } else {
+          alert("Adding Course failed");
+        }
+      });
     }
   };
 
@@ -143,18 +156,58 @@ class AddCoursePage extends Component {
     });
   };
 
+  onSelect = (Item, Name) => {
+    const d = [...this.state.Data[Name], Item];
+    this.setState((prev) => ({
+      Error: { ...prev.Error, [Name]: d.length === 0 },
+      Data: {
+        ...prev.Data,
+        [Name]: d,
+      },
+    }));
+  };
+
+  onRemove = (Item, Name) => {
+    const d = [...this.state.Data[Name]];
+    const pos = d.findIndex((value) => value.value === Item.value);
+    d.splice(pos, 1);
+    this.setState((prev) => ({
+      Error: { ...prev.Error, [Name]: d.length === 0 },
+      Data: {
+        ...prev.Data,
+        [Name]: d,
+      },
+    }));
+  };
+
+  onClear=(Name)=>{
+    const d=[]
+    this.setState((prev) => ({
+      Error: { ...prev.Error, [Name]: d.length === 0 },
+      Data: {
+        ...prev.Data,
+        [Name]: d,
+      },
+    }));
+  }
+
   render() {
     const AddCourseField = (
       <React.Fragment>
         {Object.keys(this.state.Fields).map((value, index) => {
           return (
             <NormalTextField
+              multiple
               key={index}
+              DataList={this.state[value]}
               value={this.state.Data[value]}
               type={this.state.Fields[value]}
               Name={value}
               onChange={this.changeInput}
               Error={this.state.Error[value]}
+              onSelect={(List, Item, Name) => this.onSelect(Item, Name)}
+              onRemove={(List, Item, Name) => this.onRemove(Item, Name)}
+              onClear={(Name)=>this.onClear(Name)}
             />
           );
         })}
@@ -166,7 +219,7 @@ class AddCoursePage extends Component {
           <h1 className={classes.MainTitle}>Add New Course</h1>
           <div className={classes.Field}>{AddCourseField}</div>
           <div className={classes.ButtonArea}>
-            <Button value="Add Course" onClick={this.onAddCourse} />
+            <Button onClick={this.onAddCourse}>Add Course</Button>
           </div>
         </div>
         <div className={classes.Blue}>

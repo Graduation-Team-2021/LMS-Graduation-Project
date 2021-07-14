@@ -12,7 +12,7 @@ class Course(db.Model, Base):
     course_code = db.Column(db.String(7), primary_key=True)
     course_name = db.Column(db.String(50), nullable=False)
     weekly_hours = db.Column(db.Integer, nullable=False)
-    group_number = db.Column(db.Integer, nullable=False, unique=True)
+    group_number = db.Column(db.Integer, nullable=False)
     max_students = db.Column(db.Integer, nullable=False)
     course_description = db.Column(db.Text(30000))
     post_owner_id=db.Column(db.Integer,ForeignKey('post_owner.owner_id', onupdate="CASCADE",ondelete='SET NULL'))
@@ -31,6 +31,7 @@ class Course(db.Model, Base):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self.course_code
 
     def update(self):
         db.session.merge(self)

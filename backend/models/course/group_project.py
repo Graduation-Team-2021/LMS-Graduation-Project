@@ -23,6 +23,7 @@ class GroupProject(db.Model, Base):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self.group_id
 
     def update(self):
         db.session.merge(self)

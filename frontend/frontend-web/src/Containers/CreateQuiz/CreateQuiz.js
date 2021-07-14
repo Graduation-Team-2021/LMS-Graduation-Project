@@ -73,6 +73,15 @@ class CreateQuiz extends Component {
     });
   };
 
+  onClear=(Name)=>{
+    const d=[]
+    this.setState((old, props) => {
+      const state = { ...old };
+      state.Unit = d;
+      return state;
+    });
+  }
+
   onChangePoints = (event, index) => {
     this.setState((prevState) => {
       const Temp = [...prevState.Questions];

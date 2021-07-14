@@ -36,6 +36,7 @@ from models.course.post_owner import PostOwner
 from models.course.post import Post
 from models.relations.post_commenter import Post_Commenter_relation
 from models.relations.post_liker import Post_liker_relation
+from models.relations.group_course_relation import GroupCourseRelation
 
 """
 app and database initilization
@@ -93,6 +94,7 @@ from views.course.post import FirstTenPosts,MyPosts,GetPostByOwnerID
 from views.course.events import Events_most_recent
 from views.relations.post_liker import insert_Delete_like
 from views.relations.learns import All_Students_in_one_course
+from views.relations.group_course_relation import all_group_course
 # Answers
 """
 Users
@@ -147,6 +149,7 @@ api.add_resource(Course, '/courses/<course_code>')
 api.add_resource(Courses, '/courses')
 api.add_resource(My_Courses, '/my_courses')
 api.add_resource(SearchCourseByName, '/courses/search/<name>')
+api.add_resource(all_group_course, '/courses/<course_code>/groups')
 """
 Materials
 """

@@ -1,6 +1,6 @@
 import React from "react";
-import { Multiselect } from "multiselect-react-dropdown";
-
+//import { Multiselect } from "multiselect-react-dropdown";
+import Multiselect from "react-select";
 import classes from "./NormalTextField.module.css";
 import PropTypes from "prop-types";
 
@@ -21,18 +21,45 @@ const TextField = (props) => {
       />
     ) : props.type === "select" ? (
       <Multiselect
-        singleSelect={!props.multiple}
-        options={props.DataList}
-        selectedValues={props.value}
-        onSelect={(List, Item) => props.onSelect(List, Item, props.Name)}
-        onRemove={(List, Item) => props.onRemove(List, Item, props.Name)}
-        displayValue="name"
-        style={{
-          searchBox: {
-            fontWeight: 'bold',
-            height: "50%",
-            fontSize: '1em',
-          },
+        styles={{
+          container: (provided, state) => ({
+            ...provided,
+            width: "100%",
+          }),
+        }}
+        value={props.value.map(value=>({label: value.name, value: value.value}))}
+        isMulti={props.multiple}
+        options={props.DataList.map((value) => ({
+          label: value.name,
+          value: value.value,
+        }))}
+        onChange={(value, action) => {
+          const List = "";
+          console.log("changed", action.action, value);
+          if (action.action === "select-option") {
+            console.log("Selected", value[value.length - 1]);
+            return props.onSelect(
+              List,
+              {
+                name: props.multiple?value[value.length - 1].label:value.label,
+                value: props.multiple?value[value.length - 1].value:value.value,
+              },
+              props.Name
+            );
+          } else if (action.action === "remove-value") {
+            return props.onRemove(
+              List,
+              {
+                name: props.multiple?value[value.length - 1].label:value.label,
+                value: props.multiple?value[value.length - 1].value:value.value,
+              },
+              props.Name
+            );
+          } else if (action.action === "clear"){
+            return props.onClear(props.Name);
+          } else {
+            return null;
+          }
         }}
       />
     ) : (

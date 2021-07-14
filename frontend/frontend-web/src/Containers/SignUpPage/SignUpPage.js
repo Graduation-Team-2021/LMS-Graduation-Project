@@ -16,7 +16,6 @@ class SignUpPage extends Component {
       UserName: "",
       Email: "",
       Password: "",
-      Agreed: false,
       NationalID: "",
       Birthday: "",
       Role: "",
@@ -28,7 +27,6 @@ class SignUpPage extends Component {
       BirthdayError: false,
       RoleError: false,
       PasswordError: false,
-      AgreedError: false,
     },
   };
 
@@ -38,7 +36,6 @@ class SignUpPage extends Component {
         UserName: "",
         Email: "",
         Password: "",
-        Agreed: false,
         NationalID: "",
         Birthday: "",
         Role: "",
@@ -50,7 +47,6 @@ class SignUpPage extends Component {
         BirthdayError: false,
         RoleError: false,
         PasswordError: false,
-        AgreedError: false,
       },
     });
   };
@@ -61,8 +57,7 @@ class SignUpPage extends Component {
 
     keys.forEach((element) => {
       if (
-        (this.state.data[element] === "" && element !== "Agreed") ||
-        (this.state.data[element] === false && element === "Agreed")
+        (this.state.data[element] === "") 
       ) {
         errors[`${element}Error`] = true;
       }
@@ -128,19 +123,6 @@ class SignUpPage extends Component {
     // }
   };
 
-  changeAgreed = () => {
-    this.setState((prevstate) => {
-      return {
-        data: { ...prevstate.data, Agreed: !prevstate.data.Agreed },
-      };
-    });
-    if (this.state.AgreedError) {
-      this.setState({
-        AgreedError: false,
-      });
-    }
-  };
-
   render() {
     const signupField = (
       <SignUpField
@@ -148,7 +130,6 @@ class SignUpPage extends Component {
         {...this.state.data}
         onChange={this.changeInput}
         checked={this.state.data.Agreed}
-        changeAgreed={this.changeAgreed}
         onBirthdayChange={this.onBirthdayChange}
       />
     );
@@ -158,7 +139,7 @@ class SignUpPage extends Component {
           <h1 className={classes.MainTitle}>Add New User</h1>
           <div className={classes.Field}>{signupField}</div>
           <div className={classes.ButtonArea}>
-            <Button value="Add User" onClick={this.onSignUp} />
+            <Button onClick={this.onSignUp} >Add User</Button>
           </div>
         </div>
         <div className={classes.Blue}>

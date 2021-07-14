@@ -77,7 +77,8 @@ class professors_controller():
 
     def get_all_professors(self):
         try:
-            professors = Professor.query.all()
+            professors = Professor.query.join(User).filter(User.user_id == Professor.user_id)\
+                .with_entities(User.user_id, User.name, Professor.scientific_degree)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
@@ -89,5 +90,12 @@ class professors_controller():
                 'description': 'Student does not exist.',
                 'status_code': 404
             })
-        data = [professor.serialize() for professor in professors]
+        data = []
+        for p in professors:
+            temp = {
+                "id": p[0],
+                "name": p[1],
+                "Degree": p[2]
+            }
+            data.append(temp)
         return data

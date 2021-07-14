@@ -74,6 +74,17 @@ class AddGroupPage extends Component {
     });
   };
 
+  onClear=(Name)=>{
+    const d=[]
+    this.setState((prev) => ({
+      Error: { ...prev.Error, [Name]: d.length === 0 },
+      Data: {
+        ...prev.Data,
+        [Name]: d,
+      },
+    }));
+  }
+
   onRemove = (List, Option, Name) => {
     this.setState((old, props) => {
       const state = { ...old };
@@ -213,6 +224,7 @@ class AddGroupPage extends Component {
               onRemove={this.onRemove}
               Error={this.state.Error[value]}
               multiple={value === "List of Students"}
+              onClear={(Name)=>this.onClear(Name)}
               DataList={
                 value === "List of Students"
                   ? this.state.Students

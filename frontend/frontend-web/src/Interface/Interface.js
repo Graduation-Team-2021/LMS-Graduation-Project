@@ -9,7 +9,7 @@ const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const local = "http://localhost:5000";
 
-export const url = azure;
+export const url = local;
 const instance = axios.create({
   baseURL: url,
   //"http://localhost:5000",
@@ -71,7 +71,7 @@ export const getCurrentGroups = async (Token, cancel) => {
       Authorization: "Bearer " + Token,
     },
   });
-
+  console.log(res.data)
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -336,6 +336,7 @@ export const AddCourse = async (Data) => {
       "Content-Type": "application/json",
     },
   });
+  console.log(res.data);
   return res.data["status_code"] === 200;
 };
 
@@ -580,4 +581,14 @@ export const getGradeSoFar = async (id) => {
     },
   });
   return res.data["courses"];
+};
+
+export const getDoctors = async () => {
+  const res = await instance.get(`/professors`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(res.data);
+  return res.data;
 };
