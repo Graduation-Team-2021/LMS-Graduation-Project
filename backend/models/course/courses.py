@@ -28,7 +28,8 @@ class Course(db.Model, Base):
             'max_students': self.max_students,
             "course_description":self.course_description,
             "post_owner_id":self.post_owner_id,
-            "course_deadline":self.course_deadline
+            "course_deadline": json.dumps(
+            self.course_deadline, default=str).replace("\"", "")
         }
 
     def insert(self):

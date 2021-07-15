@@ -91,6 +91,6 @@ class SearchGroupByName(Resource):
         # group_name=args['group_name']
         try:
             temp = controller_object.search_for_a_group(name)
-            return temp
+            return {"data":temp, 'status_code': 200}
         except ErrorHandler as e:
             return e.error

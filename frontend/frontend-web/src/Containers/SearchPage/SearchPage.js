@@ -84,6 +84,7 @@ const SearchPage = (props) => {
           res.forEach((value, index) => {
             tempResults.push(
               <h1
+              key={index}
                 onClick={() => {
                   onShow(value);
                 }}
@@ -149,7 +150,9 @@ const SearchPage = (props) => {
       
       {ModalData && option === "Course" && ModalData.course_code ? (
         <Modal show={enroll} onClick={onCancel}>
+        {console.log(ModalData)}
           <Enroll
+            isEnrolled={ModalData}
             id={ModalData.course_code}
             onAccept={onAccept}
             onCancel={onCancel}

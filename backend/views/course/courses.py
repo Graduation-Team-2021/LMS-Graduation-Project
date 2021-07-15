@@ -218,19 +218,18 @@ class CourseStatus(Resource):
         status = "Can Enroll"
         try:
             #to handle deadline
-            courses = controller_object.get_all_courses()
+            course = controller_object.get_course(cid)
             ###
-            courses = finished_object.get_finished_courses(user_id)
-            print(courses)
-            pre = prequisite_object.get_one_course_all_prequisites(cid)
-            for course in pre:
-                if courses.count(course['course_code'])==0:
-                    status="Can't Enroll"
-                    break
-            for i in courses:
-                if i['course_code']==cid and datetime.utcnow > i['course_deadline']:
-                    status="Can't Enroll"
-                    break
+            if course['course_code']==cid and datetime.now() > course['course_deadline']:
+                    status="Too Late"
+            if status == 'Can Enroll':
+                fcourses = finished_object.get_finished_courses(user_id)
+                pre = prequisite_object.get_one_course_all_prequisites(cid)
+                for course in pre:
+                    if fcourses.count(course['course_code'])==0:
+                        status="Can't Enroll"
+                        break
+                    
             return {"status": status, "status_code": 200}
         except ErrorHandler as e:
                 return e.error

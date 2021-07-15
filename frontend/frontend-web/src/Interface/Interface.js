@@ -553,6 +553,7 @@ export const searchGroups = async (text) => {
       "Content-Type": "application/json",
     },
   });
+  console.log(res.data);
   return res.data.data;
 };
 
