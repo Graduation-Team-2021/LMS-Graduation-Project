@@ -10,6 +10,7 @@ from methods.errors import *
 from methods.auth import *
 from flask_restful import Resource, reqparse
 from flask import current_app, jsonify
+from datetime import datetime
 
 controller_object = courses_controller()
 professor_controller_object = professor_course_relation_controller()
@@ -207,7 +208,7 @@ class SearchCourseByName(Resource):
         except ErrorHandler as e:
             return e.error
 
-#/Course/<cid>/status
+#/course/<cid>/status
 class CourseStatus(Resource):
     method_decorators = {'get': [requires_auth_identity("")]}
     def get(self, user_id, role, cid):
@@ -216,6 +217,9 @@ class CourseStatus(Resource):
         """
         status = "Can Enroll"
         try:
+            #to handle deadline
+            courses = controller_object.get_all_courses()
+            ###
             courses = finished_object.get_finished_courses(user_id)
             print(courses)
             pre = prequisite_object.get_one_course_all_prequisites(cid)
@@ -223,6 +227,11 @@ class CourseStatus(Resource):
                 if courses.count(course['course_code'])==0:
                     status="Can't Enroll"
                     break
+            for i in courses:
+                if i['course_code']==cid and datetime.utcnow > i['course_deadline']:
+                    status="Can't Enroll"
+                    break
             return {"status": status, "status_code": 200}
         except ErrorHandler as e:
                 return e.error
+        

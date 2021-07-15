@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Integer, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 import json
+from datetime import datetime
 
 Base = declarative_base()
 
@@ -16,6 +17,7 @@ class Course(db.Model, Base):
     max_students = db.Column(db.Integer, nullable=False)
     course_description = db.Column(db.Text(30000))
     post_owner_id=db.Column(db.Integer,ForeignKey('post_owner.owner_id', onupdate="CASCADE",ondelete='SET NULL'))
+    course_deadline=db.Column(db.DateTime)
 
     def serialize(self):
         return {
@@ -25,7 +27,8 @@ class Course(db.Model, Base):
             'group_number': self.group_number,
             'max_students': self.max_students,
             "course_description":self.course_description,
-            "post_owner_id":self.post_owner_id
+            "post_owner_id":self.post_owner_id,
+            "course_deadline":self.course_deadline
         }
 
     def insert(self):
