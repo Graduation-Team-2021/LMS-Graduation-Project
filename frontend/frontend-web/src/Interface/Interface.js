@@ -574,6 +574,24 @@ export const AddQuiz = async (Data) => {
   }
 };
 
+export const SubmitQuiz = async (Data) => {
+  const res = await instance.post(
+    `/submit_exam`,
+    Data ,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  console.log(res.data);
+  if (res.data["status_code"] === 200) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const getGradeSoFar = async (id) => {
   const res = await instance.get(`/student/${id}/finishedCourses`, {
     headers: {

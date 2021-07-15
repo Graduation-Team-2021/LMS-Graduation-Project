@@ -4,6 +4,9 @@ import Quiz from "./Quiz/Quiz";
 import { Prompt } from "react-router";
 import Countdown from "react-countdown";
 import cls from "./Item.module.css";
+import { SubmitQuiz } from "../../../Interface/Interface";
+import { mapDispatchToProps, mapStateToProps } from "../../../store/reduxMaps";
+import { connect } from "react-redux";
 
 function Page(props) {
   let ele = props.location.state.data;
@@ -35,7 +38,7 @@ function Page(props) {
             ele.leeway.slice(0, ele.leeway.indexOf(" ")) *
               60 *
               1000 *
-              (ele.leeway.slice(ele.leeway.indexOf(" ")+1) === "Minutes"
+              (ele.leeway.slice(ele.leeway.indexOf(" ") + 1) === "Minutes"
                 ? 1
                 : 60)
           }
@@ -52,11 +55,14 @@ function Page(props) {
   useEffect(() => {
     if (finished.finished) {
       clockRef.current.stop();
-      //TODO: send student score to the database!!!!!
-      // score is in score state
-      //TODO: Switch state to completed
+      SubmitQuiz({
+        exam_id: ele.id,
+        student_id: props.userData.ID,
+        mark: score,
+        out_of_mark: ele.mark,
+      }).then((res) => console.log("Submitted"));
     }
-  }, [finished]);
+  }, [ele.id, ele.mark, finished, props.userData.ID, score]);
   ////////////////////////////////////////////////////////
   return (
     <div className={cls.page}>
@@ -72,7 +78,7 @@ function Page(props) {
       <div>
         <h1>
           {" "}
-          This is "{ele.name}" {ele.type} from "{ele.course}" course
+          This is "{ele.name}" Quiz from "{ele.course}" course
         </h1>
         <h2>
           <b>Allowed time: {ele.leeway}</b>
@@ -88,7 +94,7 @@ function Page(props) {
       </div>
       {clicked.clicked ? (
         <Quiz
-          id ={ele.id}
+          id={ele.id}
           fin={finished.finished}
           setFin={setFinished}
           setSec={setScore}
@@ -99,4 +105,4 @@ function Page(props) {
   );
 }
 
-export default withRouter(Page);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Page));

@@ -70,7 +70,7 @@ class Submit_Exam(Resource):
         self.reqparse.add_argument('mark', type=str, location=json)
         self.reqparse.add_argument('out_of_mark', type=str, location=json)
 
-    def post(self, exam_id):
+    def post(self):
         args = self.reqparse.parse_args()
         try:
             submitted_exam = controller_object.submit_exam(
