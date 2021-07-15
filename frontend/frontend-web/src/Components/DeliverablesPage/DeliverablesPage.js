@@ -14,13 +14,13 @@ function DeliverablesPage(props) {
     setModalContent({
       content: (
         <div>
-          <h2>{rowData['row'].name} - {rowData['row'].type} - {rowData['row'].course}</h2>
+          <h2>{rowData['row'].name} - Assignment - {rowData['row'].course}</h2>
           <h3>Deadline: {rowData['row'].deadline}</h3>
           <h3>Allowed time: {rowData['row'].leeway}</h3>
           <button className={cls.button} onClick={() => {
             setModal({ showMod: false });
             props.history.push({
-              pathname: `/Deliv/${rowData['row'].type}/${rowData.id}`,
+              pathname: `/Deliv/Assignment/${rowData.id}`,
               state: { data: rowData['row'] }
             })
           }}>Start</button>
