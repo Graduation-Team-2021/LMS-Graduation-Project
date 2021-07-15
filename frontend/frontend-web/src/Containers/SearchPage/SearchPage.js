@@ -16,6 +16,8 @@ import Spacer from "react-spacer";
 import { useCallback } from "react";
 import {mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
 
+import Modal from "../../Components/Modal/Modal";
+import Content from './Modal/ModalContent'
 
 const SearchPage = (props) => {
   const [option, setOption] = useState("User");
@@ -27,6 +29,20 @@ const SearchPage = (props) => {
   const [Loading, setLoading] = useState(false);
 
   const [started, setStarted] = useState(false);
+
+  const [show, setShow] = useState(false)
+
+  const [ModalData, setModalData] = useState(null)
+
+  const onDismiss=()=>{
+    setShow(false)
+    setModalData(null)
+  }
+
+  const onShow=(Data)=>{
+    setShow(true)
+    setModalData(Data)
+  }
 
   const onChange = (event, value) => {
     setOption(value);
@@ -45,7 +61,7 @@ const SearchPage = (props) => {
             temp['Name']=temp['name']
             tempResults.push(
               <div style={{display:'flex', flexDirection:'row', width:'80%'}} key={index}>
-                <h1>{value["name"]}</h1>
+                <h1 onClick={()=>{onShow(value)}}>{value["name"]}</h1>
                 { temp['ID']!= props.userData.ID?
                   <button className={classes.search} onClick={() => {props.currentMessageActions.onSetCurrentMessage(temp)}}>
                   <i>
@@ -66,7 +82,7 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            tempResults.push(<h1 key={index}>{value["course_name"]}</h1>);
+            tempResults.push(<h1 onClick={()=>onShow(value)} key={index}>{value["course_name"]}</h1>);
           });
           setResults(tempResults);
         });
@@ -75,7 +91,7 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            tempResults.push(<h1 key={index}>{value["group_name"]}</h1>);
+            tempResults.push(<h1 onClick={()=>onShow(value)} key={index}>{value["group_name"]}</h1>);
           });
           setResults(tempResults);
         });
@@ -94,6 +110,7 @@ const SearchPage = (props) => {
 
   return (
     <span className={classes.Holder}>
+    <Modal show={show} onClick={onDismiss}><Content Data={ModalData} Type={option}/></Modal>
       <Card shadow className={classes.Card}>
         <Search setQuery={setQuery} />
         <Spacer height="25px" />
