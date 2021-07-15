@@ -364,13 +364,13 @@ export const getDeliv = async (id, Token) => {
   var res;
   //TODO: Integrate the Deliverables backend
   if (id) {
-    res = await instance.get(`/courses/${id}/deliverables/`, {
+    res = await instance.get(`/courses/${id}/deliverable`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + Token,
       },
     });
-    console.log(`Getting Deliverables of Course ${id}`);
+    console.log(res.data);
     return res.data.deliverables;
   } else {
     res = await instance.get(`/deliverables`, {

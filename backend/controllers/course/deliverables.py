@@ -87,11 +87,11 @@ class deliverable_controller:
                     Deliver.student_id == student_id).first()
                 status = ""
                 if(datetime.now() > i.deadline):
-                    status = "finished"
+                    status = "Completed"
                 elif(delivers_relation is not None):
-                    status = "pending"
+                    status = "In Progress"
                 else:
-                    status = "not delivered"
+                    status = "Not Started"
                 index = next((index for (index, d) in enumerate(
                     deliverables_list) if d["course_id"] == i[2]), None)
                 if index == None:
@@ -130,11 +130,11 @@ class deliverable_controller:
                 delivers_relation = Deliver.query.filter(Deliver.deliverable_id==i['deliverable_id']).filter(Deliver.student_id==user_id).first()
                 status = ""
                 if(datetime.now()>i['deadline']):
-                    status = "finished"
+                    status = "Completed"
                 elif(delivers_relation is not None):
-                    status = "pending"
+                    status = "In Progress"
                 else:
-                    status = "missing"
+                    status = "Not Started"
                 i['status']=status
                 deliverables_modified.append(i)
         except SQLAlchemyError as e:
