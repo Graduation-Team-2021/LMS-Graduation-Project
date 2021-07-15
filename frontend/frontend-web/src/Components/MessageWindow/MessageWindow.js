@@ -64,7 +64,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
           setLoading(false);
         });
       } else {
-        setMessages([])
+        setMessages([]);
+        setLoading(false);
       }
     }
   }, [props.Current, props.isNew, props.userData.Token])

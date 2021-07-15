@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 
 import classes from "./SearchPage.module.css";
 import Card from "../../Components/Card/Card";
@@ -13,6 +14,8 @@ import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 import { AppBar, Tab } from "@material-ui/core";
 import Spacer from "react-spacer";
 import { useCallback } from "react";
+import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
+
 import Modal from "../../Components/Modal/Modal";
 import Content from "./Modal/ModalContent";
 import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
@@ -34,6 +37,7 @@ const SearchPage = (props) => {
   const [ModalData, setModalData] = useState(null);
 
   const onDismiss = () => {
+<<<<<<< HEAD
     setShow(false);
     setModalData(null);
   };
@@ -42,6 +46,16 @@ const SearchPage = (props) => {
     setShow(true);
     setModalData(Data);
   };
+=======
+    setShow(false)
+    setModalData(null)
+  }
+
+  const onShow = (Data) => {
+    setShow(true)
+    setModalData(Data)
+  }
+>>>>>>> 5463c90ff721a39e3d6f9f72925c5f0ffc7c168c
 
   const onChange = (event, value) => {
     setOption(value);
@@ -55,11 +69,31 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
+<<<<<<< HEAD
             tempResults.push(
               <h1 onClick={() => onShow(value)} key={index}>
                 {value["name"]}
               </h1>
             );
+=======
+            let temp = { ...value }
+            temp['ID'] = temp['user_id']
+            temp['Name'] = temp['name']
+            tempResults.push(
+              <div style={{ display: 'flex', flexDirection: 'row', width: '80%' }} key={index}>
+                <h1 onClick={() => { onShow(value) }}>{value["name"]}</h1>
+                <button className={classes.search} onClick={() => { props.currentMessageActions.onSetCurrentMessage(temp) }}>
+                  <i>
+                    <img
+                      src="/messages.png"
+                      width="20"
+                      height="20"
+                      alt="Start a Conversation"
+                    />
+                  </i>
+                </button>
+              </div>);
+>>>>>>> 5463c90ff721a39e3d6f9f72925c5f0ffc7c168c
           });
           setResults(tempResults);
         });
@@ -68,11 +102,15 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
+<<<<<<< HEAD
             tempResults.push(
               <h1 onClick={() => onShow(value)} key={index}>
                 {value["course_name"]}
               </h1>
             );
+=======
+            tempResults.push(<h1 onClick={() => onShow(value)} key={index}>{value["course_name"]}</h1>);
+>>>>>>> 5463c90ff721a39e3d6f9f72925c5f0ffc7c168c
           });
           setResults(tempResults);
         });
@@ -81,17 +119,25 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
+<<<<<<< HEAD
             tempResults.push(
               <h1 onClick={() => onShow(value)} key={index}>
                 {value["group_name"]}
               </h1>
             );
+=======
+            tempResults.push(<h1 onClick={() => onShow(value)} key={index}>{value["group_name"]}</h1>);
+>>>>>>> 5463c90ff721a39e3d6f9f72925c5f0ffc7c168c
           });
           setResults(tempResults);
         });
       }
     }
+<<<<<<< HEAD
   }, [option, props.userData.ID, query, started]);
+=======
+  }, [option, query, started])
+>>>>>>> 5463c90ff721a39e3d6f9f72925c5f0ffc7c168c
 
   useEffect(() => {
     if (query !== "") {
@@ -104,9 +150,13 @@ const SearchPage = (props) => {
 
   return (
     <span className={classes.Holder}>
+<<<<<<< HEAD
       <Modal show={show} onClick={onDismiss}>
         <Content dismiss={onDismiss} Data={ModalData} Type={option} />
       </Modal>
+=======
+      <Modal show={show} onClick={onDismiss}><Content Data={ModalData} Type={option} /></Modal>
+>>>>>>> 5463c90ff721a39e3d6f9f72925c5f0ffc7c168c
       <Card shadow className={classes.Card}>
         <Search setQuery={setQuery} />
         <Spacer height="25px" />
