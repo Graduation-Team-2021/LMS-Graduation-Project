@@ -1,8 +1,7 @@
-import React, { useState, Fragment, useEffect, useRef } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import ANHeaderButton from "../components/ANHeaderButton";
@@ -14,49 +13,12 @@ import * as Interface from "../Interface/Interface";
 import { setCourse } from "../Models/Course";
 import { setGroup } from "../Models/Group";
 import { setFullPost } from "../Models/Post";
-import * as SQLite from "expo-sqlite";
-import checkConnectivity from "../hocs/checkConnectivity";
 
-const DCourses = [
-  {
-    CourseName: "Tst1",
-    CoursePicture: "https://images5.alphacoders.com/903/903845.png",
-  },
-  {
-    CourseName: "Tst2",
-    CoursePicture: "https://images2.alphacoders.com/732/732856.jpg",
-  },
-  {
-    CourseName: "Tst3",
-    CoursePicture: "https://images3.alphacoders.com/714/714619.png",
-  },
-  {
-    CourseName: "Tst4",
-    CoursePicture: "https://images.alphacoders.com/105/1058766.png",
-  },
-];
+const DCourses = [];
 
-const DGroups = [
-  {
-    CourseName: "Tst1",
-    CoursePicture: "https://images5.alphacoders.com/903/903845.png",
-  },
-  {
-    CourseName: "Tst2",
-    CoursePicture: "https://images2.alphacoders.com/732/732856.jpg",
-  },
-  {
-    CourseName: "Tst3",
-    CoursePicture: "https://images3.alphacoders.com/714/714619.png",
-  },
-  {
-    CourseName: "Tst4",
-    CoursePicture: "https://images.alphacoders.com/105/1058766.png",
-  },
-];
+const DGroups = [];
 
 const HomeScreen = (props) => {
-  const db = useRef(SQLite.openDatabase("LMS.db"));
   const [c, setC] = useState([]);
   const groupflag = true;
 
@@ -73,40 +35,16 @@ const HomeScreen = (props) => {
       showBottomModalSheet: () => setButtomModalVisability(true),
       studentName: props.userData.Name,
     });
-  }, []);
-
-  useEffect(() => {
-    // db.current.transaction((tx) =>
-    //   tx.executeSql("CREATE TABLE IF NOT EXISTS hello (tst INT);")
-    // );
-    // db.current.transaction((tx) =>
-    //   tx.executeSql("INSERT INTO hello VALUES (1)")
-    // );
-    // db.current.transaction((tx) =>
-    //   tx.executeSql("SELECT * FROM hello", [], (_, res) =>
-    //     console.log(JSON.stringify(res.rows))
-    //   )
-    // );
-
-    Interface.getCurrentCourses(props.userData.Token)
-      .then((res) => {
-        const Courses = [];
-        if (res) {
-          res.forEach((element) => {
-            let currentCourse = setCourse(element);
-            Courses.push(currentCourse);
-          });
-          setCurrentCourses(Courses);
-        }
-      })
-      .catch((err) => {
-        console.log("====================================");
-        console.log(err);
-        console.log("====================================");
-      });
-  }, []);
-
-  useEffect(() => {
+    Interface.getCurrentCourses(props.userData.Token).then((res) => {
+      const Courses = [];
+      if (res) {
+        res.forEach((element) => {
+          let currentCourse = setCourse(element);
+          Courses.push(currentCourse);
+        });
+        setCurrentCourses(Courses);
+      }
+    });
     Interface.getCurrentGroups(props.userData.Token).then((res) => {
       const Groups = [];
       if (res) {
@@ -116,12 +54,9 @@ const HomeScreen = (props) => {
         setCurrentGroups(Groups);
       }
     });
-  }, []);
 
-  useEffect(() => {
     Interface.getRecentPosts(props.userData.Token).then((res) => {
       const Posts = [];
-
       if (res) {
         res.forEach((ele, index) => {
           let POST = setFullPost(ele, props.userData.ID);

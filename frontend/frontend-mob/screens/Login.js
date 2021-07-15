@@ -70,7 +70,6 @@ const LoginScreen = (props) => {
           <Button
             title="Submit"
             onPress={() => {
-              
               let err = false;
               if (Email.length <= 0) {
                 setEmailError(true);
@@ -88,6 +87,7 @@ const LoginScreen = (props) => {
                     if (value !== null) {
                       await AsyncStorage.setItem("token", value.Token);
                       await AsyncStorage.setItem("name", value.name);
+                      let ID = jwt_decode(value.Token).id;
                       let Data = {
                         Token: value.Token,
                         Name: value.name,
@@ -95,9 +95,14 @@ const LoginScreen = (props) => {
                         Role: jwt_decode(value.Token).permissions,
                       };
                       props.userDataActions.onSetData(Data);
-                      props.navigation.navigate({
-                        routeName: "MainNavigator",
-                        params: { studentName: value.name },
+                      Interface.getUser(ID).then((v) => {
+                        props.userDataActions.onSetPicture(
+                          Interface.azure + v.picture
+                        );
+                        props.navigation.navigate({
+                          routeName: "MainNavigator",
+                          params: { studentName: value.name },
+                        });
                       });
                     } else {
                       //TODO : show a modal to inform the user about in valid login with a snackbar

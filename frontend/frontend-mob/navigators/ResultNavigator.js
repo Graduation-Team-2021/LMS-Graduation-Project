@@ -1,10 +1,9 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import UsersSearchResult from "../screens/UsersSearchResult";
-import CoursesSearchResult from "../screens/CoursesSearchResult";
 import GroupsSearchResult from "../screens/GroupSearchResult";
 import { MaterialIcons, Entypo, AntDesign } from "@expo/vector-icons";
-import { createStackNavigator } from "react-navigation-stack";
+import CoursesListScreen from "../screens/CoursesListScreen";
 
 const tabnav = createMaterialBottomTabNavigator(
   {
@@ -18,7 +17,7 @@ const tabnav = createMaterialBottomTabNavigator(
       },
     },
     Courses: {
-      screen: CoursesSearchResult,
+      screen: CoursesListScreen,
       navigationOptions: {
         tabBarIcon: (tabInfo) => (
           <Entypo name="book" size={24} color={tabInfo.tintColor} />
@@ -38,6 +37,5 @@ const tabnav = createMaterialBottomTabNavigator(
   },
   { activeColor: "white", shifting: true }
 );
-
 
 export default tabnav;

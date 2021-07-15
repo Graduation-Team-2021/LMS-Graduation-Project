@@ -1,9 +1,9 @@
 import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
 export const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000"; //NEVER CHANGE THIS CONSTANT
-export const path = "http://192.168.1.68:5000"
+export const path = "http://192.168.1.68:5000";
 const instance = axios.create({
-  baseURL: path,
+  baseURL: azure,
 });
 //Template for all Functions
 export const f1 = async () => {
@@ -34,7 +34,7 @@ export const Login = async (Data) => {
     },
   });
 
-  console.log('[Interface:35]',res.data);
+  console.log("[Interface:35]", res.data);
   if (res.data["status_code"] === 200) {
     return { Token: res.data["token"], name: res.data["name"] };
   } else {
@@ -169,7 +169,7 @@ export const uploadPost = async (Token, writer, owner, post) => {
       },
     }
   );
-    console.log(res.data)
+  console.log(res.data);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -192,7 +192,12 @@ export const getCourseByID = async (Token, CourseID) => {
   return res.data["course"];
 };
 
-export const uploadFile = async (Token, file, CourseID,setUploadPercentage) => {
+export const uploadFile = async (
+  Token,
+  file,
+  CourseID,
+  setUploadPercentage
+) => {
   console.log(file);
   let data = new FormData();
   data.append("file", file);
@@ -201,9 +206,9 @@ export const uploadFile = async (Token, file, CourseID,setUploadPercentage) => {
     data,
     {
       onUploadProgress: (progressEvent) => {
-        const {loaded, total} = progressEvent;
-        let percent = Math.floor( (loaded * 100) / total )
-          setUploadPercentage(percent/100)
+        const { loaded, total } = progressEvent;
+        let percent = Math.floor((loaded * 100) / total);
+        setUploadPercentage(percent / 100);
       },
       headers: {
         "Content-Type": "multipart/form-data",
@@ -213,14 +218,14 @@ export const uploadFile = async (Token, file, CourseID,setUploadPercentage) => {
   );
 };
 
-  export const materialUri = async (material_id) => {
-    const res = await instance.get(`/materials/${material_id}/uri`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return res.data['url']
-  };
+export const materialUri = async (material_id) => {
+  const res = await instance.get(`/materials/${material_id}/uri`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data["url"];
+};
 
 export const Like = async (Token, userID, postID) => {
   const res = await instance.post(`/like/${userID}/${postID}`, {
@@ -358,51 +363,70 @@ export const getStudentsByCourse = async (id) => {
   return res.data["names"];
 };
 
-export const getAllDeliveredFilesByStudent = async (deliverable_id,student_id)=>{
-  const res = await instance.get(`/students/${student_id}/deliverables/${deliverable_id}`,null, {
-    headers: {
-      "Content-Type": "application/json"
-    },
-  });
-  return res.data
-}
-export const getAllDeliverablesByDeliverableId = async (deliverable_id) => {
-  const res = await instance.get(`/students_deliverables/${deliverable_id}`,null, {
-    headers: {
-      "Content-Type": "application/json"
-    },
-  });
-  return res.data
-}
-
-export const getAllCourseDeliverables = async (id,Token) => {
-  instance.defaults.headers.common['Authorization'] = `Bearer ${Token}`
-  const res = await instance.get(`/courses/${id}/deliverable`,null, {
-    headers: {
-      "Content-Type": "application/json"
-    },
-  });
-  return res.data['deliverables']
-}
-
-export const deleteDeliverable = async(deliverable_id)=>{
-  const res = await instance.delete(`deliverables/${deliverable_id}`,{
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-}
-
-export const studentsSubmissions = async(user_id,deliverable_id) =>{
-  const res = await instance.get(`/students/${user_id}/deliverables/${deliverable_id}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export const getAllDeliveredFilesByStudent = async (
+  deliverable_id,
+  student_id
+) => {
+  const res = await instance.get(
+    `/students/${student_id}/deliverables/${deliverable_id}`,
+    null,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return res.data;
-}
+};
+export const getAllDeliverablesByDeliverableId = async (deliverable_id) => {
+  const res = await instance.get(
+    `/students_deliverables/${deliverable_id}`,
+    null,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return res.data;
+};
 
-export const uploadDeliverable = async (Token, file, delivers_id,setUploadPercentage) => {
+export const getAllCourseDeliverables = async (id, Token) => {
+  instance.defaults.headers.common["Authorization"] = `Bearer ${Token}`;
+  const res = await instance.get(`/courses/${id}/deliverable`, null, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data["deliverables"];
+};
+
+export const deleteDeliverable = async (deliverable_id) => {
+  const res = await instance.delete(`deliverables/${deliverable_id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const studentsSubmissions = async (user_id, deliverable_id) => {
+  const res = await instance.get(
+    `/students/${user_id}/deliverables/${deliverable_id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return res.data;
+};
+
+export const uploadDeliverable = async (
+  Token,
+  file,
+  delivers_id,
+  setUploadPercentage
+) => {
   let data = new FormData();
   data.append("file", file);
   const res = await instance.post(
@@ -410,9 +434,9 @@ export const uploadDeliverable = async (Token, file, delivers_id,setUploadPercen
     data,
     {
       onUploadProgress: (progressEvent) => {
-        const {loaded, total} = progressEvent;
-        let percent = Math.floor( (loaded * 100) / total )
-          setUploadPercentage(percent/100)
+        const { loaded, total } = progressEvent;
+        let percent = Math.floor((loaded * 100) / total);
+        setUploadPercentage(percent / 100);
       },
       headers: {
         "Content-Type": "multipart/form-data",
@@ -425,48 +449,52 @@ export const uploadDeliverable = async (Token, file, delivers_id,setUploadPercen
 export const postNewDeliverable = async (Data) => {
   const res = await instance.post(`/deliverables`, Data, {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
   });
   return res.data["status_code"] === 200;
 };
 
-export const getDeliversRelation = async(deliverable_id,Token) =>{
-  const res = await instance.post(`/my_deliverables`,{deliverable_id:deliverable_id}, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
+export const getDeliversRelation = async (deliverable_id, Token) => {
+  const res = await instance.post(
+    `/my_deliverables`,
+    { deliverable_id: deliverable_id },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    }
+  );
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
   return res.data["delivers_id"];
-}
+};
 
-export const getAllStudentsDeliverables = async(Token)=>{
-  const res = await instance.get("/deliverables",{
+export const getAllStudentsDeliverables = async (Token) => {
+  const res = await instance.get("/deliverables", {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
     },
-  })
-  return res.data['courses_deliverables']
-}
+  });
+  return res.data["courses_deliverables"];
+};
 
-export const deleteMaterial = async(material_id) =>{
-  const res = await instance.delete(`/materials/${material_id}`,{
+export const deleteMaterial = async (material_id) => {
+  const res = await instance.delete(`/materials/${material_id}`, {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-  })
-}
+  });
+};
 
 export const getPDFs = async (course_code) => {
   const res = await instance.get(`/courses/${course_code}/materials/pdf`, {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
   });
   if (res.data["status_code"] !== 200) {
@@ -479,7 +507,7 @@ export const getPDFs = async (course_code) => {
 export const getVideos = async (course_code) => {
   const res = await instance.get(`/courses/${course_code}/materials/videos`, {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
   });
   if (res.data["status_code"] !== 200) {
@@ -488,7 +516,6 @@ export const getVideos = async (course_code) => {
   }
   return res.data["materials"];
 };
-
 
 export const searchUsers = async (text) => {
   const res = await instance.get(`/users/search/${text}`, {
@@ -508,6 +535,14 @@ export const searchCourses = async (text) => {
 };
 export const searchGroups = async (text) => {
   const res = await instance.get(`/groups/search/${text}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data;
+};
+export const getUser = async (id) => {
+  const res = await instance.get(`/users/${id}`, {
     headers: {
       "Content-Type": "application/json",
     },
