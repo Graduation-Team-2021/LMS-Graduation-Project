@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 
 import classes from "./SearchPage.module.css";
 import Card from "../../Components/Card/Card";
@@ -13,6 +14,8 @@ import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 import { AppBar, Tab } from "@material-ui/core";
 import Spacer from "react-spacer";
 import { useCallback } from "react";
+import {mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
+
 
 const SearchPage = (props) => {
   const [option, setOption] = useState("User");
@@ -37,7 +40,24 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            tempResults.push(<h1 key={index}>{value["name"]}</h1>);
+            let temp = {...value}
+            temp['ID']=temp['user_id']
+            temp['Name']=temp['name']
+            tempResults.push(
+              <div style={{display:'flex', flexDirection:'row', width:'80%'}} key={index}>
+                <h1>{value["name"]}</h1>
+                { temp['ID']!= props.userData.ID?
+                  <button className={classes.search} onClick={() => {props.currentMessageActions.onSetCurrentMessage(temp)}}>
+                  <i>
+                    <img
+                      src="/messages.png"
+                      width="20"
+                      height="20"
+                      alt="Start a Conversation"
+                    />
+                  </i>
+                </button>:null}
+              </div>);
           });
           setResults(tempResults);
         });
@@ -61,7 +81,7 @@ const SearchPage = (props) => {
         });
       }
     }
-  },[option, query, started])
+  }, [option, query, started])
 
   useEffect(() => {
     if (query !== "") {
@@ -112,4 +132,4 @@ const SearchPage = (props) => {
   );
 };
 
-export default SearchPage;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);

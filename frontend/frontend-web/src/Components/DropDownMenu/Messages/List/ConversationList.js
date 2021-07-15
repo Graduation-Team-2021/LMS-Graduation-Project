@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import ConversationListItem from "./Item/Item";
 import cls from "./ConversationList.module.css";
-import { getAllConversations, getAllUsers } from "../../../../Interface/Interface";
+import { getAllConversations, getAllUsers, getUser } from "../../../../Interface/Interface";
 import { setUser } from "../../../../Models/User";
 import filler from "../../../../assets/Filler.png";
 import { mapDispatchToProps, mapStateToProps } from "../../../../store/reduxMaps";
 import msngrskt from "../../../../sockets/msngrskts";
 import Waiting from '../../../Waiting/Waiting'
+import SearchItem from "./SearchItem/SearchItem";
+import SearchBar from "./SearchBar/SearchBar";
+
 
 export default connect(
   mapStateToProps,
@@ -20,6 +23,8 @@ export default connect(
   const [oldConv, setOldConv] = useState([]);
   const [newMessage, setNewMessage] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [addBarVis, setAddBar] = useState({ showBar: false });
+  const [Query, setQuery] = useState("");
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
 
@@ -97,6 +102,38 @@ export default connect(
       setUsers(temp);
     });
   };
+
+  const toggleBar = () => {
+    setAddBar({ showBar: !addBarVis.showBar });
+  };
+
+  const handleClicked = (conversation) => {
+    let temp = Users.findIndex((ele) => ele.ID === conversation.ID);
+    props.currentMessageActions.onSetCurrentMessage(Users[temp]);
+  }
+  /////////////////////////////////////////////////////////////////////////////
+  let addbb = null;
+  let SearchResult = [];
+  if (addBarVis.showBar) {
+    addbb = <SearchBar searchQuery={Query} setSearchQuery={setQuery} fillerText="Search for someone to start a new chat..." />;
+    if (Query !== "") {
+      Users.forEach((value, index) => {
+        let onClickHandler = () => {
+          props.currentMessageActions.onSetCurrentMessage(value)
+        }
+        if (value.Name.toLowerCase().includes(Query.toLowerCase())) {
+          SearchResult.push(
+            <SearchItem
+              key={index}
+              Name={value.Name}
+              img={filler}
+              onClick={onClickHandler}
+            />
+          );
+        }
+      });
+    }
+  }
   /////////////////////////////////////////////////////////////////////////////
   useEffect(getConversations, [props.userData.Token]);
   useEffect(() => {
@@ -110,17 +147,29 @@ export default connect(
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
     <div className={cls.conversationList}>
+      <div className={cls.title}>
+        Messages
+        <button className={cls.search} onClick={toggleBar}>
+          <img
+            src="/add_box.png"
+            width="25"
+            height="25"
+            alt="add new message"
+          />
+        </button>
+      </div>
+      {addbb}
       <Waiting Loading={loading}>
         <div className={cls.scrollableList}>
-          {
+          {!(addBarVis.showBar && Query !== "") ?
             conversations.map((conversation, index) => (
               <ConversationListItem
-                onClick = {()=>{props.currentMessageActions.onSetCurrentMessage(conversation)}}
+                onClick={() => { handleClicked(conversation) }}
                 isOnline={CurrentActiveUsers.includes(conversation.ID)}
                 key={index}
                 data={conversation}
               />
-            ))
+            )) : SearchResult
           }
         </div>
       </Waiting>

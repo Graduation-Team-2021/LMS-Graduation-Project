@@ -29,8 +29,9 @@ export default connect(
   const [dismissed, setDismissed] = useState({ dismissed: false });
   const [Animation, setAnimation] = useState(false);
   ///////////////////////////////////////////////////////////////////////////////////////
+  let CURRENT_MESSAGE_ID = props.currentMessage.currentMessage.ID;
   let listCls = [cls.hideList]; //TODO: Fix the Animation
-  if (props.currentMessage.currentMessage.ID) {
+  if (CURRENT_MESSAGE_ID) {
     listCls = [cls.list];
   } else {
     listCls = [cls.list, cls.NONE];
@@ -47,8 +48,9 @@ export default connect(
     if (props.currentMessage.currentMessage) {
       getAllMessages(
         props.userData.Token,
-        props.currentMessage.currentMessage.ID
+        CURRENT_MESSAGE_ID
       ).then((res) => {
+        console.log(res);
         const temp = [];
         res.forEach((ele) => {
           let time = ele["sent_time"];
@@ -61,6 +63,9 @@ export default connect(
           });
         });
         setMessages(temp);
+        setLoading(false);
+      }).catch((err) => {
+        setMessages([]);
         setLoading(false);
       });
     }
@@ -80,7 +85,7 @@ export default connect(
     if (
       newMes &&
       props.currentMessage.currentMessage &&
-      newMes.from === props.currentMessage.currentMessage.ID
+      newMes.from === CURRENT_MESSAGE_ID
     ) {
       const Temp = [
         ...messages,
@@ -155,7 +160,7 @@ export default connect(
       return 0;
     }
     let Time = new Date();
-    sendMessage(props.userData.Token, props.currentMessage.currentMessage.ID, {
+    sendMessage(props.userData.Token, CURRENT_MESSAGE_ID, {
       text: messIn.text,
       sent_time: `${Time.toISOString().slice(0, 10)} ${Time.toISOString().slice(
         11,

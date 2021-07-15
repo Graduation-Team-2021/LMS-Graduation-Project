@@ -1,7 +1,7 @@
 .holder .Card {
     text-align: center;
     padding: 0;
-    max-height: 40vh;
+    max-height: 70vh;
     overflow: auto;
     position: relative;
     outline: none;
