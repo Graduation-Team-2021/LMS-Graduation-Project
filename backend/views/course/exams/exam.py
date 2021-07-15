@@ -14,7 +14,7 @@ class Exams(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('data', type=dict, location='json')
-        
+
     def post(self, course_id):
         args = self.reqparse.parse_args()
         new_exam = args["data"]
@@ -60,17 +60,21 @@ class Exam(Resource):
         })
 
 
-# /exams/<exam_id>/submit_exam
+# /submit_exam
 class Submit_Exam(Resource):
     # method_decorators = {'post': [requires_auth_identity("")]}
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('exam_id', type=str, location=json)
+        self.reqparse.add_argument('student_id', type=str, location=json)
+        self.reqparse.add_argument('mark', type=str, location=json)
+        self.reqparse.add_argument('out_of_mark', type=str, location=json)
 
     def post(self, exam_id):
         args = self.reqparse.parse_args()
-        student_id = 1
         try:
-            submitted_exam = controller_object.submit_exam(exam_id, student_id)
+            submitted_exam = controller_object.submit_exam(
+                args['exam_id'], args['student_id'], args['mark'], args['out_of_mark'])
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -92,17 +96,18 @@ class Student_Exam_Results(Resource):
             return e.error
         return my_results
 
-#/exams_by_course/<course_id>
+# /exams_by_course/<course_id>
+
+
 class ExamByCourseID(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
 
     def get(self, user_id, course_id):
         return controller_object.get_exam_by_course_id(course_id, user_id)
-    
-    def post(self,course_id):
-       args = self.reqparse.parse_args()
-       exam={'course_id':course_id,'exam_duration':args['exam_duration']}
-       controller_object.post_exam(exam)
-       return "Exam added successfully"
 
+    def post(self, course_id):
+        args = self.reqparse.parse_args()
+        exam = {'course_id': course_id, 'exam_duration': args['exam_duration']}
+        controller_object.post_exam(exam)
+        return "Exam added successfully"

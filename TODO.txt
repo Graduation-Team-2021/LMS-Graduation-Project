@@ -16,7 +16,6 @@ NEW TODO:
 17.Improve the Triangle
 18.Responsive Posts
 19.Fix the Click Outside black magic
-20.Add Doctors to Courses (front and back)
  
 Mobile TODO:
 1. in Mobile app, Handle the tablet screen

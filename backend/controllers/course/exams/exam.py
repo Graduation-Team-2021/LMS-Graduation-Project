@@ -111,9 +111,9 @@ class exams_controller():
             })
         return updated_exam.serialize()
 
-    def submit_exam(self, exam_id, student_id):
+    def submit_exam(self, exam_id, student_id, mark, out_of_mark):
         try:
-            questions = self.format_answers(exam_id, student_id)
+            """questions = self.format_answers(exam_id, student_id)
             students_mark = 0.0
             flag = 1
             for question_id, answers in questions.items():
@@ -138,12 +138,12 @@ class exams_controller():
                         student_answers_controller.update_one_student_answer(student_answer_id, True)
                     flag = 1
                 if wrong_answer_flag == 0:
-                    students_mark += question_mark
-
+                    students_mark += question_mark"""
             results = {
                 'student_id': student_id,
                 'exam_id': exam_id,
-                'mark': students_mark
+                'mark': mark,
+                'out_of_mark': out_of_mark
             }
             results_controller.post_results(results)
             return
