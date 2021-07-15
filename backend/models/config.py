@@ -16,7 +16,7 @@ setup_db(app)
 
 def app_setup(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:48691412@localhost:3306/lms"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:48691412@localhost/lms"
     app.config['SECRET_KEY'] = "jaj"
     app.config['STATIC_PATH'] = "/home/static"
     app.config['ALLOWED_EXTENSIONS'] = ['jpg', 'jpeg', 'png']
