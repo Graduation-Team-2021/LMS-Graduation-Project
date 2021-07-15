@@ -14,7 +14,7 @@ import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 import { AppBar, Tab } from "@material-ui/core";
 import Spacer from "react-spacer";
 import { useCallback } from "react";
-import {mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
+import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
 
 import Modal from "../../Components/Modal/Modal";
 import Content from './Modal/ModalContent'
@@ -34,12 +34,12 @@ const SearchPage = (props) => {
 
   const [ModalData, setModalData] = useState(null)
 
-  const onDismiss=()=>{
+  const onDismiss = () => {
     setShow(false)
     setModalData(null)
   }
 
-  const onShow=(Data)=>{
+  const onShow = (Data) => {
     setShow(true)
     setModalData(Data)
   }
@@ -56,14 +56,13 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            let temp = {...value}
-            temp['ID']=temp['user_id']
-            temp['Name']=temp['name']
+            let temp = { ...value }
+            temp['ID'] = temp['user_id']
+            temp['Name'] = temp['name']
             tempResults.push(
-              <div style={{display:'flex', flexDirection:'row', width:'80%'}} key={index}>
-                <h1 onClick={()=>{onShow(value)}}>{value["name"]}</h1>
-                { temp['ID']!= props.userData.ID?
-                  <button className={classes.search} onClick={() => {props.currentMessageActions.onSetCurrentMessage(temp)}}>
+              <div style={{ display: 'flex', flexDirection: 'row', width: '80%' }} key={index}>
+                <h1 onClick={() => { onShow(value) }}>{value["name"]}</h1>
+                <button className={classes.search} onClick={() => { props.currentMessageActions.onSetCurrentMessage(temp) }}>
                   <i>
                     <img
                       src="/messages.png"
@@ -72,7 +71,7 @@ const SearchPage = (props) => {
                       alt="Start a Conversation"
                     />
                   </i>
-                </button>:null}
+                </button>
               </div>);
           });
           setResults(tempResults);
@@ -82,7 +81,7 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            tempResults.push(<h1 onClick={()=>onShow(value)} key={index}>{value["course_name"]}</h1>);
+            tempResults.push(<h1 onClick={() => onShow(value)} key={index}>{value["course_name"]}</h1>);
           });
           setResults(tempResults);
         });
@@ -91,7 +90,7 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            tempResults.push(<h1 onClick={()=>onShow(value)} key={index}>{value["group_name"]}</h1>);
+            tempResults.push(<h1 onClick={() => onShow(value)} key={index}>{value["group_name"]}</h1>);
           });
           setResults(tempResults);
         });
@@ -110,7 +109,7 @@ const SearchPage = (props) => {
 
   return (
     <span className={classes.Holder}>
-    <Modal show={show} onClick={onDismiss}><Content Data={ModalData} Type={option}/></Modal>
+      <Modal show={show} onClick={onDismiss}><Content Data={ModalData} Type={option} /></Modal>
       <Card shadow className={classes.Card}>
         <Search setQuery={setQuery} />
         <Spacer height="25px" />
