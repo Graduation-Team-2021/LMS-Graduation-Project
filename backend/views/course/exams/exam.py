@@ -65,10 +65,10 @@ class Submit_Exam(Resource):
     # method_decorators = {'post': [requires_auth_identity("")]}
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('exam_id', type=str, location=json)
-        self.reqparse.add_argument('student_id', type=str, location=json)
-        self.reqparse.add_argument('mark', type=str, location=json)
-        self.reqparse.add_argument('out_of_mark', type=str, location=json)
+        self.reqparse.add_argument('exam_id', type=str, location="json")
+        self.reqparse.add_argument('student_id', type=str, location="json")
+        self.reqparse.add_argument('mark', type=str, location="json")
+        self.reqparse.add_argument('out_of_mark', type=str, location="json")
 
     def post(self):
         args = self.reqparse.parse_args()
