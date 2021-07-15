@@ -88,7 +88,7 @@ class exams_controller():
             t =  d.serialize()
             results = results_controller.get_student_results(user_id, t["exam_id"])
             t['status'] = 'Completed' if results['status_code']==200 else 'Not Started'
-            t['marks'] = 0 if results['status_code']!=200 else results['mark']
+            t['marks'] = 0 if results['status_code']!=200 else results['grades']['mark']
             temp.append(t)
         return temp
 
