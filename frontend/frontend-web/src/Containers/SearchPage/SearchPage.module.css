@@ -15,6 +15,7 @@
     text-align: center;
     width: 100%;
     border-bottom: 1px solid;
+    cursor: pointer;
 }
 
 .results {

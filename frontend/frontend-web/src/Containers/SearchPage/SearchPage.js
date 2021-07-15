@@ -13,6 +13,8 @@ import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 import { AppBar, Tab } from "@material-ui/core";
 import Spacer from "react-spacer";
 import { useCallback } from "react";
+import Modal from "../../Components/Modal/Modal";
+import Content from './Modal/ModalContent'
 
 const SearchPage = (props) => {
   const [option, setOption] = useState("User");
@@ -24,6 +26,20 @@ const SearchPage = (props) => {
   const [Loading, setLoading] = useState(false);
 
   const [started, setStarted] = useState(false);
+
+  const [show, setShow] = useState(false)
+
+  const [ModalData, setModalData] = useState(null)
+
+  const onDismiss=()=>{
+    setShow(false)
+    setModalData(null)
+  }
+
+  const onShow=(Data)=>{
+    setShow(true)
+    setModalData(Data)
+  }
 
   const onChange = (event, value) => {
     setOption(value);
@@ -37,7 +53,7 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            tempResults.push(<h1 key={index}>{value["name"]}</h1>);
+            tempResults.push(<h1 onClick={()=>onShow(value)} key={index}>{value["name"]}</h1>);
           });
           setResults(tempResults);
         });
@@ -46,7 +62,7 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            tempResults.push(<h1 key={index}>{value["course_name"]}</h1>);
+            tempResults.push(<h1 onClick={()=>onShow(value)} key={index}>{value["course_name"]}</h1>);
           });
           setResults(tempResults);
         });
@@ -55,7 +71,7 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            tempResults.push(<h1 key={index}>{value["group_name"]}</h1>);
+            tempResults.push(<h1 onClick={()=>onShow(value)} key={index}>{value["group_name"]}</h1>);
           });
           setResults(tempResults);
         });
@@ -74,6 +90,7 @@ const SearchPage = (props) => {
 
   return (
     <span className={classes.Holder}>
+    <Modal show={show} onClick={onDismiss}><Content Data={ModalData} Type={option}/></Modal>
       <Card shadow className={classes.Card}>
         <Search setQuery={setQuery} />
         <Spacer height="25px" />

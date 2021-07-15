@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./ImageHolder.module.css";
+import filler from '../../assets/Filler.png'
 
 const ImageHolder = (props) => {
 
@@ -12,7 +13,7 @@ const ImageHolder = (props) => {
   return (
     <div className={className.join(" ")}>
       <img
-        src={props.filler}
+        src={props.filler||filler}
         alt=""
         className={classes.img}
       />
