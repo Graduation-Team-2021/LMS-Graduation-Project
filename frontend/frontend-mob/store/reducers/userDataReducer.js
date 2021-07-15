@@ -7,6 +7,7 @@ import {
   SET_ID,
   SET_ROLE,
   SET_DATA,
+  SET_PIC,
 } from "../actions/userDataActions";
 
 const intialState = {
@@ -14,6 +15,7 @@ const intialState = {
   Role: null,
   ID: null,
   Token: null,
+  pic: null,
 };
 
 const reducer = (state = intialState, action) => {
@@ -48,6 +50,12 @@ const reducer = (state = intialState, action) => {
       Name: action.value.Name,
       Role: action.value.Role,
       ID: action.value.ID,
+    };
+  }
+  if (action.type === SET_PIC) {
+    return {
+      ...state,
+      pic: action.value.pic,
     };
   }
   return state;

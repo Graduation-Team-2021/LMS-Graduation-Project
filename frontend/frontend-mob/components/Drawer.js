@@ -7,8 +7,11 @@ import Icon from "react-native-vector-icons/AntDesign";
 
 import { Avatar, Button } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+import { connect } from "react-redux";
 
 const Drawer = (props) => {
+  //FIXME: there is problem, the user picture is always undefined.
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View>
@@ -24,12 +27,12 @@ const Drawer = (props) => {
             rounded
             size="large"
             source={{
-              uri: "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg",
+              uri: props.userData.pic ===null ?"https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg": props.userData.pic,
             }}
             containerStyle={styles.avatarContainerStyle}
           />
           <View>
-            <Text>The User Name</Text>
+            <Text>{props.userData.Name}</Text>
             <Text>The User Current year</Text>
           </View>
         </View>
@@ -69,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Drawer;
+export default connect(mapStateToProps, mapDispatchToProps)(Drawer);

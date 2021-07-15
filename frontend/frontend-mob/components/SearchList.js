@@ -17,7 +17,7 @@ const SearchResultList = (props) => {
   let mainComponent = (
     <FlatList
       data={props.Result}
-      renderItem={(item) => <props.ResultItemComponent item={item.item} />}
+      renderItem={(item) => <props.ResultItemComponent item={item.item} navigation={props.navigation}/>}
       keyExtractor={(item, index) => `${index}`}
       numColumns={Orientation ? 3 : 1}
       key={Orientation}

@@ -8,8 +8,9 @@ import CourseDescriptionScreen from "../screens/CourseDescriptionScreen";
 import DeliverableList from "../screens/DeliverableList";
 import DeliverableDescriptionScreen from "../screens/DeliverableDescriptionScreen";
 import DeliverableSubmetionScreen from "../screens/DeliverableSubmetionScreen";
+import ForeignProfileScreen from "../screens/ForeignProfileScreen";
 import ResultsNavigator from "./ResultNavigator";
-import PdfReader from "../screens/PDFScreen"
+import PdfReader from "../screens/PDFScreen";
 import CreateDeliverable from "../screens/CreateDeliverable";
 import checkConnectivity from "../hocs/checkConnectivity";
 import StudentSubmissionScreen from "../screens/StudentSubmissionScreen";
@@ -18,18 +19,18 @@ const HomeStack = createStackNavigator({
   Home: {
     screen: checkConnectivity(HomeScreen),
     navigationOptions: (navData) => {
-      let studentName = navData.navigation.getParam('studentName');
+      let studentName = navData.navigation.getParam("studentName");
       return {
-        title:studentName
-      }
+        title: studentName,
+      };
     },
   },
-  CreateDeliverable :{
+  CreateDeliverable: {
     screen: checkConnectivity(CreateDeliverable),
     navigationOptions: (navData) => {
       return {
-        title:"Deliverable Form"
-      }
+        title: "Deliverable Form",
+      };
     },
   },
   Course: {
@@ -41,7 +42,7 @@ const HomeStack = createStackNavigator({
     },
   },
   Video: { screen: VideoScreen },
-  StudentSubmission: { screen: StudentSubmissionScreen  },
+  StudentSubmission: { screen: StudentSubmissionScreen },
   Pdf: { screen: PdfReader },
   CourseList: { screen: checkConnectivity(CourseListScreen) },
   DeliverableList: { screen: checkConnectivity(DeliverableList) },
@@ -71,7 +72,7 @@ const HomeStack = createStackNavigator({
       };
     },
   },
-  
+  ForeignProfile: { screen: checkConnectivity(ForeignProfileScreen) },
   SearchReasult: ResultsNavigator,
 });
 

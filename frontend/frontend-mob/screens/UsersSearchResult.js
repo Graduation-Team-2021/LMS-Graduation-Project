@@ -3,13 +3,22 @@ import { View, StyleSheet } from "react-native";
 import SearchList from "../components/SearchList";
 import { searchUsers } from "../Interface/Interface";
 import UsersSearchResultItem from "../components/UsersSearchResultItem";
+import { azure } from "../Interface/Interface";
 const UsersSearchResult = (props) => {
   const searchingQuery = props.navigation.getParam("searchingQuery");
   const [Result, setResult] = useState(null);
 
   const fetchUsers = () => {
     searchUsers(searchingQuery).then((res) => {
-      setResult(res);
+      let result = [];
+      res.forEach((user) => {
+        let modifedUser = user;
+        if (modifedUser.picture) {
+          modifedUser.picture = azure + modifedUser.picture;
+        }
+        result.push(modifedUser);
+      });
+      setResult(result);
     });
   };
 
@@ -19,7 +28,11 @@ const UsersSearchResult = (props) => {
 
   return (
     <View style={styles.screen}>
-      <SearchList Result={Result} ResultItemComponent={UsersSearchResultItem} />
+      <SearchList
+        Result={Result}
+        ResultItemComponent={UsersSearchResultItem}
+        navigation={props.navigation}
+      />
     </View>
   );
 };
