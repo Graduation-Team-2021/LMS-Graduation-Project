@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import Waiting from "../Waiting/Waiting";
 import Button from "../Button/Button";
 import classes from "./Enroll.module.css";
+import { getStatus } from "../../Interface/Interface";
+import { connect } from "react-redux";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 const Enroll = (props) => {
   const [loading, setLoading] = useState(true);
@@ -9,9 +12,13 @@ const Enroll = (props) => {
 
   useEffect(() => {
     //Load Status
+    getStatus(props.id, props.userData.Token).then(res=>{
+      console.log(res);
+      if (res==='Can Enroll') setResponse(0)
+      else setResponse(1)
+    })
     setLoading(false);
-    setResponse(0);
-  }, []);
+  }, [props.id, props.userData.Token]);
 
   const canEnroll = <p>Do you want to enroll?</p>;
 
@@ -46,4 +53,4 @@ const Enroll = (props) => {
   );
 };
 
-export default Enroll;
+export default connect(mapStateToProps, mapDispatchToProps)(Enroll);

@@ -6,7 +6,7 @@ const Modal = (props) => {
   const context = props.onClick;
 
   return (
-    <React.Fragment>
+    <span className={classes.Holder}>
       <BackDrop show={props.show} onClick={context} />
       <div
         className={classes.Modal}
@@ -17,7 +17,7 @@ const Modal = (props) => {
       >
         {props.children}
       </div>
-    </React.Fragment>
+    </span>
   );
 };
 const check = (prev, next) => {

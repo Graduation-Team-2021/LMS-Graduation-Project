@@ -1,22 +1,33 @@
 .Main {
     display: flex;
-    height: 116px;
     justify-content: flex-start;
-    width: 100%;
+    min-width: 100%;
+    align-items: center;
 }
 
 .Image {
-    height: 100%;
+    height: 116px;
     border-radius: 50%;
     width:116px;
     overflow: hidden;
 }
 
 .Details {
-    padding-left: 5%;
+    padding-left: 3%;
     display: flex;
-    flex:1;
+    flex:2;
     justify-content: center;
     align-items: flex-start;
     flex-flow: column;
+}
+
+.Button{
+    flex:1;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.Button .Inner{
+    width: 100%;
 }

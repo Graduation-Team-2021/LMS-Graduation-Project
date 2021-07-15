@@ -9,10 +9,11 @@ controller_object = student_course_relation_controller()
 
 # /student/<student_id>/courses
 class Student_Course_Relation(Resource):
+    method_decorators = {'post': [requires_auth_identity("")]}
+    
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('course_code', type=str, location='json')
-        self.reqparse.add_argument('Authorization', type=str, location='headers')
         
 
     def get(self, student_id):
@@ -28,11 +29,11 @@ class Student_Course_Relation(Resource):
         else:
             return jsonify({'message': 'This student does not have any courses.'})
 
-    def post(self, student_id):
+    def post(self, user_id, role, student_id):
         args = self.reqparse.parse_args()
         student_course_relation = {
             'course_code': args['course_code'],
-            'student_id': student_id
+            'student_id': user_id
         }
         try:
             controller_object.post_student_course_relation(student_course_relation)

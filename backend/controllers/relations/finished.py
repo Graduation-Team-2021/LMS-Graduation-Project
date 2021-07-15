@@ -7,14 +7,17 @@ class finished_relation_controller():
     def get_finished_courses(self, student_id):
         try:
             # finished_courses = Finished.query.filter_by(student_id=student_id).all()
-            finished_courses=Finished.query.join(Course).filter(Finished.course_code==Course.course_code).with_entities(Course.course_code,Course.course_name,Finished.total_mark_in_the_course)
+            finished_courses = Finished.query.join(Course).filter(Finished.course_code == Course.course_code).with_entities(
+                Course.course_code, Course.course_name, Finished.total_mark_in_the_course)
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
             })
-        data = [course for course in finished_courses]
+
+        data = [{'course_code': course[0], 'course_name': course[1],
+                 'total_mark_in_the_course': course[2]} for course in finished_courses]
         return data
 
     def post_finished_course(self, course):
@@ -30,7 +33,8 @@ class finished_relation_controller():
 
     def update_finished_course(self, student_id, course_code, new_course):
         try:
-            to_be_updated = Finished.query.filter_by(course_code=course_code, student_id=student_id).first()
+            to_be_updated = Finished.query.filter_by(
+                course_code=course_code, student_id=student_id).first()
             to_be_updated.delete()
             # Finished.delete(to_be_updated)
         except SQLAlchemyError as e:
@@ -50,7 +54,8 @@ class finished_relation_controller():
 
     def delete_finished_course(self, student_id, course_code):
         try:
-            deleted_course = Finished.query.filter_by(student_id=student_id, course_code=course_code).first()
+            deleted_course = Finished.query.filter_by(
+                student_id=student_id, course_code=course_code).first()
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({

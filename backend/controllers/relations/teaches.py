@@ -1,3 +1,4 @@
+from models.user.users import User
 from models.relations.teaches import Teaches_Relation
 from models.course.courses import Course
 from models.user.professors import Professor
@@ -24,6 +25,27 @@ class professor_course_relation_controller():
                 "course_code": i[0],
                 'course_name': i[1],
                 'course_description': i[2]
+            })
+        return results_array
+    
+    def get_teachers(self, course_id):
+        try:
+            courses = Teaches_Relation.query.filter(Teaches_Relation.course_code==course_id)\
+            .join(Professor).filter(Professor.user_id==Teaches_Relation.professor_id).\
+                join(User).filter(Professor.user_id == User.user_id).\
+            with_entities(User.user_id, User.name)
+        except SQLAlchemyError as e:
+            print(e)
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        results_array=list()
+        for i in courses:
+            results_array.append({
+                'user_id': i[0],
+                "name": i[1]
             })
         return results_array
 

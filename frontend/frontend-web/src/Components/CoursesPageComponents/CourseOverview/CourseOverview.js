@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Button } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import classes from "./CourseOverview.module.css";
@@ -8,28 +8,31 @@ import Modal from "../../../Components/Modal/Modal";
 const CourseOverview = (props) => {
   let imageTest = props.CoursePicture;
 
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(false);
 
-  const dismiss=()=>{
-    alert("Enroll Canceled")
-    setShow(false)
-  }
+  const dismiss = () => {
+    setShow(false);
+  };
 
-  const accept=()=>{
+  const accept = () => {
     //enroll in course
-    props.Enroll()
-    setShow(false)
-  }
+    props.Enroll();
+    setShow(false);
+  };
 
   return (
     <div className={classes.CourseOverview}>
       <Modal show={show} onClick={dismiss}>
-        <Enroll onCancel={dismiss} onAccept={accept}/>
+        <Enroll id={props.CourseID} onCancel={dismiss} onAccept={accept} />
       </Modal>
       <img src={imageTest} alt="tst" className={classes.CoursePicture} />
       <h3>{props.CourseName}</h3>
       <p>{props.CourseDescription}</p>
-      <div className={classes.DocPic}>{props.DoctorName}</div>
+      <div className={classes.DocPic}>
+        {props.DoctorName.length !== 0
+          ? props.DoctorName.join(", ")
+          : "No Instructors Yet"}
+      </div>
       <div className={classes.ButtonsRow}>
         <Button
           variant="contained"
@@ -45,7 +48,7 @@ const CourseOverview = (props) => {
                 },
               });
             } else {
-              setShow(true)
+              setShow(true);
             }
           }}
         >

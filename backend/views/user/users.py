@@ -278,7 +278,21 @@ class SearchUserByName(Resource):
     def get(self, name):
         # args = self.reqparse.parse_args()
         # name=args['name']
-        return controller_object.search_for_a_user(name)
+        try:
+            temp = controller_object.search_for_a_user(name)
+            for u in temp:
+                try: 
+                    res = cont_stud.get_student(u['user_id'])
+                    u['Role'] = 'Student'
+                except:
+                    try:
+                        res = cont_professor.get_professor(u['user_id'])
+                        u["Role"] = "Professor / TA"
+                    except:
+                        u["Role"] = 'Admin'
+            return {'data':temp, 'status_code':200}
+        except ErrorHandler as e:
+                return e.error
 
 #/users/<user_id>/pic
 class updatePic(Resource):

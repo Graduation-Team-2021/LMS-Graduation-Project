@@ -2,11 +2,10 @@ export const setCourse = (id) => {
   let data = {
     CourseID: id["course_code"],
     CourseName: id["course_name"],
-    DoctorName: id["course_teacher"],
+    DoctorName: id["professors"],
     CourseDescription: id["course_description"],
     PostID: id["post_owner_id"],
-    CoursePicture: id["pic"],
-    isEnrolled: id["isenrolled"],
+    isEnrolled: id['isenrolled']
   };
   return data;
 };

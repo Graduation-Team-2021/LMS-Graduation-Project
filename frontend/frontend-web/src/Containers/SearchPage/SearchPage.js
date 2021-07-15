@@ -14,7 +14,9 @@ import { AppBar, Tab } from "@material-ui/core";
 import Spacer from "react-spacer";
 import { useCallback } from "react";
 import Modal from "../../Components/Modal/Modal";
-import Content from './Modal/ModalContent'
+import Content from "./Modal/ModalContent";
+import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
+import { connect } from "react-redux";
 
 const SearchPage = (props) => {
   const [option, setOption] = useState("User");
@@ -27,19 +29,19 @@ const SearchPage = (props) => {
 
   const [started, setStarted] = useState(false);
 
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(false);
 
-  const [ModalData, setModalData] = useState(null)
+  const [ModalData, setModalData] = useState(null);
 
-  const onDismiss=()=>{
-    setShow(false)
-    setModalData(null)
-  }
+  const onDismiss = () => {
+    setShow(false);
+    setModalData(null);
+  };
 
-  const onShow=(Data)=>{
-    setShow(true)
-    setModalData(Data)
-  }
+  const onShow = (Data) => {
+    setShow(true);
+    setModalData(Data);
+  };
 
   const onChange = (event, value) => {
     setOption(value);
@@ -53,16 +55,24 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            tempResults.push(<h1 onClick={()=>onShow(value)} key={index}>{value["name"]}</h1>);
+            tempResults.push(
+              <h1 onClick={() => onShow(value)} key={index}>
+                {value["name"]}
+              </h1>
+            );
           });
           setResults(tempResults);
         });
       } else if (option === "Course") {
-        searchCourses(query).then((res) => {
+        searchCourses(query, props.userData.ID).then((res) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            tempResults.push(<h1 onClick={()=>onShow(value)} key={index}>{value["course_name"]}</h1>);
+            tempResults.push(
+              <h1 onClick={() => onShow(value)} key={index}>
+                {value["course_name"]}
+              </h1>
+            );
           });
           setResults(tempResults);
         });
@@ -71,13 +81,17 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            tempResults.push(<h1 onClick={()=>onShow(value)} key={index}>{value["group_name"]}</h1>);
+            tempResults.push(
+              <h1 onClick={() => onShow(value)} key={index}>
+                {value["group_name"]}
+              </h1>
+            );
           });
           setResults(tempResults);
         });
       }
     }
-  },[option, query, started])
+  }, [option, props.userData.ID, query, started]);
 
   useEffect(() => {
     if (query !== "") {
@@ -90,7 +104,9 @@ const SearchPage = (props) => {
 
   return (
     <span className={classes.Holder}>
-    <Modal show={show} onClick={onDismiss}><Content Data={ModalData} Type={option}/></Modal>
+      <Modal show={show} onClick={onDismiss}>
+        <Content dismiss={onDismiss} Data={ModalData} Type={option} />
+      </Modal>
       <Card shadow className={classes.Card}>
         <Search setQuery={setQuery} />
         <Spacer height="25px" />
@@ -129,4 +145,4 @@ const SearchPage = (props) => {
   );
 };
 
-export default SearchPage;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);

@@ -17,12 +17,13 @@ class finished_relation_view(Resource):
         try:
             finished_courses = controller_object.get_finished_courses(student_id)
             data_list=[]
+            print(finished_courses)
             for i in range(len(finished_courses)):
                 data_list.append(
                     {
-                        'course_code':finished_courses[i][0],
-                        'course_name':finished_courses[i][1],
-                        'course_mark':finished_courses[i][2],
+                        'course_code':finished_courses[i]["course_code"],
+                        'course_name':finished_courses[i]["course_name"],
+                        'course_mark':finished_courses[i]["total_mark_in_the_course"],
                     }
                 )
             if not finished_courses:

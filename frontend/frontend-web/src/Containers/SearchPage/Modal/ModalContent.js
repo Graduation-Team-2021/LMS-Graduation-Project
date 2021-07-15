@@ -7,11 +7,11 @@ const Content = (props) => {
   return (
     <React.Fragment>
       {props.Data!==null?(props.Type === "User" ? (
-        <User Data={props.Data}/>
+        <User dismiss={props.dismiss} Data={props.Data}/>
       ) : props.Type === "Course" ? (
-        <Course Data={props.Data}/>
+        <Course dismiss={props.dismiss} Data={props.Data}/>
       ) : (
-        <Group Data={props.Data}/>
+        <Group dismiss={props.dismiss} Data={props.Data}/>
       )):null}
     </React.Fragment>
   );

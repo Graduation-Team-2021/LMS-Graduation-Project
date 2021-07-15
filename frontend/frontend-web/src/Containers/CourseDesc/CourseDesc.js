@@ -74,6 +74,14 @@ class CourseDesc extends Component {
         <Modal show={this.state.clicked}>{this.Uploading}</Modal>
         <div className={classes.Title}>About</div>
         <div className={classes.EventTitle}>{this.props.desc}</div>
+        <div className={classes.Title}>
+          Taught By:{" "}
+          {this.props.Course.DoctorName.length > 1
+            ? this.props.Course.DoctorName.join(", ")
+            : this.props.Course.DoctorName.length === 1
+            ? this.props.Course.DoctorName[0]
+            : "No One Yet"}
+        </div>
         <div className={classes.Container}>
           <Button
             className={classes.Holder}
@@ -229,7 +237,7 @@ class CourseDesc extends Component {
                 multiple
                 onChange={this.handleFIleUpload}
               />
-              <br/>
+              <br />
               <Button className={classes.Button} onClick={this.Submit}>
                 Submit
               </Button>

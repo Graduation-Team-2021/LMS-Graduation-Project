@@ -9,9 +9,9 @@ const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const local = "http://localhost:5000";
 
-export const url = azure;
+export const url = local;
 const instance = axios.create({
-  baseURL: url,
+  baseURL: azure,
   //"http://localhost:5000",
 });
 
@@ -71,7 +71,7 @@ export const getCurrentGroups = async (Token, cancel) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res.data)
+  console.log(res.data);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -503,10 +503,10 @@ export const updatePic = async (id, Pic) => {
     },
   });
   console.log(res);
-  if (res.status===200) {
-    return res.data
+  if (res.status === 200) {
+    return res.data;
   }
-  return null
+  return null;
 };
 
 export const getUser = async (id) => {
@@ -537,15 +537,15 @@ export const searchUsers = async (text) => {
       "Content-Type": "application/json",
     },
   });
-  return res.data;
+  return res.data.data;
 };
-export const searchCourses = async (text) => {
-  const res = await instance.get(`/courses/search/${text}`, {
+export const searchCourses = async (text, id) => {
+  const res = await instance.get(`/courses/search/${text}/${id}`, {
     headers: {
       "Content-Type": "application/json",
     },
   });
-  return res.data;
+  return res.data.data;
 };
 export const searchGroups = async (text) => {
   const res = await instance.get(`/groups/search/${text}`, {
@@ -553,7 +553,7 @@ export const searchGroups = async (text) => {
       "Content-Type": "application/json",
     },
   });
-  return res.data;
+  return res.data.data;
 };
 
 export const AddQuiz = async (Data) => {
@@ -575,15 +575,11 @@ export const AddQuiz = async (Data) => {
 };
 
 export const SubmitQuiz = async (Data) => {
-  const res = await instance.post(
-    `/submit_exam`,
-    Data ,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const res = await instance.post(`/submit_exam`, Data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   console.log(res.data);
   if (res.data["status_code"] === 200) {
     return true;
@@ -609,4 +605,35 @@ export const getDoctors = async () => {
   });
   console.log(res.data);
   return res.data;
+};
+
+export const getStatus = async (id, Token) => {
+  const res = await instance.get(`/course/${id}/status`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(res.data);
+  return res.data.status;
+};
+
+export const BE_Enroll = async (id, Token, cid) => {
+  const res = await instance.post(
+    `/student/${id}/courses`,
+    { course_code: cid },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    }
+  );
+  console.log(res.data);
+  if (res.data.status_code===200) {
+    return true
+  }
+  else{
+    return false
+  }
 };

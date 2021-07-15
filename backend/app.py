@@ -65,7 +65,7 @@ import all the endpoints from views
 from views.user.users import User, Sign_Up, Users, Login,Reset_password,Profile,Sign_Up_Using_Excel,SearchUserByName, updatePic
 from views.user.professors import Professor, Professors
 from views.user.students import Students, Student,Student_result_calculation
-from views.course.courses import Course, Courses, My_Courses,SearchCourseByName
+from views.course.courses import Course, CourseStatus, Courses, My_Courses,SearchCourseByName
 from views.course.materials import material, materials, download_material, upload_material,materials_pdfs,materials_videos
 from views.relations.teaches import Professor_Course_Relation, UpdateAndDelete_professor_Courses_Relation
 from views.relations.learns import Student_Course_Relation, Student_Courses_Relation
@@ -148,8 +148,9 @@ Courses
 api.add_resource(Course, '/courses/<course_code>')
 api.add_resource(Courses, '/courses')
 api.add_resource(My_Courses, '/my_courses')
-api.add_resource(SearchCourseByName, '/courses/search/<name>')
+api.add_resource(SearchCourseByName, '/courses/search/<name>/<uid>')
 api.add_resource(all_group_course, '/courses/<course_code>/groups')
+api.add_resource(CourseStatus, '/course/<cid>/status')
 """
 Materials
 """

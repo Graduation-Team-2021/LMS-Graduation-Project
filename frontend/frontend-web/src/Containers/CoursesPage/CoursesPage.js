@@ -7,15 +7,18 @@ import CourseListItem from "../../Components/CoursesPageComponents/CourseListIte
 import CourseOverView from "../../Components/CoursesPageComponents/CourseOverview/CourseOverview";
 import Waiting from "../../Components/Waiting/Waiting";
 
-import { getCourses } from "../../Interface/Interface";
+import {
+  getCourses,
+  getFinishedCourses,
+  BE_Enroll,
+} from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setCourse } from "../../Models/Course";
 
 const HomePage = (props) => {
-
   const [Courses, setCourses] = useState({});
   const [displayedCourse, setdisplayedCourse] = useState(null);
-  const { Token } = props.userData;
+  const { Token, ID, Role } = props.userData;
   const { TokenError } = props.userDataActions;
   const { currentCourses } = props.currentCourses;
   const { finishedCourses } = props.finishedCourses;
@@ -23,10 +26,17 @@ const HomePage = (props) => {
 
   const Enroll = () => {
     //TODO:enroll in Backend
-    var temp = { ...Courses };
-    temp[displayedCourse].isEnrolled = "true";
-    setCourses(temp);
-    alert("Enroll Successful");
+    BE_Enroll(ID, Token, displayedCourse).then((res) => {
+      if (res) {
+        var temp = { ...Courses };
+        temp[displayedCourse].isEnrolled = "true";
+        setCourses(temp);
+        alert("Enroll Successful");
+      }
+      else{
+        alert("Enroll Failed, please Try Again");
+      }
+    });
   };
 
   const selectingCourseHandler = (courseid) => {
@@ -39,33 +49,52 @@ const HomePage = (props) => {
 
   useEffect(() => {
     getCourses(Token).then((res) => {
-      setLoading(false);
-      if (res) {
-        let Courses = new Map();
-        res.forEach((id, index) => {
-          id["pic"] ='https://picsum.photos/200/300'
-            
-          id["isenrolled"] = "false";
-          if (Array.from(currentCourses.keys()).includes(id["course_code"])) {
-            id["isenrolled"] = "true";
-          }
-          if (props.location.state) {
-            if (id["isenrolled"]==="false") {
+      getFinishedCourses(Token, ID, Role).then((r2) => {
+        setLoading(false);
+        if (res) {
+          let Courses = new Map();
+          res.forEach((id, index) => {
+            id["pic"] = "https://picsum.photos/200/300";
+            id["isenrolled"] = "false";
+            id["professors"] = id["professors"].map((value) => value.name);
+            console.log(
+              Array.from(currentCourses.keys()),
+              r2.find((value) => value.course_code === id["course_code"]),
+              id["course_code"],
+              Array.from(currentCourses.keys()).includes(id["course_code"])
+            );
+            if (
+              Array.from(currentCourses.keys()).includes(id["course_code"]) ||
+              r2.find((value) => value.course_code === id["course_code"])
+            ) {
+              id["isenrolled"] = "true";
+            }
+            if (props.location.state) {
+              if (id["isenrolled"] === "false") {
+                Courses[id["course_code"]] = setCourse(id);
+              }
+            } else {
               Courses[id["course_code"]] = setCourse(id);
             }
-          } else {
-            Courses[id["course_code"]] = setCourse(id);
-          }
-        });
-        console.log('====================================');
-        console.log(Courses);
-        console.log('====================================');
-        setCourses(Courses);
-      } else {
-        TokenError();
-      }
+          });
+          console.log("====================================");
+          console.log(Courses);
+          console.log("====================================");
+          setCourses(Courses);
+        } else {
+          TokenError();
+        }
+      });
     });
-  }, [Token, TokenError, currentCourses, finishedCourses, props.location.state]);
+  }, [
+    ID,
+    Role,
+    Token,
+    TokenError,
+    currentCourses,
+    finishedCourses,
+    props.location.state,
+  ]);
 
   let loadedCourses = [];
   Array.from(Object.keys(Courses)).forEach((key) => {

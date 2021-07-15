@@ -89,4 +89,8 @@ class SearchGroupByName(Resource):
     def get(self,name):
         # args = self.reqparse.parse_args()
         # group_name=args['group_name']
-        return controller_object.search_for_a_group(name)
+        try:
+            temp = controller_object.search_for_a_group(name)
+            return temp
+        except ErrorHandler as e:
+            return e.error

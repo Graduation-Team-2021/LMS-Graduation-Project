@@ -1,8 +1,11 @@
+from os import stat
 from controllers.course.courses import courses_controller
 from controllers.relations.teaches import professor_course_relation_controller
 from controllers.relations.learns import student_course_relation_controller
 from controllers.relations.group_course_relation import group_course_controller
 from controllers.course.group_project import GroupProjectController
+from controllers.relations.has_prerequisites import prequisite_controller
+from controllers.relations.finished import finished_relation_controller
 from methods.errors import *
 from methods.auth import *
 from flask_restful import Resource, reqparse
@@ -13,6 +16,8 @@ professor_controller_object = professor_course_relation_controller()
 student_controller_object = student_course_relation_controller()
 group_course_object = group_course_controller()
 group_object = GroupProjectController()
+prequisite_object = prequisite_controller()
+finished_object = finished_relation_controller()
 
 # /courses/<course_code>
 
@@ -115,7 +120,7 @@ class Courses(Resource):
                 gid = group_object.insert_group({
                     "group_name": f'{args["course_code"]} - Section {group+1}',
                     "group_description": f'This is the Group for Section {group+1} of the {args["course_name"]} Course',
-                    })
+                })
                 group_course_object.add_group_course(course=course, group=gid)
         except ErrorHandler as e:
             return e.error
@@ -138,14 +143,16 @@ class My_Courses(Resource):
                 return e.error
             data_array = list()
             for i in range(len(student_courses)):
-                print(student_courses[i])
+                prof = professor_controller_object.get_teachers(
+                    student_courses[i]['course_code'])
                 data_array.append({
-                    'course_code': student_courses[i][0],
-                    'course_name': student_courses[i][1],
-                    'course_description': student_courses[i][2],
-                    'post_owner_id': student_courses[i][3]
-
+                    'course_code': student_courses[i]['course_code'],
+                    'course_name': student_courses[i]["course_name"],
+                    'course_description': student_courses[i]["course_description"],
+                    'post_owner_id': student_courses[i]["post_owner_id"],
+                    'professors': [p['name'] for p in prof]
                 })
+                
             return jsonify({
                 'status_code': 200,
                 'courses': data_array
@@ -173,7 +180,49 @@ class SearchCourseByName(Resource):
     #     self.reqparse = reqparse.RequestParser()
     #     self.reqparse.add_argument('course_name', type=str, location='json')
 
-    def get(self, name):
+    def get(self, name, uid):
         # args = self.reqparse.parse_args()
         # course_name=args['course_name']
-        return controller_object.search_for_a_course(name)
+        try:
+            temp = controller_object.search_for_a_course(name)
+            for Course in temp:
+                prof = professor_controller_object.get_teachers(
+                    Course['course_code'])
+                Course['professors'] = [p['name'] for p in prof]
+                stud = student_controller_object.get_students_in_course(
+                    Course['course_code'])
+                inside = False
+                for p in prof:
+                    if int(p['user_id']) == int(uid):
+                        inside = True
+                        break
+
+                if not inside:
+                    for s in stud:
+                        if int(s['user_id']) == int(uid):
+                            inside = True
+                            break
+                Course['status'] = 'Enrolled' if inside else "Not Enrolled"
+            return {"data":temp, "status_code":200}
+        except ErrorHandler as e:
+            return e.error
+
+#/Course/<cid>/status
+class CourseStatus(Resource):
+    method_decorators = {'get': [requires_auth_identity("")]}
+    def get(self, user_id, role, cid):
+        """
+        docstring
+        """
+        status = "Can Enroll"
+        try:
+            courses = finished_object.get_finished_courses(user_id)
+            print(courses)
+            pre = prequisite_object.get_one_course_all_prequisites(cid)
+            for course in pre:
+                if courses.count(course['course_code'])==0:
+                    status="Can't Enroll"
+                    break
+            return {"status": status, "status_code": 200}
+        except ErrorHandler as e:
+                return e.error
