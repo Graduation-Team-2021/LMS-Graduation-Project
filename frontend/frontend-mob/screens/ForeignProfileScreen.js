@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 import sha256 from "crypto-js/sha512";
+import { Portal, FAB } from "react-native-paper";
 
 const ForeignProfileScreen = (props) => {
   const target = props.navigation.getParam("target");
@@ -25,51 +26,60 @@ const ForeignProfileScreen = (props) => {
   console.log(target);
   console.log("====================================");
   return (
-    <ScrollView>
-      <View style={styles.screen}>
-        <Card containerStyle={styles.cardContainerStyle}>
-          <LinearGradient
-            colors={[firstColor, lastColor]}
-            style={styles.avatarBackground}
-            start={{
-              x: 0,
-              y: 0.5,
-            }}
-            end={{
-              x: 1,
-              y: 0.5,
-            }}
-            key={hashedItem}
-          >
-            <Avatar
-              rounded
-              size="xlarge"
-              source={{
-                uri: "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg",
+    <Fragment>
+      <Portal>
+        <FAB
+          style={styles.fab}
+          icon="message"
+          onPress={() => console.log("Pressed")}
+        />
+      </Portal>
+      <ScrollView>
+        <View style={styles.screen}>
+          <Card containerStyle={styles.cardContainerStyle}>
+            <LinearGradient
+              colors={[firstColor, lastColor]}
+              style={styles.avatarBackground}
+              start={{
+                x: 0,
+                y: 0.5,
               }}
-              containerStyle={{
-                ...styles.avatarContainerStyle,
-                backgroundColor: avatarColor,
+              end={{
+                x: 1,
+                y: 0.5,
               }}
-              title={target.name[0].toUpperCase()}
-              titleStyle={{ fontSize: 80 }}
-              source={target.picture != null ? { uri: target.picture } : null}
-            />
-          </LinearGradient>
-          <Card.Divider />
-          <View style={{ alignItems: "center", paddingBottom: 15 }}>
-            <Text>{target.name}</Text>
-            <Text>email : {target.email} </Text>
-          </View>
-        </Card>
-      </View>
-    </ScrollView>
+              key={hashedItem}
+            >
+              <Avatar
+                rounded
+                size="xlarge"
+                source={{
+                  uri: "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg",
+                }}
+                containerStyle={{
+                  ...styles.avatarContainerStyle,
+                  backgroundColor: avatarColor,
+                }}
+                title={target.name[0].toUpperCase()}
+                titleStyle={{ fontSize: 80 }}
+                source={target.picture != null ? { uri: target.picture } : null}
+              />
+            </LinearGradient>
+            <Card.Divider />
+            <View style={{ alignItems: "center", paddingBottom: 15 }}>
+              <Text>{target.name}</Text>
+              <Text>email : {target.email} </Text>
+            </View>
+          </Card>
+        </View>
+      </ScrollView>
+    </Fragment>
   );
 };
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
+    // flex: 1,
     alignItems: "center",
     padding: 30,
   },
@@ -105,6 +115,14 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingTop: 40,
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    zIndex: 10000,
+    elevation: 10000,
   },
 });
 
