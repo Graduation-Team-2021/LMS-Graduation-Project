@@ -2,6 +2,9 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
+import ANHeaderButton from "../components/ANHeaderButton";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+
 
 const ResetPasswordScreen = (props) => {
   const {
@@ -121,5 +124,18 @@ const styles = StyleSheet.create({
     padding: 5,
   },
 });
+ResetPasswordScreen.navigationOptions = (navData) => {
+  return {
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={ANHeaderButton}>
+        <Item
+          title="menu"
+          iconName="ios-menu"
+          onPress={() => navData.navigation.toggleDrawer()}
+        />
+      </HeaderButtons>
+    ),
+  };
+};
 
 export default ResetPasswordScreen;

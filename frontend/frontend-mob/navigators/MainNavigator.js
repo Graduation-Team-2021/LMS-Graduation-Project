@@ -12,7 +12,10 @@ const MainDrawer = createDrawerNavigator(
 
     Profile: ProfileNav,
     Messenger: MsgsNavs,
-    ResetPassword: ResetPasswordScreen,
+    ResetPassword: {
+      screen: ResetPasswordScreen,
+      
+    },
   },
   {
     contentComponent: Drawer,
