@@ -23,7 +23,7 @@ const CourseOverview = (props) => {
   return (
     <div className={classes.CourseOverview}>
       <Modal show={show} onClick={dismiss}>
-        <Enroll id={props.CourseID} onCancel={dismiss} onAccept={accept} />
+        <Enroll isEnrolled={props.isEnrolled==='true'} id={props.CourseID} onCancel={dismiss} onAccept={accept} />
       </Modal>
       <img src={imageTest} alt="tst" className={classes.CoursePicture} />
       <h3>{props.CourseName}</h3>

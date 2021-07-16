@@ -12,11 +12,14 @@ const Enroll = (props) => {
 
   useEffect(() => {
     //Load Status
-    getStatus(props.id, props.userData.Token).then(res=>{
-      console.log(res);
-      if (res==='Can Enroll') setResponse(0)
-      else setResponse(1)
-    })
+    if (!props.isEnrolled) {
+      getStatus(props.id, props.userData.Token).then((res) => {
+        console.log(res);
+        if (res === "Can Enroll") setResponse(0);
+        else if (res === "Can't Enroll") setResponse(1);
+        else setResponse(2);
+      });
+    }
     setLoading(false);
   }, [props.id, props.userData.Token]);
 
@@ -35,16 +38,22 @@ const Enroll = (props) => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          alignItems: 'center',
+          alignItems: "center",
           width: "100%",
         }}
       >
         {messages[response]}
-        <span
-        className={response===0?classes.Holder1:classes.Holder2}
-        >
-          {response ===0 ? <Button className={classes.Button} onClick={props.onAccept}>Enroll</Button> : null}
-          <Button className={classes.Button} type="cancel" onClick={props.onCancel}>
+        <span className={response === 0 ? classes.Holder1 : classes.Holder2}>
+          {response === 0 ? (
+            <Button className={classes.Button} onClick={props.onAccept}>
+              Enroll
+            </Button>
+          ) : null}
+          <Button
+            className={classes.Button}
+            type="cancel"
+            onClick={props.onCancel}
+          >
             {response === 0 ? "Cancel" : "Dismiss"}
           </Button>
         </span>
