@@ -41,7 +41,7 @@ export const Login = async (Data) => {
     return null;
   }
 };
-
+//store in the local storage
 export const getCurrentCourses = async (Token) => {
   const res = await instance.get(`/my_courses`, {
     headers: {
@@ -55,7 +55,7 @@ export const getCurrentCourses = async (Token) => {
   }
   return res.data["courses"];
 };
-
+//store in the local storage
 export const getCurrentGroups = async (Token, id, role) => {
   const res = await instance.get(`/my_groups`, {
     headers: {
@@ -83,6 +83,7 @@ export const getCourses = async (Token) => {
   }
   return res.data["courses"];
 };
+//store in the local storage
 export const getRecentPosts = async (Token) => {
   const res = await instance.get(`/first_10_posts`, {
     headers: {
@@ -96,7 +97,7 @@ export const getRecentPosts = async (Token) => {
   }
   return res.data["posts"];
 };
-
+//store in the local storage
 export const getRecentUserPosts = async (Token) => {
   const res = await instance.get("/my_posts", {
     headers: {
@@ -111,7 +112,7 @@ export const getRecentUserPosts = async (Token) => {
   }
   return res.data["posts"];
 };
-
+//store in the local storage
 export const getRecentEvent = async (Token, id) => {
   const res = await instance.get(`/student/${id}/recent_events`, {
     headers: {
@@ -125,7 +126,7 @@ export const getRecentEvent = async (Token, id) => {
   }
   return res.data["event"];
 };
-
+//store in the local storage
 export const getFinishedCourses = async (Token, id, role) => {
   const res = await instance.get(`/${role}/${id}/finishedCourses`, {
     headers: {
@@ -139,7 +140,7 @@ export const getFinishedCourses = async (Token, id, role) => {
   }
   return res.data["courses"];
 };
-
+//store in the local storage
 export const getAllPosts = async (Token, owner) => {
   const res = await instance.get(`/posts/by_owner_id/${owner}`, {
     headers: {
@@ -153,7 +154,7 @@ export const getAllPosts = async (Token, owner) => {
   }
   return res.data["posts"];
 };
-
+//store in the local storage (Future Work)
 export const uploadPost = async (Token, writer, owner, post) => {
   const res = await instance.post(
     `/posts/add_post`,
@@ -176,7 +177,7 @@ export const uploadPost = async (Token, writer, owner, post) => {
   }
   return res.data["post_id"];
 };
-
+//store and load in the local storage
 export const getCourseByID = async (Token, CourseID) => {
   const res = await instance.get(`/courses/${CourseID}`, {
     headers: {
@@ -191,7 +192,7 @@ export const getCourseByID = async (Token, CourseID) => {
   }
   return res.data["course"];
 };
-
+//store in the local storage (Future work)
 export const uploadFile = async (
   Token,
   file,
@@ -217,7 +218,7 @@ export const uploadFile = async (
     }
   );
 };
-
+//store in the local storage(Future work)
 export const materialUri = async (material_id) => {
   const res = await instance.get(`/materials/${material_id}/uri`, {
     headers: {
@@ -226,7 +227,7 @@ export const materialUri = async (material_id) => {
   });
   return res.data["url"];
 };
-
+//store in the local storage (Future work)
 export const Like = async (Token, userID, postID) => {
   const res = await instance.post(`/like/${userID}/${postID}`, {
     headers: {
@@ -235,7 +236,7 @@ export const Like = async (Token, userID, postID) => {
     },
   });
 };
-
+//store in the local storage (Future Work)
 export const UnLike = async (Token, userID, postID) => {
   const res = await instance.delete(`/like/${userID}/${postID}`, {
     headers: {
@@ -244,7 +245,7 @@ export const UnLike = async (Token, userID, postID) => {
     },
   });
 };
-
+//store in the local storage (Future work)
 export const Comment = async (Token, userID, postID, text) => {
   console.log(text);
   const res = await instance.post(
@@ -258,7 +259,7 @@ export const Comment = async (Token, userID, postID, text) => {
     }
   );
 };
-
+//store in the local storage
 export const getAllConversations = async (Token) => {
   const res = await instance.get("/users/messages", {
     headers: {
@@ -272,7 +273,7 @@ export const getAllConversations = async (Token) => {
   console.log(res.data["conversations"]);
   return res.data["conversations"];
 };
-
+//store in the local storage(Future)
 export const getAllUsers = async (Token) => {
   const res = await instance.get("/users", {
     headers: {
@@ -285,7 +286,7 @@ export const getAllUsers = async (Token) => {
   }
   return res.data["users"];
 };
-
+//store in the local storage
 export const getAllMessages = async (Token, otherID) => {
   const res = await instance.get(`/users/messages/${otherID}`, {
     headers: {
@@ -300,7 +301,7 @@ export const getAllMessages = async (Token, otherID) => {
   res.data["messages"].reverse();
   return res.data["messages"];
 };
-
+//store in the local storage (Future)
 export const sendMessage = async (Token, otherID, Data) => {
   const res = await instance.post(`/users/messages/${otherID}`, Data, {
     headers: {
@@ -332,7 +333,7 @@ export const setCourseStudent = async (id, Data) => {
   );
   console.log(res);
 };
-
+//store in the local storage (Future)
 export const AddCourse = async (Data) => {
   console.log(Data);
   const res = await instance.post("/courses", Data, {
@@ -342,7 +343,7 @@ export const AddCourse = async (Data) => {
   });
   return res.data["status_code"] === 200;
 };
-
+//store in the local storage (Future)
 export const AddGroup = async (Data, Token) => {
   console.log(Data);
   const res = await instance.post("/project-groups", Data, {
@@ -482,7 +483,7 @@ export const getAllStudentsDeliverables = async (Token) => {
   });
   return res.data["courses_deliverables"];
 };
-
+//store in the local storage (Future Work)
 export const deleteMaterial = async (material_id) => {
   const res = await instance.delete(`/materials/${material_id}`, {
     headers: {
@@ -490,7 +491,7 @@ export const deleteMaterial = async (material_id) => {
     },
   });
 };
-
+//store in the local storage
 export const getPDFs = async (course_code) => {
   const res = await instance.get(`/courses/${course_code}/materials/pdf`, {
     headers: {
@@ -503,7 +504,7 @@ export const getPDFs = async (course_code) => {
   }
   return res.data["materials"];
 };
-
+//store in the local storage
 export const getVideos = async (course_code) => {
   const res = await instance.get(`/courses/${course_code}/materials/videos`, {
     headers: {
@@ -516,7 +517,7 @@ export const getVideos = async (course_code) => {
   }
   return res.data["materials"];
 };
-
+//store in the local storage(Future work)
 export const searchUsers = async (text) => {
   const res = await instance.get(`/users/search/${text}`, {
     headers: {
@@ -525,7 +526,8 @@ export const searchUsers = async (text) => {
   });
   return res.data.data;
 };
-export const searchCourses = async (text,id) => {
+//store in the local storage (Future Work)
+export const searchCourses = async (text, id) => {
   const res = await instance.get(`/courses/search/${text}/${id}`, {
     headers: {
       "Content-Type": "application/json",
@@ -536,6 +538,7 @@ export const searchCourses = async (text,id) => {
   console.log("====================================");
   return res.data.data;
 };
+//store in the local storage (Future Work)
 export const searchGroups = async (text) => {
   const res = await instance.get(`/groups/search/${text}`, {
     headers: {
@@ -545,6 +548,7 @@ export const searchGroups = async (text) => {
 
   return res.data.data;
 };
+//store in the local storage
 export const getUser = async (id) => {
   const res = await instance.get(`/users/${id}`, {
     headers: {
@@ -553,3 +557,13 @@ export const getUser = async (id) => {
   });
   return res.data;
 };
+
+//change password
+//get quizes  => should be stored in the local storage
+//add quizes
+//submit quizes // store in the local storage
+//get grades // store in the local storage
+//getDoctors 
+//get status
+//BE_Enroll
+//BE_G_Enroll
