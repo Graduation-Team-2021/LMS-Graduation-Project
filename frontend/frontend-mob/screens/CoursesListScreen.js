@@ -50,7 +50,7 @@ const AllCoursesList = (props) => {
         }
       });
     } else {
-      searchCourses(searchingQuery).then((res) => {
+      searchCourses(searchingQuery, props.userData.ID).then((res) => {
         res.forEach((id, _) => {
           conv(id);
         });
