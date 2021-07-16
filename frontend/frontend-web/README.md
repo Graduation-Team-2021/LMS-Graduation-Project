@@ -2,9 +2,11 @@
 
 # To install NPM and NODE.js go to link: 
 
-https://nodejs.org/en/download/
+[Download now](https://nodejs.org/en/download/)
 
 Download your version windows or linux
+
+Example for windows :![logo](https://drive.google.com/file/d/1NgFWH0RDjVaRPaODfwqtZRs71XLn9gA6/view?usp=sharing)
 
 1.	Once the installer finishes downloading, launch it. Open the downloads link in your browser and click the file. Or browse to the location where you have saved the file and double-click it to launch.
 
