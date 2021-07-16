@@ -124,6 +124,7 @@ class SignUpPage extends Component {
   };
 
   render() {
+    document.title="Add New User"
     const signupField = (
       <SignUpField
         {...this.state.errors}

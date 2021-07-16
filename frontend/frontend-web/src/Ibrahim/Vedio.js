@@ -58,6 +58,7 @@ class Vedioplayer extends Component {
   };
 
   render() {
+    document.title="Videos Page"
     return (
       <div className={classes.container}>
         <Card shadow className={classes.Card}>

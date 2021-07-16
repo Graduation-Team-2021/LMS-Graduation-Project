@@ -1,5 +1,5 @@
 NEW TODO:
-5. Deliverables integration (Michel,David)
+5. Deliverables integration (Michel,David) (Inside Interface)
 6. All Groups Page
 7. يوم النتيجة
 9. Frontend error handling (John, David) (in progress)
@@ -11,11 +11,13 @@ NEW TODO:
 17.Improve the Triangle
 18.Responsive Finished Courses
 19.Fix the Click Outside black magic
+20.Better Upload Deliverable/Material Page 
 
 Future Work:
 19.Replace Arrows with Buttons
 20.Enroll in Groups based on type
 21.Attachments in Messenger
+22.Cancel Unfinished Request
  
 Mobile TODO:
 1. in Mobile app, Handle the tablet screen

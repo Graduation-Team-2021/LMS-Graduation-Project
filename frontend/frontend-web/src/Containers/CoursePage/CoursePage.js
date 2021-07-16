@@ -8,7 +8,6 @@ import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
 import CourseDescription from "../CourseDesc/CourseDesc.js";
 import NewPostCard from "../../Components/New Post/NewPost";
-import Button from "../../Components/Button/Button";
 import classes from "./CoursePage.module.css";
 import {
   getAllPosts,
@@ -88,7 +87,7 @@ const CoursePage = (props) => {
     }
     hide();
   };
-
+  document.title=Title
   return (
     <React.Fragment>
       <Modal show={clicked} onClick={hide}>
@@ -112,11 +111,6 @@ const CoursePage = (props) => {
                   justifyContent: "space-between",
                 }}
               >
-                {isJoined === "true" ? null : (
-                  <Button onClick={props.Joining.bind(this, courseID)}>
-                    Enroll  
-                  </Button>
-                )}
               </div>
             </div>
             <div className={classes.small}>

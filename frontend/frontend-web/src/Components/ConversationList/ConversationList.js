@@ -139,6 +139,7 @@ export default connect(
       setLoading(false);
     });
     getAllUsers().then((res) => {
+      //TODO: use User Photo
       const temp = [];
       res.forEach((element) => {
         element["photo"] = filler;

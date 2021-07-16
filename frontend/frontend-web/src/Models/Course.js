@@ -2,7 +2,7 @@ export const setCourse = (id) => {
   let data = {
     CourseID: id["course_code"],
     CourseName: id["course_name"],
-    DoctorName: id["professors"],
+    DoctorName: id["professors"].map(value=>value['name']),
     CourseDescription: id["course_description"],
     PostID: id["post_owner_id"],
     isEnrolled: id['isenrolled']

@@ -98,6 +98,8 @@ const ProfilePage = (props) => {
     });
   }, [ID]);
 
+  document.title=props.userData.Name
+
   return (
     <div className={classes.Center}>
       <Card shadow className={classes.Container}>
@@ -118,8 +120,7 @@ const ProfilePage = (props) => {
                 <span className={classes.DD}>
                   <div className={classes.Details}>
                     <div className={classes.Name}>{props.userData.Name}</div>
-                    <div>Third Year{/*get from database*/}</div>
-                    <div>Computer Engineering{/*get from database*/}</div>
+                    <div>Third Year{/*TODO: get from database*/}</div>
                   </div>
                   <FilePicker
                     onChange={(FileObject) => {

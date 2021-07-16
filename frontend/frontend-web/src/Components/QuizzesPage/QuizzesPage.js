@@ -37,7 +37,6 @@ function QuizzesPage(props) {
     });
     setModal({ showMod: true });
   };
-
   return (
     <Card>
       <Modal

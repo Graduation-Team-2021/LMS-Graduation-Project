@@ -46,6 +46,7 @@ class MarkEdit extends Component {
     setCourseStudent(this.props.match.params.id, this.state.users)
   };
   render() {
+    document.title="Edit Grades"
     return (
       <div >
         <p>{this.props.location.state.name}</p>
