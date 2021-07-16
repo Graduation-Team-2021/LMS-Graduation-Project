@@ -17,10 +17,18 @@ Future Work:
 20.Enroll in Groups based on type
  
 Mobile TODO:
-1. in Mobile app, Handle the tablet screen
 2. integration(David,Adham)
-3. Video/PDF in the App (Done by Michel)
 4. Push notification for the mobile in case of new event occurs(David,Adham)
-5. For SQLite, check the dublicate Data before inserting it(David,Adham)
-6. Modify the interface file to check the SQLite also(David,Adham)
-7.The  ability  to  send  direct  messages  to  other  users  which  will  be  accessible  from  everywhere through a button like Messenger chat heads
+5. For SQLite, check the dublicate Data before inserting it(David,Adham,Ibrahim)
+9. REset password (linking to the backend)
+10. The Pie in the delev page (Need to analyze the page)
+11. show all groups
+12. Recent Events
+13 Edit Marks for Doctors, show marks for students
+14. show post in screan
+15. enroll in courses (with David)
+16. add notifications screen
+17. Add COurse Screen 
+18. Add Group Screen
+19. Add User Screen
+20. Add admin screen

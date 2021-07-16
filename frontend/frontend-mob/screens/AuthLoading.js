@@ -5,8 +5,7 @@ import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
 import * as SQLite from "expo-sqlite";
-
-const db = SQLite.openDatabase("LMS.db");
+import {CreateTable} from '../Interface/sqllite'
 
 const AuthLoadingScreen = (props) => {
   const bootStrapAsync = () => {
@@ -31,7 +30,7 @@ const AuthLoadingScreen = (props) => {
         props.navigation.navigate("Login");
       }
     });
-    
+    CreateTable();
   };
   useEffect(() => bootStrapAsync(), []);
   return (

@@ -16,8 +16,21 @@ const GroupSearchResultItem = (props) => {
       ? Dimensions.get("window").width * 0.3
       : Dimensions.get("window").width * 0.9;
   return (
-    <View style={{width:elementWidth,margin:3}} >
-      <ListItem>
+    <View style={{ width: elementWidth, margin: 3 }}>
+      <ListItem
+        onPress={() => {
+          props.navigation.navigate({
+            routeName: "Course",
+            params: {
+              groupflag: true,
+              course: {
+                CourseID: props.item.group_id,
+                CourseName: props.item.group_name,
+              },
+            },
+          });
+        }}
+      >
         <Avatar
           size="large"
           rounded
@@ -36,7 +49,5 @@ const GroupSearchResultItem = (props) => {
     </View>
   );
 };
-
-
 
 export default GroupSearchResultItem;

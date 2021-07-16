@@ -2,6 +2,9 @@ import axios from "axios";
 import msngrskt from "../sockets/msngrskts";
 export const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000"; //NEVER CHANGE THIS CONSTANT
 export const path = "http://192.168.1.68:5000";
+import * as localStorage from "./sqllite";
+import jwt from "jwt-decode";
+import NetInfo from "@react-native-community/netinfo";
 const instance = axios.create({
   baseURL: azure,
 });
@@ -27,19 +30,28 @@ export const SignUp = async (Data) => {
 };
 
 export const Login = async (Data) => {
-  console.log(instance.defaults.baseURL);
   const res = await instance.post("/login", Data, {
     headers: {
       "Content-Type": "application/json",
     },
   });
-
-  console.log("[Interface:35]", res.data);
   if (res.data["status_code"] === 200) {
+    localStorage.SQLSignIn(
+      jwt(res.data["token"]).id,
+      Data.email,
+      Data.password,
+      res.data["name"],
+      jwt(res.data["token"]).permissions
+    );
+    localStorage.localSignIn(Data.email, Data.password);
     return { Token: res.data["token"], name: res.data["name"] };
   } else {
+    //Login failed and need to check the password
     return null;
   }
+  // if((await NetInfo.fetch()).isInternetReachable){
+
+  // }
 };
 
 export const getCurrentCourses = async (Token) => {
@@ -523,15 +535,18 @@ export const searchUsers = async (text) => {
       "Content-Type": "application/json",
     },
   });
-  return res.data;
+  return res.data.data;
 };
-export const searchCourses = async (text) => {
-  const res = await instance.get(`/courses/search/${text}`, {
+export const searchCourses = async (text,id) => {
+  const res = await instance.get(`/courses/search/${text}/${id}`, {
     headers: {
       "Content-Type": "application/json",
     },
   });
-  return res.data;
+  console.log("====================================");
+  console.log("[KAK]", res.data);
+  console.log("====================================");
+  return res.data.data;
 };
 export const searchGroups = async (text) => {
   const res = await instance.get(`/groups/search/${text}`, {
@@ -539,7 +554,8 @@ export const searchGroups = async (text) => {
       "Content-Type": "application/json",
     },
   });
-  return res.data;
+
+  return res.data.data;
 };
 export const getUser = async (id) => {
   const res = await instance.get(`/users/${id}`, {
