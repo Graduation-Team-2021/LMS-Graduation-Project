@@ -1,8 +1,8 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { searchGroups } from "../Interface/Interface";
 import GroupSearchResultItem from "../components/GroupSearchResultListItem";
-import SearchList from  '../components/SearchList'
+import SearchList from "../components/SearchList";
 
 const GroupsSearchResult = (props) => {
   const searchingQuery = props.navigation.getParam("searchingQuery");
@@ -13,15 +13,18 @@ const GroupsSearchResult = (props) => {
       setResult(res);
     });
   };
-  
+
   useEffect(() => {
     fetchGroups();
   }, []);
 
   return (
     <View style={styles.screen}>
-            <SearchList Result={Result} ResultItemComponent={GroupSearchResultItem} />
-
+      <SearchList
+        Result={Result}
+        ResultItemComponent={GroupSearchResultItem}
+        navigation={props.navigation}
+      />
     </View>
   );
 };
