@@ -128,6 +128,12 @@ class events_controller():
             # sorted_by_date=sorted(desired_events[i])
 
             # print(desired_events[i]["event_date"])
-        newlist = sorted(desired_events, key=lambda k: k['event_date']) 
-
-        return desired_events[0]
+        if len(desired_events)!=0:
+            newlist = sorted(desired_events, key=lambda k: k['event_date']) 
+            return newlist[0]
+        else:
+            raise ErrorHandler({
+                'description': "No Events So Far",
+                'status_code': 202
+            })
+        
