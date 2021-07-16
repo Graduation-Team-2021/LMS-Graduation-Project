@@ -265,7 +265,7 @@ export function CreateTable() {
 
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS student(user_id INTEGER PRIMARY KEY NOT NULL,student_year INTEGER NOT NULL  ,FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
+      "CREATE TABLE IF NOT EXISTS student(user_id INTEGER PRIMARY KEY NOT NULL,student_year INTEGER   ,FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
         console.log("[creating is done with the result]", res);
@@ -278,7 +278,19 @@ export function CreateTable() {
 
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS user(user_id INTEGER PRIMARY KEY ,name TEXT NOT NULL , email TEXT NOT NULL , birthday TEXT, password TEXT ,  picture TEXT );",
+      "CREATE TABLE IF NOT EXISTS user(user_id INTEGER PRIMARY KEY ,name TEXT NOT NULL , email TEXT  , birthday TEXT, password TEXT ,  picture TEXT );",
+      [],
+      (_, res) => {
+        console.log("[creating is done with the result]", res);
+      },
+      (_, err) => {
+        console.log("[failed there is an error]", err);
+      }
+    );
+  });
+  db.transaction((tx) => {
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS message(massage_id INTEGER PRIMARY KEY ,sender_id INTEGER , receiver_id INTEGER, sent_time TEXT, text TEXT , FOREIGN KEY (sender_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (receiver_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
         console.log("[creating is done with the result]", res);
@@ -290,56 +302,70 @@ export function CreateTable() {
   });
 }
 
-export function SQLSignIn(user_id, email, password, name, role) {
-  db.transaction((tx) => {
-    tx.executeSql(
-      `INSERT INTO user(user_id, email, password, name) VALUES (?,?,?,?);`,
-      [user_id, email, password, name],
-      (tx, res) => {
-        console.log("[insert is done with the result]", res);
-        if (role === "student") {
-          tx.executeSql(
-            `INSERT INTO student(user_id) VALUES (?);`,
-            [user_id],
-            (_, res) => {
-              console.log("[insert is done with the result]", res);
-            },
-            (_, err) => {
-              console.log("[failed there is an error]", err);
-            }
-          );
-        } else if (role == "professor") {
-          tx.executeSql(
-            `INSERT INTO professor(user_id) VALUES (?);`,
-            [user_id],
-            (_, res) => {
-              console.log("[insert is done with the result]", res);
-            },
-            (_, err) => {
-              console.log("[failed there is an error]", err);
-            }
-          );
-        }
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
-    );
-  });
-}
 
-export function localSignIn(email, password) {
+
+// export function SQLSignIn(user_id, email, password, name, role) {
+//   db.transaction((tx) => {
+//     tx.executeSql(
+//       `INSERT INTO user(user_id, email, password, name) VALUES (?,?,?,?);`,
+//       [user_id, email, password, name],
+//       (tx, res) => {
+//         console.log("[insert is done with the result]", res);
+//         if (role === "student") {
+//           tx.executeSql(
+//             `INSERT INTO student(user_id) VALUES (?);`,
+//             [user_id],
+//             (_, res) => {
+//               console.log("[insert is done with the result]", res);
+//             },
+//             (_, err) => {
+//               console.log("[failed there is an error]", err);
+//             }
+//           );
+//         } else if (role == "professor") {
+//           tx.executeSql(
+//             `INSERT INTO professor(user_id) VALUES (?);`,
+//             [user_id],
+//             (_, res) => {
+//               console.log("[insert is done with the result]", res);
+//             },
+//             (_, err) => {
+//               console.log("[failed there is an error]", err);
+//             }
+//           );
+//         }
+//       },
+//       (_, err) => {
+//         console.log("[failed there is an error]", err);
+//       }
+//     );
+//   });
+// }
+
+export function SQLGetCurrentCourse(user_id) {
   db.transaction((tx) => {
     tx.executeSql(
-      `SELECT user_id FROM user WHERE email=? AND password=?;`,
-      [email, password],
-      (tx, res) => {
-          console.log("====================================");
-          console.log("[localSignIn]", res.rows.item(0));
-          console.log("====================================");
-          // tx.executeSql(`SELECT * FROM student WHERE user_id=?;`, [res.rows.item(0)], )
-        
-      }
-    );
-  });
-}
+      "SELECT * FROM course , learns   WHERE learns.student_id = ? AND course.course_code = learns.course_code ; ", [user_id],
+      (_, res) => { console.log(res); })
+  })
+};
+
+//call SQL
+
+export function SQLInsertCurrentCourse(courses) {
+  db.transaction((tx) => {
+    courses.forEach(element => {
+      tx.executeSql(
+        "INSERT OR REPLACE INTO course(course_code,course_name,post_owner_id,course_description) VALUES (?,?,?,?);", [element.course_code, element.course_name, element.post_owner_id, element.course_description],
+        (tx, res) => { console.log('inserting to course table successfully'); }, (tx, err) => { console.log("insertion the the db failed with error", err); })
+      element.professors.forEach(prof => {
+        tx.executeSql("INSERT OR REPLACE INTO professor(user_id) VALUES (?) ; ", [prof.user_id])
+        tx.executeSql("INSERT OR REPLACE INTO user(user_id,name) VALUES (?) ; ", [prof.user_id, prof.name])
+        tx.executeSql("INSERT OR REPLACE INTO teaches(course_code,professor_id) VALUES (?,?);", [element.course_code, prof.user_id])
+      });
+    });
+
+  })
+
+};
+
