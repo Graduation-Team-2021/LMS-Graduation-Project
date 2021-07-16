@@ -115,8 +115,9 @@ class events_controller():
         desired_events=[]
         for i in range(len(desired_course_codes)):
             events=Events.query.filter(Events.course_code==desired_course_codes[i][0],str(Events.event_date)>str(datetime.now())).first()
-            if events: events=events.serialize()
-            desired_events.append(events)
+            if events: 
+                events=events.serialize()
+                desired_events.append(events)
             # desired_events.sort(reverse=True)
         # for i in range(len(desired_events)):
             # x=(sorted(desired_events[i]))
@@ -128,6 +129,7 @@ class events_controller():
             # sorted_by_date=sorted(desired_events[i])
 
             # print(desired_events[i]["event_date"])
+        print(len(desired_events))
         if len(desired_events)!=0:
             newlist = sorted(desired_events, key=lambda k: k['event_date']) 
             return newlist[0]
