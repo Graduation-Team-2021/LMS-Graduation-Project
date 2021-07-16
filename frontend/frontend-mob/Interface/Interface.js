@@ -36,22 +36,10 @@ export const Login = async (Data) => {
     },
   });
   if (res.data["status_code"] === 200) {
-    localStorage.SQLSignIn(
-      jwt(res.data["token"]).id,
-      Data.email,
-      Data.password,
-      res.data["name"],
-      jwt(res.data["token"]).permissions
-    );
-    localStorage.localSignIn(Data.email, Data.password);
     return { Token: res.data["token"], name: res.data["name"] };
   } else {
-    //Login failed and need to check the password
     return null;
   }
-  // if((await NetInfo.fetch()).isInternetReachable){
-
-  // }
 };
 
 export const getCurrentCourses = async (Token) => {

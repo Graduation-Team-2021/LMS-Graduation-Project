@@ -265,7 +265,7 @@ export function CreateTable() {
 
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS student(user_id INTEGER PRIMARY KEY NOT NULL,student_year INTEGER NOT NULL  ,FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
+      "CREATE TABLE IF NOT EXISTS student(user_id INTEGER PRIMARY KEY NOT NULL,student_year INTEGER   ,FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
         console.log("[creating is done with the result]", res);
@@ -328,18 +328,3 @@ export function SQLSignIn(user_id, email, password, name, role) {
   });
 }
 
-export function localSignIn(email, password) {
-  db.transaction((tx) => {
-    tx.executeSql(
-      `SELECT user_id FROM user WHERE email=? AND password=?;`,
-      [email, password],
-      (tx, res) => {
-          console.log("====================================");
-          console.log("[localSignIn]", res.rows.item(0));
-          console.log("====================================");
-          // tx.executeSql(`SELECT * FROM student WHERE user_id=?;`, [res.rows.item(0)], )
-        
-      }
-    );
-  });
-}

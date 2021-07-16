@@ -28,6 +28,7 @@
     "expo-status-bar": "~1.0.4",
     "file-type": "^16.5.0",
     "jwt-decode": "^3.1.2",
+    "jwt-encode": "^1.0.1",
     "md5": "^2.3.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
