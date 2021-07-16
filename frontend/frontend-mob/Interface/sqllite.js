@@ -303,41 +303,41 @@ export function CreateTable() {
 }
 
 
-export function SQLSignIn(user_id, email, password, name, role) {
-  db.transaction((tx) => {
-    tx.executeSql(
-      `INSERT INTO user(user_id, email, password, name) VALUES (?,?,?,?);`,
-      [user_id, email, password, name],
-      (tx, res) => {
-        console.log("[insert is done with the result]", res);
-        if (role === "student") {
-          tx.executeSql(
-            `INSERT INTO student(user_id) VALUES (?);`,
-            [user_id],
-            (_, res) => {
-              console.log("[insert is done with the result]", res);
-            },
-            (_, err) => {
-              console.log("[failed there is an error]", err);
-            }
-          );
-        } else if (role == "professor") {
-          tx.executeSql(
-            `INSERT INTO professor(user_id) VALUES (?);`,
-            [user_id],
-            (_, res) => {
-              console.log("[insert is done with the result]", res);
-            },
-            (_, err) => {
-              console.log("[failed there is an error]", err);
-            }
-          );
-        }
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
-    );
-  });
-}
+// export function SQLSignIn(user_id, email, password, name, role) {
+//   db.transaction((tx) => {
+//     tx.executeSql(
+//       `INSERT INTO user(user_id, email, password, name) VALUES (?,?,?,?);`,
+//       [user_id, email, password, name],
+//       (tx, res) => {
+//         console.log("[insert is done with the result]", res);
+//         if (role === "student") {
+//           tx.executeSql(
+//             `INSERT INTO student(user_id) VALUES (?);`,
+//             [user_id],
+//             (_, res) => {
+//               console.log("[insert is done with the result]", res);
+//             },
+//             (_, err) => {
+//               console.log("[failed there is an error]", err);
+//             }
+//           );
+//         } else if (role == "professor") {
+//           tx.executeSql(
+//             `INSERT INTO professor(user_id) VALUES (?);`,
+//             [user_id],
+//             (_, res) => {
+//               console.log("[insert is done with the result]", res);
+//             },
+//             (_, err) => {
+//               console.log("[failed there is an error]", err);
+//             }
+//           );
+//         }
+//       },
+//       (_, err) => {
+//         console.log("[failed there is an error]", err);
+//       }
+//     );
+//   });
+// }
 
