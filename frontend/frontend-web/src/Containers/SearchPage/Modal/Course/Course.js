@@ -1,10 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import classes from "./Course.module.css";
 import ImageHolder from "../../../../Components/ImageHolder/ImageHolder";
 import Button from "../../../../Components/Button/Button";
 import { withRouter } from "react-router";
 import { setCourse } from "../../../../Models/Course";
-import {BE_Enroll} from '../../../../Interface/Interface'
 import { mapDispatchToProps, mapStateToProps } from "../../../../store/reduxMaps";
 import {connect} from 'react-redux'
 

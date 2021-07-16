@@ -540,17 +540,19 @@ export const searchUsers = async (text) => {
   return res.data.data;
 };
 export const searchCourses = async (text, id) => {
-  const res = await instance.get(`/courses/search/${text}/${id}`, {
+  const res = await instance.get(`/courses/search/${text}`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + id,
     },
   });
   return res.data.data;
 };
-export const searchGroups = async (text) => {
+export const searchGroups = async (text, id) => {
   const res = await instance.get(`/groups/search/${text}`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + id,
     },
   });
   console.log(res.data);
@@ -623,6 +625,25 @@ export const BE_Enroll = async (id, Token, cid) => {
   const res = await instance.post(
     `/student/${id}/courses`,
     { course_code: cid },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    }
+  );
+  console.log(res.data);
+  if (res.data.status_code===200) {
+    return true
+  }
+  else{
+    return false
+  }
+};
+
+export const BE_G_Enroll = async (cid,Token) => {
+  const res = await instance.post(
+    `group/${cid}/students`,{},
     {
       headers: {
         "Content-Type": "application/json",

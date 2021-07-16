@@ -177,11 +177,12 @@ class My_Courses(Resource):
 
 
 class SearchCourseByName(Resource):
+    method_decorators = {'get': [requires_auth_identity('')]}
     # def __init__(self):
     #     self.reqparse = reqparse.RequestParser()
     #     self.reqparse.add_argument('course_name', type=str, location='json')
 
-    def get(self, name, uid):
+    def get(self, user_id, role, name):
         # args = self.reqparse.parse_args()
         # course_name=args['course_name']
         try:
@@ -194,13 +195,13 @@ class SearchCourseByName(Resource):
                     Course['course_code'])
                 inside = False
                 for p in prof:
-                    if int(p['user_id']) == int(uid):
+                    if int(p['user_id']) == int(user_id):
                         inside = True
                         break
 
                 if not inside:
                     for s in stud:
-                        if int(s['user_id']) == int(uid):
+                        if int(s['user_id']) == int(user_id):
                             inside = True
                             break
                 Course['status'] = 'Enrolled' if inside else "Not Enrolled"
@@ -220,7 +221,7 @@ class CourseStatus(Resource):
             #to handle deadline
             course = controller_object.get_course(cid)
             ###
-            if course['course_code']==cid and datetime.now() > course['course_deadline']:
+            if course['course_code']==cid and datetime.now() > datetime.strptime(course['course_deadline'], '%Y-%m-%d %H:%M:%S'):
                     status="Too Late"
             if status == 'Can Enroll':
                 fcourses = finished_object.get_finished_courses(user_id)

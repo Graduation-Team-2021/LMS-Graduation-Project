@@ -69,7 +69,7 @@ export default connect(
         setLoading(false);
       });
     }
-  }, [props.currentMessage.currentMessage, props.userData.Token]);
+  }, [CURRENT_MESSAGE_ID, props.currentMessage.currentMessage, props.userData.Token]);
   ///////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     getMessages();
@@ -99,7 +99,7 @@ export default connect(
       setNewMes(null);
       setMessages(Temp);
     }
-  }, [messages, newMes, props.currentMessage.currentMessage]);
+  }, [CURRENT_MESSAGE_ID, messages, newMes, props.currentMessage.currentMessage]);
   //////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////
   //TODO: add another useEffect here to add the on recive message call back

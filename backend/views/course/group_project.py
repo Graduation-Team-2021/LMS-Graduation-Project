@@ -82,15 +82,16 @@ class InsertGroup(Resource):
         })
 #/groups/search
 class SearchGroupByName(Resource):
+    method_decorators = {'get': [requires_auth_identity('')]}
     # def __init__(self):
     #     self.reqparse = reqparse.RequestParser()
     #     self.reqparse.add_argument('group_name', type=str, location='json')
 
-    def get(self,name):
+    def get(self,user_id, role,name):
         # args = self.reqparse.parse_args()
         # group_name=args['group_name']
         try:
-            temp = controller_object.search_for_a_group(name)
+            temp = controller_object.search_for_a_group(user_id, name)
             return {"data":temp, 'status_code': 200}
         except ErrorHandler as e:
             return e.error

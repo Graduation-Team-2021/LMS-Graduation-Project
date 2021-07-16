@@ -48,3 +48,18 @@ class StudentGroupRelationController:
             with_entities(GroupProject.group_name,StudentGroupRelation.student_id)
         data=[s for s in students]
         return data
+    
+    def enroll_in_group(self, user, group):
+        enroll = StudentGroupRelation(**{
+            "group_id": group,
+            "student_id": user
+        })
+        try:
+            enroll = enroll.insert()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        

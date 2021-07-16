@@ -11,6 +11,7 @@ import {
   searchCourses,
   searchGroups,
   BE_Enroll,
+  BE_G_Enroll,
 } from "../../Interface/Interface";
 import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 import { AppBar, Tab } from "@material-ui/core";
@@ -48,21 +49,39 @@ const SearchPage = (props) => {
   };
 
   const onAccept = () => {
-    BE_Enroll(
-      props.userData.ID,
-      props.userData.Token,
-      ModalData.course_code
-    ).then((res) => {
-      if (res) {
-        alert("Enroll Successful");
-        setEnroll(false);
-        const user = {...ModalData}
-        user.status = "Enrolled"
-        setModalData(user)
-      } else {
-        alert("Enroll Failed, please Try Again");
-      }
-    });
+    if (option === "Course") {
+      BE_Enroll(
+        props.userData.ID,
+        props.userData.Token,
+        ModalData.course_code
+      ).then((res) => {
+        if (res) {
+          alert("Enroll Successful");
+          setEnroll(false);
+          const user = { ...ModalData };
+          user.status = "Enrolled";
+          setModalData(user);
+        } else {
+          alert("Enroll Failed, please Try Again");
+        }
+      });
+    } else {
+      //TODO: Enroll in Group
+      BE_G_Enroll(
+        ModalData.group_id,
+        props.userData.Token,
+      ).then((res) => {
+        if (res) {
+          alert("Enroll Successful");
+          setEnroll(false);
+          const user = { ...ModalData };
+          user.status = "Enrolled";
+          setModalData(user);
+        } else {
+          alert("Enroll Failed, please Try Again");
+        }
+      });
+    }
   };
 
   const onShow = (Data) => {
@@ -84,7 +103,7 @@ const SearchPage = (props) => {
           res.forEach((value, index) => {
             tempResults.push(
               <h1
-              key={index}
+                key={index}
                 onClick={() => {
                   onShow(value);
                 }}
@@ -96,7 +115,7 @@ const SearchPage = (props) => {
           setResults(tempResults);
         });
       } else if (option === "Course") {
-        searchCourses(query, props.userData.ID).then((res) => {
+        searchCourses(query, props.userData.Token).then((res) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
@@ -109,7 +128,7 @@ const SearchPage = (props) => {
           setResults(tempResults);
         });
       } else {
-        searchGroups(query).then((res) => {
+        searchGroups(query, props.userData.Token).then((res) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
@@ -123,7 +142,7 @@ const SearchPage = (props) => {
         });
       }
     }
-  }, [option, props.userData.ID, query, started]);
+  }, [option, props.userData.Token, query, started]);
 
   useEffect(() => {
     if (query !== "") {
@@ -139,7 +158,7 @@ const SearchPage = (props) => {
       <Modal show={show} onClick={onDismiss}>
         <Content
           show={() => {
-            setShow(false)
+            setShow(false);
             setEnroll(true);
           }}
           dismiss={onDismiss}
@@ -147,13 +166,16 @@ const SearchPage = (props) => {
           Type={option}
         />
       </Modal>
-      
-      {ModalData && option === "Course" && ModalData.course_code ? (
+      {ModalData &&
+      ((option === "Course" && ModalData.course_code) ||
+        (option === "Group" && ModalData.group_id)) ? (
         <Modal show={enroll} onClick={onCancel}>
-        {console.log(ModalData)}
           <Enroll
-            isEnrolled={ModalData}
-            id={ModalData.course_code}
+            option={option}
+            isEnrolled={ModalData.status !== "Enrolled"}
+            id={
+              option === "Course" ? ModalData.course_code : ModalData.group_id
+            }
             onAccept={onAccept}
             onCancel={onCancel}
           />

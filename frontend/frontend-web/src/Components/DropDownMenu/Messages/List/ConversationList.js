@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import ConversationListItem from "./Item/Item";
 import cls from "./ConversationList.module.css";
-import { getAllConversations, getAllUsers, getUser } from "../../../../Interface/Interface";
+import { getAllConversations, getAllUsers } from "../../../../Interface/Interface";
 import { setUser } from "../../../../Models/User";
 import filler from "../../../../assets/Filler.png";
 import { mapDispatchToProps, mapStateToProps } from "../../../../store/reduxMaps";

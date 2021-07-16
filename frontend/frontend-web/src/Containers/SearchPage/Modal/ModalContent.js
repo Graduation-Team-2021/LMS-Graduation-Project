@@ -11,7 +11,7 @@ const Content = (props) => {
       ) : props.Type === "Course" ? (
         <Course show={props.show} dismiss={props.dismiss} Data={props.Data}/>
       ) : (
-        <Group dismiss={props.dismiss} Data={props.Data}/>
+        <Group show={props.show} dismiss={props.dismiss} Data={props.Data}/>
       )):null}
     </React.Fragment>
   );

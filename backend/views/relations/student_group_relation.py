@@ -45,6 +45,8 @@ class StudentGroupView(Resource):
 
 #group/<group_id>/students
 class EachGroupStudents(Resource):
+    method_decorators = {'post': [requires_auth_identity("")]}
+
     def get(self,group_id):
         try:
             students=controller_object.get_one_group_all_students(group_id)
@@ -59,3 +61,12 @@ class EachGroupStudents(Resource):
                 }
             )
         return data_array
+    
+    def post(self,user_id, role, group_id):
+        try:
+            print("Enrolling")
+            controller_object.enroll_in_group(user_id, group_id)
+        except ErrorHandler as e:
+            return e.error
+        return {"message": "Enrolled Sucessfully", 'status_code':200}
+        
