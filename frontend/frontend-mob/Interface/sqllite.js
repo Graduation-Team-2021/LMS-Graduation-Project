@@ -288,7 +288,20 @@ export function CreateTable() {
       }
     );
   });
+  db.transaction((tx) => {
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS message(massage_id INTEGER PRIMARY KEY ,sender_id INTEGER , receiver_id INTEGER, sent_time TEXT, text TEXT , FOREIGN KEY (sender_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (receiver_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
+      [],
+      (_, res) => {
+        console.log("[creating is done with the result]", res);
+      },
+      (_, err) => {
+        console.log("[failed there is an error]", err);
+      }
+    );
+  });
 }
+
 
 export function SQLSignIn(user_id, email, password, name, role) {
   db.transaction((tx) => {
