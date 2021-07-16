@@ -95,6 +95,7 @@ class LoginPage extends Component {
   }
 
   render() {
+    document.title="Login"
     return (
       <div className={classes.Main}>
         <Card className={classes.Card} row shadow>

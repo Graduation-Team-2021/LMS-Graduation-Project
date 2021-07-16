@@ -128,7 +128,6 @@ export const getRecentEvent = async (Token, id) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res.data);
   if (res.data["status_code"] !== 200 && res.data["status_code"] !== 202) {
     //TODO: Better Check
     return null;

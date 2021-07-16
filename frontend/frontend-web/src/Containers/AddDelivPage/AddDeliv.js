@@ -142,6 +142,8 @@ class AddDelivPage extends Component {
   };
 
   render() {
+    document.title="Create New Deliverable"
+
     const AddDelivField = (
       <React.Fragment>
         {Object.keys(this.state.Fields).map((value, index) => {

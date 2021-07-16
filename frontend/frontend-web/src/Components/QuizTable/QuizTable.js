@@ -94,6 +94,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function Deliverable
   /////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////
 
+  document.title=`${props.name} Quizzes`
   return (
     <div className={cls.content}>
       <div className={cls.title}>{props.name} Quizzes</div>

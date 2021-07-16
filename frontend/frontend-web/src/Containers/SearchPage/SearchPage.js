@@ -66,7 +66,6 @@ const SearchPage = (props) => {
         }
       });
     } else {
-      //TODO: Enroll in Group
       BE_G_Enroll(
         ModalData.group_id,
         props.userData.Token,
@@ -152,6 +151,8 @@ const SearchPage = (props) => {
       setResults([]);
     }
   }, [onSearch, option, query]);
+
+  document.title="Search"
 
   return (
     <span className={classes.Holder}>

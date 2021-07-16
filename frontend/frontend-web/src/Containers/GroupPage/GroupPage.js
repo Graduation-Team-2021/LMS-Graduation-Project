@@ -79,6 +79,7 @@ const GroupPage = (props) => {
     hide();
   };
 
+  document.title=Title
   return (
     <React.Fragment>
       <Modal show={clicked} onClick={hide}>

@@ -126,6 +126,8 @@ class ResetPass extends Component {
   };
 
   render() {
+    document.title="Reset Password"
+
     const ChangePasswordField = (
       <React.Fragment>
         {Object.keys(this.state.Fields).map((value, index) => {

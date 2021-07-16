@@ -26,7 +26,6 @@ class Upcoming extends Component {
   componentDidMount() {
     getRecentEvent(this.Token, this.ID)
       .then((res2) => {
-        console.log(res2);
         if (res2) {
           const res = res2["event"];
           this.setState({
@@ -53,7 +52,6 @@ class Upcoming extends Component {
     console.log(this.state);
     return (
       <div className={classes.upcoming}>
-        {/*TODO: Add "Add Event" Button Here*/}
         <Waiting Loading={this.state.Loading}>
           {this.state.Event && this.state.exists ? (
             <React.Fragment>

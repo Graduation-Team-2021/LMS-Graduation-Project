@@ -55,7 +55,7 @@ const AdminPage = (props) => {
       setDismiss(false);
     }, 500);
   };
-
+  document.title="Home Page"
   return (
     <div className={classes.Center + " " + (dismiss ? classes.dismiss : "")}>
       <Card shadow className={classes.Container}>

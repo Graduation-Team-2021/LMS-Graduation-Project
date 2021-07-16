@@ -64,6 +64,7 @@ function Page(props) {
     }
   }, [ele.id, ele.mark, finished, props.userData.ID, score]);
   ////////////////////////////////////////////////////////
+  document.title=`${ele.name} Quiz`
   return (
     <div className={cls.page}>
       <Prompt

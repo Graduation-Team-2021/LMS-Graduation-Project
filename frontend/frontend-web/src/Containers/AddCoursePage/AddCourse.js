@@ -192,6 +192,8 @@ class AddCoursePage extends Component {
   }
 
   render() {
+    document.title="Create New Course"
+
     const AddCourseField = (
       <React.Fragment>
         {Object.keys(this.state.Fields).map((value, index) => {

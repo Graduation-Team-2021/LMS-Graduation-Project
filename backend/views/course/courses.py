@@ -151,7 +151,7 @@ class My_Courses(Resource):
                     'course_name': student_courses[i]["course_name"],
                     'course_description': student_courses[i]["course_description"],
                     'post_owner_id': student_courses[i]["post_owner_id"],
-                    'professors': [p['name'] for p in prof]
+                    'professors': [p for p in prof]
                 })
                 
             return jsonify({

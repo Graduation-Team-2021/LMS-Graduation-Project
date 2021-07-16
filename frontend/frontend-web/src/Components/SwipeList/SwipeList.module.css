@@ -12,11 +12,10 @@
     justify-content: space-between;
     width: 100%;
     margin: 0 5%;
-    padding: 1% 1%;
+    padding: 1%;
     position: relative;
     scroll-behavior: smooth;
     align-items: center;
-    justify-content: center;
 }
 
 .Left {
@@ -29,12 +28,16 @@
     width: 4vw;
     height: 4vw;
     outline: none;
-    border: 3px solid purple;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: aliceblue;
+    
+}
+
+.Right .Button, .Left .Button{
+    width: 100%;
+    height: 100%;
     font-size: 400%;
 }
 
@@ -47,11 +50,8 @@
     position: absolute;
     z-index: 70;
     border-radius: 100%;
-    border: 3px solid purple;
     overflow: hidden;
     width: 4vw;
     height: 4vw;
-    background-color: aliceblue;
     outline: none;
-    font-size: 400%;
 }
