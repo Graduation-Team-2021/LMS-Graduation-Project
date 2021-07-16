@@ -14,7 +14,8 @@ class messages_controller():
                     and_(Messages.sender_id == second_id, Messages.receiver_id == first_id))).order_by(Messages.sent_time.desc()).all()
             conversation = Conversation.query.filter(
                 or_(and_(Conversation.first_user == first_id, Conversation.second_user == second_id),
-                    and_(Conversation.first_user == second_id, Conversation.second_user == first_id))).first().serialize()
+                    and_(Conversation.first_user == second_id, Conversation.second_user == first_id))).first()
+            if conversation:conversation=conversation.serialize()
             
             if(first_id==conversation['first_user']):
                 second_id=conversation['second_user']
