@@ -27,10 +27,11 @@ Open a command prompt (or PowerShell), and enter the following:
 
 •	npm -v
 
-# All this package you can install by one command in the route of application:
+# now we can start coding and implement project using react native (mobile app) by command:
 
-•	npm install 
+•	npm install -g expo-cli
 
-# To start running front-end web use:
+# To start running front-end mobile use:
 
-•	npm start
+•	expo start
+
