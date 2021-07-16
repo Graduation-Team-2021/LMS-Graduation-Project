@@ -15,12 +15,17 @@ class messages_controller():
             conversation = Conversation.query.filter(
                 or_(and_(Conversation.first_user == first_id, Conversation.second_user == second_id),
                     and_(Conversation.first_user == second_id, Conversation.second_user == first_id))).first()
-            if conversation:conversation=conversation.serialize()
-            
-            if(first_id==conversation['first_user']):
-                second_id=conversation['second_user']
-            else:
-                second_id=conversation['first_user']
+            if conversation:
+                conversation=conversation.serialize()
+                if(first_id==conversation['first_user']):
+                    second_id=conversation['second_user']
+                else:
+                    second_id=conversation['first_user']
+            else: 
+                raise ErrorHandler({
+                'description': "No Conversations Found",
+                'status_code': 500
+            })
         except SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             raise ErrorHandler({
