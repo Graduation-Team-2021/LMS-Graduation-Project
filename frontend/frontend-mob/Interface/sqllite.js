@@ -278,7 +278,7 @@ export function CreateTable() {
 
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS user(user_id INTEGER PRIMARY KEY ,name TEXT NOT NULL , email TEXT NOT NULL , birthday TEXT, password TEXT ,  picture TEXT );",
+      "CREATE TABLE IF NOT EXISTS user(user_id INTEGER PRIMARY KEY ,name TEXT NOT NULL , email TEXT  , birthday TEXT, password TEXT ,  picture TEXT );",
       [],
       (_, res) => {
         console.log("[creating is done with the result]", res);
@@ -301,6 +301,7 @@ export function CreateTable() {
     );
   });
 }
+
 
 
 // export function SQLSignIn(user_id, email, password, name, role) {
@@ -340,4 +341,31 @@ export function CreateTable() {
 //     );
 //   });
 // }
+
+export function SQLGetCurrentCourse(user_id) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT * FROM course , learns   WHERE learns.student_id = ? AND course.course_code = learns.course_code ; ", [user_id],
+      (_, res) => { console.log(res); })
+  })
+};
+
+//call SQL
+
+export function SQLInsertCurrentCourse(courses) {
+  db.transaction((tx) => {
+    courses.forEach(element => {
+      tx.executeSql(
+        "INSERT OR REPLACE INTO course(course_code,course_name,post_owner_id,course_description) VALUES (?,?,?,?);", [element.course_code, element.course_name, element.post_owner_id, element.course_description],
+        (tx, res) => { console.log('inserting to course table successfully'); }, (tx, err) => { console.log("insertion the the db failed with error", err); })
+      element.professors.forEach(prof => {
+        tx.executeSql("INSERT OR REPLACE INTO professor(user_id) VALUES (?) ; ", [prof.user_id])
+        tx.executeSql("INSERT OR REPLACE INTO user(user_id,name) VALUES (?) ; ", [prof.user_id, prof.name])
+        tx.executeSql("INSERT OR REPLACE INTO teaches(course_code,professor_id) VALUES (?,?);", [element.course_code, prof.user_id])
+      });
+    });
+
+  })
+
+};
 
