@@ -252,7 +252,7 @@ export function CreateTable() {
 
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS professor(user_id INTEGER PRIMARY KEY ,scientific_degree TEXT NOT NULL  ,FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
+      "CREATE TABLE IF NOT EXISTS professor(user_id INTEGER PRIMARY KEY ,scientific_degree TEXT   ,FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
         console.log("[creating is done with the result]", res);
@@ -302,70 +302,94 @@ export function CreateTable() {
   });
 }
 
-
-
-// export function SQLSignIn(user_id, email, password, name, role) {
-//   db.transaction((tx) => {
-//     tx.executeSql(
-//       `INSERT INTO user(user_id, email, password, name) VALUES (?,?,?,?);`,
-//       [user_id, email, password, name],
-//       (tx, res) => {
-//         console.log("[insert is done with the result]", res);
-//         if (role === "student") {
-//           tx.executeSql(
-//             `INSERT INTO student(user_id) VALUES (?);`,
-//             [user_id],
-//             (_, res) => {
-//               console.log("[insert is done with the result]", res);
-//             },
-//             (_, err) => {
-//               console.log("[failed there is an error]", err);
-//             }
-//           );
-//         } else if (role == "professor") {
-//           tx.executeSql(
-//             `INSERT INTO professor(user_id) VALUES (?);`,
-//             [user_id],
-//             (_, res) => {
-//               console.log("[insert is done with the result]", res);
-//             },
-//             (_, err) => {
-//               console.log("[failed there is an error]", err);
-//             }
-//           );
-//         }
-//       },
-//       (_, err) => {
-//         console.log("[failed there is an error]", err);
-//       }
-//     );
-//   });
-// }
-
 export function SQLGetCurrentCourse(user_id) {
   db.transaction((tx) => {
     tx.executeSql(
-      "SELECT * FROM course , learns   WHERE learns.student_id = ? AND course.course_code = learns.course_code ; ", [user_id],
-      (_, res) => { console.log(res); })
-  })
-};
+      "SELECT * FROM course , learns   WHERE learns.student_id = ? AND course.course_code = learns.course_code ; ",
+      [user_id],
+      (_, res) => {
+        console.log(res);
+      }
+    );
+  });
+}
 
 //call SQL
 
 export function SQLInsertCurrentCourse(courses) {
   db.transaction((tx) => {
-    courses.forEach(element => {
+    courses.forEach((element) => {
       tx.executeSql(
-        "INSERT OR REPLACE INTO course(course_code,course_name,post_owner_id,course_description) VALUES (?,?,?,?);", [element.course_code, element.course_name, element.post_owner_id, element.course_description],
-        (tx, res) => { console.log('inserting to course table successfully'); }, (tx, err) => { console.log("insertion the the db failed with error", err); })
-      element.professors.forEach(prof => {
-        tx.executeSql("INSERT OR REPLACE INTO professor(user_id) VALUES (?) ; ", [prof.user_id])
-        tx.executeSql("INSERT OR REPLACE INTO user(user_id,name) VALUES (?) ; ", [prof.user_id, prof.name])
-        tx.executeSql("INSERT OR REPLACE INTO teaches(course_code,professor_id) VALUES (?,?);", [element.course_code, prof.user_id])
+        "INSERT OR REPLACE INTO course(course_code,course_name,post_owner_id,course_description) VALUES (?,?,?,?);",
+        [
+          element.course_code,
+          element.course_name,
+          element.post_owner_id,
+          element.course_description,
+        ],
+        (tx, res) => {
+          console.log(
+            "inserting to course table successfully with result",
+            res
+          );
+        },
+        (tx, err) => {
+          console.log(
+            "insertion the the db failed with error",
+            err,
+            "The inserted course is",
+            element
+          );
+        }
+      );
+      element.professors.forEach((prof) => {
+        tx.executeSql(
+          "INSERT OR REPLACE INTO professor(user_id) VALUES (?) ; ",
+          [prof.user_id],
+          (_, res) => {
+            console.log("inserting to professors table with result", res);
+          },
+          (_, err) => {
+            console.log(
+              "inserting into professors table failed with error",
+              err,
+              "while inserting ",
+              prof
+            );
+          }
+        );
+        tx.executeSql(
+          "INSERT OR REPLACE INTO user(user_id,name) VALUES (?,?) ; ",
+          [prof.user_id, prof.name],
+          (_, res) => {
+            console.log("inserting to user table with result", res);
+          },
+          (_, err) => {
+            console.log(
+              "inserting into user table failed with error",
+              err,
+              "while inserting ",
+              prof
+            );
+          }
+        );
+        tx.executeSql(
+          "INSERT OR REPLACE INTO teaches(course_code,professor_id) VALUES (?,?);",
+          [element.course_code, prof.user_id],
+          (_, res) => {
+            console.log("inserting to teach table with result", res);
+          },
+          (_, err) => {
+            console.log(
+              "inserting into teach table failed with error",
+              err,
+              "while inserting ",
+              element,
+              prof
+            );
+          }
+        );
       });
     });
-
-  })
-
-};
-
+  });
+}

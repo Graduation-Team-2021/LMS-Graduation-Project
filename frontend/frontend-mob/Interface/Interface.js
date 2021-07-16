@@ -53,6 +53,7 @@ export const getCurrentCourses = async (Token) => {
     //TODO: Better Check
     return null;
   }
+  localStorage.SQLInsertCurrentCourse(res.data["courses"]);
   return res.data["courses"];
 };
 //store in the local storage
@@ -563,7 +564,7 @@ export const getUser = async (id) => {
 //add quizes
 //submit quizes // store in the local storage
 //get grades // store in the local storage
-//getDoctors 
+//getDoctors
 //get status
 //BE_Enroll
 //BE_G_Enroll
