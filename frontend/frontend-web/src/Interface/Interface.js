@@ -128,11 +128,12 @@ export const getRecentEvent = async (Token, id) => {
       Authorization: "Bearer " + Token,
     },
   });
-  if (res.data["status_code"] !== 200) {
+  console.log(res.data);
+  if (res.data["status_code"] !== 200 && res.data["status_code"] !== 202) {
     //TODO: Better Check
     return null;
   }
-  return res.data["event"];
+  return res.data;
 };
 
 export const getFinishedCourses = async (Token, id, role) => {

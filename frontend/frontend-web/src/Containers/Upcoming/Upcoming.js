@@ -16,7 +16,7 @@ import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setEvent } from "../../Models/Event";
 
 class Upcoming extends Component {
-  state = { Event: null, Loading: true };
+  state = { Event: null, Loading: true, exists: true };
 
   Token = this.props.userData.Token;
   ID = this.props.userData.ID;
@@ -24,54 +24,72 @@ class Upcoming extends Component {
   setRecentEvent = this.props.recentEventsActions.onSetRecentEvents;
 
   componentDidMount() {
-    getRecentEvent(this.Token, this.ID).then((res) => {
-      if (res) {
-        this.setState({
-          Event: setEvent(res),
-        });
-        this.setRecentEvent(setEvent(res));
-      } else {
-        this.TokenError();
-      }
-      this.setState({
-        Loading: false,
-      });
-    }).catch(error=>console.log(error));
+    getRecentEvent(this.Token, this.ID)
+      .then((res2) => {
+        console.log(res2);
+        if (res2) {
+          const res = res2["event"];
+          this.setState({
+            Loading: false,
+          });
+          if (res2.status_code === 200) {
+            this.setState({
+              Event: setEvent(res),
+            });
+            this.setRecentEvent(setEvent(res));
+          } else {
+            this.setState({
+              exists: false,
+            });
+          }
+        } else {
+          this.TokenError();
+        }
+      })
+      .catch((error) => console.log(error));
   }
 
   render() {
-
+    console.log(this.state);
     return (
       <div className={classes.upcoming}>
         {/*TODO: Add "Add Event" Button Here*/}
         <Waiting Loading={this.state.Loading}>
-          {this.state.Event?<React.Fragment>
-            <div className={classes.Title}>Upcoming Event</div>
-            <div className={classes.EventTitle}>{this.state.Event.Title}</div>
-            <div className={classes.Host}>
-              Hosted By:
-              <span
-                style={{
-                  fontWeight: "bold",
-                }}
-              >
-                {this.state.Event.Host}
-              </span>
-            </div>
-            <div className={classes.Invited}>Invited Members</div>
-            <CircularArray />
-            <Minibar
-              icon={faCalendarAlt}
-              color="red"
-              info={this.state.Event.Date}
-            />
-            <Minibar icon={faClock} color="purple" info={this.state.Event.Time} />
-            <Minibar icon={faVideo} color=" rgb(0, 102, 255)" info="Method" />
-            <div className={classes.DesTitle}>
-              Event Type: {this.state.Event.Type}
-            </div>
-            <div className={classes.Des}>{this.state.Event.Desc}</div>
-          </React.Fragment>:<h1>No Upcoming Events</h1>}
+          {this.state.Event && this.state.exists ? (
+            <React.Fragment>
+              <div className={classes.Title}>Upcoming Event</div>
+              <div className={classes.EventTitle}>{this.state.Event.Title}</div>
+              <div className={classes.Host}>
+                Hosted By:
+                <span
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  {this.state.Event.Host}
+                </span>
+              </div>
+              <div className={classes.Invited}>Invited Members</div>
+              <CircularArray />
+              <Minibar
+                icon={faCalendarAlt}
+                color="red"
+                info={this.state.Event.Date}
+              />
+              <Minibar
+                icon={faClock}
+                color="purple"
+                info={this.state.Event.Time}
+              />
+              <Minibar icon={faVideo} color=" rgb(0, 102, 255)" info="Method" />
+              <div className={classes.DesTitle}>
+                Event Type: {this.state.Event.Type}
+              </div>
+              <div className={classes.Des}>{this.state.Event.Desc}</div>
+            </React.Fragment>
+          ) : (
+            <h1>No Upcoming Events</h1>
+          )}
         </Waiting>
       </div>
     );
