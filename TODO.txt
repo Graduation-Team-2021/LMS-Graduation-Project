@@ -17,8 +17,7 @@ Mobile TODO:
 2. integration(David,Adham)
 4. Push notification for the mobile in case of new event occurs(David,Adham)
 5. For SQLite, check the dublicate Data before inserting it(David,Adham,Ibrahim)
-8. Enroll in Courses
-9. REset password
+9. REset password (linking to the backend)
 10. The Pie in the delev page
 11. show all groups
 12. Recent Events
