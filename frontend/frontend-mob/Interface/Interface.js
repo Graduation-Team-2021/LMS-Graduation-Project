@@ -164,6 +164,9 @@ export const getAllPosts = async (Token, owner) => {
     //TODO: Better Check
     return null;
   }
+  console.log("[getAllPosts]====================================");
+  console.log(res.data["posts"]);
+  console.log("[getAllPosts]====================================");
   return res.data["posts"];
 };
 //store in the local storage (Future Work)
