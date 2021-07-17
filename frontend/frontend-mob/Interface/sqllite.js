@@ -200,7 +200,7 @@ export function CreateTable() {
 
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS post_commenter(comment_id INTEGER PRIMARY KEY ,comment_text TEXT ,commenter_id INTEGER ,post_id INTEGER , created_date TEXT ,FOREIGN KEY (commenter_id) REFERENCES user(user_id) ON UPDATE CASCADE  , FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE );",
+      "CREATE TABLE IF NOT EXISTS post_commenter(comment_id INTEGER PRIMARY KEY  ,comment_text TEXT ,commenter_id INTEGER ,post_id INTEGER , created_date TEXT ,FOREIGN KEY (commenter_id) REFERENCES user(user_id) ON UPDATE CASCADE  , FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
         console.log("[creating is done with the result]", res);
@@ -570,6 +570,14 @@ export function SQLGetVideos(course_code) {
     });
   });
 }
+export function SQLInertPdfs (pdf){
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",[pdf.material_id,pdf.material_name,pdf.material_type,pdf.course_material],
+      (_,res) => { console.log('inserting to materials table successfully'),res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
+}
 
 export function SQLInertVideos() {
   db.transaction((tx) => {
@@ -764,7 +772,122 @@ export function SQLInsertRecentPosts(posts) {
               (_, err) => {}
             );
           },
-          (_, err) => {}
+          (_, err) => {})
+      })
+    })
+  })
+}
+export function SQLInertVideos (video){
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",[video.material_id,video.material_name,video.material_type,video.course_material],
+      (_,res) => { console.log('inserting to materials table successfully'),res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
+}
+
+export function SQLInsertUser() {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)",
+      [],
+      (_, res) => {
+        console.log("inserting to course table successfully"), res;
+      },
+      (_, err) => {
+        console.log("insertion the the db failed with error", err);
+      }
+    );
+  });
+}
+
+export function SQLInsertPosts(posts) {
+  db.transaction((tx) => {
+    posts.forEach((element) => {
+      tx.executeSql(
+        "INSERT OR REPLACE INTO user(user_id,name) VALUES (?,?)",
+        [element.post_writer, element.name],
+        (_, res) => {
+          console.log(
+            "inserting the auther of the post is done successfully with result",
+            res
+          );
+        },
+        (_, err) => {
+          console.log(
+            "inserting the auther of the post is done with error",
+            err
+          );
+        }
+      );
+      tx.executeSql(
+        "INSERT OR REPLACE INTO posts(post_id,post_writer,post_owner,post_text) VALUES(?,?,?,?)",
+        [
+          element.post_id,
+          element.post_writer,
+          element.post_owner,
+          element.post_text,
+        ],
+        (_, res) => {
+          console.log("inserting post successfully", res);
+        },
+        (_, err) => {
+          console.log("isnerting post failed with error", err);
+        }
+      );
+      element.comments.forEach((comment) => {
+        tx.executeSql(
+          "INSERT OR REPLACE INTO user(user_id,name) VALUES(?,?)",
+          [comment.commenter_id, comment.commenter_name],
+          (_, res) => {
+            console.log(
+              "inserting user due to comment is done successfully with result",
+              res
+            );
+          },
+          (_, err) => {
+            console.log("inserting user due to comment failed with error", err);
+          }
+        );
+        tx.executeSql(
+          "INSERT OR REPLACE INTO post_commenter(comment_id,commenter_id,comment_text,post_id) VALUES(?,?,?,?);",
+          [
+            comment.comment_id,
+            comment.commenter_id,
+            comment.comment,
+            element.post_id,
+          ],
+          (_, res) => {
+            console.log(
+              "isnerting commment to post done successfully with result",
+              res
+            );
+          },
+          (_, err) => {
+            console.log("inserting comment ot post failed with error", err);
+          }
+        );
+      });
+      element.likes.forEach((like) => {
+        tx.executeSql(
+          "INSERT OR REPLACE INTO user(user_id,name) VALUES (?,?)",
+          [like.liker_id, like.liker_name],
+          (_, res) => {
+            console.log("inserting liker data is done with result", res);
+          },
+          (_, err) => {
+            console.log("inserting liker data is done wiht error", err);
+          }
+        );
+        tx.executeSql(
+          "INSERT OR REPLACE INTO post_liker(liker_id,post_id) VALUES (?,?)",
+          [like.liker_id, element.post_id],
+          (_, res) => {
+            console.log("inserting liker done successfully", res);
+          },
+          (_, err) => {
+            console.log("inserting liker is done with error", err);
+          }
         );
       });
     });
