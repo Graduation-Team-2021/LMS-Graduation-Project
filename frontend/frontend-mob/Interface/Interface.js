@@ -42,7 +42,7 @@ export const Login = async (Data) => {
     return null;
   }
 };
-//store in the local storage
+
 export const getCurrentCourses = async (Token) => {
   if ((await NetInfo.fetch()).isConnected) {
     const res = await instance.get(`/my_courses`, {
@@ -63,7 +63,7 @@ export const getCurrentCourses = async (Token) => {
   result = await localStorage.SQLGetCurrentCourse(David.id, David.permissions);
   return result;
 };
-//store in the local storage
+
 export const getCurrentGroups = async (Token, id, role) => {
   const res = await instance.get(`/my_groups`, {
     headers: {
