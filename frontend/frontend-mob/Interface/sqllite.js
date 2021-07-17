@@ -419,3 +419,12 @@ export function SQLInsertCurrentCourse(courses, user_id) {
     });
   });
 }
+
+
+export function SQLGetCurrentGroups(user_id, role){
+db.transaction((tx)=>{
+  tx.executeSql(
+    "SELECT * FROM group_project , "
+  )
+})
+}
