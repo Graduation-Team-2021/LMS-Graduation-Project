@@ -303,20 +303,30 @@ export function CreateTable() {
 }
 
 export function SQLGetCurrentCourse(user_id) {
-  db.transaction((tx) => {
-    tx.executeSql(
-      "SELECT * FROM course , learns   WHERE learns.student_id = ? AND course.course_code = learns.course_code ; ",
-      [user_id],
-      (_, res) => {
-        console.log(res);
-      }
-    );
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM course,  learns, teaches, user WHERE course.course_code=learns.course_code AND learns.student_id=? AND teaches.course_code=course.course_code AND teaches.professor_id=user.user_id; ",
+        [user_id],
+        (_, res) => {
+          //TODO: GET Professors as ARRAY
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
   });
 }
 
 //call SQL
 
-export function SQLInsertCurrentCourse(courses) {
+export function SQLInsertCurrentCourse(courses, user_id) {
   db.transaction((tx) => {
     courses.forEach((element) => {
       tx.executeSql(
@@ -390,6 +400,22 @@ export function SQLInsertCurrentCourse(courses) {
           }
         );
       });
+      tx.executeSql(
+        "INSERT OR REPLACE INTO learns(course_code,student_id) VALUES (?,?);",
+        [element.course_code, user_id],
+        (_, res) => {
+          console.log("inserting to teach table with result", res);
+        },
+        (_, err) => {
+          console.log(
+            "inserting into teach table failed with error",
+            err,
+            "while inserting ",
+            element,
+            prof
+          );
+        }
+      );
     });
   });
 }

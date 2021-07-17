@@ -5,6 +5,7 @@ export const path = "http://192.168.1.68:5000";
 import * as localStorage from "./sqllite";
 import jwt from "jwt-decode";
 import NetInfo from "@react-native-community/netinfo";
+import jwtDecode from "jwt-decode";
 const instance = axios.create({
   baseURL: azure,
 });
@@ -43,18 +44,23 @@ export const Login = async (Data) => {
 };
 //store in the local storage
 export const getCurrentCourses = async (Token) => {
-  const res = await instance.get(`/my_courses`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/my_courses`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    if (res.data["status_code"] !== 200) {
+      //TODO: Better Check
+      //TODO: Signout
+      return null;
+    }
+    return res.data["courses"];
   }
-  localStorage.SQLInsertCurrentCourse(res.data["courses"]);
-  return res.data["courses"];
+  localStorage.SQLInsertCurrentCourse(res.data["courses"], jwtDecode(Token).id);
+  result = await localStorage.SQLGetCurrentCourse(jwtDecode(Token).id);
+  return result;
 };
 //store in the local storage
 export const getCurrentGroups = async (Token, id, role) => {

@@ -21,9 +21,7 @@ const DGroups = [];
 const NormalHomeScreen = (props) => {
   const [c, setC] = useState([]);
   const groupflag = true;
-  console.log("====================================");
-  console.log(props.userData.Role);
-  console.log("====================================");
+
 
   const [ButtomModalVisability, setButtomModalVisability] = useState(false);
 
