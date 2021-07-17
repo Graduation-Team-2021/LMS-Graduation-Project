@@ -75,9 +75,7 @@ export const getCurrentGroups = async (Token, id, role) => {
     //TODO: Better Check
     return null;
   }
-  console.log("[getCurrentGroups]====================================");
-  console.log(res.data["groups"]);
-  console.log("[getCurrentGroups]====================================");
+
   return res.data["groups"];
 };
 export const getCourses = async (Token) => {
@@ -105,6 +103,9 @@ export const getRecentPosts = async (Token) => {
     //TODO: Better Check
     return null;
   }
+  console.log("[getRecentPosts]====================================");
+  console.log(res.data["posts"]);
+  console.log("[getRecentPosts]====================================");
   return res.data["posts"];
 };
 //store in the local storage
