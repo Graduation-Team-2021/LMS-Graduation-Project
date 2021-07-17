@@ -302,24 +302,42 @@ export function CreateTable() {
   });
 }
 
-export function SQLGetCurrentCourse(user_id) {
+export function SQLGetCurrentCourse(user_id, role) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT * FROM course,  learns, teaches, user WHERE course.course_code=learns.course_code AND learns.student_id=? AND teaches.course_code=course.course_code AND teaches.professor_id=user.user_id; ",
-        [user_id],
-        (_, res) => {
-          //TODO: GET Professors as ARRAY
-          let result = [];
-          for (let index = 0; index < res.rows.length; index++) {
-            result.push(res.rows.item(index));
+      if (role === "student") {
+        tx.executeSql(
+          "SELECT * FROM course, learns, teaches, user WHERE course.course_code=learns.course_code AND learns.student_id=? AND teaches.course_code=course.course_code AND teaches.professor_id=user.user_id; ",
+          [user_id],
+          (_, res) => {
+            //TODO: GET Professors as ARRAY
+            let result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            resolve(result);
+          },
+          (_, err) => {
+            reject(err);
           }
-          resolve(result);
-        },
-        (_, err) => {
-          reject(err);
-        }
-      );
+        );
+      } else {
+        tx.executeSql(
+          "SELECT * FROM course, teaches, user WHERE course.course_code=teaches.course_code AND teaches.professor_id=? AND teaches.professor_id=user.user_id; ",
+          [user_id],
+          (_, res) => {
+            //TODO: GET Professors as ARRAY
+            let result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            resolve(result);
+          },
+          (_, err) => {
+            reject(err);
+          }
+        );
+      }
     });
   });
 }
@@ -400,23 +418,83 @@ export function SQLInsertCurrentCourse(courses, user_id) {
           }
         );
       });
-      tx.executeSql(
-        "INSERT OR REPLACE INTO learns(course_code,student_id) VALUES (?,?);",
-        [element.course_code, user_id],
-        (_, res) => {
-          console.log("inserting to teach table with result", res);
-        },
-        (_, err) => {
-          console.log(
-            "inserting into teach table failed with error",
-            err,
-            "while inserting ",
-            element,
-            prof
+      if (role === "student") {
+        tx.executeSql(
+          "INSERT OR REPLACE INTO learns(course_code,student_id) VALUES (?,?);",
+          [element.course_code, user_id],
+          (_, res) => {
+            console.log("inserting to teach table with result", res);
+          },
+          (_, err) => {
+            console.log(
+              "inserting into teach table failed with error",
+              err,
+              "while inserting ",
+              element,
+              prof
+            );
+          }
+        );
+      }
+    });
+  });
+}
+
+export function SQLGetCurrentGroups(user_id, role) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      if (role === "student") {
+        tx.executeSql(
+          "SELECT * FROM group_project , student_group_relation WHERE group_project.group_id=student_group_relation.group_id AND student_group_relation.student_id = ?;",
+          [user_id],
+          (_, res) => {
+            resolve(res);
+          },
+          (_, err) => reject(err)
+        );
+      } else {
+        tx.executeSql(
+          "SELECT * FROM group_project , group_course_relation, teaches WHERE group_project.group_id=group_course_relation.group_id AND group_course_relation.course_id = teaches.course_code AND teaches.professor_id = ?;",
+          [user_id],
+          (_, res) => {
+            resolve(res);
+          },
+          (_, err) => reject(err)
+        );
+      }
+    });
+  });
+}
+
+export function SQLInsertCurrentGroups(user_id, role, groups) {
+  return new Promise((resolve, reject) => {
+    groups.forEach(value=>{
+      db.transaction((tx) => {
+        tx.executeSql(
+          "INSERT INTO group_project(group_id,group_name, group_description, post_owner_id) VALUES (?,?,?,?)",
+          [value.group_id, value.group_name, value.group_description, value.post_owner_id]
+        )
+        if (role === "student") {
+          tx.executeSql(
+            "INSERT INTO student_group_relation (group_id, student_id) VALUES (?,?);",
+            [value.group_id, user_id],
+            (_, res) => {
+              resolve(res);
+            },
+            (_, err) => reject(err)
+          );
+        } else {
+          tx.executeSql(
+            "INSERT INTO group_course_relation (group_id, course_id) VALUES (?,?);",
+            [value.group_id, value.course_id],
+            (_, res) => {
+              resolve(res);
+            },
+            (_, err) => reject(err)
           );
         }
-      );
-    });
+      });
+    })
   });
 }
 
@@ -426,8 +504,87 @@ export function SQLGetCurrentGroups(user_id, role) {
   });
 }
 
-export function SQLInsertRecentPosts(user_id, role) {
+export function SQLGetPdfs (course_code) {
+  return new Promise((resolve, reject) => {db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND course.course_code = ? ;",[course_code],
+      (_,res) => {
+        let result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            resolve(result);
+      },
+      (_,err) => {
+        reject(err)
+      }
+    )
+  })
+})
+}
+
+export function SQLInertPdfs (){
   db.transaction((tx) => {
-    tx.executeSql("SELECT * FROM  group_project,course,teach,post_owner");
-  });
+    tx.executeSql(
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",[],
+      (_,res) => { console.log('inserting to course table successfully'),res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
+}
+
+export function SQLGetVideos (course_code) {
+  return new Promise((resolve, reject) => {db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND course.course_code = ? ;",[course_code],
+      (_,res) => {
+        let result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            resolve(result);
+      },
+      (_,err) => {
+        reject(err)
+      }
+    )
+  })
+})
+}
+
+export function SQLInertVideos (){
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",[],
+      (_,res) => { console.log('inserting to course table successfully'),res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
+}
+
+
+export function SQLGetUser (user_id) {
+  return new Promise((resolve, reject) => {db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT * FROM user WHERE user.user_id = ? ;",[user_id],
+      (_,res) => {
+        let result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            resolve(result);
+      },
+      (_,err) => {
+        reject(err)
+      }
+    )
+  })
+})
+}
+
+export function SQLInsertUser (){
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)",[],
+      (_,res) => { console.log('inserting to course table successfully'),res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
 }
