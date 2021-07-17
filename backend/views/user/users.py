@@ -179,24 +179,26 @@ class Sign_Up_Using_Excel(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         raw_data = args['file'].read()
-        excel_data = pandas.read_excel(raw_data,dtype=str)
+        excel_data = pandas.read_excel(raw_data,dtype=str, engine='openpyxl')
         excel_data = excel_data.to_json(orient='records')
         excel_data = json.loads(excel_data)
         for entry in excel_data:
-            date = entry['birthday']
-            date = date.split(' ')[0]
-            entry['birthday'] = date
-            student_year = entry['student_year']
-            scientific_degree = entry['scientific_degree']
-            role = entry['role']
-            entry.pop('student_year',None)
-            entry.pop('scientific_degree',None)
-            entry.pop('role',None)
-            user = entry
             try:
+                date = entry['birthday']
+                date = date.split(' ')[0]
+                entry['birthday'] = date
+                student_year = entry['student_year']
+                scientific_degree = entry['scientific_degree']
+                role = entry['role']
+                entry.pop('student_year',None)
+                entry.pop('scientific_degree',None)
+                entry.pop('role',None)
+                user = entry
                 controller_object.add_new_user(user,student_year,scientific_degree,role)
             except ErrorHandler as e:
                 return e.error
+            except Exception as E:
+                return {"message": "File Missing proper Attribute", 'status_code': 405}
 
         return jsonify({
             'message': 'Users Added successfully',

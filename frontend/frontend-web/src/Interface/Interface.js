@@ -659,3 +659,15 @@ export const BE_G_Enroll = async (cid,Token) => {
     return false
   }
 };
+
+export const ExcelSignUp = async (Pic) => {
+  let data = new FormData();
+  data.append("file", Pic);
+  const res = await instance.post(`/sign_up/excel`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  console.log(res);
+  return res.data;
+};
