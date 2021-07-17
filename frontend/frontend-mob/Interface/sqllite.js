@@ -476,7 +476,7 @@ export function SQLGetCurrentGroups(user_id, role) {
 
 export function SQLInsertCurrentGroups(user_id, role, groups) {
   return new Promise((resolve, reject) => {
-    groups.forEach((value) => {
+    groups.forEach(value => {
       db.transaction((tx) => {
         tx.executeSql(
           "INSERT OR REPLACE INTO group_project(group_id,group_name, group_description, post_owner_id) VALUES (?,?,?,?)",
@@ -535,7 +535,27 @@ export function SQLGetPdfs(course_code) {
   });
 }
 
-export function SQLInertPdfs() {
+export function SQLGetPdfs(course_code) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND course.course_code = ? ;", [course_code],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err)
+        }
+      )
+    })
+  })
+}
+
+export function SQLInertPdfs(pdf) {
   db.transaction((tx) => {
     tx.executeSql(
       "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",
@@ -573,44 +593,17 @@ export function SQLGetVideos(course_code) {
 export function SQLInertPdfs(pdf) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",
-      [
-        pdf.material_id,
-        pdf.material_name,
-        pdf.material_type,
-        pdf.course_material,
-      ],
-      (_, res) => {
-        console.log("inserting to materials table successfully"), res;
-      },
-      (_, err) => {
-        console.log("insertion the the db failed with error", err);
-      }
-    );
-  });
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)", [pdf.material_id, pdf.material_name, pdf.material_type, pdf.course_material],
+      (_, res) => { console.log('inserting to materials table successfully'), res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
 }
 
-export function SQLInertVideos() {
-  db.transaction((tx) => {
-    tx.executeSql(
-      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",
-      [],
-      (_, res) => {
-        console.log("inserting to course table successfully"), res;
-      },
-      (_, err) => {
-        console.log("insertion the the db failed with error", err);
-      }
-    );
-  });
-}
-
-export function SQLGetUser(user_id) {
+export function SQLGetVideos(course_code) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM user WHERE user.user_id = ? ;",
-        [user_id],
+        "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND course.course_code = ? ;", [course_code],
         (_, res) => {
           let result = [];
           for (let index = 0; index < res.rows.length; index++) {
@@ -619,28 +612,49 @@ export function SQLGetUser(user_id) {
           resolve(result);
         },
         (_, err) => {
-          reject(err);
+          reject(err)
         }
-      );
-    });
-  });
+      )
+    })
+  })
 }
 
-export function SQLInsertUser() {
+export function SQLInertVideos(video) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)",
-      [],
-      (_, res) => {
-        console.log("inserting to course table successfully"), res;
-      },
-      (_, err) => {
-        console.log("insertion the the db failed with error", err);
-      }
-    );
-  });
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)", [video.material_id, video.material_name, video.material_type, video.course_material],
+      (_, res) => { console.log('inserting to materials table successfully'), res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
 }
 
+
+export function SQLGetUser(user_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM user WHERE user.user_id = ? ;", [user_id],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err)
+        }
+      )
+    })
+  })
+}
+
+export function SQLInsertUser(user) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)", [user.user_id, user.name, user.email, user.birthday, user.password, user.picture],
+      (_, res) => { console.log('inserting to user table successfully'), res },
+  )})}
 export function SQLGetRecentPosts(user_id, role) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -818,59 +832,42 @@ export function SQLInertVideos(video) {
   });
 }
 
-export function SQLInsertUser() {
-  db.transaction((tx) => {
-    tx.executeSql(
-      "INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)",
-      [],
-      (_, res) => {
-        console.log("inserting to course table successfully"), res;
-      },
-      (_, err) => {
-        console.log("insertion the the db failed with error", err);
-      }
-    );
-  });
+export function SQLGetAllMessages(user_id1, user_id2) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM messages , user , conversations  WHERE messages.sender_id = ? AND messages.receiver_id = ? AND conversations.conversation_id = messages.conversation_id AND messages.sender_id = user.user_id   ;", [user_id1, user_id2],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err)
+        }
+      )
+    })
+  })
 }
 
-export function SQLInsertPosts(posts) {
+export function SQLInsertMessages(message) {
   db.transaction((tx) => {
-    posts.forEach((element) => {
-      tx.executeSql(
-        "INSERT OR REPLACE INTO user(user_id,name) VALUES (?,?)",
-        [element.post_writer, element.name],
-        (_, res) => {
-          console.log(
-            "inserting the auther of the post is done successfully with result",
-            res
-          );
-        },
-        (_, err) => {
-          console.log(
-            "inserting the auther of the post is done with error",
-            err
-          );
-        }
-      );
-      tx.executeSql(
-        "INSERT OR REPLACE INTO posts(post_id,post_writer,post_owner,post_text) VALUES(?,?,?,?)",
-        [
-          element.post_id,
-          element.post_writer,
-          element.post_owner,
-          element.post_text,
-        ],
-        (_, res) => {
-          console.log("inserting post successfully", res);
-        },
-        (_, err) => {
-          console.log("isnerting post failed with error", err);
-        }
-      );
-      element.comments.forEach((comment) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO messages VALUES(?,?,?,?,?,?)", [message.massage_id, message.conversation_id, message.sender_id, message.receiver_id, message.sent_time, message.text],
+      (_, res) => { console.log('inserting to messages table successfully'), res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
+}
+
+export function SQLGetCourseById(user_id, course_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      if (role === "student") {
         tx.executeSql(
-          "INSERT OR REPLACE INTO user(user_id,name) VALUES(?,?)",
-          [comment.commenter_id, comment.commenter_name],
+          "SELECT * FROM course, learns, teaches, user WHERE course.course_code=learns.course_code AND learns.student_id=? AND course.course_code = ? AND teaches.course_code=course.course_code AND teaches.professor_id=user.user_id; ",
+          [user_id, course_id],
           (_, res) => {
             console.log(
               "inserting user due to comment is done successfully with result",
@@ -896,34 +893,91 @@ export function SQLInsertPosts(posts) {
             );
           },
           (_, err) => {
-            console.log("inserting comment ot post failed with error", err);
-          }
-        );
-      });
-      element.likes.forEach((like) => {
-        tx.executeSql(
-          "INSERT OR REPLACE INTO user(user_id,name) VALUES (?,?)",
-          [like.liker_id, like.liker_name],
-          (_, res) => {
-            console.log("inserting liker data is done with result", res);
-          },
-          (_, err) => {
-            console.log("inserting liker data is done wiht error", err);
-          }
-        );
-        tx.executeSql(
-          "INSERT OR REPLACE INTO post_liker(liker_id,post_id) VALUES (?,?)",
-          [like.liker_id, element.post_id],
-          (_, res) => {
-            console.log("inserting liker done successfully", res);
-          },
-          (_, err) => {
-            console.log("inserting liker is done with error", err);
-          }
-        );
-      });
+            reject(err);
+          });
+      }
     });
   });
+}
+
+export function SQLInsertCourse(course) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO course VALUES(?,?,?,?,?,?,?)", [course.course_code, course.course_name, course.weekly_hours, course.group_number, course.max_student, course.course_description, course.post_owner_id],
+      (_, res) => { console.log('inserting to course table successfully'), res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
+}
+
+export function SQLGetAllPosts(user_id, owner) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM post_commenter , post_liker , post WHERE post_liker.liker_id = ? AND post.owner_id = ? AND post.post_id = post_liker.post_id AND post.post_id = post_commenter.post_id  ;", [user_id, owner],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err)
+        }
+      )
+    })
+  })
+}
+
+export function SQLInsertPosts(course) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO c VALUES(?,?,?,?,?,?,?)", [course.course_code, course.course_name, course.weekly_hours, course.group_number, course.max_student, course.course_description, course.post_owner_id],
+      (_, res) => { console.log('inserting to course table successfully'), res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
+}
+
+
+export function GetFirstConversation(user_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM  conversations , user   WHERE conversations.first_user = ? AND conversations.second_user = user.user_id ;", [user_id],
+        (tx2, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index))
+            result[index] = { ...result[index], ...(await recentMessage(result[index])) }
+
+          }
+          resolve(result);
+
+        }),(_,err)=>{
+          reject(err)
+        }
+    })
+  })
+}
+export function GetSecondConversation(user_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM  conversations , user   WHERE conversations.first_user = ? AND conversations.second_user = user.user_id ;", [user_id],
+        (tx2, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index))
+            result[index] = { ...result[index], ...(await recentMessage(result[index])) }
+
+          }
+           resolve(result);
+
+        }),(_,err)=>{
+          reject(err)
+        }
+    })
+  })
 }
 
 export function SQLGetFinishedCourses(user_id, role, Token) {
