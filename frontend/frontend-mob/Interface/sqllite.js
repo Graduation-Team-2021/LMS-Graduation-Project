@@ -418,46 +418,108 @@ export function SQLInsertCurrentCourse(courses, user_id) {
           }
         );
       });
-      tx.executeSql(
-        "INSERT OR REPLACE INTO learns(course_code,student_id) VALUES (?,?);",
-        [element.course_code, user_id],
-        (_, res) => {
-          console.log("inserting to teach table with result", res);
-        },
-        (_, err) => {
-          console.log(
-            "inserting into teach table failed with error",
-            err,
-            "while inserting ",
-            element,
-            prof
-          );
-        }
-      );
+      if (role === "student") {
+        tx.executeSql(
+          "INSERT OR REPLACE INTO learns(course_code,student_id) VALUES (?,?);",
+          [element.course_code, user_id],
+          (_, res) => {
+            console.log("inserting to teach table with result", res);
+          },
+          (_, err) => {
+            console.log(
+              "inserting into teach table failed with error",
+              err,
+              "while inserting ",
+              element,
+              prof
+            );
+          }
+        );
+      }
     });
   });
 }
 
 export function SQLGetCurrentGroups(user_id, role) {
-  return new Promise((resolve, reject)=>{db.transaction((tx) => {
-    if (role === "student") {
-      tx.executeSql(
-        "SELECT * FROM group_project , student_group_relation WHERE group_project.group_id=student_group_relation.group_id AND student_group_relation.student_id = ?;",
-        [user_id],
-        (_, res)=>{
-          resolve(res)
-        },
-        (_, err)=> reject(err)
-      );
-    } else {
-      tx.executeSql(
-        "SELECT * FROM group_project , group_course_relation, teaches WHERE group_project.group_id=group_course_relation.group_id AND group_course_relation.course_id = teaches.course_code AND teaches.professor_id = ?;",
-        [user_id],
-        (_, res)=>{
-          resolve(res)
-        },
-        (_, err)=> reject(err)
-      );
-    }
-  });})
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      if (role === "student") {
+        tx.executeSql(
+          "SELECT * FROM group_project , student_group_relation WHERE group_project.group_id=student_group_relation.group_id AND student_group_relation.student_id = ?;",
+          [user_id],
+          (_, res) => {
+            resolve(res);
+          },
+          (_, err) => reject(err)
+        );
+      } else {
+        tx.executeSql(
+          "SELECT * FROM group_project , group_course_relation, teaches WHERE group_project.group_id=group_course_relation.group_id AND group_course_relation.course_id = teaches.course_code AND teaches.professor_id = ?;",
+          [user_id],
+          (_, res) => {
+            resolve(res);
+          },
+          (_, err) => reject(err)
+        );
+      }
+    });
+  });
+}
+
+export function SQLGetCurrentGroups(user_id, role) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      if (role === "student") {
+        tx.executeSql(
+          "SELECT * FROM group_project , student_group_relation WHERE group_project.group_id=student_group_relation.group_id AND student_group_relation.student_id = ?;",
+          [user_id],
+          (_, res) => {
+            resolve(res);
+          },
+          (_, err) => reject(err)
+        );
+      } else {
+        tx.executeSql(
+          "SELECT * FROM group_project , group_course_relation, teaches WHERE group_project.group_id=group_course_relation.group_id AND group_course_relation.course_id = teaches.course_code AND teaches.professor_id = ?;",
+          [user_id],
+          (_, res) => {
+            resolve(res);
+          },
+          (_, err) => reject(err)
+        );
+      }
+    });
+  });
+}
+
+export function SQLInsertCurrentGroups(user_id, role, groups) {
+  return new Promise((resolve, reject) => {
+    groups.forEach(value=>{
+      db.transaction((tx) => {
+        tx.executeSql(
+          "INSERT INTO group_project(group_id,group_name, group_description, post_owner_id) VALUES (?,?,?,?)",
+          [value.group_id, value.group_name, value.group_description, value.post_owner_id]
+        )
+        if (role === "student") {
+          tx.executeSql(
+            "INSERT INTO student_group_relation (group_id, student_id) VALUES (?,?);",
+            [value.group_id, user_id],
+            (_, res) => {
+              resolve(res);
+            },
+            (_, err) => reject(err)
+          );
+        } else {
+          tx.executeSql(
+            "INSERT INTO group_course_relation (group_id, course_id) VALUES (?,?);",
+            [value.group_id, value.course_id],
+            (_, res) => {
+              resolve(res);
+            },
+            (_, err) => reject(err)
+          );
+        }
+      });
+    })
+  });
 }
