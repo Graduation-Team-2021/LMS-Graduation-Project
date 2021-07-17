@@ -27,3 +27,6 @@ Mobile TODO:
 5. For SQLite, check the dublicate Data before inserting it(David,Adham)
 6. Modify the interface file to check the SQLite also(David,Adham)
 7.The  ability  to  send  direct  messages  to  other  users  which  will  be  accessible  from  everywhere through a button like Messenger chat heads
+8. add courses for admin
+9. add users for the Admin
+10. add Quizzes for professrs
