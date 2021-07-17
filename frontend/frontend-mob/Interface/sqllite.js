@@ -570,13 +570,24 @@ export function SQLGetVideos(course_code) {
     });
   });
 }
-export function SQLInertPdfs (pdf){
+export function SQLInertPdfs(pdf) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",[pdf.material_id,pdf.material_name,pdf.material_type,pdf.course_material],
-      (_,res) => { console.log('inserting to materials table successfully'),res },
-      (_, err) => { console.log("insertion the the db failed with error", err) })
-  })
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",
+      [
+        pdf.material_id,
+        pdf.material_name,
+        pdf.material_type,
+        pdf.course_material,
+      ],
+      (_, res) => {
+        console.log("inserting to materials table successfully"), res;
+      },
+      (_, err) => {
+        console.log("insertion the the db failed with error", err);
+      }
+    );
+  });
 }
 
 export function SQLInertVideos() {
@@ -743,7 +754,9 @@ export function SQLInsertRecentPosts(posts) {
                           tx4.executeSql(
                             "INSERT OR REPLACE INTO post_liker(liker_id, post_id) VALUES (?,?)",
                             [v2.liker_id, value.post_id],
-                            (_, res) => { console.log("Likes DONE YA *******");},
+                            (_, res) => {
+                              console.log("Likes DONE YA *******");
+                            },
                             (_, err) => {}
                           );
                         },
@@ -757,8 +770,15 @@ export function SQLInsertRecentPosts(posts) {
                         (tx4, res) => {
                           tx4.executeSql(
                             "INSERT OR REPLACE INTO post_commenter(comment_id, post_id, commenter_id, comment_text) VALUES (?,?,?,?)",
-                            [v2.comment_id, value.post_id, v2.commenter_id, v2.comment_text],
-                            (_, res) => {console.log("Comments DONE YA *******");},
+                            [
+                              v2.comment_id,
+                              value.post_id,
+                              v2.commenter_id,
+                              v2.comment_text,
+                            ],
+                            (_, res) => {
+                              console.log("Comments DONE YA *******");
+                            },
                             (_, err) => {}
                           );
                         },
@@ -772,18 +792,30 @@ export function SQLInsertRecentPosts(posts) {
               (_, err) => {}
             );
           },
-          (_, err) => {})
-      })
-    })
-  })
+          (_, err) => {}
+        );
+      });
+    });
+  });
 }
-export function SQLInertVideos (video){
+export function SQLInertVideos(video) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",[video.material_id,video.material_name,video.material_type,video.course_material],
-      (_,res) => { console.log('inserting to materials table successfully'),res },
-      (_, err) => { console.log("insertion the the db failed with error", err) })
-  })
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",
+      [
+        video.material_id,
+        video.material_name,
+        video.material_type,
+        video.course_material,
+      ],
+      (_, res) => {
+        console.log("inserting to materials table successfully"), res;
+      },
+      (_, err) => {
+        console.log("insertion the the db failed with error", err);
+      }
+    );
+  });
 }
 
 export function SQLInsertUser() {
@@ -890,6 +922,71 @@ export function SQLInsertPosts(posts) {
           }
         );
       });
+    });
+  });
+}
+
+export function SQLGetFinishedCourses(user_id, role, Token) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM course,finish where course.course_code=finish.course_code AND finish.student_id=?;",
+        [user_id],
+        (_, res) => {
+          console.log(
+            "selecting finished courses is done successfully with result",
+            res
+          );
+          const result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          console.log("error while retriving the finished courses", err);
+          reject(err);
+        }
+      );
+    });
+  });
+}
+
+export function SQLInsertFinishedCourses(finishedCourses) {
+  db.transaction((tx) => {
+    finishedCourses.forEach((element) => {
+      tx.executeSql(
+        "INSERT OR REPLACE INTO course(course_code,course_name) VALUES (?,?)",
+        [element.course_code, element.course_name],
+        (_, res) => {
+          console.log(
+            "inserting into course due to finished course is done successfully with result",
+            res
+          );
+        },
+        (_, err) => {
+          console.log(
+            "inserting into course due to  finished courses failed with error",
+            err
+          );
+        }
+      );
+      tx.executeSql(
+        "INSERT OR REPLACE INTO finish (course_code,total_mark_in_the_cousre) VALUES (?,?)",
+        [element.course_code, element.course_mark],
+        (_, res) => {
+          console.log(
+            "inserting into finish due to finished courses finished successfully with result",
+            res
+          );
+        },
+        (_, err) => {
+          console.log(
+            "inserting into finish due to finished courses failed with error",
+            err
+          );
+        }
+      );
     });
   });
 }
