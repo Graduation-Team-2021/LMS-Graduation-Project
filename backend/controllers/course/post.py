@@ -102,7 +102,7 @@ class Post_Controller:
     def get_one_student_first_ten_courses(self, user_id, role):
         if role =='student':
             courses = Course.query.join(Learns_Relation).\
-            filter(Course.course_code == Learns_Relation.course_code).join(Student).\
+            filter(Course.course_code == Learns_Relation.course_code).\
             filter(Learns_Relation.student_id == user_id).\
                 with_entities(Course.course_code)
 
@@ -165,13 +165,13 @@ class Post_Controller:
                 temp = p.serialize()
                 t2 = []
                 for l in likeGetter.get_one_post_all_likers(temp['post_id']):
-                    Like = {'liker_id': l[0], 'liker_name': l[1]}
+                    Like = {'liker_id': l[0], 'liker_name': l[1], 'liker_id': l[2]}
                     t2.append(Like)
                 temp['likes'] = t2
                 t3 = []
                 for c in commentGetter.get_one_post_all_comments(temp['post_id']):
                     print(c)
-                    Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2]}
+                    Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2], 'comment_id':c[3]}
                     t3.append(Comment)
                 temp['comments'] = t3
                 temp['owner_name'] = courses_post_owner_ids[i][1]
