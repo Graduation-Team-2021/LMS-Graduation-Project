@@ -98,7 +98,7 @@ export const getCourses = async (Token) => {
   }
   return res.data["courses"];
 };
-//store in the local storage
+
 export const getRecentPosts = async (Token) => {
   const res = await instance.get(`/first_10_posts`, {
     headers: {
