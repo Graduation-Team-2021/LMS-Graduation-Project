@@ -16,6 +16,8 @@ export function CreateTable() {
     );
   });
 
+
+
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS deliverables_results(deliverable_id INTEGER  , user_ID INTEGER , mark INTEGER , PRIMARY KEY(deliverable_id,user_id), FOREIGN KEY (deliverable_id) REFERENCES deliverable(deliverable_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (user_id) REFERENCES student(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
@@ -300,6 +302,19 @@ export function CreateTable() {
       }
     );
   });
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      `CREATE TABLE IF NOT EXISTS group_course_relation(group_id INTEGER  , course_id TEXT, PRIMARY KEY(group_id,course_id), FOREIGN KEY (group_id) REFERENCES group_project(group_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (course_id) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );`,
+      [],
+      (_, res) => {
+        console.log("[creating is done with the result]", res);
+      },
+      (_, err) => {
+        console.log("[failed there is an error]", err);
+      }
+    );
+  });
 }
 
 export function SQLGetCurrentCourse(user_id, role) {
@@ -344,7 +359,7 @@ export function SQLGetCurrentCourse(user_id, role) {
 
 //call SQL
 
-export function SQLInsertCurrentCourse(courses, user_id) {
+export function SQLInsertCurrentCourse(courses, user_id, role) {
   db.transaction((tx) => {
     courses.forEach((element) => {
       tx.executeSql(

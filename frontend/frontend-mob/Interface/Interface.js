@@ -44,6 +44,7 @@ export const Login = async (Data) => {
 };
 
 export const getCurrentCourses = async (Token) => {
+  let David = jwtDecode(Token);
   if ((await NetInfo.fetch()).isConnected) {
     const res = await instance.get(`/my_courses`, {
       headers: {
@@ -56,15 +57,19 @@ export const getCurrentCourses = async (Token) => {
       //TODO: Signout
       return null;
     }
+    localStorage.SQLInsertCurrentCourse(
+      res.data["courses"],
+      David.id,
+      David.permissions
+    );
     return res.data["courses"];
   }
-  let David = jwtDecode(Token);
-  localStorage.SQLInsertCurrentCourse(res.data["courses"], David.id);
   result = await localStorage.SQLGetCurrentCourse(David.id, David.permissions);
   return result;
 };
 
-export const getCurrentGroups = async (Token, id, role) => {
+export const getCurrentGroups = async (Token) => {
+  let David = jwtDecode(Token);
   if ((await NetInfo.fetch()).isConnected) {
     const res = await instance.get(`/my_groups`, {
       headers: {
@@ -77,13 +82,23 @@ export const getCurrentGroups = async (Token, id, role) => {
       //TODO: Better Check
       return null;
     }
-    console.log("[getCurrentGroups]====================================");
-    console.log(res.data["groups"]);
-    console.log("[getCurrentGroups]====================================");
+    localStorage.SQLInsertCurrentGroups(
+      David.id,
+      David.permissions,
+      res.data.groups
+    );
     return res.data["groups"];
   }
-  //todo: Add Local Get Groups
-  
+  // todo: Add Local Get Groups
+
+  let result = await localStorage.SQLGetCurrentGroups(
+    David.id,
+    David.permissions
+  );
+  console.log("[David]====================================");
+  console.log(result);
+  console.log("[David]====================================");
+  return result;
 };
 export const getCourses = async (Token) => {
   const res = await instance.get(`/courses`, {
@@ -554,9 +569,6 @@ export const searchCourses = async (text, id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log("====================================");
-  console.log("[KAK]", res.data);
-  console.log("====================================");
   return res.data.data;
 };
 //store in the local storage (Future Work)
