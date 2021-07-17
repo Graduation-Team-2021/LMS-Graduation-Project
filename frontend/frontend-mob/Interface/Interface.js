@@ -188,7 +188,7 @@ export const uploadPost = async (Token, writer, owner, post) => {
   }
   return res.data["post_id"];
 };
-//store and load in the local storage
+//store and load in the local storage   DONE
 export const getCourseByID = async (Token, CourseID) => {
   const res = await instance.get(`/courses/${CourseID}`, {
     headers: {
@@ -297,7 +297,7 @@ export const getAllUsers = async (Token) => {
   }
   return res.data["users"];
 };
-//store in the local storage
+//store in the local storage  DONE
 export const getAllMessages = async (Token, otherID) => {
   const res = await instance.get(`/users/messages/${otherID}`, {
     headers: {
@@ -502,7 +502,7 @@ export const deleteMaterial = async (material_id) => {
     },
   });
 };
-//store in the local storage
+//store in the local storage     DONE
 export const getPDFs = async (course_code) => {
   const res = await instance.get(`/courses/${course_code}/materials/pdf`, {
     headers: {
@@ -515,7 +515,7 @@ export const getPDFs = async (course_code) => {
   }
   return res.data["materials"];
 };
-//store in the local storage
+//store in the local storage    DONE
 export const getVideos = async (course_code) => {
   const res = await instance.get(`/courses/${course_code}/materials/videos`, {
     headers: {
@@ -559,7 +559,7 @@ export const searchGroups = async (text) => {
 
   return res.data.data;
 };
-//store in the local storage
+//store in the local storage  DONE
 export const getUser = async (id) => {
   const res = await instance.get(`/users/${id}`, {
     headers: {
