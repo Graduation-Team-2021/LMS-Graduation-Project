@@ -58,8 +58,9 @@ export const getCurrentCourses = async (Token) => {
     }
     return res.data["courses"];
   }
-  localStorage.SQLInsertCurrentCourse(res.data["courses"], jwtDecode(Token).id);
-  result = await localStorage.SQLGetCurrentCourse(jwtDecode(Token).id);
+  let David = jwtDecode(Token);
+  localStorage.SQLInsertCurrentCourse(res.data["courses"], David.id);
+  result = await localStorage.SQLGetCurrentCourse(David.id, David.permissions);
   return result;
 };
 //store in the local storage
