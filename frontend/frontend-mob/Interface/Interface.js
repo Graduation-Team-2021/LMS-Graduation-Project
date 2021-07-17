@@ -65,21 +65,25 @@ export const getCurrentCourses = async (Token) => {
 };
 
 export const getCurrentGroups = async (Token, id, role) => {
-  const res = await instance.get(`/my_groups`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/my_groups`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
 
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
+    if (res.data["status_code"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    console.log("[getCurrentGroups]====================================");
+    console.log(res.data["groups"]);
+    console.log("[getCurrentGroups]====================================");
+    return res.data["groups"];
   }
-  console.log("[getCurrentGroups]====================================");
-  console.log(res.data["groups"]);
-  console.log("[getCurrentGroups]====================================");
-  return res.data["groups"];
+  //todo: Add Local Get Groups
+  
 };
 export const getCourses = async (Token) => {
   const res = await instance.get(`/courses`, {
@@ -94,7 +98,7 @@ export const getCourses = async (Token) => {
   }
   return res.data["courses"];
 };
-//store in the local storage
+
 export const getRecentPosts = async (Token) => {
   const res = await instance.get(`/first_10_posts`, {
     headers: {
@@ -106,6 +110,9 @@ export const getRecentPosts = async (Token) => {
     //TODO: Better Check
     return null;
   }
+  console.log("[getRecentPosts]====================================");
+  console.log(res.data["posts"]);
+  console.log("[getRecentPosts]====================================");
   return res.data["posts"];
 };
 //store in the local storage
@@ -163,6 +170,9 @@ export const getAllPosts = async (Token, owner) => {
     //TODO: Better Check
     return null;
   }
+  console.log("[getAllPosts]====================================");
+  console.log(res.data["posts"]);
+  console.log("[getAllPosts]====================================");
   return res.data["posts"];
 };
 //store in the local storage (Future Work)

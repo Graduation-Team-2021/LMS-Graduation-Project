@@ -200,7 +200,7 @@ export function CreateTable() {
 
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS post_commenter(comment_id INTEGER PRIMARY KEY ,comment_text TEXT ,commenter_id INTEGER ,post_id INTEGER , created_date TEXT ,FOREIGN KEY (commenter_id) REFERENCES user(user_id) ON UPDATE CASCADE  , FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE );",
+      "CREATE TABLE IF NOT EXISTS post_commenter(comment_id INTEGER PRIMARY KEY  ,comment_text TEXT ,commenter_id INTEGER ,post_id INTEGER , created_date TEXT ,FOREIGN KEY (commenter_id) REFERENCES user(user_id) ON UPDATE CASCADE  , FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
         console.log("[creating is done with the result]", res);
@@ -479,33 +479,61 @@ export function SQLInsertCurrentGroups(user_id, role, groups) {
     groups.forEach(value => {
       db.transaction((tx) => {
         tx.executeSql(
-          "INSERT INTO group_project(group_id,group_name, group_description, post_owner_id) VALUES (?,?,?,?)",
-          [value.group_id, value.group_name, value.group_description, value.post_owner_id]
-        )
-        if (role === "student") {
-          tx.executeSql(
-            "INSERT INTO student_group_relation (group_id, student_id) VALUES (?,?);",
-            [value.group_id, user_id],
-            (_, res) => {
-              resolve(res);
-            },
-            (_, err) => reject(err)
-          );
-        } else {
-          tx.executeSql(
-            "INSERT INTO group_course_relation (group_id, course_id) VALUES (?,?);",
-            [value.group_id, value.course_id],
-            (_, res) => {
-              resolve(res);
-            },
-            (_, err) => reject(err)
-          );
-        }
+          "INSERT OR REPLACE INTO group_project(group_id,group_name, group_description, post_owner_id) VALUES (?,?,?,?)",
+          [
+            value.group_id,
+            value.group_name,
+            value.group_description,
+            value.post_owner_id,
+          ],
+          (tx2, res) => {
+            if (role === "student") {
+              tx2.executeSql(
+                "INSERT OR REPLACE INTO student_group_relation (group_id, student_id) VALUES (?,?);",
+                [value.group_id, user_id],
+                (_, res) => {
+                  resolve(res);
+                },
+                (_, err) => reject(err)
+              );
+            } else {
+              tx2.executeSql(
+                "INSERT OR REPLACE INTO group_course_relation (group_id, course_id) VALUES (?,?);",
+                [value.group_id, value.course_id],
+                (_, res) => {
+                  resolve(res);
+                },
+                (_, err) => reject(err)
+              );
+            }
+          },
+          (_, err) => {}
+        );
       });
-    })
+    });
   });
 }
 
+export function SQLGetPdfs(course_code) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND course.course_code = ? ;",
+        [course_code],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
 
 export function SQLGetPdfs(course_code) {
   return new Promise((resolve, reject) => {
@@ -528,6 +556,41 @@ export function SQLGetPdfs(course_code) {
 }
 
 export function SQLInertPdfs(pdf) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",
+      [],
+      (_, res) => {
+        console.log("inserting to course table successfully"), res;
+      },
+      (_, err) => {
+        console.log("insertion the the db failed with error", err);
+      }
+    );
+  });
+}
+
+export function SQLGetVideos(course_code) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND course.course_code = ? ;",
+        [course_code],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
+export function SQLInertPdfs (pdf){
   db.transaction((tx) => {
     tx.executeSql(
       "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)", [pdf.material_id, pdf.material_name, pdf.material_type, pdf.course_material],
@@ -591,6 +654,159 @@ export function SQLInsertUser(user) {
     tx.executeSql(
       "INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)", [user.user_id, user.name, user.email, user.birthday, user.password, user.picture],
       (_, res) => { console.log('inserting to user table successfully'), res },
+  )})}
+export function SQLGetRecentPosts(user_id, role) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      if (role === "student") {
+        tx.executeSql(
+          `SELECT * FROM course, learns, 
+          post_owner, post, post_liker, post_commenter 
+          WHERE post_commenter.post_id = post.post_id 
+          AND post_liker.post_id = post.post_id 
+          AND post.post_owner = post_owner.owner_id 
+          AND post_owner.owner_id = course.post_owner_id 
+          AND course.course_code=learns.course_code 
+          AND learns.student_id = ?;`,
+          [user_id],
+          (tx2, res) => {
+            const result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            tx2.executeSql(
+              `SELECT * FROM group_project, student_group_relation, 
+              post_owner, post, post_liker, post_commenter 
+              WHERE post_commenter.post_id = post.post_id 
+              AND post_liker.post_id = post.post_id 
+              AND post.post_owner = post_owner.owner_id 
+              AND post_owner.owner_id = group_project.post_owner_id 
+              AND group_project.group_id=student_group_relation.group_id 
+              AND student_group_relation.student_id = ?;`,
+              [user_id],
+              (_, res2) => {
+                for (let index = 0; index < res.rows.length; index++) {
+                  result.push(res2.rows.item(index));
+                }
+                resolve(result);
+              },
+              (_, err) => reject(err)
+            );
+          },
+          (_, err) => reject(err)
+        );
+      } else {
+        tx.executeSql(
+          `SELECT * FROM course, teaches, 
+          post_owner, post, post_liker, post_commenter 
+          WHERE post_commenter.post_id = post.post_id 
+          AND post_liker.post_id = post.post_id 
+          AND post.post_owner = post_owner.owner_id 
+          AND post_owner.owner_id = course.post_owner_id 
+          AND course.course_code=teaches.course_code 
+          AND teaches.professor_id = ?;`,
+          [user_id],
+          (tx2, res) => {
+            const result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            tx2.executeSql(
+              `SELECT * FROM group_project, group_course_relation, course, 
+              post_owner, post, post_liker, post_commenter, teaches 
+              WHERE post_commenter.post_id = post.post_id 
+              AND post_liker.post_id = post.post_id 
+              AND post.post_owner = post_owner.owner_id 
+              AND post_owner.owner_id = group_project.post_owner_id 
+              AND group_project.group_id=group_course_relation.group_id 
+              AND group_course_relation.course_id = course.course_id 
+              AND course.course_code=teaches.course_code 
+              AND teaches.professor_id = ?;`,
+              [user_id],
+              (_, res2) => {
+                for (let index = 0; index < res.rows.length; index++) {
+                  result.push(res2.rows.item(index));
+                }
+                resolve(result);
+              },
+              (_, err) => reject(err)
+            );
+          },
+          (_, err) => reject(err)
+        );
+      }
+    });
+  });
+}
+
+export function SQLInsertRecentPosts(posts) {
+  return new Promise((resolve, reject) => {
+    posts.forEach((value) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "INSERT OR REPLACE INTO post_owner(owner_id) VALUES (?)",
+          [value.post_owner],
+          (tx1, res) => {
+            tx1.executeSql(
+              "INSERT OR REPLACE INTO user(user_id, name) VALUES (?,?)",
+              [value.post_writer, value.name],
+              (tx2, res) => {
+                tx2.executeSql(
+                  "INSERT OR REPLACE INTO post(post_owner, post_id, post_text, post_writer) VALUES (?, ?, ?, ?)",
+                  [
+                    value.post_owner,
+                    value.post_id,
+                    value.post_text,
+                    value.post_writer,
+                  ],
+                  (tx3, res) => {
+                    value.likes.forEach((v2) => {
+                      tx3.executeSql(
+                        "INSERT OR REPLACE INTO user(user_id, name) VALUES (?,?)",
+                        [v2.liker_id, v2.liker_name],
+                        (tx4, res) => {
+                          tx4.executeSql(
+                            "INSERT OR REPLACE INTO post_liker(liker_id, post_id) VALUES (?,?)",
+                            [v2.liker_id, value.post_id],
+                            (_, res) => { console.log("Likes DONE YA *******");},
+                            (_, err) => {}
+                          );
+                        },
+                        (_, err) => {}
+                      );
+                    });
+                    value.comments.forEach((v2) => {
+                      tx3.executeSql(
+                        "INSERT OR REPLACE INTO user(user_id, name) VALUES (?,?)",
+                        [v2.commenter_id, v2.commenter_name],
+                        (tx4, res) => {
+                          tx4.executeSql(
+                            "INSERT OR REPLACE INTO post_commenter(comment_id, post_id, commenter_id, comment_text) VALUES (?,?,?,?)",
+                            [v2.comment_id, value.post_id, v2.commenter_id, v2.comment_text],
+                            (_, res) => {console.log("Comments DONE YA *******");},
+                            (_, err) => {}
+                          );
+                        },
+                        (_, err) => {}
+                      );
+                    });
+                  },
+                  (_, err) => {}
+                );
+              },
+              (_, err) => {}
+            );
+          },
+          (_, err) => {})
+      })
+    })
+  })
+}
+export function SQLInertVideos (video){
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",[video.material_id,video.material_name,video.material_type,video.course_material],
+      (_,res) => { console.log('inserting to materials table successfully'),res },
       (_, err) => { console.log("insertion the the db failed with error", err) })
   })
 }
@@ -632,28 +848,28 @@ export function SQLGetCourseById(user_id, course_id) {
           "SELECT * FROM course, learns, teaches, user WHERE course.course_code=learns.course_code AND learns.student_id=? AND course.course_code = ? AND teaches.course_code=course.course_code AND teaches.professor_id=user.user_id; ",
           [user_id, course_id],
           (_, res) => {
-            //TODO: GET Professors as ARRAY
-            let result = [];
-            for (let index = 0; index < res.rows.length; index++) {
-              result.push(res.rows.item(index));
-            }
-            resolve(result);
+            console.log(
+              "inserting user due to comment is done successfully with result",
+              res
+            );
           },
           (_, err) => {
-            reject(err);
+            console.log("inserting user due to comment failed with error", err);
           }
         );
-      } else {
         tx.executeSql(
-          "SELECT * FROM course, teaches, user WHERE course.course_code=teaches.course_code AND teaches.professor_id=? AND course.course_code = ? AND  teaches.professor_id=user.user_id; ",
-          [user_id],
+          "INSERT OR REPLACE INTO post_commenter(comment_id,commenter_id,comment_text,post_id) VALUES(?,?,?,?);",
+          [
+            comment.comment_id,
+            comment.commenter_id,
+            comment.comment,
+            element.post_id,
+          ],
           (_, res) => {
-            //TODO: GET Professors as ARRAY
-            let result = [];
-            for (let index = 0; index < res.rows.length; index++) {
-              result.push(res.rows.item(index));
-            }
-            resolve(result);
+            console.log(
+              "isnerting commment to post done successfully with result",
+              res
+            );
           },
           (_, err) => {
             reject(err);
@@ -663,7 +879,7 @@ export function SQLGetCourseById(user_id, course_id) {
   });
 }
 
-export function SQLInsertMessages(course) {
+export function SQLInsertCourse(course) {
   db.transaction((tx) => {
     tx.executeSql(
       "INSERT OR REPLACE INTO course VALUES(?,?,?,?,?,?,?)", [course.course_code, course.course_name, course.weekly_hours, course.group_number, course.max_student, course.course_description, course.post_owner_id],
@@ -701,18 +917,6 @@ export function SQLInsertPosts(course) {
   })
 }
 
-
-function secondHalf(tx, user_id) {
-  tx.executeSql(
-    "SELECT * FROM  conversations , user   WHERE conversations.second_user = ? AND conversations.first_user = user.user_id  ;", [user_id]
-    , (_, res1) => {
-      for (let index = 0; index < res1.rows.length; index++) {
-        result.push(res1.rows.item(index));
-      }
-      return result;
-    }
-  )
-}
 
 export function GetFirstConversation(user_id) {
   return new Promise((resolve, reject) => {
