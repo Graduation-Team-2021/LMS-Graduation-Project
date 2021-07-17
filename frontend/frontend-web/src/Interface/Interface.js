@@ -9,7 +9,7 @@ const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const local = "http://localhost:5000";
 
-export const url = azure;
+export const url = local;
 const instance = axios.create({
   baseURL: url,
   //"http://localhost:5000",
@@ -658,4 +658,16 @@ export const BE_G_Enroll = async (cid,Token) => {
   else{
     return false
   }
+};
+
+export const ExcelSignUp = async (Pic) => {
+  let data = new FormData();
+  data.append("file", Pic);
+  const res = await instance.post(`/sign_up/excel`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  console.log(res);
+  return res.data;
 };
