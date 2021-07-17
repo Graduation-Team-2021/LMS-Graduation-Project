@@ -505,3 +505,89 @@ export function SQLInsertCurrentGroups(user_id, role, groups) {
     })
   });
 }
+
+
+export function SQLGetPdfs (course_code) {
+  return new Promise((resolve, reject) => {db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND course.course_code = ? ;",[course_code],
+      (_,res) => {
+        let result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            resolve(result);
+      },
+      (_,err) => {
+        reject(err)
+      }
+    )
+  })
+})
+}
+
+export function SQLInertPdfs (){
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",[],
+      (_,res) => { console.log('inserting to course table successfully'),res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
+}
+
+export function SQLGetVideos (course_code) {
+  return new Promise((resolve, reject) => {db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND course.course_code = ? ;",[course_code],
+      (_,res) => {
+        let result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            resolve(result);
+      },
+      (_,err) => {
+        reject(err)
+      }
+    )
+  })
+})
+}
+
+export function SQLInertVideos (){
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",[],
+      (_,res) => { console.log('inserting to course table successfully'),res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
+}
+
+
+export function SQLGetUser (user_id) {
+  return new Promise((resolve, reject) => {db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT * FROM user WHERE user.user_id = ? ;",[user_id],
+      (_,res) => {
+        let result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            resolve(result);
+      },
+      (_,err) => {
+        reject(err)
+      }
+    )
+  })
+})
+}
+
+export function SQLInsertUser (){
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)",[],
+      (_,res) => { console.log('inserting to course table successfully'),res },
+      (_, err) => { console.log("insertion the the db failed with error", err) })
+  })
+}
