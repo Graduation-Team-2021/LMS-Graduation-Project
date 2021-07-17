@@ -65,21 +65,24 @@ export const getCurrentCourses = async (Token) => {
 };
 
 export const getCurrentGroups = async (Token, id, role) => {
-  const res = await instance.get(`/my_groups`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/my_groups`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
 
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
+    if (res.data["status_code"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    console.log("[getCurrentGroups]====================================");
+    console.log(res.data["groups"]);
+    console.log("[getCurrentGroups]====================================");
+    return res.data["groups"];
   }
-  console.log("[getCurrentGroups]====================================");
-  console.log(res.data["groups"]);
-  console.log("[getCurrentGroups]====================================");
-  return res.data["groups"];
+  
 };
 export const getCourses = async (Token) => {
   const res = await instance.get(`/courses`, {
