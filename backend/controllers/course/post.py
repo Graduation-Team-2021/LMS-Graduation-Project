@@ -1,3 +1,6 @@
+from models.relations.group_course_relation import GroupCourseRelation
+from models.relations.teaches import Teaches_Relation
+from models.user.professors import Professor
 from operator import pos
 from models.course.post import Post
 from models.relations.learns import Learns_Relation
@@ -96,16 +99,28 @@ class Post_Controller:
         data = [post.serialize() for post in posts]
         return data
 
-    def get_one_student_first_ten_courses(self):
-        courses = Course.query.join(Learns_Relation).\
-        filter(Course.course_code == Learns_Relation.course_code).join(Student).\
-        filter(Learns_Relation.student_id == Student.user_id).\
-            with_entities(Course.course_code)
+    def get_one_student_first_ten_courses(self, user_id, role):
+        if role =='student':
+            courses = Course.query.join(Learns_Relation).\
+            filter(Course.course_code == Learns_Relation.course_code).\
+            filter(Learns_Relation.student_id == user_id).\
+                with_entities(Course.course_code)
 
-        groups = GroupProject.query.join(StudentGroupRelation).\
-        filter(GroupProject.group_id == StudentGroupRelation.group_id).\
-        join(Student).filter(Student.user_id == StudentGroupRelation.student_id).\
-            with_entities(GroupProject.group_id)
+            groups = GroupProject.query.join(StudentGroupRelation).\
+            filter(GroupProject.group_id == StudentGroupRelation.group_id).\
+            join(Student).filter(user_id == StudentGroupRelation.student_id).\
+                with_entities(GroupProject.group_id)
+        else:
+            courses = Course.query.join(Teaches_Relation).\
+            filter(Course.course_code == Teaches_Relation.course_code).\
+            filter(Teaches_Relation.professor_id == user_id).\
+                with_entities(Course.course_code)
+
+            groups = GroupProject.query.join(GroupCourseRelation).\
+            filter(GroupProject.group_id == GroupCourseRelation.group_id).\
+            join(Course).filter(Course.course_code == GroupCourseRelation.course_id).\
+                join(Teaches_Relation).filter(Teaches_Relation.professor_id == user_id)\
+                    .with_entities(GroupProject.group_id)
 
         group_ids = [g for g in groups]
         course_codes = [c for c in courses]
@@ -144,24 +159,23 @@ class Post_Controller:
         likeGetter = Post_Liker_controller()
         commentGetter = Post_Commenter_controller()
         for i in range(len(courses_post_owner_ids)):
-            if Post.query.filter(Post.post_owner == courses_post_owner_ids[i][0]).first() is not None:
-                posts = Post.query.filter(
-                    Post.post_owner == courses_post_owner_ids[i][0]).all()
-                for p in posts:
-                    temp = p.serialize()
-                    t2 = []
-                    for l in likeGetter.get_one_post_all_likers(temp['post_id']):
-                        Like = {'liker_id': l[0], 'liker_name': l[1]}
-                        t2.append(Like)
-                    temp['likes'] = t2
-                    t3 = []
-                    for c in commentGetter.get_one_post_all_comments(temp['post_id']):
-                        print(c)
-                        Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2]}
-                        t3.append(Comment)
-                    temp['comments'] = t3
-                    temp['owner_name'] = courses_post_owner_ids[i][1]
-                    desired_posts.append(temp)
+            posts = Post.query.filter(
+                Post.post_owner == courses_post_owner_ids[i][0]).all()
+            for p in posts:
+                temp = p.serialize()
+                t2 = []
+                for l in likeGetter.get_one_post_all_likers(temp['post_id']):
+                    Like = {'liker_id': l[0], 'liker_name': l[1], 'liker_id': l[2]}
+                    t2.append(Like)
+                temp['likes'] = t2
+                t3 = []
+                for c in commentGetter.get_one_post_all_comments(temp['post_id']):
+                    print(c)
+                    Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2], 'comment_id':c[3]}
+                    t3.append(Comment)
+                temp['comments'] = t3
+                temp['owner_name'] = courses_post_owner_ids[i][1]
+                desired_posts.append(temp)
                 # desired_posts.append(posts)
                 print(posts)
 
@@ -179,17 +193,29 @@ class Post_Controller:
             desired_posts[i]['name'] = post_writers[i]
         return desired_posts
 
-    def get_the_student_first_posts(self):
-        courses = Course.query.join(Learns_Relation).\
-        filter(Course.course_code == Learns_Relation.course_code).join(Student).\
-        filter(Learns_Relation.student_id == Student.user_id).\
-            with_entities(Course.course_code)
+    def get_the_student_first_posts(self, user_id, role):
+        if role == 'student':
+            courses = Course.query.join(Learns_Relation).\
+            filter(Course.course_code == Learns_Relation.course_code).\
+            filter(Learns_Relation.student_id == user_id).\
+                with_entities(Course.course_code)
 
-        groups = GroupProject.query.join(StudentGroupRelation).\
-        filter(GroupProject.group_id == StudentGroupRelation.group_id).\
-        join(Student).filter(Student.user_id == StudentGroupRelation.student_id).\
-            with_entities(GroupProject.group_id)
+            groups = GroupProject.query.join(StudentGroupRelation).\
+            filter(GroupProject.group_id == StudentGroupRelation.group_id).\
+            filter(user_id == StudentGroupRelation.student_id).\
+                with_entities(GroupProject.group_id)
+        else :
+            courses = Course.query.join(Teaches_Relation).\
+            filter(Course.course_code == Teaches_Relation.course_code).\
+            filter(Teaches_Relation.professor_id == user_id).\
+                with_entities(Course.course_code)
 
+            groups = GroupProject.query.join(GroupCourseRelation).\
+            filter(GroupCourseRelation.group_id == GroupProject.group_id).\
+            join(Teaches_Relation).filter(user_id == Teaches_Relation.professor_id).\
+                filter(Teaches_Relation.course_code == GroupCourseRelation.course_id).\
+                    with_entities(GroupProject.group_id)
+                
         group_ids = [g for g in groups]
         course_codes = [c for c in courses]
 
@@ -218,24 +244,23 @@ class Post_Controller:
         likeGetter = Post_Liker_controller()
         commentGetter = Post_Commenter_controller()
         for i in range(len(courses_post_owner_ids)):
-            if Post.query.filter(Post.post_owner == courses_post_owner_ids[i][0], Post.post_writer == Student.user_id).first() is not None:
-                posts = Post.query.filter(
-                    Post.post_owner == courses_post_owner_ids[i][0], Post.post_writer == Student.user_id).all()
-                for p in posts:
-                    Temp = p.serialize()
-                    Temp['owner_name'] = courses_post_owner_ids[i][1]
-                    t2 = []
-                    for l in likeGetter.get_one_post_all_likers(Temp['post_id']):
-                        Like = {'liker_id': l[0], 'liker_name': l[1]}
-                        t2.append(Like)
-                    Temp['likes'] = t2
-                    t3 = []
-                    for c in commentGetter.get_one_post_all_comments(Temp['post_id']):
-                        print(c)
-                        Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2]}
-                        t3.append(Comment)
-                    Temp['comments'] = t3
-                    desired_posts.append(Temp)
+            posts = Post.query.filter(
+                Post.post_owner == courses_post_owner_ids[i][0], Post.post_writer == user_id).all()
+            for p in posts:
+                Temp = p.serialize()
+                Temp['owner_name'] = courses_post_owner_ids[i][1]
+                t2 = []
+                for l in likeGetter.get_one_post_all_likers(Temp['post_id']):
+                    Like = {'liker_id': l[0], 'liker_name': l[1]}
+                    t2.append(Like)
+                Temp['likes'] = t2
+                t3 = []
+                for c in commentGetter.get_one_post_all_comments(Temp['post_id']):
+                    print(c)
+                    Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2]}
+                    t3.append(Comment)
+                Temp['comments'] = t3
+                desired_posts.append(Temp)
                 # desired_posts.append(posts)
 
         # return desired_posts
