@@ -9,7 +9,7 @@ const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const local = "http://localhost:5000";
 
-export const url = local;
+export const url = azure;
 const instance = axios.create({
   baseURL: url,
   //"http://localhost:5000",
