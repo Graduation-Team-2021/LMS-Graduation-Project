@@ -59,9 +59,9 @@
     transition: 500ms;
 }
 
-@media (max-width : 662px) {
+@media (max-width : 940px) {
     .holder  {
-        width: 55vw;
+        width: 70%;
     }
     .Title {
         padding-top: 8vw;

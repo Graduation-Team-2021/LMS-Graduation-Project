@@ -1,6 +1,6 @@
 NEW TODO:
 5. Deliverables integration (Michel,David) (Inside Interface)
-6. All Groups Page
+6. All Groups Page (Hazum)
 7. يوم النتيجة
 9. Frontend error handling (John, David) (in progress)
 10.Notification View (Michel,David)

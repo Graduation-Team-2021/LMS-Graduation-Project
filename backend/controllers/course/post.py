@@ -212,8 +212,9 @@ class Post_Controller:
 
             groups = GroupProject.query.join(GroupCourseRelation).\
             filter(GroupCourseRelation.group_id == GroupProject.group_id).\
-            join(Teaches_Relation).filter(user_id == Teaches_Relation.professor_id).\
-                filter(Teaches_Relation.course_code == GroupCourseRelation.course_id).\
+            join(Course).filter(GroupCourseRelation.course_id==Course.course_code)\
+                .join(Teaches_Relation).filter(Course.course_code == Teaches_Relation.course_code)\
+                    .filter(user_id == Teaches_Relation.professor_id).\
                     with_entities(GroupProject.group_id)
                 
         group_ids = [g for g in groups]

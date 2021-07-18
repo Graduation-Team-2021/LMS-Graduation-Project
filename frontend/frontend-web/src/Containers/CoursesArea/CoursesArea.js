@@ -29,6 +29,7 @@ class CoursesArea extends Component {
       const Courses = new Map();
       if (res) {
         res.forEach((element) => {
+          console.log(element);
           Courses.set(element["course_code"], setCourse(element));
         });
         this.setState({
@@ -74,7 +75,7 @@ class CoursesArea extends Component {
     return (
       <div className={classes.CoursesArea}>
         <div className={classes.Title}>
-          Courses You're Taking
+          Courses You're {this.props.userData.Role==='student'?"Taking":"Teaching"}
           <div className={classes.Container}>
             <Button
               className={classes.Join}

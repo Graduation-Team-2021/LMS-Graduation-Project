@@ -684,3 +684,42 @@ export const getGroups = async () => {
   }
   return res.data["project_groups"];
 };
+
+export const getDegree=async(id)=>{
+  const res = await instance.get(`/professors/${id}`,{
+    headers:{
+      "Content-Type": "application/json",
+    }
+  })
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["professor"];
+}
+
+export const getYear=async(id)=>{
+  const res = await instance.get(`/students/${id}`,{
+    headers:{
+      "Content-Type": "application/json",
+    }
+  })
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["Student"];
+}
+
+export const getTeachedCourses=async(id)=>{
+  const res = await instance.get(`/professor/${id}/courses`,{
+    headers:{
+      "Content-Type": "application/json",
+    }
+  })
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["courses"];
+}
