@@ -578,18 +578,20 @@ export const searchUsers = async (text) => {
 };
 //store in the local storage (Future Work)
 export const searchCourses = async (text, id) => {
-  const res = await instance.get(`/courses/search/${text}/${id}`, {
+  const res = await instance.get(`/courses/search/${text}`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + id,
     },
   });
   return res.data.data;
 };
 //store in the local storage (Future Work)
-export const searchGroups = async (text) => {
+export const searchGroups = async (text, id) => {
   const res = await instance.get(`/groups/search/${text}`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + id,
     },
   });
 
