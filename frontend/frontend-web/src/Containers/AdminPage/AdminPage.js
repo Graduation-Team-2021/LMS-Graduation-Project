@@ -96,6 +96,7 @@ const AdminPage = (props) => {
                 value: value["user_id"],
               })),
               post_owner_id: c["post_owner_id"],
+              "Enrollment Deadline": c['course_deadline']
             });
           });
           console.log("Showing");
