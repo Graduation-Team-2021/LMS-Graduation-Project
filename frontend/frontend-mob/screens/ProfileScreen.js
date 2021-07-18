@@ -20,9 +20,9 @@ const ProfileScreen = (props) => {
       props.userData.Role
     )
       .then((res) => {
-        console.log('[AN]====================================');
+        console.log("[AN]====================================");
         console.log(res);
-        console.log('[AN]====================================');
+        console.log("[AN]====================================");
         setPassedCourses(res);
       })
       .catch((e) => console.log(e));
