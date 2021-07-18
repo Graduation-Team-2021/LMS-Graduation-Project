@@ -114,9 +114,7 @@ export const getCourses = async (Token) => {
 
 export const getRecentPosts = async (Token) => {
   let David = jwtDecode(Token);
-  console.log("[DAVID]====================================");
-  console.log(David);
-  console.log("[DAVID]====================================");
+
   if ((await NetInfo.fetch()).isConnected) {
     const res = await instance.get(`/first_10_posts`, {
       headers: {
@@ -131,32 +129,35 @@ export const getRecentPosts = async (Token) => {
     localStorage.SQLInsertRecentPosts(res.data["posts"]);
     return res.data["posts"];
   }
-  const result = await localStorage
-    .SQLGetRecentPosts(David.id, David.permissions)
-    .catch((err) => {
-      console.log("====================================");
-      console.log(err);
-      console.log("====================================");
-    });
-  console.log("[Cursed GP]====================================");
-  console.log(result);
-  console.log("[Cursed GP]====================================");
+  const result = await localStorage.SQLGetRecentPosts(
+    David.id,
+    David.permissions
+  );
+
   return result;
 };
 //store in the local storage
 export const getRecentUserPosts = async (Token) => {
-  const res = await instance.get("/my_posts", {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  console.log(res);
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
+  let David = jwtDecode(Token);
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get("/my_posts", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    console.log(res);
+    if (res.data["status_code"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    return res.data["posts"];
   }
-  return res.data["posts"];
+  const result = localStorage.SQLGetRecentUserPosts(
+    David.id,
+    David.permissions
+  ); //FIXME: need to be likend to the ProfileScreen
+  return result;
 };
 //store in the local storage
 export const getRecentEvent = async (Token, id) => {

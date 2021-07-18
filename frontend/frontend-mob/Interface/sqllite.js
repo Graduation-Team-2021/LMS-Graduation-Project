@@ -682,6 +682,60 @@ export function SQLGetRecentPosts(user_id, role) {
   });
 }
 
+export function SQLGetRecentUserPosts(user_id, role) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      if (role === "student") {
+        tx.executeSql(
+          "SELECT * FROM course, learns, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = course.post_owner_id AND course.course_code = learns.course_code AND post.post_writer = ?;",
+          [user_id],
+          (tx2, res) => {
+            const result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            tx2.executeSql(
+              "SELECT * FROM group_project, student_group_relation, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = group_project.post_owner_id AND group_project.group_id=student_group_relation.group_id AND post.post_writer = ?;",
+              [user_id],
+              (_, res2) => {
+                for (let index = 0; index < res2.rows.length; index++) {
+                  result.push(res2.rows.item(index));
+                }
+                resolve(result);
+              },
+              (_, err) => reject(err)
+            );
+          },
+          (_, err) => reject(err)
+        );
+      } else {
+        tx.executeSql(
+          "SELECT * FROM course, teaches, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = course.post_owner_id AND course.course_code=teaches.course_code AND post.post_writer = ?;",
+          [user_id],
+          (tx2, res) => {
+            const result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            tx2.executeSql(
+              "SELECT * FROM group_project, group_course_relation, course, post_owner, post, post_liker, post_commenter, teaches WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = group_project.post_owner_id AND group_project.group_id=group_course_relation.group_id AND group_course_relation.course_id = course.course_id AND course.course_code=teaches.course_code AND post.post_writer = ?;",
+              [user_id],
+              (_, res2) => {
+                for (let index = 0; index < res.rows.length; index++) {
+                  result.push(res2.rows.item(index));
+                }
+                resolve(result);
+              },
+              (_, err) => reject(err)
+            );
+          },
+          (_, err) => reject(err)
+        );
+      }
+    });
+  });
+}
+
 export function SQLInsertRecentPosts(posts) {
   return new Promise((resolve, reject) => {
     posts.forEach((value) => {
@@ -1017,4 +1071,13 @@ export function SQLInsertFinishedCourses(finishedCourses) {
       );
     });
   });
+}
+
+export function SQLInsertIntoEvent (student_id) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT INTO event VALUES (?,?,?,?,?,?,?) ",
+      [event_id, event_name,event_date,course_code,event_type,event_duration,event_description]
+    )
+  })
 }
