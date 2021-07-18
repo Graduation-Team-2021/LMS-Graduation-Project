@@ -378,7 +378,7 @@ export function CreateTable() {
 
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS student_questions(student_id INTEGER  , question_id INTEGER  ,student_question_id INTEGER  , PRIMARY KEY(student_answer_id) , UNIQUE(student_id,question_id)  , FOREIGN KEY (student_id) REFERENCES student(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (question_id) REFERENCES questions(question_id) ON UPDATE CASCADE ON DELETE CASCADE);",
+      "CREATE TABLE IF NOT EXISTS student_questions(student_id INTEGER  , question_id INTEGER  ,student_question_id INTEGER  , PRIMARY KEY(student_question_id) , UNIQUE(student_id,question_id)  , FOREIGN KEY (student_id) REFERENCES student(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (question_id) REFERENCES questions(question_id) ON UPDATE CASCADE ON DELETE CASCADE);",
       [],
       (_, res) => {
         console.log("[creating is done with the result]", res);
@@ -965,32 +965,16 @@ export function SQLGetCourseById(user_id, course_id) {
           [user_id, course_id],
           (_, res) => {
             console.log(
-              "inserting user due to comment is done successfully with result",
+              "[Ibrahim]inserting user due to comment is done successfully with result",
               res
             );
+            resolve(res);
           },
           (_, err) => {
             console.log("inserting user due to comment failed with error", err);
           }
         );
-        tx.executeSql(
-          "INSERT OR REPLACE INTO post_commenter(comment_id,commenter_id,comment_text,post_id) VALUES(?,?,?,?);",
-          [
-            comment.comment_id,
-            comment.commenter_id,
-            comment.comment,
-            element.post_id,
-          ],
-          (_, res) => {
-            console.log(
-              "isnerting commment to post done successfully with result",
-              res
-            );
-          },
-          (_, err) => {
-            reject(err);
-          }
-        );
+        
       }
     });
   });
@@ -999,7 +983,7 @@ export function SQLGetCourseById(user_id, course_id) {
 export function SQLInsertCourse(course) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO course VALUES(?,?,?,?,?,?,?)",
+      "INSERT OR REPLACE INTO course VALUES(?,?,?,?,?,?,?);",
       [
         course.course_code,
         course.course_name,
@@ -1010,7 +994,7 @@ export function SQLInsertCourse(course) {
         course.post_owner_id,
       ],
       (_, res) => {
-        console.log("inserting to course table successfully"), res;
+        console.log("[Ibrahim]inserting to course table successfully"), res;
       },
       (_, err) => {
         console.log("insertion the the db failed with error", err);
@@ -1047,7 +1031,7 @@ export function SQLInsertPosts(posts) {
         "INSERT OR REPLACE INTO post VALUES(?,?,?,?)",
         [post.post_id, post.post_writer, post.post_owner, post.post_text],
         (_, res) => {
-          console.log("[Ibrahim]inserting to posts table successfully"), res;
+          console.log("[Ibrahim]inserting to posts table successfully",res) ;
         },
         (_, err) => {
           console.log("[Ibrahim]insertion the post the db failed with error", err);
@@ -1197,7 +1181,7 @@ export function SQLGetEvent(student_id) {
   });
 }
 
-export default function SQLGetQuizzes (delv_id , user_id) {
+export  function SQLGetQuizzes (delv_id , user_id) {
   return new Promise((resolve, reject) => { db.transaction((tx) => {
     tx.executeSql(
       "SELECT * FROM deliverables , course , learns  WHERE learns.course_code = course.course_code AND learns.student_id = ? AND deliverables.deliverable_id = ? AND deliverable_id.course_deliverables = course.course_code ; ",
@@ -1222,7 +1206,7 @@ export default function SQLGetQuizzes (delv_id , user_id) {
 })
 }
 
-export default function SQLInsertQuiz (quiz) {
+export  function SQLInsertQuiz (quiz) {
   db.transaction((tx) =>
   tx.executeSql(
     "INSERT INTO deliverables VALUES (?,?,?,?,?,?,?) ;",
@@ -1250,7 +1234,7 @@ export default function SQLInsertQuiz (quiz) {
   ))
 }
 
-export default function SQLGetQuizById (delv_id , user_id) {
+export  function SQLGetQuizById (delv_id , user_id) {
   return new Promise((resolve, reject) => { db.transaction((tx) => {
     tx.executeSql(
       "SELECT * FROM deliverables , course , learns  WHERE learns.course_code = course.course_code AND learns.student_id = ? AND deliverables.deliverable_id = ? AND deliverable_id.course_deliverables = course.course_code ; ",
@@ -1275,7 +1259,7 @@ export default function SQLGetQuizById (delv_id , user_id) {
 })
 }
 
-export default function SQLAddQuiz (quiz) {
+export  function SQLAddQuiz (quiz) {
   db.transaction((tx) =>
   tx.executeSql(
     "INSERT INTO deliverables VALUES (?,?,?,?,?,?,?) ;",
@@ -1345,7 +1329,7 @@ export function SQLGetOneVideo(material_id) {
   });
 }
 
-export default function SQLUpdatePic (user_id,pic) {
+export  function SQLUpdatePic (user_id,pic) {
   db.transaction((tx) => {
     tx.executeSql(
       "INSERT INTO user(picture) VALUES (?) WHERE user.user_id = ? ; ",
@@ -1366,7 +1350,7 @@ export default function SQLUpdatePic (user_id,pic) {
   })
 }
 
-export default function SQLChangePassword (user_id,password) {
+export  function SQLChangePassword (user_id,password) {
   db.transaction((tx) => {
     tx.executeSql(
       "INSERT INTO user(password) VALUES (?) WHERE user.user_id = ? ; ",

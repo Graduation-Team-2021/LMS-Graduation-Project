@@ -244,18 +244,27 @@ export const uploadPost = async (Token, writer, owner, post) => {
 };
 //store and load in the local storage   DONE
 export const getCourseByID = async (Token, CourseID) => {
-  const res = await instance.get(`/courses/${CourseID}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
+  let David = jwtDecode(Token);
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/courses/${CourseID}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
 
-  if (res["status"] !== 200) {
-    //TODO: Better Check
-    return null;
+    if (res["status"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    console.log("[KAK]====================================");
+    console.log(res.data["course"]);
+    console.log("[KAK]====================================");
+    localStorage.SQLInsertCourse(res.data["course"]);
+    return res.data["course"];
   }
-  return res.data["course"];
+  const result = await localStorage.SQLGetCourseById(David.id, CourseID);
+  return result;
 };
 //store in the local storage (Future work)
 export const uploadFile = async (
@@ -879,7 +888,7 @@ export const AddNewEvent = async (data) => {
 //change password
 //get quizes  => should be stored in the local storage
 //add quizes
-//submit quizes // store in the local storage
+//submit quizes // store in the local storage(future work)
 //get grades // store in the local storage
 //getDoctors
 //get status
