@@ -151,12 +151,20 @@ export const getRecentUserPosts = async (Token) => {
       //TODO: Better Check
       return null;
     }
+    localStorage.SQLInsertRecentPosts(res.data["posts"]);
     return res.data["posts"];
   }
-  const result = localStorage.SQLGetRecentUserPosts(
+  const result = await localStorage.SQLGetRecentUserPosts(
     David.id,
     David.permissions
-  ); //FIXME: need to be likend to the ProfileScreen
+  );
+  console.log(
+    "[Interface.js][getRecentUserPosts]===================================="
+  );
+  console.log(result);
+  console.log(
+    "[Interface.js][getRecentUserPosts]===================================="
+  );
   return result;
 };
 //store in the local storage
