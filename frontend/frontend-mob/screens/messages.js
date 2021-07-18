@@ -9,7 +9,7 @@ import MessageCard from "../components/MessageCard"
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
 import {getAllMessages,sendMessage} from "../Interface/Interface";
-import { Header } from 'react-navigation-stack';
+import { HeaderHeightContext } from 'react-navigation-stack';
 import msngrskt from "../sockets/msngrskts";
 
 const MessagesScreen = props => {
@@ -84,7 +84,7 @@ const getMessages = () =>{
         ))}
       </ScrollView>
     </View>
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}  keyboardVerticalOffset = {Header.HEIGHT + 20} // adjust the value here if you need more padding
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}  keyboardVerticalOffset = {HeaderHeightContext + 20} // adjust the value here if you need more padding
   >
     <View style={styles.SendMessageContainer}>
       <Input  ref={input} onChangeText={(text) => setSentMessage({"text":text,"sender_id":props.userData.ID})} onPress={sendMessageHandler}/>
