@@ -191,7 +191,7 @@ class CourseDesc extends Component {
 
           {this.props.Role === "professor" ? (
             <React.Fragment>
-              <AddEvent className={classes.Holder}>
+              <AddEvent course_id={this.props.Course.CourseID} className={classes.Holder}>
                 <div
                   style={{
                     padding: "0 0 10% 0",

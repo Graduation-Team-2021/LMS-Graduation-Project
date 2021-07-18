@@ -633,17 +633,17 @@ export const BE_Enroll = async (id, Token, cid) => {
     }
   );
   console.log(res.data);
-  if (res.data.status_code===200) {
-    return true
-  }
-  else{
-    return false
+  if (res.data.status_code === 200) {
+    return true;
+  } else {
+    return false;
   }
 };
 
-export const BE_G_Enroll = async (cid,Token) => {
+export const BE_G_Enroll = async (cid, Token) => {
   const res = await instance.post(
-    `group/${cid}/students`,{},
+    `group/${cid}/students`,
+    {},
     {
       headers: {
         "Content-Type": "application/json",
@@ -652,11 +652,10 @@ export const BE_G_Enroll = async (cid,Token) => {
     }
   );
   console.log(res.data);
-  if (res.data.status_code===200) {
-    return true
-  }
-  else{
-    return false
+  if (res.data.status_code === 200) {
+    return true;
+  } else {
+    return false;
   }
 };
 
@@ -685,41 +684,55 @@ export const getGroups = async () => {
   return res.data["project_groups"];
 };
 
-export const getDegree=async(id)=>{
-  const res = await instance.get(`/professors/${id}`,{
-    headers:{
+export const getDegree = async (id) => {
+  const res = await instance.get(`/professors/${id}`, {
+    headers: {
       "Content-Type": "application/json",
-    }
-  })
+    },
+  });
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
   return res.data["professor"];
-}
+};
 
-export const getYear=async(id)=>{
-  const res = await instance.get(`/students/${id}`,{
-    headers:{
+export const getYear = async (id) => {
+  const res = await instance.get(`/students/${id}`, {
+    headers: {
       "Content-Type": "application/json",
-    }
-  })
+    },
+  });
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
   return res.data["Student"];
-}
+};
 
-export const getTeachedCourses=async(id)=>{
-  const res = await instance.get(`/professor/${id}/courses`,{
-    headers:{
+export const getTeachedCourses = async (id) => {
+  const res = await instance.get(`/professor/${id}/courses`, {
+    headers: {
       "Content-Type": "application/json",
-    }
-  })
+    },
+  });
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
   return res.data["courses"];
-}
+};
+
+export const AddNewEvent = async (data) => {
+  const res = await instance.post(`/courses/${data.course_code}/events`, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(res.data);
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["message"];
+};

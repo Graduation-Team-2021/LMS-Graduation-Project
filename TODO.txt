@@ -9,8 +9,8 @@ NEW TODO:
 15.Notifications should be Clickable (Post)
 16.Improve the dropdown menu design (make the 2 menus into one)
 17.Improve the Triangle
-18.Responsive Finished Courses
 19.Fix the Click Outside black magic
+20.Professor Profile Page
 
 Future Work:
 19.Include Multifile Upload
