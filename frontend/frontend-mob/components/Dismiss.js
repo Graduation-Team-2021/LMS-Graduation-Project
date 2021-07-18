@@ -119,7 +119,7 @@ const Dismiss = (props) => {
   }
 
   return (
-    <View style={styles.holder}>
+    <View style={styles.holder} >
       <Animated.View style={[mainView, { opacity: fadeAnim }]}>
         {Main}
       </Animated.View>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     height: 200,
     zIndex: 100,
     elevation: 100,
-    transform: [{translateY:0}]
+    transform: [{ translateY: 0 }],
   },
   behind: {
     position: "absolute",
@@ -180,8 +180,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "90%",
     height: 200,
-    transform: [{translateY:20}]
-    
+    transform: [{ translateY: 20 }],
   },
 });
 

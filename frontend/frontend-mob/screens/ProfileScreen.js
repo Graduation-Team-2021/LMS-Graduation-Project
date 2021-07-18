@@ -5,8 +5,34 @@ import { LinearGradient } from "expo-linear-gradient";
 import ANHeaderButton from "../components/ANHeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import Dismiss from "../components/Dismiss";
+import * as Interface from "../Interface/Interface";
+import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+import { connect } from "react-redux";
+import sha256 from "crypto-js/sha512";
 
-const ProfileScreen = () => {
+const ProfileScreen = (props) => {
+  const [TotalGrade, setTotalGrade] = useState(0);
+  const [PassedCourses, setPassedCourses] = useState([]);
+  const [YourPosts, setYourPosts] = useState([]);
+  useEffect(() => {
+    Interface.getGradeSoFar(props.userData.ID)
+      .then((res) => {
+        let sum = 0;
+        res.forEach((e) => (sum += e.course_mark));
+        setTotalGrade(sum);
+      })
+      .catch((e) => console.log(e));
+    Interface.getFinishedCourses(
+      props.userData.Token,
+      props.userData.ID,
+      props.userData.Role
+    )
+      .then((res) => setPassedCourses(res))
+      .catch((e) => console.log(e));
+    Interface.getRecentUserPosts(props.userData.Token)
+      .then((res) => setYourPosts(res))
+      .catch((e) => console.log(e));
+  }, []);
   return (
     <ScrollView>
       <View style={styles.screen}>
@@ -43,38 +69,30 @@ const ProfileScreen = () => {
               containerStyle={styles.displayDataCardContainerStyle}
             >
               <Text style={styles.text}>Passed Courses</Text>
-              <Text style={styles.text}>50</Text>
+              <Text style={styles.text}>{PassedCourses.length}</Text>
             </Card>
             <Card
               wrapperStyle={{ ...styles.displayDataCardWrapperStyle }}
               containerStyle={styles.displayDataCardContainerStyle}
             >
-              <Text style={styles.text}>Passed Courses</Text>
-              <Text style={styles.text}>50</Text>
+              <Text style={styles.text}>Total Grade</Text>
+              <Text style={styles.text}>{TotalGrade}</Text>
             </Card>
           </View>
         </Card>
-        <Text style={[styles.text, styles.title]}> Your Posts</Text>
-        <Dismiss>
-          <Text>Post 1</Text>
-          <Text>Post 2</Text>
-          <Text>Post 3</Text>
-          <Text>Post 4</Text>
-          <Text>Post 5</Text>
-          <Text>Post 6</Text>
-          <Text>Post 7</Text>
+        <Text style={[styles.text, styles.title]}>Your Posts</Text>
+        <Dismiss key={sha256(JSON.stringify(YourPosts)).words[0]}>
+          {YourPosts.map((post, index) => (
+            <Text key={post}>{post.post_text}</Text>
+          ))}
         </Dismiss>
 
         <Text style={[styles.text, styles.title]}>Your Passed Courses</Text>
 
-        <Dismiss>
-          <Text>Course 1</Text>
-          <Text>Course 2</Text>
-          <Text>Course 3</Text>
-          <Text>Course 4</Text>
-          <Text>Course 5</Text>
-          <Text>Course 6</Text>
-          <Text>Course 7</Text>
+        <Dismiss key={sha256(JSON.stringify(PassedCourses)).words[1]}>
+          {PassedCourses.map((course, index) => (
+            <Text key={course}>{course.course_code}</Text>
+          ))}
         </Dismiss>
       </View>
     </ScrollView>
@@ -136,4 +154,4 @@ ProfileScreen.navigationOptions = (navData) => {
   };
 };
 
-export default ProfileScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
