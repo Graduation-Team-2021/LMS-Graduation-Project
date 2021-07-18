@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 import ANHeaderButton from "../components/ANHeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-
 import Dismiss from "../components/Dismiss";
 
 const ProfileScreen = () => {

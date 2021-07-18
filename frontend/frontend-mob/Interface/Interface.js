@@ -44,6 +44,7 @@ export const Login = async (Data) => {
 };
 
 export const getCurrentCourses = async (Token) => {
+  let David = jwtDecode(Token);
   if ((await NetInfo.fetch()).isConnected) {
     const res = await instance.get(`/my_courses`, {
       headers: {
@@ -56,15 +57,19 @@ export const getCurrentCourses = async (Token) => {
       //TODO: Signout
       return null;
     }
+    localStorage.SQLInsertCurrentCourse(
+      res.data["courses"],
+      David.id,
+      David.permissions
+    );
     return res.data["courses"];
   }
-  let David = jwtDecode(Token);
-  localStorage.SQLInsertCurrentCourse(res.data["courses"], David.id);
   result = await localStorage.SQLGetCurrentCourse(David.id, David.permissions);
   return result;
 };
 
-export const getCurrentGroups = async (Token, id, role) => {
+export const getCurrentGroups = async (Token) => {
+  let David = jwtDecode(Token);
   if ((await NetInfo.fetch()).isConnected) {
     const res = await instance.get(`/my_groups`, {
       headers: {
@@ -77,13 +82,21 @@ export const getCurrentGroups = async (Token, id, role) => {
       //TODO: Better Check
       return null;
     }
-    console.log("[getCurrentGroups]====================================");
-    console.log(res.data["groups"]);
-    console.log("[getCurrentGroups]====================================");
+    localStorage.SQLInsertCurrentGroups(
+      David.id,
+      David.permissions,
+      res.data.groups
+    );
     return res.data["groups"];
   }
-  //todo: Add Local Get Groups
-  
+  // todo: Add Local Get Groups
+
+  let result = await localStorage.SQLGetCurrentGroups(
+    David.id,
+    David.permissions
+  );
+
+  return result;
 };
 export const getCourses = async (Token) => {
   const res = await instance.get(`/courses`, {
@@ -100,35 +113,51 @@ export const getCourses = async (Token) => {
 };
 
 export const getRecentPosts = async (Token) => {
-  const res = await instance.get(`/first_10_posts`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
+  let David = jwtDecode(Token);
+
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/first_10_posts`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    if (res.data["status_code"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    localStorage.SQLInsertRecentPosts(res.data["posts"]);
+    return res.data["posts"];
   }
-  console.log("[getRecentPosts]====================================");
-  console.log(res.data["posts"]);
-  console.log("[getRecentPosts]====================================");
-  return res.data["posts"];
+  const result = await localStorage.SQLGetRecentPosts(
+    David.id,
+    David.permissions
+  );
+
+  return result;
 };
 //store in the local storage
 export const getRecentUserPosts = async (Token) => {
-  const res = await instance.get("/my_posts", {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  console.log(res);
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
+  let David = jwtDecode(Token);
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get("/my_posts", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    console.log(res);
+    if (res.data["status_code"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    return res.data["posts"];
   }
-  return res.data["posts"];
+  const result = localStorage.SQLGetRecentUserPosts(
+    David.id,
+    David.permissions
+  ); //FIXME: need to be likend to the ProfileScreen
+  return result;
 };
 //store in the local storage
 export const getRecentEvent = async (Token, id) => {
@@ -554,9 +583,6 @@ export const searchCourses = async (text, id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log("====================================");
-  console.log("[KAK]", res.data);
-  console.log("====================================");
   return res.data.data;
 };
 //store in the local storage (Future Work)

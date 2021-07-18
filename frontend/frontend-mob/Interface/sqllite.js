@@ -300,6 +300,19 @@ export function CreateTable() {
       }
     );
   });
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS group_course_relation(group_id INTEGER  , course_id TEXT, PRIMARY KEY(group_id,course_id), FOREIGN KEY (group_id) REFERENCES group_project(group_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (course_id) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
+      [],
+      (_, res) => {
+        console.log("[creating is done with the result]", res);
+      },
+      (_, err) => {
+        console.log("[failed there is an error]", err);
+      }
+    );
+  });
 }
 
 export function SQLGetCurrentCourse(user_id, role) {
@@ -344,7 +357,7 @@ export function SQLGetCurrentCourse(user_id, role) {
 
 //call SQL
 
-export function SQLInsertCurrentCourse(courses, user_id) {
+export function SQLInsertCurrentCourse(courses, user_id, role) {
   db.transaction((tx) => {
     courses.forEach((element) => {
       tx.executeSql(
@@ -476,7 +489,7 @@ export function SQLGetCurrentGroups(user_id, role) {
 
 export function SQLInsertCurrentGroups(user_id, role, groups) {
   return new Promise((resolve, reject) => {
-    groups.forEach(value => {
+    groups.forEach((value) => {
       db.transaction((tx) => {
         tx.executeSql(
           "INSERT OR REPLACE INTO group_project(group_id,group_name, group_description, post_owner_id) VALUES (?,?,?,?)",
@@ -535,33 +548,18 @@ export function SQLGetPdfs(course_code) {
   });
 }
 
-export function SQLGetPdfs(course_code) {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND course.course_code = ? ;", [course_code],
-        (_, res) => {
-          let result = [];
-          for (let index = 0; index < res.rows.length; index++) {
-            result.push(res.rows.item(index));
-          }
-          resolve(result);
-        },
-        (_, err) => {
-          reject(err)
-        }
-      )
-    })
-  })
-}
-
 export function SQLInertPdfs(pdf) {
   db.transaction((tx) => {
     tx.executeSql(
       "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",
-      [],
+      [
+        pdf.material_id,
+        pdf.material_name,
+        pdf.material_type,
+        pdf.course_material,
+      ],
       (_, res) => {
-        console.log("inserting to course table successfully"), res;
+        console.log("inserting to materials table successfully"), res;
       },
       (_, err) => {
         console.log("insertion the the db failed with error", err);
@@ -590,50 +588,13 @@ export function SQLGetVideos(course_code) {
     });
   });
 }
-export function SQLInertPdfs(pdf) {
-  db.transaction((tx) => {
-    tx.executeSql(
-      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)", [pdf.material_id, pdf.material_name, pdf.material_type, pdf.course_material],
-      (_, res) => { console.log('inserting to materials table successfully'), res },
-      (_, err) => { console.log("insertion the the db failed with error", err) })
-  })
-}
-
-export function SQLGetVideos(course_code) {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND course.course_code = ? ;", [course_code],
-        (_, res) => {
-          let result = [];
-          for (let index = 0; index < res.rows.length; index++) {
-            result.push(res.rows.item(index));
-          }
-          resolve(result);
-        },
-        (_, err) => {
-          reject(err)
-        }
-      )
-    })
-  })
-}
-
-export function SQLInertVideos(video) {
-  db.transaction((tx) => {
-    tx.executeSql(
-      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)", [video.material_id, video.material_name, video.material_type, video.course_material],
-      (_, res) => { console.log('inserting to materials table successfully'), res },
-      (_, err) => { console.log("insertion the the db failed with error", err) })
-  })
-}
-
 
 export function SQLGetUser(user_id) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM user WHERE user.user_id = ? ;", [user_id],
+        "SELECT * FROM user WHERE user.user_id = ? ;",
+        [user_id],
         (_, res) => {
           let result = [];
           for (let index = 0; index < res.rows.length; index++) {
@@ -642,32 +603,37 @@ export function SQLGetUser(user_id) {
           resolve(result);
         },
         (_, err) => {
-          reject(err)
+          reject(err);
         }
-      )
-    })
-  })
+      );
+    });
+  });
 }
 
 export function SQLInsertUser(user) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)", [user.user_id, user.name, user.email, user.birthday, user.password, user.picture],
-      (_, res) => { console.log('inserting to user table successfully'), res },
-  )})}
+      "INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)",
+      [
+        user.user_id,
+        user.name,
+        user.email,
+        user.birthday,
+        user.password,
+        user.picture,
+      ],
+      (_, res) => {
+        console.log("inserting to user table successfully"), res;
+      }
+    );
+  });
+}
 export function SQLGetRecentPosts(user_id, role) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       if (role === "student") {
         tx.executeSql(
-          `SELECT * FROM course, learns, 
-          post_owner, post, post_liker, post_commenter 
-          WHERE post_commenter.post_id = post.post_id 
-          AND post_liker.post_id = post.post_id 
-          AND post.post_owner = post_owner.owner_id 
-          AND post_owner.owner_id = course.post_owner_id 
-          AND course.course_code=learns.course_code 
-          AND learns.student_id = ?;`,
+          "SELECT * FROM course, learns, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = course.post_owner_id AND course.course_code = learns.course_code AND learns.student_id = ?;",
           [user_id],
           (tx2, res) => {
             const result = [];
@@ -675,14 +641,30 @@ export function SQLGetRecentPosts(user_id, role) {
               result.push(res.rows.item(index));
             }
             tx2.executeSql(
-              `SELECT * FROM group_project, student_group_relation, 
-              post_owner, post, post_liker, post_commenter 
-              WHERE post_commenter.post_id = post.post_id 
-              AND post_liker.post_id = post.post_id 
-              AND post.post_owner = post_owner.owner_id 
-              AND post_owner.owner_id = group_project.post_owner_id 
-              AND group_project.group_id=student_group_relation.group_id 
-              AND student_group_relation.student_id = ?;`,
+              "SELECT * FROM group_project, student_group_relation, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = group_project.post_owner_id AND group_project.group_id=student_group_relation.group_id AND student_group_relation.student_id = ?;",
+              [user_id],
+              (_, res2) => {
+                for (let index = 0; index < res2.rows.length; index++) {
+                  result.push(res2.rows.item(index));
+                }
+                resolve(result);
+              },
+              (_, err) => reject(err)
+            );
+          },
+          (_, err) => reject(err)
+        );
+      } else {
+        tx.executeSql(
+          "SELECT * FROM course, teaches, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = course.post_owner_id AND course.course_code=teaches.course_code AND teaches.professor_id = ?;",
+          [user_id],
+          (tx2, res) => {
+            const result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            tx2.executeSql(
+              "SELECT * FROM group_project, group_course_relation, course, post_owner, post, post_liker, post_commenter, teaches WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = group_project.post_owner_id AND group_project.group_id=group_course_relation.group_id AND group_course_relation.course_id = course.course_id AND course.course_code=teaches.course_code AND teaches.professor_id = ?;",
               [user_id],
               (_, res2) => {
                 for (let index = 0; index < res.rows.length; index++) {
@@ -695,16 +677,17 @@ export function SQLGetRecentPosts(user_id, role) {
           },
           (_, err) => reject(err)
         );
-      } else {
+      }
+    });
+  });
+}
+
+export function SQLGetRecentUserPosts(user_id, role) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      if (role === "student") {
         tx.executeSql(
-          `SELECT * FROM course, teaches, 
-          post_owner, post, post_liker, post_commenter 
-          WHERE post_commenter.post_id = post.post_id 
-          AND post_liker.post_id = post.post_id 
-          AND post.post_owner = post_owner.owner_id 
-          AND post_owner.owner_id = course.post_owner_id 
-          AND course.course_code=teaches.course_code 
-          AND teaches.professor_id = ?;`,
+          "SELECT * FROM course, learns, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = course.post_owner_id AND course.course_code = learns.course_code AND post.post_writer = ?;",
           [user_id],
           (tx2, res) => {
             const result = [];
@@ -712,16 +695,30 @@ export function SQLGetRecentPosts(user_id, role) {
               result.push(res.rows.item(index));
             }
             tx2.executeSql(
-              `SELECT * FROM group_project, group_course_relation, course, 
-              post_owner, post, post_liker, post_commenter, teaches 
-              WHERE post_commenter.post_id = post.post_id 
-              AND post_liker.post_id = post.post_id 
-              AND post.post_owner = post_owner.owner_id 
-              AND post_owner.owner_id = group_project.post_owner_id 
-              AND group_project.group_id=group_course_relation.group_id 
-              AND group_course_relation.course_id = course.course_id 
-              AND course.course_code=teaches.course_code 
-              AND teaches.professor_id = ?;`,
+              "SELECT * FROM group_project, student_group_relation, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = group_project.post_owner_id AND group_project.group_id=student_group_relation.group_id AND post.post_writer = ?;",
+              [user_id],
+              (_, res2) => {
+                for (let index = 0; index < res2.rows.length; index++) {
+                  result.push(res2.rows.item(index));
+                }
+                resolve(result);
+              },
+              (_, err) => reject(err)
+            );
+          },
+          (_, err) => reject(err)
+        );
+      } else {
+        tx.executeSql(
+          "SELECT * FROM course, teaches, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = course.post_owner_id AND course.course_code=teaches.course_code AND post.post_writer = ?;",
+          [user_id],
+          (tx2, res) => {
+            const result = [];
+            for (let index = 0; index < res.rows.length; index++) {
+              result.push(res.rows.item(index));
+            }
+            tx2.executeSql(
+              "SELECT * FROM group_project, group_course_relation, course, post_owner, post, post_liker, post_commenter, teaches WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = group_project.post_owner_id AND group_project.group_id=group_course_relation.group_id AND group_course_relation.course_id = course.course_id AND course.course_code=teaches.course_code AND post.post_writer = ?;",
               [user_id],
               (_, res2) => {
                 for (let index = 0; index < res.rows.length; index++) {
@@ -747,10 +744,16 @@ export function SQLInsertRecentPosts(posts) {
           "INSERT OR REPLACE INTO post_owner(owner_id) VALUES (?)",
           [value.post_owner],
           (tx1, res) => {
+            console.log("====================================");
+            console.log("Inserting into post Owner");
+            console.log("====================================");
             tx1.executeSql(
               "INSERT OR REPLACE INTO user(user_id, name) VALUES (?,?)",
               [value.post_writer, value.name],
               (tx2, res) => {
+                console.log("====================================");
+                console.log("Inserting into User");
+                console.log("====================================");
                 tx2.executeSql(
                   "INSERT OR REPLACE INTO post(post_owner, post_id, post_text, post_writer) VALUES (?, ?, ?, ?)",
                   [
@@ -760,6 +763,9 @@ export function SQLInsertRecentPosts(posts) {
                     value.post_writer,
                   ],
                   (tx3, res) => {
+                    console.log("====================================");
+                    console.log("Inserting into posts");
+                    console.log("====================================");
                     value.likes.forEach((v2) => {
                       tx3.executeSql(
                         "INSERT OR REPLACE INTO user(user_id, name) VALUES (?,?)",
@@ -836,7 +842,8 @@ export function SQLGetAllMessages(user_id1, user_id2) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM messages , user , conversations  WHERE messages.sender_id = ? AND messages.receiver_id = ? AND conversations.conversation_id = messages.conversation_id AND messages.sender_id = user.user_id   ;", [user_id1, user_id2],
+        "SELECT * FROM messages , user , conversations  WHERE messages.sender_id = ? AND messages.receiver_id = ? AND conversations.conversation_id = messages.conversation_id AND messages.sender_id = user.user_id   ;",
+        [user_id1, user_id2],
         (_, res) => {
           let result = [];
           for (let index = 0; index < res.rows.length; index++) {
@@ -845,20 +852,33 @@ export function SQLGetAllMessages(user_id1, user_id2) {
           resolve(result);
         },
         (_, err) => {
-          reject(err)
+          reject(err);
         }
-      )
-    })
-  })
+      );
+    });
+  });
 }
 
 export function SQLInsertMessages(message) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO messages VALUES(?,?,?,?,?,?)", [message.massage_id, message.conversation_id, message.sender_id, message.receiver_id, message.sent_time, message.text],
-      (_, res) => { console.log('inserting to messages table successfully'), res },
-      (_, err) => { console.log("insertion the the db failed with error", err) })
-  })
+      "INSERT OR REPLACE INTO messages VALUES(?,?,?,?,?,?)",
+      [
+        message.massage_id,
+        message.conversation_id,
+        message.sender_id,
+        message.receiver_id,
+        message.sent_time,
+        message.text,
+      ],
+      (_, res) => {
+        console.log("inserting to messages table successfully"), res;
+      },
+      (_, err) => {
+        console.log("insertion the the db failed with error", err);
+      }
+    );
+  });
 }
 
 export function SQLGetCourseById(user_id, course_id) {
@@ -894,7 +914,8 @@ export function SQLGetCourseById(user_id, course_id) {
           },
           (_, err) => {
             reject(err);
-          });
+          }
+        );
       }
     });
   });
@@ -903,17 +924,32 @@ export function SQLGetCourseById(user_id, course_id) {
 export function SQLInsertCourse(course) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO course VALUES(?,?,?,?,?,?,?)", [course.course_code, course.course_name, course.weekly_hours, course.group_number, course.max_student, course.course_description, course.post_owner_id],
-      (_, res) => { console.log('inserting to course table successfully'), res },
-      (_, err) => { console.log("insertion the the db failed with error", err) })
-  })
+      "INSERT OR REPLACE INTO course VALUES(?,?,?,?,?,?,?)",
+      [
+        course.course_code,
+        course.course_name,
+        course.weekly_hours,
+        course.group_number,
+        course.max_student,
+        course.course_description,
+        course.post_owner_id,
+      ],
+      (_, res) => {
+        console.log("inserting to course table successfully"), res;
+      },
+      (_, err) => {
+        console.log("insertion the the db failed with error", err);
+      }
+    );
+  });
 }
 
 export function SQLGetAllPosts(user_id, owner) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM post_commenter , post_liker , post WHERE post_liker.liker_id = ? AND post.owner_id = ? AND post.post_id = post_liker.post_id AND post.post_id = post_commenter.post_id  ;", [user_id, owner],
+        "SELECT * FROM post_commenter , post_liker , post WHERE post_liker.liker_id = ? AND post.owner_id = ? AND post.post_id = post_liker.post_id AND post.post_id = post_commenter.post_id  ;",
+        [user_id, owner],
         (_, res) => {
           let result = [];
           for (let index = 0; index < res.rows.length; index++) {
@@ -922,64 +958,56 @@ export function SQLGetAllPosts(user_id, owner) {
           resolve(result);
         },
         (_, err) => {
-          reject(err)
+          reject(err);
         }
-      )
-    })
-  })
+      );
+    });
+  });
 }
 
 export function SQLInsertPosts(course) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO c VALUES(?,?,?,?,?,?,?)", [course.course_code, course.course_name, course.weekly_hours, course.group_number, course.max_student, course.course_description, course.post_owner_id],
-      (_, res) => { console.log('inserting to course table successfully'), res },
-      (_, err) => { console.log("insertion the the db failed with error", err) })
-  })
+      "INSERT OR REPLACE INTO c VALUES(?,?,?,?,?,?,?)",
+      [
+        course.course_code,
+        course.course_name,
+        course.weekly_hours,
+        course.group_number,
+        course.max_student,
+        course.course_description,
+        course.post_owner_id,
+      ],
+      (_, res) => {
+        console.log("inserting to course table successfully"), res;
+      },
+      (_, err) => {
+        console.log("insertion the the db failed with error", err);
+      }
+    );
+  });
 }
-
 
 export function GetFirstConversation(user_id) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM  conversations , user   WHERE conversations.first_user = ? AND conversations.second_user = user.user_id ;", [user_id],
+        "SELECT * FROM  conversations , user , messages  WHERE ((conversations.first_user = ? AND conversations.second_user = user.user_id) OR (conversations.second_user = ? AND conversations.first_user = user.user_id)) AND conversation.conversation_id = messages.conversation_id;",
+        [user_id],
         (tx2, res) => {
           let result = [];
           for (let index = 0; index < res.rows.length; index++) {
-            result.push(res.rows.item(index))
-            result[index] = { ...result[index], ...(await recentMessage(result[index])) }
-
+            result.push(res.rows.item(index));
           }
           resolve(result);
-
-        }),(_,err)=>{
-          reject(err)
         }
-    })
-  })
+      ),
+        (_, err) => {
+          reject(err);
+        };
+    });
+  });
 }
-export function GetSecondConversation(user_id) {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT * FROM  conversations , user   WHERE conversations.first_user = ? AND conversations.second_user = user.user_id ;", [user_id],
-        (tx2, res) => {
-          let result = [];
-          for (let index = 0; index < res.rows.length; index++) {
-            result.push(res.rows.item(index))
-            result[index] = { ...result[index], ...(await recentMessage(result[index])) }
-
-          }
-           resolve(result);
-
-        }),(_,err)=>{
-          reject(err)
-        }
-    })
-  })
-}
-
 export function SQLGetFinishedCourses(user_id, role, Token) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -1043,4 +1071,48 @@ export function SQLInsertFinishedCourses(finishedCourses) {
       );
     });
   });
+}
+
+export function SQLInsertIntoEvent (event) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT INTO event VALUES (?,?,?,?,?,?,?) ",
+      [event.event_id, event.event_name,event.event_date,event.course_code,event.event_type,event.event_duration,event.event_description],
+      (_, res) => {
+        console.log(
+          "inserting into finish due to finished courses finished successfully with result",
+          res
+        );
+      },
+      (_, err) => {
+        console.log(
+          "inserting into finish due to finished courses failed with error",
+          err
+        );
+  })
+})
+}
+
+export function SQLGetEvent (student_id) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT * FROM event , course , learns  WHERE event.course_code = course.course_code AND learns.student_id = ? AND learns.course_code = course.course_code ",
+      [student_id],
+      (_, res) => {
+        console.log(
+          "selecting finished courses is done successfully with result",
+          res
+        );
+        const result = [];
+        for (let index = 0; index < res.rows.length; index++) {
+          result.push(res.rows.item(index));
+        }
+        resolve(result);
+      },
+      (_, err) => {
+        console.log("error while retriving the finished courses", err);
+        reject(err);
+      }
+    )
+  })
 }
