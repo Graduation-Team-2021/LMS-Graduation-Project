@@ -18,7 +18,7 @@ class questions_controller():
                 Questions.exam_id == exam_id
             ).with_entities(Questions.question, Questions.question_id, Questions.mark).all()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -46,7 +46,7 @@ class questions_controller():
         try:
             deleted_question = Questions.query.filter_by(question_id=question_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -69,7 +69,7 @@ class questions_controller():
                 })
             question["exam_id"] = updated_question.exam_id
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -84,7 +84,7 @@ class questions_controller():
             new_question = Questions(**question)
             new_question = Questions.insert(new_question)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -100,7 +100,7 @@ class questions_controller():
                     'status_code': 404
                 })
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

@@ -13,7 +13,7 @@ class GroupProjectController:
         try:
             group = GroupProject.query.filter_by(group_id=group_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -48,7 +48,7 @@ class GroupProjectController:
         try:
             to_be_deleted = GroupProject.query.filter_by(group_id=group_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -65,7 +65,7 @@ class GroupProjectController:
         try:
             all_groups=GroupProject.query.all()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404

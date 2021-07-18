@@ -9,7 +9,7 @@ const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const local = "http://localhost:5000";
 
-export const url = azure;
+export const url = local;
 const instance = axios.create({
   baseURL: url,
   //"http://localhost:5000",
@@ -82,6 +82,7 @@ export const getCourses = async (Token) => {
       Authorization: "Bearer " + Token,
     },
   });
+  console.log(res.data);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -191,8 +192,8 @@ export const getCourseByID = async (Token, CourseID) => {
       Authorization: "Bearer " + Token,
     },
   });
-
-  if (res["status"] !== 200) {
+  console.log(res.data["course"]);
+  if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
@@ -722,6 +723,20 @@ export const getTeachedCourses = async (id) => {
 
 export const AddNewEvent = async (data) => {
   const res = await instance.post(`/courses/${data.course_code}/events`, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(res.data);
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["message"];
+};
+
+export const UpdateCourse = async (data) => {
+  const res = await instance.put(`/courses/${data.course_code}`, data, {
     headers: {
       "Content-Type": "application/json",
     },

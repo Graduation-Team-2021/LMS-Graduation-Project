@@ -9,11 +9,7 @@ import Post from "../Post/Post";
 import CourseDescription from "../CourseDesc/CourseDesc.js";
 import NewPostCard from "../../Components/New Post/NewPost";
 import classes from "./CoursePage.module.css";
-import {
-  getAllPosts,
-  uploadPost,
-  getCourseByID,
-} from "../../Interface/Interface";
+import { getAllPosts, uploadPost } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setNewPost, setLocationPost } from "../../Models/Post";
 
@@ -32,10 +28,8 @@ const CoursePage = (props) => {
     CourseDescription: Desc,
   } = props.location.state.Data;
 
-  const [Course, setCourse] = useState(null);
   const [clicked, setclicked] = useState(false);
   const [Posts, setPosts] = useState([]);
-  const [MainLoading, setMainLoading] = useState(true);
   const [PostLoading, setPostLoading] = useState(true);
 
   const hide = () => {
@@ -49,13 +43,6 @@ const CoursePage = (props) => {
   const Focus = () => {
     show();
   };
-
-  useEffect(() => {
-    getCourseByID(Token, courseID).then((res) => {
-      setMainLoading(false);
-      setCourse(res);
-    });
-  }, [Token, courseID]);
 
   useEffect(() => {
     //Loading Data from Server
@@ -73,7 +60,7 @@ const CoursePage = (props) => {
         setPosts(posts);
       }
     });
-  }, [Token, postID, userID, Title, Course]);
+  }, [Token, postID, userID, Title]);
 
   const SubmitPost = async (post) => {
     let data = setNewPost(post, Title, Name);
@@ -87,50 +74,32 @@ const CoursePage = (props) => {
     }
     hide();
   };
-  document.title=Title
+  document.title = Title;
   return (
     <React.Fragment>
       <Modal show={clicked} onClick={hide}>
         <NewPost submit={SubmitPost} dismiss={hide} />
       </Modal>
-      <Waiting Loading={MainLoading}>
-        <div className={classes.Center}>
-          <Card shadow className={classes.Course}>
+
+      <div className={classes.Center}>
+        <Card shadow className={classes.Course}>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <h1>{Title}</h1>
             <div
               style={{
-                width: "100%",
+                width: "40%",
                 display: "flex",
                 justifyContent: "space-between",
               }}
-            >
-              <h1>{Title}</h1>
-              <div
-                style={{
-                  width: "40%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-              </div>
-            </div>
-            <div className={classes.small}>
-              <CourseDescription
-                Role={props.userData.Role}
-                desc={Desc}
-                CourseID={courseID}
-                Title={Title}
-                Course={props.location.state.Data}
-              />
-            </div>
-
-            {isJoined === "true" ? <NewPostCard Focus={Focus} /> : null}
-            <Waiting Loading={PostLoading}>
-              <div className={classes.PostsHolder}>
-                <div className={classes.posts}>{Posts}</div>
-              </div>
-            </Waiting>
-          </Card>
-          <div className={classes.large}>
+            ></div>
+          </div>
+          <div className={classes.small}>
             <CourseDescription
               Role={props.userData.Role}
               desc={Desc}
@@ -139,8 +108,24 @@ const CoursePage = (props) => {
               Course={props.location.state.Data}
             />
           </div>
+
+          {isJoined === "true" ? <NewPostCard Focus={Focus} /> : null}
+          <Waiting Loading={PostLoading}>
+            <div className={classes.PostsHolder}>
+              <div className={classes.posts}>{Posts}</div>
+            </div>
+          </Waiting>
+        </Card>
+        <div className={classes.large}>
+          <CourseDescription
+            Role={props.userData.Role}
+            desc={Desc}
+            CourseID={courseID}
+            Title={Title}
+            Course={props.location.state.Data}
+          />
         </div>
-      </Waiting>
+      </div>
     </React.Fragment>
   );
 };

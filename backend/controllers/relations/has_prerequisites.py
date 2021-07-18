@@ -10,7 +10,7 @@ class prequisite_controller:
             prequisite = Prerequiste.query.filter_by(course_code=course_id).first()
 
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -30,7 +30,7 @@ class prequisite_controller:
         try:
             prequisites = Prerequiste.query.filter_by(course_code=course_code).all()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -43,7 +43,7 @@ class prequisite_controller:
         try:
             Prerequiste.insert(new_prequisite)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -55,7 +55,7 @@ class prequisite_controller:
             to_be_deleted = Prerequiste.query.filter_by(course_code=course_id).first()
             Prerequiste.delete(to_be_deleted)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -68,7 +68,7 @@ class prequisite_controller:
         try:
             updated_prerequisite = Prerequiste.query.filter_by(course_code=course_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -86,7 +86,7 @@ class prequisite_controller:
         try:
             prequisites = Prerequiste.query.all()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

@@ -18,6 +18,7 @@ export const setNewCourse = (Data) => {
     group_number: Data["Number of Groups"],
     max_students: Data["Max Number of Students"],
     course_description: Data["Course Description"],
+    post_owner_id: Data['post_owner_id']
   };
   let t = [];
   Data["List of Doctors"].forEach((element) => {

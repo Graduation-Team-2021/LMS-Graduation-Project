@@ -14,7 +14,7 @@ class student_course_relation_controller():
                 with_entities(Course.course_code, Course.course_name,
                               Course.course_description, Course.post_owner_id)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -41,7 +41,7 @@ class student_course_relation_controller():
                 .join(User).filter(User.user_id == Student.user_id).\
                 with_entities(User.user_id, User.name)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -61,7 +61,7 @@ class student_course_relation_controller():
             new_learns_relation = Learns_Relation(**student_course_relation)
             new_learns_relation = Learns_Relation.insert(new_learns_relation)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -78,7 +78,7 @@ class student_course_relation_controller():
         try:
             relation.update()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -96,7 +96,7 @@ class student_course_relation_controller():
                 })
             Learns_Relation.delete(relation)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

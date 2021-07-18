@@ -27,7 +27,7 @@ class messages_controller():
                 'status_code': 500
             })
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -66,7 +66,7 @@ class messages_controller():
             new_message = Messages(**message)
             new_message = Messages.insert(new_message)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -80,7 +80,7 @@ class messages_controller():
         try:
             Messages.delete(to_be_deleted)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -94,7 +94,7 @@ class messages_controller():
             to_be_updated = Messages(**msg)
             to_be_updated.update()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

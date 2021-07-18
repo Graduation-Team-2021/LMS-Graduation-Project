@@ -87,8 +87,8 @@ class AddGroupPage extends Component {
   onRemove = (List, Option, Name) => {
     this.setState((old, props) => {
       const state = { ...old };
-      state.Error[Name] = List.length === 0;
-      state.Data[Name] = List;
+      state.Error[Name] = Option.length === 0;
+      state.Data[Name] = Option;
       return state;
     });
   };

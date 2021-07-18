@@ -8,7 +8,7 @@ class student_answers_controller():
             student_answer = Student_Answers(**student_answer)
             student_answer = Student_Answers.insert(student_answer)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -20,7 +20,7 @@ class student_answers_controller():
             student_answers = Student_Answers.query.filter(student_question_id == student_question_id).delete(
                 synchronize_session=False)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -37,7 +37,7 @@ class student_answers_controller():
                 }
                 self.post_student_answer(updated_student_answer)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -49,7 +49,7 @@ class student_answers_controller():
             student_answer = Student_Answers.query.filter(student_question_id == student_question_id,
                                                           answer == answer).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -62,7 +62,7 @@ class student_answers_controller():
             student_answer.correct_answer = correct_answer
             student_answer.update()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

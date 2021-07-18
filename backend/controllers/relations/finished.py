@@ -10,7 +10,7 @@ class finished_relation_controller():
             finished_courses = Finished.query.join(Course).filter(Finished.course_code == Course.course_code).with_entities(
                 Course.course_code, Course.course_name, Finished.total_mark_in_the_course)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -25,7 +25,7 @@ class finished_relation_controller():
         try:
             new_course.insert()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -38,7 +38,7 @@ class finished_relation_controller():
             to_be_updated.delete()
             # Finished.delete(to_be_updated)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -57,7 +57,7 @@ class finished_relation_controller():
             deleted_course = Finished.query.filter_by(
                 student_id=student_id, course_code=course_code).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404

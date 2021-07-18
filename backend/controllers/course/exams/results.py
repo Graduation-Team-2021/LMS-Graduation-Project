@@ -15,7 +15,7 @@ class results_controller():
                 'status_code': 404
             }
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -25,7 +25,7 @@ class results_controller():
         try:
             results = Results.query.filter_by(student_id=student_id).all()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -42,7 +42,7 @@ class results_controller():
             results = Results(**results)
             results = Results.insert(results)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -55,7 +55,7 @@ class results_controller():
             data = [result.serialize() for result in results]
             return data
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -71,7 +71,7 @@ class results_controller():
             new_result = Results(**new_result)
             new_result.update()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
