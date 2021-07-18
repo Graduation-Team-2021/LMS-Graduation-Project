@@ -16,8 +16,6 @@ export function CreateTable() {
     );
   });
 
-
-
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS deliverables_results(deliverable_id INTEGER  , user_ID INTEGER , mark INTEGER , PRIMARY KEY(deliverable_id,user_id), FOREIGN KEY (deliverable_id) REFERENCES deliverable(deliverable_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (user_id) REFERENCES student(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
@@ -305,7 +303,7 @@ export function CreateTable() {
 
   db.transaction((tx) => {
     tx.executeSql(
-      `CREATE TABLE IF NOT EXISTS group_course_relation(group_id INTEGER  , course_id TEXT, PRIMARY KEY(group_id,course_id), FOREIGN KEY (group_id) REFERENCES group_project(group_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (course_id) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );`,
+      "CREATE TABLE IF NOT EXISTS group_course_relation(group_id INTEGER  , course_id TEXT, PRIMARY KEY(group_id,course_id), FOREIGN KEY (group_id) REFERENCES group_project(group_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (course_id) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
         console.log("[creating is done with the result]", res);
@@ -550,7 +548,6 @@ export function SQLGetPdfs(course_code) {
   });
 }
 
-
 export function SQLInertPdfs(pdf) {
   db.transaction((tx) => {
     tx.executeSql(
@@ -591,8 +588,6 @@ export function SQLGetVideos(course_code) {
     });
   });
 }
-
-
 
 export function SQLGetUser(user_id) {
   return new Promise((resolve, reject) => {
@@ -638,14 +633,7 @@ export function SQLGetRecentPosts(user_id, role) {
     db.transaction((tx) => {
       if (role === "student") {
         tx.executeSql(
-          `SELECT * FROM course, learns, 
-          post_owner, post, post_liker, post_commenter 
-          WHERE post_commenter.post_id = post.post_id 
-          AND post_liker.post_id = post.post_id 
-          AND post.post_owner = post_owner.owner_id 
-          AND post_owner.owner_id = course.post_owner_id 
-          AND course.course_code=learns.course_code 
-          AND learns.student_id = ?;`,
+          "SELECT * FROM course, learns, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = course.post_owner_id AND course.course_code = learns.course_code AND learns.student_id = ?;",
           [user_id],
           (tx2, res) => {
             const result = [];
@@ -653,17 +641,10 @@ export function SQLGetRecentPosts(user_id, role) {
               result.push(res.rows.item(index));
             }
             tx2.executeSql(
-              `SELECT * FROM group_project, student_group_relation, 
-              post_owner, post, post_liker, post_commenter 
-              WHERE post_commenter.post_id = post.post_id 
-              AND post_liker.post_id = post.post_id 
-              AND post.post_owner = post_owner.owner_id 
-              AND post_owner.owner_id = group_project.post_owner_id 
-              AND group_project.group_id=student_group_relation.group_id 
-              AND student_group_relation.student_id = ?;`,
+              "SELECT * FROM group_project, student_group_relation, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = group_project.post_owner_id AND group_project.group_id=student_group_relation.group_id AND student_group_relation.student_id = ?;",
               [user_id],
               (_, res2) => {
-                for (let index = 0; index < res.rows.length; index++) {
+                for (let index = 0; index < res2.rows.length; index++) {
                   result.push(res2.rows.item(index));
                 }
                 resolve(result);
@@ -675,14 +656,7 @@ export function SQLGetRecentPosts(user_id, role) {
         );
       } else {
         tx.executeSql(
-          `SELECT * FROM course, teaches, 
-          post_owner, post, post_liker, post_commenter 
-          WHERE post_commenter.post_id = post.post_id 
-          AND post_liker.post_id = post.post_id 
-          AND post.post_owner = post_owner.owner_id 
-          AND post_owner.owner_id = course.post_owner_id 
-          AND course.course_code=teaches.course_code 
-          AND teaches.professor_id = ?;`,
+          "SELECT * FROM course, teaches, post_owner, post, post_liker, post_commenter WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = course.post_owner_id AND course.course_code=teaches.course_code AND teaches.professor_id = ?;",
           [user_id],
           (tx2, res) => {
             const result = [];
@@ -690,16 +664,7 @@ export function SQLGetRecentPosts(user_id, role) {
               result.push(res.rows.item(index));
             }
             tx2.executeSql(
-              `SELECT * FROM group_project, group_course_relation, course, 
-              post_owner, post, post_liker, post_commenter, teaches 
-              WHERE post_commenter.post_id = post.post_id 
-              AND post_liker.post_id = post.post_id 
-              AND post.post_owner = post_owner.owner_id 
-              AND post_owner.owner_id = group_project.post_owner_id 
-              AND group_project.group_id=group_course_relation.group_id 
-              AND group_course_relation.course_id = course.course_id 
-              AND course.course_code=teaches.course_code 
-              AND teaches.professor_id = ?;`,
+              "SELECT * FROM group_project, group_course_relation, course, post_owner, post, post_liker, post_commenter, teaches WHERE post_commenter.post_id = post.post_id AND post_liker.post_id = post.post_id AND post.post_owner = post_owner.owner_id AND post_owner.owner_id = group_project.post_owner_id AND group_project.group_id=group_course_relation.group_id AND group_course_relation.course_id = course.course_id AND course.course_code=teaches.course_code AND teaches.professor_id = ?;",
               [user_id],
               (_, res2) => {
                 for (let index = 0; index < res.rows.length; index++) {
@@ -725,10 +690,16 @@ export function SQLInsertRecentPosts(posts) {
           "INSERT OR REPLACE INTO post_owner(owner_id) VALUES (?)",
           [value.post_owner],
           (tx1, res) => {
+            console.log("====================================");
+            console.log("Inserting into post Owner");
+            console.log("====================================");
             tx1.executeSql(
               "INSERT OR REPLACE INTO user(user_id, name) VALUES (?,?)",
               [value.post_writer, value.name],
               (tx2, res) => {
+                console.log("====================================");
+                console.log("Inserting into User");
+                console.log("====================================");
                 tx2.executeSql(
                   "INSERT OR REPLACE INTO post(post_owner, post_id, post_text, post_writer) VALUES (?, ?, ?, ?)",
                   [
@@ -738,6 +709,9 @@ export function SQLInsertRecentPosts(posts) {
                     value.post_writer,
                   ],
                   (tx3, res) => {
+                    console.log("====================================");
+                    console.log("Inserting into posts");
+                    console.log("====================================");
                     value.likes.forEach((v2) => {
                       tx3.executeSql(
                         "INSERT OR REPLACE INTO user(user_id, name) VALUES (?,?)",
@@ -964,10 +938,7 @@ export function GetFirstConversation(user_id) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `SELECT * FROM  conversations , user , messages  
-        WHERE ((conversations.first_user = ? AND conversations.second_user = user.user_id) 
-        OR (conversations.second_user = ? AND conversations.first_user = user.user_id)) AND 
-        conversation.conversation_id = messages.conversation_id;`,
+        "SELECT * FROM  conversations , user , messages  WHERE ((conversations.first_user = ? AND conversations.second_user = user.user_id) OR (conversations.second_user = ? AND conversations.first_user = user.user_id)) AND conversation.conversation_id = messages.conversation_id;",
         [user_id],
         (tx2, res) => {
           let result = [];

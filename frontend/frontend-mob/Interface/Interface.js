@@ -95,9 +95,7 @@ export const getCurrentGroups = async (Token) => {
     David.id,
     David.permissions
   );
-  console.log("[David]====================================");
-  console.log(result);
-  console.log("[David]====================================");
+
   return result;
 };
 export const getCourses = async (Token) => {
@@ -115,20 +113,35 @@ export const getCourses = async (Token) => {
 };
 
 export const getRecentPosts = async (Token) => {
-  const res = await instance.get(`/first_10_posts`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
+  let David = jwtDecode(Token);
+  console.log("[DAVID]====================================");
+  console.log(David);
+  console.log("[DAVID]====================================");
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/first_10_posts`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    if (res.data["status_code"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    localStorage.SQLInsertRecentPosts(res.data["posts"]);
+    return res.data["posts"];
   }
-  console.log("[getRecentPosts]====================================");
-  console.log(res.data["posts"]);
-  console.log("[getRecentPosts]====================================");
-  return res.data["posts"];
+  const result = await localStorage
+    .SQLGetRecentPosts(David.id, David.permissions)
+    .catch((err) => {
+      console.log("====================================");
+      console.log(err);
+      console.log("====================================");
+    });
+  console.log("[Cursed GP]====================================");
+  console.log(result);
+  console.log("[Cursed GP]====================================");
+  return result;
 };
 //store in the local storage
 export const getRecentUserPosts = async (Token) => {
