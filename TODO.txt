@@ -11,10 +11,9 @@ NEW TODO:
 17.Improve the Triangle
 18.Responsive Finished Courses
 19.Fix the Click Outside black magic
-20.Better Upload Deliverable/Material Page 
 
 Future Work:
-19.Replace Arrows with Buttons
+19.Include Multifile Upload
 20.Enroll in Groups based on type
 21.Attachments in Messenger
 22.Cancel Unfinished Request

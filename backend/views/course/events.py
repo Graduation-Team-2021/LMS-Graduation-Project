@@ -108,9 +108,10 @@ class Events(Resource):
 
 # student/<student_id>/recent_events
 class Events_most_recent(Resource):
-    def get(self, student_id):
+    method_decorators = {'get':[requires_auth_identity('')]}
+    def get(self, user_id, role, student_id):
         try:
-            event = controller_object.get_most_recent_event(student_id)
+            event = controller_object.get_most_recent_event(student_id, role)
             return jsonify({
             'event':event,
             'status_code': 200

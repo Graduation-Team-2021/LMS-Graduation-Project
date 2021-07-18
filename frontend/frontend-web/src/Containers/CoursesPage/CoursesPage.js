@@ -11,6 +11,7 @@ import {
   getCourses,
   getFinishedCourses,
   BE_Enroll,
+  getGroups,
 } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setCourse } from "../../Models/Course";
@@ -32,8 +33,7 @@ const HomePage = (props) => {
         temp[displayedCourse].isEnrolled = "true";
         setCourses(temp);
         alert("Enroll Successful");
-      }
-      else{
+      } else {
         alert("Enroll Failed, please Try Again");
       }
     });
@@ -56,13 +56,6 @@ const HomePage = (props) => {
           res.forEach((id, index) => {
             id["pic"] = "https://picsum.photos/200/300";
             id["isenrolled"] = "false";
-            id["professors"] = id["professors"].map((value) => value.name);
-            console.log(
-              Array.from(currentCourses.keys()),
-              r2.find((value) => value.course_code === id["course_code"]),
-              id["course_code"],
-              Array.from(currentCourses.keys()).includes(id["course_code"])
-            );
             if (
               Array.from(currentCourses.keys()).includes(id["course_code"]) ||
               r2.find((value) => value.course_code === id["course_code"])
@@ -95,6 +88,13 @@ const HomePage = (props) => {
     finishedCourses,
     props.location.state,
   ]);
+
+  //TODO: Use This, Hazem
+  useEffect(() => {
+    getGroups().then((res) => {
+      //TODO: Fit data to Components
+    });
+  }, []);
 
   let loadedCourses = [];
   Array.from(Object.keys(Courses)).forEach((key) => {

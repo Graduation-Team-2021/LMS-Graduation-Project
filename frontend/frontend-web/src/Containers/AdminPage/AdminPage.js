@@ -142,7 +142,7 @@ const AdminPage = (props) => {
                 }}
               >
                 <Button className={classes.Button}>
-                  Add Courses Via Excel
+                  Edit Course
                 </Button>
               </FilePicker>
             </span>

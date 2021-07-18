@@ -671,3 +671,16 @@ export const ExcelSignUp = async (Pic) => {
   console.log(res);
   return res.data;
 };
+
+export const getGroups = async () => {
+  const res = await instance.get(`/project-groups`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["project_groups"];
+};

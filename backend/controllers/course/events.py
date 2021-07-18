@@ -1,6 +1,8 @@
+from models.user.professors import Professor
 from models.course.events import Events
 from models.user.students import Student
 from models.relations.learns import Learns_Relation
+from models.relations.teaches import Teaches_Relation
 from models.course.courses import Course
 from methods.errors import *
 from flask import current_app, send_from_directory, json
@@ -105,11 +107,16 @@ class events_controller():
         data.save(file_path)
         return
 
-    def get_most_recent_event(self,student_id):
-        course_codes=Student.query.join(Learns_Relation).filter(Student.user_id==Learns_Relation.student_id).\
-        join(Course).filter(Learns_Relation.course_code==Course.course_code).\
-        with_entities(Course.course_code)
-
+    def get_most_recent_event(self,student_id, role):
+        if role == 'student':
+            course_codes=Student.query.join(Learns_Relation).filter(student_id==Learns_Relation.student_id).\
+            join(Course).filter(Learns_Relation.course_code==Course.course_code).\
+            with_entities(Course.course_code)
+        else:
+            course_codes=Professor.query.join(Teaches_Relation).filter(student_id==Teaches_Relation.professor_id).\
+            join(Course).filter(Teaches_Relation.course_code==Course.course_code).\
+            with_entities(Course.course_code)
+            
         desired_course_codes=[c for c in course_codes]
 
         desired_events=[]
