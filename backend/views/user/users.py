@@ -151,8 +151,9 @@ class Sign_Up(Resource):
         role = args['role']
         student_year = args['student_year']
         scientific_degree = args['scientific_degree']
+        print(args['password'])
         user = {
-            'name': args['name'],
+            'name': args['name'].lower(),
             'email': args['email'],
             'national_id': args['national_id'],
             'birthday': args['birthday'],
@@ -187,6 +188,7 @@ class Sign_Up_Using_Excel(Resource):
                 date = entry['birthday']
                 date = date.split(' ')[0]
                 entry['birthday'] = date
+                entry['email'] = entry['email'].lower() 
                 student_year = entry['student_year']
                 scientific_degree = entry['scientific_degree']
                 role = entry['role']
@@ -218,7 +220,7 @@ class Login(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         try:
-            user = controller_object.get_user_by_email(args['email'])
+            user = controller_object.get_user_by_email(args['email'].lower())
         except ErrorHandler as e:
             return e.error
         try:
