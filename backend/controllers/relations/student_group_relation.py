@@ -57,7 +57,7 @@ class StudentGroupRelationController:
         try:
             enroll = enroll.insert()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

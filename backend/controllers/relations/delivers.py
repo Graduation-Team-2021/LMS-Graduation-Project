@@ -15,7 +15,7 @@ class delivers_controller():
             delivers_relations = Deliver.query.filter(Deliver.student_id == user_id).filter(
                 Deliver.deliverable_id == deliverable_id)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -35,7 +35,7 @@ class delivers_controller():
             Deliver.insert(new_delivers_relation)
             new_delivers_id = Deliver.query.order_by(Deliver.delivers_id.desc()).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -46,7 +46,7 @@ class delivers_controller():
         try:
             deleted_deliverable = Deliver.query.filter_by(delivers_id=delivers_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -65,7 +65,7 @@ class delivers_controller():
             updated_delivers_relation.update()
             return
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -99,7 +99,7 @@ class delivers_controller():
             self.update_delivers_relation(delivers_id, updated_delivers)
             return
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -125,7 +125,7 @@ class delivers_controller():
 
             return send_from_directory(file_path, filename=f"{file_name}{file_type.lower()}", as_attachment=True)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -150,7 +150,7 @@ class delivers_controller():
                     count = count + 1
             return count
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

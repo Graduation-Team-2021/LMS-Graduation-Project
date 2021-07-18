@@ -8,7 +8,7 @@ class group_course_controller():
             q = GroupCourseRelation.insert(q)
         except SQLAlchemyError as e:
             print(e)
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -19,9 +19,20 @@ class group_course_controller():
         try:
             q = GroupCourseRelation.query.filter(GroupCourseRelation.course_id == course)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
             })
         return [qq.serialize() for qq in q]
+    
+    def delete_group_course(self, course, group):
+        try:
+            GroupCourseRelation.delete(course_id=course, group_id=group)
+        except SQLAlchemyError as e:
+            error = str(e)
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        return 

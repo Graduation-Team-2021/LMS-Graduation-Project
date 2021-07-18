@@ -36,7 +36,7 @@ class deliverable_controller:
         try:
             new_deliverable = Deliverables.insert(new_deliverable)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -49,7 +49,7 @@ class deliverable_controller:
         try:
             Deliverables.delete(deliverable_to_be_deleted)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -111,7 +111,7 @@ class deliverable_controller:
                                                                          "\"", ""),
                                                                      "status": status})
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -138,7 +138,7 @@ class deliverable_controller:
                 i['status']=status
                 deliverables_modified.append(i)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -168,7 +168,7 @@ class deliverable_controller:
                 })
 
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -209,7 +209,7 @@ class deliverable_controller:
                                                                      "deadline": json.dumps(i[3], default=str).replace(
                                                                          "\"", "")})
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404

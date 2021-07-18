@@ -62,11 +62,6 @@ class GroupsArea extends Component {
       <div className={classes.GroupsArea}>
         <div className={classes.Title}>
           <div>Groups You're In</div>
-          {this.props.userData.Role === "professor" ? (
-            <Button className={classes.Button} onClick={() => this.props.history.push("/AddGroup")}>
-              Add Groups
-            </Button>
-          ) : null}
         </div>
         <Waiting Loading={this.state.Loading}>
           <SwipeList>{Groups}</SwipeList>

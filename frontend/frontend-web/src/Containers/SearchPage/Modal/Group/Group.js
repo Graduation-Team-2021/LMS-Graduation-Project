@@ -19,7 +19,7 @@ const Group = (props) => {
         <div>{user.group_description || "No Description"}</div>
       </span>
       <span className={classes.Button}>
-        <Button
+        {user.status==='Enrolled'?<Button
           className={classes.Inner}
           onClick={() => {
             if (user.status === "Enrolled") {
@@ -43,7 +43,7 @@ const Group = (props) => {
           }}
         >
           {user.status === "Enrolled" ? "Go to Page" : "Enroll"}
-        </Button>
+        </Button>:null}
       </span>
     </div>
   );

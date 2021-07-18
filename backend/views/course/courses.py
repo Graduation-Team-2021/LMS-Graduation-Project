@@ -31,6 +31,10 @@ class Course(Resource):
         self.reqparse.add_argument('weekly_hours', type=int, location='json')
         self.reqparse.add_argument('group_number', type=int, location='json')
         self.reqparse.add_argument('max_students', type=int, location='json')
+        #self.reqparse.add_argument('course_deadline', type=int, location='json')
+        self.reqparse.add_argument('course_description', type=str, location='json')
+        self.reqparse.add_argument('post_owner_id', type=str, location='json')
+        self.reqparse.add_argument('doctors', type=list, location='json')
 
     def get(self, course_code):
         try:
@@ -62,11 +66,12 @@ class Course(Resource):
             'group_number': args['group_number'],
             'max_students': args['max_students'],
             'course_description': args['course_description'],
-            'post_owner_id': args['post_owner_id']
-
+            'post_owner_id': args['post_owner_id'],
+            #'course_deadline': args['course_deadline']
         }
+        doctors = args['doctors']
         try:
-            course = controller_object.update_course(course_code, course)
+            course = controller_object.update_course(course_code, course, doctors)
         except ErrorHandler as e:
             return e.error
         return jsonify({

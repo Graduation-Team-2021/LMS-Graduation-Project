@@ -12,7 +12,6 @@ import Messenger from "./Components/Messenger/Messenger";
 import Video from "./Ibrahim/Vedio.js";
 import SignUp from "./Containers/SignUpPage/SignUpPage";
 import AddCourse from "./Containers/AddCoursePage/AddCourse";
-import AddGroup from "./Containers/AddGroupPage/AddGroup";
 import Deliv from "./Components/DeliverablesPage/DeliverablesPage";
 import Quiz from "./Components/QuizzesPage/QuizzesPage";
 import PDFs from "./Components/PDFsPage/PDFsPage";
@@ -46,7 +45,6 @@ const App = (props) => {
                 <Route path="/messenger" exact component={Messenger} />
                 <Route path="/Course/:id/Videos" exact component={Video} />
                 <Route path="/Course/:id/PDFs" exact component={PDFs} />
-                <Route path="/AddGroup" exact component={AddGroup} />
                 <Route path="/Deliv" exact component={Deliv} />
                 <Route path="/Quiz/:id" exact component={Quiz} />
                 <Route path="/Deliv/Assignment/:id" exact component={Deliv} />

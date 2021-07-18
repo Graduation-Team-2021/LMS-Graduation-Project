@@ -19,7 +19,7 @@ class users_controller:
         try:
             user = User.query.filter_by(user_id=user_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -43,7 +43,7 @@ class users_controller:
             prof = Professor.query.filter_by(user_id=user.user_id).first()
             student = Student.query.filter_by(user_id=user.user_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -63,7 +63,7 @@ class users_controller:
         try:
             deleted_user = User.query.filter_by(user_id=user_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -80,7 +80,7 @@ class users_controller:
         try:
             updated_user = User.query.filter_by(user_id=user_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -107,7 +107,7 @@ class users_controller:
         try:
             updated_user = User.query.filter_by(user_id=user_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -126,7 +126,7 @@ class users_controller:
         try:
             new_user = User.insert(new_user)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -155,7 +155,7 @@ class users_controller:
         try:
             users = User.query.all()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404

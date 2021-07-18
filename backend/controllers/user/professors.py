@@ -9,7 +9,7 @@ class professors_controller():
         try:
             professors = Professor.query.join(User).filter(User.user_id == prof_id).with_entities(User.name, User.email,User.birthday,User.national_id,Professor.scientific_degree)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -30,7 +30,7 @@ class professors_controller():
         try:
             deleted_professor = Professor.query.filter_by(user_id=prof_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -56,7 +56,7 @@ class professors_controller():
         try:
             updated_professor.update()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -68,7 +68,7 @@ class professors_controller():
         try:
             new_professor = Professor.insert(new_professor)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -80,7 +80,7 @@ class professors_controller():
             professors = Professor.query.join(User).filter(User.user_id == Professor.user_id)\
                 .with_entities(User.user_id, User.name, Professor.scientific_degree)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
