@@ -30,10 +30,7 @@ export const SignUp = async (Data) => {
       "Content-Type": "application/json",
     },
   });
-  if (res.data["status_code"] !== 200) {
-    return null;
-  }
-  return 1;
+  return res.data;
 };
 
 export const Login = async (Data) => {
