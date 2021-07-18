@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import * as Interface from "../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import ANHeaderButton from "../components/ANHeaderButton";
 const RecentEventScreen = (props) => {
   const list = [{ event_name: "hahsdjhjsad", event_deadline: "sajkhsdakjha" }];
   const [events, setEvents] = useState(null);
@@ -29,6 +31,23 @@ const RecentEventScreen = (props) => {
   }
 
   return <View style={styles.container}>{content}</View>;
+};
+
+RecentEventScreen.navigationOptions = (navData) => {
+  const showBottomModalSheet = navData.navigation.getParam(
+    "showBottomModalSheet"
+  );
+  return {
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={ANHeaderButton}>
+        <Item
+          title="menu"
+          iconName="ios-menu"
+          onPress={() => navData.navigation.toggleDrawer()}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({
