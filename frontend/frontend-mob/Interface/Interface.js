@@ -604,6 +604,14 @@ export const getUser = async (id) => {
   });
   return res.data;
 };
+export const getGradeSoFar = async (id) => {
+  const res = await instance.get(`/student/${id}/finishedCourses`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data["courses"];
+};
 
 //change password
 //get quizes  => should be stored in the local storage
