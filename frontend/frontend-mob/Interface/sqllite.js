@@ -313,6 +313,81 @@ export function CreateTable() {
       }
     );
   });
+  db.transaction((tx) => {
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS answers(answer_id INTEGER  , answer TEXT NOT NULL ,question_id INTEGER NOT NULL , right_answer INTEGER , PRIMARY KEY(answer_id), FOREIGN KEY (question_id) REFERENCES questions(question_id) ON UPDATE CASCADE ON DELETE CASCADE );",
+      [],
+      (_, res) => {
+        console.log("[creating is done with the result]", res);
+      },
+      (_, err) => {
+        console.log("[failed there is an error]", err);
+      }
+    );
+  });
+  db.transaction((tx) => {
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS exams(exam_id INTEGER  , course_id TEXT NOT NULL ,exam_marks INTEGER  , exam_duration TEXT , PRIMARY KEY(exam_id), FOREIGN KEY (course_id) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
+      [],
+      (_, res) => {
+        console.log("[creating is done with the result]", res);
+      },
+      (_, err) => {
+        console.log("[failed there is an error]", err);
+      }
+    );
+  });
+  db.transaction((tx) => {
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS questions(question_id INTEGER  , question TEXT NOT NULL ,mark INTEGER  ,exam_id INTEGER NOT NULL , PRIMARY KEY(question_id) , UNIQUE(question,exam_id), FOREIGN KEY (exam_id) REFERENCES exams(exam_id) ON UPDATE CASCADE ON DELETE CASCADE );",
+      [],
+      (_, res) => {
+        console.log("[creating is done with the result]", res);
+      },
+      (_, err) => {
+        console.log("[failed there is an error]", err);
+      }
+    );
+  });
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS results(student_id INTEGER  , out_of_mark REAL NOT NULL ,mark REAL NOT NULL  ,exam_id INTEGER NOT NULL , PRIMARY KEY(student_id,exam_id) , FOREIGN KEY (student_id) REFERENCES student(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (exam_id) REFERENCES exams(exam_id) ON UPDATE CASCADE ON DELETE CASCADE);",
+      [],
+      (_, res) => {
+        console.log("[creating is done with the result]", res);
+      },
+      (_, err) => {
+        console.log("[failed there is an error]", err);
+      }
+    );
+  });
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS student_answers(student_answer_id INTEGER  , student_question_id INTEGER  ,student_answer TEXT NOT NULL  ,correct_answer INTEGER  , PRIMARY KEY(student_answer_id) , FOREIGN KEY (student_question_id) REFERENCES student_questions(student_question_id) ON UPDATE CASCADE ON DELETE CASCADE );",
+      [],
+      (_, res) => {
+        console.log("[creating is done with the result]", res);
+      },
+      (_, err) => {
+        console.log("[failed there is an error]", err);
+      }
+    );
+  });
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS student_questions(student_id INTEGER  , question_id INTEGER  ,student_question_id INTEGER  , PRIMARY KEY(student_answer_id) , UNIQUE(student_id,question_id)  , FOREIGN KEY (student_id) REFERENCES student(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (question_id) REFERENCES questions(question_id) ON UPDATE CASCADE ON DELETE CASCADE);",
+      [],
+      (_, res) => {
+        console.log("[creating is done with the result]", res);
+      },
+      (_, err) => {
+        console.log("[failed there is an error]", err);
+      }
+    );
+  });
 }
 
 export function SQLGetCurrentCourse(user_id, role) {
@@ -1121,3 +1196,364 @@ export function SQLGetEvent(student_id) {
     });
   });
 }
+
+export default function SQLGetQuizzes (delv_id , user_id) {
+  return new Promise((resolve, reject) => { db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT * FROM deliverables , course , learns  WHERE learns.course_code = course.course_code AND learns.student_id = ? AND deliverables.deliverable_id = ? AND deliverable_id.course_deliverables = course.course_code ; ",
+      [delv_id,user_id],
+      (_, res) => {
+        console.log(
+          "selecting finished courses is done successfully with result",
+          res
+        );
+        const result = [];
+        for (let index = 0; index < res.rows.length; index++) {
+          result.push(res.rows.item(index));
+        }
+        resolve(result);
+      },
+      (_, err) => {
+        console.log("error while retriving the finished courses", err);
+        reject(err);
+      }
+    )
+  })
+})
+}
+
+export default function SQLInsertQuiz (quiz) {
+  db.transaction((tx) =>
+  tx.executeSql(
+    "INSERT INTO deliverables VALUES (?,?,?,?,?,?,?) ;",
+    [
+      quiz.deliverable_id,
+      quiz.deliverable_name,
+      quiz.student_number,
+      quiz.description,
+      quiz.mark,
+      quiz.deadline,
+      quiz.course_deliverables
+    ],
+    (_, res) => {
+      console.log(
+        "inserting into finish due to finished courses finished successfully with result",
+        res
+      );
+    },
+    (_, err) => {
+      console.log(
+        "inserting into finish due to finished courses failed with error",
+        err
+      );
+    }
+  ))
+}
+
+export default function SQLGetQuizById (delv_id , user_id) {
+  return new Promise((resolve, reject) => { db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT * FROM deliverables , course , learns  WHERE learns.course_code = course.course_code AND learns.student_id = ? AND deliverables.deliverable_id = ? AND deliverable_id.course_deliverables = course.course_code ; ",
+      [delv_id,user_id],
+      (_, res) => {
+        console.log(
+          "selecting finished courses is done successfully with result",
+          res
+        );
+        const result = [];
+        for (let index = 0; index < res.rows.length; index++) {
+          result.push(res.rows.item(index));
+        }
+        resolve(result);
+      },
+      (_, err) => {
+        console.log("error while retriving the finished courses", err);
+        reject(err);
+      }
+    )
+  })
+})
+}
+
+export default function SQLAddQuiz (quiz) {
+  db.transaction((tx) =>
+  tx.executeSql(
+    "INSERT INTO deliverables VALUES (?,?,?,?,?,?,?) ;",
+    [
+      quiz.deliverable_id,
+      quiz.deliverable_name,
+      quiz.student_number,
+      quiz.description,
+      quiz.mark,
+      quiz.deadline,
+      quiz.course_deliverables
+    ],
+    (_, res) => {
+      console.log(
+        "inserting into finish due to finished courses finished successfully with result",
+        res
+      );
+    },
+    (_, err) => {
+      console.log(
+        "inserting into finish due to finished courses failed with error",
+        err
+      );
+    }
+  ))
+}
+
+export function SQLGetOnePdf(material_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND materials.material_id = ? ;",
+        [material_id],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
+
+export function SQLGetOneVideo(material_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM materials , course WHERE materials.course_material = course.course_code AND materials.material_id = ? ;",
+        [material_id],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
+
+export default function SQLUpdatePic (user_id,pic) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT INTO user(picture) VALUES (?) WHERE user.user_id = ? ; ",
+      [pic , user_id],
+      (_, res) => {
+        console.log(
+          "inserting into finish due to finished courses finished successfully with result",
+          res
+        );
+      },
+      (_, err) => {
+        console.log(
+          "inserting into finish due to finished courses failed with error",
+          err
+        );
+      }
+    )
+  })
+}
+
+export default function SQLChangePassword (user_id,password) {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "INSERT INTO user(password) VALUES (?) WHERE user.user_id = ? ; ",
+      [password , user_id],
+      (_, res) => {
+        console.log(
+          "inserting into finish due to finished courses finished successfully with result",
+          res
+        );
+      },
+      (_, err) => {
+        console.log(
+          "inserting into finish due to finished courses failed with error",
+          err
+        );
+      }
+    )
+  })
+}
+
+export function SQLGetDoctors() {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM professor ;",
+        [],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
+
+export function SQLGetStatus(course_id,user_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM learns WHERE learns.course_code = ? AND learns.student_id = ? ;",
+        [course_id,user_id],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
+
+export function SQLGetBe_Enroll(course_id,user_id, student_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM learns WHERE learns.course_code = ? AND learns.student_id = ? ;",
+        [course_id,student_id],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
+
+export function SQLGetFroup_Be_Enroll(course_id,user_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM learns , student_group_relation WHERE learns.course_code = ? AND learns.student_id = ?  AND learns.student_id = student_group_relation.student_id ;",
+        [course_id,user_id],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
+
+export function SQLGetGroup() {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM group_deliverable_relation;",
+        [],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
+
+export function SQLGetDegree(prof_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM professor WHERE professor.user_id = ?;",
+        [prof_id],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
+
+export function SQLGetYear(stud_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM student WHERE student.user_id = ?;",
+        [stud_id],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
+
+export function SQLGetTeachedCourse(course_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM teaches WHERE  teaches.course_code= ?;",
+        [course_id],
+        (_, res) => {
+          let result = [];
+          for (let index = 0; index < res.rows.length; index++) {
+            result.push(res.rows.item(index));
+          }
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+}
+
+// exculsign up
+//
