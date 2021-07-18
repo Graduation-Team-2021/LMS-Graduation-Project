@@ -52,7 +52,7 @@ export default connect(
         setResult(tempResults);
       });
     }
-  }, [props.userData.Token, Query, started])
+  }, [Query, started, props.currentMessageActions])
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
   useEffect(() => {

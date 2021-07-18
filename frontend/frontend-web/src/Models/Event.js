@@ -9,3 +9,14 @@ export const setEvent=(data)=>{
         Time: data["event_date"].slice(11),
       });
 }
+
+export const setNewEvent=(data)=>{
+  return({
+    course_code:data.course_id,
+    event_description: data.event_description,
+    event_name: data.event_name,
+    event_type: data.event_type[0].value,
+    event_date: data.starting_date+" "+data.starting_from+":00",
+    event_duration: data.event_duration,
+  });
+}

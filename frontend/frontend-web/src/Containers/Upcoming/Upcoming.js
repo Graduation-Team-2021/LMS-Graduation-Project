@@ -6,13 +6,15 @@ import Minibar from "../../Components/Minibar/Minibar";
 import {
   faCalendarAlt,
   faClock,
-  faVideo,
+  faExclamation,
+  faStopwatch
 } from "@fortawesome/free-solid-svg-icons";
 import Waiting from "../../Components/Waiting/Waiting";
 
 import { getRecentEvent } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setEvent } from "../../Models/Event";
+import Spacer from "react-spacer";
 
 class Upcoming extends Component {
   state = { Event: null, Loading: true, exists: true };
@@ -66,7 +68,7 @@ class Upcoming extends Component {
                   {this.state.Event.Host}
                 </span>
               </div>
-            
+
               <Minibar
                 icon={faCalendarAlt}
                 color="red"
@@ -77,11 +79,18 @@ class Upcoming extends Component {
                 color="purple"
                 info={this.state.Event.Time}
               />
-              <Minibar icon={faVideo} color=" rgb(0, 102, 255)" info="Method" />
-              <div className={classes.DesTitle}>
-                Event Type: {this.state.Event.Type}
-              </div>
-              <div className={classes.Des}>{this.state.Event.Desc}</div>
+              <Minibar
+                icon={faExclamation}
+                color=" rgb(0, 102, 255)"
+                info={this.state.Event.Type.toString().toUpperCase()}
+              />
+              <Minibar
+                icon={faStopwatch}
+                color=" rgb(100, 150, 100)"
+                info={this.state.Event.Duration + " Days"}
+              />
+              <Spacer height="20px"/>
+              <div className={classes.Des}>Description: {this.state.Event.Desc||"No Description"}</div>
             </React.Fragment>
           ) : (
             <h1>No Upcoming Events</h1>
