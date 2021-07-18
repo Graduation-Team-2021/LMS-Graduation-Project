@@ -1,7 +1,7 @@
 import { createStackNavigator } from "react-navigation-stack";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
-const ProfileNavigator = createStackNavigator({
+const ResetPassword = createStackNavigator({
   ResetPassword: { screen: ResetPasswordScreen },
 });
 
-export default ProfileNavigator;
+export default ResetPassword;

@@ -5,6 +5,7 @@ import ProfileNav from "./ProfileScreenNavigator";
 import MsgsNavs from "./MessagesNavigator";
 import Drawer from "../components/Drawer";
 import ResetPasswordScreen from "./ResetPasswordScreenNavigator";
+import RecentEventScreen from "./RecentEventNavigator";
 
 const MainDrawer = createDrawerNavigator(
   {
@@ -12,9 +13,9 @@ const MainDrawer = createDrawerNavigator(
 
     Profile: ProfileNav,
     Messenger: MsgsNavs,
+    RecentEventScreen: { screen: RecentEventScreen },
     ResetPassword: {
       screen: ResetPasswordScreen,
-      
     },
   },
   {
