@@ -897,7 +897,7 @@ export function SQLInsertRecentPosts(posts) {
 export function SQLInertVideos(video) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",
+      "INSERT OR REPLACE INTO materials() VALUES(?,?,?,?)",
       [
         video.material_id,
         video.material_name,

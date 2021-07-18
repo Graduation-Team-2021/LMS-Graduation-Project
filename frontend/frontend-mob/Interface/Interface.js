@@ -7,6 +7,8 @@ import jwt from "jwt-decode";
 import * as FileSystem from "expo-file-system";
 import NetInfo from "@react-native-community/netinfo";
 import jwtDecode from "jwt-decode";
+import sha256 from "crypto-js/sha512";
+
 const instance = axios.create({
   baseURL: azure,
 });
@@ -300,20 +302,20 @@ export const materialUri = async (material_id) => {
       "Content-Type": "application/json",
     },
   });
+  const kak = res.data["url"].split("/");
   const downloadResumable = FileSystem.createDownloadResumable(
     azure + res.data["url"], //azur/static/deepweb
-    FileSystem.documentDirectory + res.data["url"] //filesystemdur/static/deepweb
+    FileSystem.documentDirectory + sha256(res.data["url"]).toString()+"."+kak[6].split(".")[1] //filesystemdur/static/deepweb
   );
   downloadResumable.downloadAsync().then((result) => {
     console.log("====================================");
-    console.log("I want to die", result);
-    console.log("====================================");
-    const kak = res.data["url"].split("/");
+    console.log("I want to die", kak[3]);
+    console.log("===================================="); 
     localStorage.SQLInsertPdfs({
       material_id: material_id,
-      course_material: kak[2],
-      material_name: kak[4].split(".")[0],
-      material_type: "." + kak[4].split(".")[1],
+      course_material: kak[3],
+      material_name: kak[6].split(".")[0],
+      material_type: "." + kak[6].split(".")[1],
       local_uri: res.data["url"],
     });
   });
