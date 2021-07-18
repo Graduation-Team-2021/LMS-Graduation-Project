@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "usesIcloudStorage": true,
-      "bundleIdentifier": "eg.edu.asu.eng.FOR_ASU_LMS",
+      "bundleIdentifier": "eg.edu.asu.eng.lms",
       "buildNumber": "1.0.0"
     },
     "android": {

@@ -185,7 +185,7 @@ export const getFinishedCourses = async (Token, id, role) => {
   //   //TODO: Better Check
   //   return null;
   // }
-  // localStorage.SQLInsertFinishedCourses(res.data["courses"]);
+  // localStorage.SQLInsertFinishedCourses(res.data["courses"], id);
   // return res.data["courses"];
   let result = await localStorage.SQLGetFinishedCourses(id);
   return result;
