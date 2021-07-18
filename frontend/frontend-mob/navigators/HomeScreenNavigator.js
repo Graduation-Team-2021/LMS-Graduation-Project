@@ -15,65 +15,79 @@ import CreateDeliverable from "../screens/CreateDeliverable";
 import checkConnectivity from "../hocs/checkConnectivity";
 import StudentSubmissionScreen from "../screens/StudentSubmissionScreen";
 
-const HomeStack = createStackNavigator({
-  Home: {
-    screen: checkConnectivity(HomeScreen),
-    navigationOptions: (navData) => {
-      let studentName = navData.navigation.getParam("studentName");
-      return {
-        title: studentName,
-      };
+const HomeStack = createStackNavigator(
+  {
+    Home: {
+      screen: checkConnectivity(HomeScreen),
+      navigationOptions: (navData) => {
+        let studentName = navData.navigation.getParam("studentName");
+        return {
+          title: studentName,
+        };
+      },
     },
-  },
-  CreateDeliverable: {
-    screen: checkConnectivity(CreateDeliverable),
-    navigationOptions: (navData) => {
-      return {
-        title: "Deliverable Form",
-      };
+    CreateDeliverable: {
+      screen: checkConnectivity(CreateDeliverable),
+      navigationOptions: (navData) => {
+        return {
+          title: "Deliverable Form",
+        };
+      },
     },
-  },
-  Course: {
-    screen: CourseScreen,
-    navigationOptions: (navData) => {
-      return {
-        title: `${navData.navigation.getParam("course").CourseName}`,
-      };
+    Course: {
+      screen: CourseScreen,
+      navigationOptions: (navData) => {
+        return {
+          title: `${navData.navigation.getParam("course").CourseName}`,
+        };
+      },
     },
-  },
-  Video: { screen: VideoScreen },
-  StudentSubmission: { screen: StudentSubmissionScreen },
-  Pdf: { screen: PdfReader },
-  CourseList: { screen: checkConnectivity(CourseListScreen) },
-  DeliverableList: { screen: checkConnectivity(DeliverableList) },
-  CourseDescription: {
-    screen: CourseDescriptionScreen,
-    navigationOptions: (navData) => {
-      return {
-        title: `${navData.navigation.getParam("courseName")} Details`,
-      };
+    Video: { screen: VideoScreen },
+    StudentSubmission: { screen: StudentSubmissionScreen },
+    Pdf: { screen: PdfReader },
+    CourseList: { screen: checkConnectivity(CourseListScreen) },
+    DeliverableList: { screen: checkConnectivity(DeliverableList) },
+    CourseDescription: {
+      screen: CourseDescriptionScreen,
+      navigationOptions: (navData) => {
+        return {
+          title: `${navData.navigation.getParam("courseName")} Details`,
+        };
+      },
     },
-  },
-  DeliverableDescription: {
-    screen: checkConnectivity(DeliverableDescriptionScreen),
-    navigationOptions: (navData) => {
-      return {
-        title: `${navData.navigation.getParam("deliverable_name")} Details`,
-      };
+    DeliverableDescription: {
+      screen: checkConnectivity(DeliverableDescriptionScreen),
+      navigationOptions: (navData) => {
+        return {
+          title: `${navData.navigation.getParam("deliverable_name")} Details`,
+        };
+      },
     },
-  },
-  DeliverableSubmission: {
-    screen: checkConnectivity(DeliverableSubmetionScreen),
-    navigationOptions: (navData) => {
-      return {
-        title: `${navData.navigation.getParam(
-          "delevrableName"
-        )} ${navData.navigation.getParam("deliverableType")}`,
-      };
+    DeliverableSubmission: {
+      screen: checkConnectivity(DeliverableSubmetionScreen),
+      navigationOptions: (navData) => {
+        return {
+          title: `${navData.navigation.getParam(
+            "delevrableName"
+          )} ${navData.navigation.getParam("deliverableType")}`,
+        };
+      },
     },
+    ForeignProfile: { screen: checkConnectivity(ForeignProfileScreen) },
+    SearchReasult: ResultsNavigator,
   },
-  ForeignProfile: { screen: checkConnectivity(ForeignProfileScreen) },
-  SearchReasult: ResultsNavigator,
-});
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: "rgb(61, 109, 204)",
+      },
+      cardStyle: {
+        backgroundColor: "transparent",
+        opacity: 1,
+      },
+      headerTintColor: "white",
+    },
+  }
+);
 
 export default HomeStack;

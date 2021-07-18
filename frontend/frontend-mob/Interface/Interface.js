@@ -158,13 +158,7 @@ export const getRecentUserPosts = async (Token) => {
     David.id,
     David.permissions
   );
-  console.log(
-    "[Interface.js][getRecentUserPosts]===================================="
-  );
-  console.log(result);
-  console.log(
-    "[Interface.js][getRecentUserPosts]===================================="
-  );
+
   return result;
 };
 //store in the local storage
