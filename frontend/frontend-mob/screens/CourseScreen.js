@@ -62,7 +62,6 @@ let retrievePdfs = () =>{
     const temp = []
     res.forEach(
       (ele, index) => {
-        console.log(ele['material_id']);
         temp.push({
           material_id: ele['material_id'],
           material_name: ele['material_name'],
@@ -212,7 +211,6 @@ let uploadFileHandler = () =>{
 
   
 const previewPdfHandler = (pdf_id) =>{
-  console.log("Loading PDF",pdf_id);
   props.navigation.navigate({
     routeName: "Pdf",
     params:{pdfId:pdf_id}

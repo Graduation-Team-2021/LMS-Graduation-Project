@@ -70,7 +70,7 @@ export function CreateTable() {
 
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS materials(material_id INTEGER , material_name TEXT , material_type TEXT NOT NULL, course_material TEXT NOT NULL, PRIMARY KEY(material_id), FOREIGN KEY (course_material) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
+      "CREATE TABLE IF NOT EXISTS materials(material_id INTEGER , material_name TEXT , material_type TEXT NOT NULL, course_material TEXT NOT NULL,local_uri TEXT, PRIMARY KEY(material_id), FOREIGN KEY (course_material) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
         console.log("[creating is done with the result]", res);
@@ -623,15 +623,16 @@ export function SQLGetPdfs(course_code) {
   });
 }
 
-export function SQLInertPdfs(pdf) {
+export function SQLInsertPdfs(pdf) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?)",
+      "INSERT OR REPLACE INTO materials VALUES(?,?,?,?,?)",
       [
         pdf.material_id,
         pdf.material_name,
         pdf.material_type,
         pdf.course_material,
+        pdf.local_uri
       ],
       (_, res) => {
         console.log("inserting to materials table successfully"), res;
@@ -1041,7 +1042,7 @@ export function SQLInsertPosts(posts) {
   });
 }
 
-export function GetFirstConversation(user_id) {
+export function SQLGetConversation(user_id) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
