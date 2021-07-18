@@ -6,12 +6,10 @@ import { connect } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import ANHeaderButton from "../components/ANHeaderButton";
 const RecentEventScreen = (props) => {
-  const list = [{ event_name: "hahsdjhjsad", event_deadline: "sajkhsdakjha" }];
   const [events, setEvents] = useState(null);
   useEffect(() => {
     Interface.getRecentEvent(props.userData.Token, props.userData.ID).then(
       (res) => {
-        console.log("[ibtahim]", res);
         setEvents(res);
       }
     );
@@ -34,9 +32,6 @@ const RecentEventScreen = (props) => {
 };
 
 RecentEventScreen.navigationOptions = (navData) => {
-  const showBottomModalSheet = navData.navigation.getParam(
-    "showBottomModalSheet"
-  );
   return {
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={ANHeaderButton}>

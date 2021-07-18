@@ -1072,7 +1072,7 @@ export function SQLInsertFinishedCourses(finishedCourses, user_id) {
 export function SQLInsertIntoEvent(event) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT INTO events(event_id,event_name,event_date,course_code,event_type,event_duration,event_description) VALUES (?,?,?,?,?,?,?) ",
+      "INSERT OR REPLACE INTO events(event_id,event_name,event_date,course_code,event_type,event_duration,event_description) VALUES (?,?,?,?,?,?,?) ",
       [
         event.event_id,
         event.event_name,
