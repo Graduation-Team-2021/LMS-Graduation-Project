@@ -297,29 +297,36 @@ export const uploadFile = async (
 };
 //store in the local storage(Future work)
 export const materialUri = async (material_id) => {
-  const res = await instance.get(`/materials/${material_id}/uri`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const kak = res.data["url"].split("/");
-  const downloadResumable = FileSystem.createDownloadResumable(
-    azure + res.data["url"], //azur/static/deepweb
-    FileSystem.documentDirectory + sha256(res.data["url"]).toString()+"."+kak[6].split(".")[1] //filesystemdur/static/deepweb
-  );
-  downloadResumable.downloadAsync().then((result) => {
-    console.log("====================================");
-    console.log("I want to die", kak[3]);
-    console.log("===================================="); 
-    localStorage.SQLInsertPdfs({
-      material_id: material_id,
-      course_material: kak[3],
-      material_name: kak[6].split(".")[0],
-      material_type: "." + kak[6].split(".")[1],
-      local_uri: res.data["url"],
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/materials/${material_id}/uri`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
-  });
-  return res.data["url"];
+    const kak = res.data["url"].split("/");
+    const downloadResumable = FileSystem.createDownloadResumable(
+      azure + res.data["url"], //azur/static/deepweb
+      FileSystem.documentDirectory +
+        sha256(res.data["url"]).toString() +
+        "." +
+        kak[6].split(".")[1] //filesystemdur/static/deepweb
+    );
+    downloadResumable.downloadAsync().then((result) => {
+      localStorage.SQLInsertPdfs({
+        material_id: material_id,
+        course_material: kak[3],
+        material_name: kak[6].split(".")[0],
+        material_type: "." + kak[6].split(".")[1],
+        local_uri: res.data["url"],
+      });
+    });
+    return azure + res.data["url"];
+  } else {
+    const res = (await localStorage.SQLGetOnePdf(material_id))[0];
+    return (
+      FileSystem.documentDirectory + sha256(res.local_uri) + res.material_type
+    );
+  }
 };
 //store in the local storage (Future work)
 export const Like = async (Token, userID, postID) => {
