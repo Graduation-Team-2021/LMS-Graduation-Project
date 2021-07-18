@@ -965,26 +965,20 @@ export function SQLGetAllPosts(user_id, owner) {
   });
 }
 
-export function SQLInsertPosts(course) {
+export function SQLInsertPosts(posts) {
   db.transaction((tx) => {
-    tx.executeSql(
-      "INSERT OR REPLACE INTO c VALUES(?,?,?,?,?,?,?)",
-      [
-        course.course_code,
-        course.course_name,
-        course.weekly_hours,
-        course.group_number,
-        course.max_student,
-        course.course_description,
-        course.post_owner_id,
-      ],
-      (_, res) => {
-        console.log("inserting to course table successfully"), res;
-      },
-      (_, err) => {
-        console.log("insertion the the db failed with error", err);
-      }
-    );
+    posts.forEach((post) => {
+      tx.executeSql(
+        "INSERT OR REPLACE INTO post VALUES(?,?,?,?)",
+        [post.post_id, post.post_writer, post.post_owner, post.post_text],
+        (_, res) => {
+          console.log("[Ibrahim]inserting to posts table successfully"), res;
+        },
+        (_, err) => {
+          console.log("[Ibrahim]insertion the post the db failed with error", err);
+        }
+      );
+    });
   });
 }
 
@@ -1008,11 +1002,11 @@ export function GetFirstConversation(user_id) {
     });
   });
 }
-export function SQLGetFinishedCourses(user_id, role, Token) {
+export function SQLGetFinishedCourses(user_id) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM course,finish where course.course_code=finish.course_code AND finish.student_id=?;",
+        "SELECT course.course_code,finish.total_mark_in_the_cousre as course_mark,course.course_name FROM course,finish WHERE course.course_code=finish.course_code AND finish.student_id=?;",
         [user_id],
         (_, res) => {
           console.log(
@@ -1034,7 +1028,7 @@ export function SQLGetFinishedCourses(user_id, role, Token) {
   });
 }
 
-export function SQLInsertFinishedCourses(finishedCourses) {
+export function SQLInsertFinishedCourses(finishedCourses, user_id) {
   db.transaction((tx) => {
     finishedCourses.forEach((element) => {
       tx.executeSql(
@@ -1043,7 +1037,8 @@ export function SQLInsertFinishedCourses(finishedCourses) {
         (_, res) => {
           console.log(
             "inserting into course due to finished course is done successfully with result",
-            res
+            res,
+            element
           );
         },
         (_, err) => {
@@ -1054,12 +1049,13 @@ export function SQLInsertFinishedCourses(finishedCourses) {
         }
       );
       tx.executeSql(
-        "INSERT OR REPLACE INTO finish (course_code,total_mark_in_the_cousre) VALUES (?,?)",
-        [element.course_code, element.course_mark],
+        "INSERT OR REPLACE INTO finish (course_code,total_mark_in_the_cousre,student_id) VALUES (?,?,?)",
+        [element.course_code, element.course_mark, user_id],
         (_, res) => {
           console.log(
             "inserting into finish due to finished courses finished successfully with result",
-            res
+            res,
+            element
           );
         },
         (_, err) => {
@@ -1073,11 +1069,19 @@ export function SQLInsertFinishedCourses(finishedCourses) {
   });
 }
 
-export function SQLInsertIntoEvent (event) {
+export function SQLInsertIntoEvent(event) {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT INTO event VALUES (?,?,?,?,?,?,?) ",
-      [event.event_id, event.event_name,event.event_date,event.course_code,event.event_type,event.event_duration,event.event_description],
+      "INSERT OR REPLACE INTO events(event_id,event_name,event_date,course_code,event_type,event_duration,event_description) VALUES (?,?,?,?,?,?,?) ",
+      [
+        event.event_id,
+        event.event_name,
+        event.event_date,
+        event.course_code,
+        event.event_type,
+        event.event_duration,
+        event.event_description,
+      ],
       (_, res) => {
         console.log(
           "inserting into finish due to finished courses finished successfully with result",
@@ -1089,30 +1093,31 @@ export function SQLInsertIntoEvent (event) {
           "inserting into finish due to finished courses failed with error",
           err
         );
-  })
-})
+      }
+    );
+  });
 }
 
-export function SQLGetEvent (student_id) {
-  db.transaction((tx) => {
-    tx.executeSql(
-      "SELECT * FROM event , course , learns  WHERE event.course_code = course.course_code AND learns.student_id = ? AND learns.course_code = course.course_code ",
-      [student_id],
-      (_, res) => {
-        console.log(
-          "selecting finished courses is done successfully with result",
-          res
-        );
-        const result = [];
-        for (let index = 0; index < res.rows.length; index++) {
-          result.push(res.rows.item(index));
+export function SQLGetEvent(student_id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM events , course , learns  WHERE events.course_code = course.course_code AND learns.student_id = ? AND learns.course_code = course.course_code ",
+        [student_id], //FIXME: add order by
+        (_, res) => {
+          console.log(
+            "selecting finished courses is done successfully with result",
+            res
+          );
+
+          resolve(res.rows.item(0));
+        },
+
+        (_, err) => {
+          console.log("error while retriving the finished courses", err);
+          reject(err);
         }
-        resolve(result);
-      },
-      (_, err) => {
-        console.log("error while retriving the finished courses", err);
-        reject(err);
-      }
-    )
-  })
+      );
+    });
+  });
 }

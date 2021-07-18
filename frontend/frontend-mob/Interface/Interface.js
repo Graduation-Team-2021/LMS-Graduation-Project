@@ -151,58 +151,73 @@ export const getRecentUserPosts = async (Token) => {
       //TODO: Better Check
       return null;
     }
+    localStorage.SQLInsertRecentPosts(res.data["posts"]);
     return res.data["posts"];
   }
-  const result = localStorage.SQLGetRecentUserPosts(
+  const result = await localStorage.SQLGetRecentUserPosts(
     David.id,
     David.permissions
-  ); //FIXME: need to be likend to the ProfileScreen
+  );
+
   return result;
 };
 //store in the local storage
 export const getRecentEvent = async (Token, id) => {
-  const res = await instance.get(`/student/${id}/recent_events`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/student/${id}/recent_events`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    if (res.data["status_code"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    localStorage.SQLInsertIntoEvent(res.data["event"]);
+    return res.data["event"];
   }
-  return res.data["event"];
+  let result = await localStorage.SQLGetEvent(id);
+  return result;
 };
 //store in the local storage
 export const getFinishedCourses = async (Token, id, role) => {
-  const res = await instance.get(`/${role}/${id}/finishedCourses`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/${role}/${id}/finishedCourses`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    if (res.data["status_code"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    localStorage.SQLInsertFinishedCourses(res.data["courses"], id);
+    return res.data["courses"];
   }
-  return res.data["courses"];
+  let result = await localStorage.SQLGetFinishedCourses(id);
+  return result;
 };
 //store in the local storage
 export const getAllPosts = async (Token, owner) => {
-  const res = await instance.get(`/posts/by_owner_id/${owner}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
+  let David = jwtDecode(Token);
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/posts/by_owner_id/${owner}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    if (res.data["status_code"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    localStorage.SQLInsertPosts(res.data["posts"]);
+    return res.data["posts"];
   }
-  console.log("[getAllPosts]====================================");
-  console.log(res.data["posts"]);
-  console.log("[getAllPosts]====================================");
-  return res.data["posts"];
+  let result = await localStorage.SQLGetAllPosts(David.id, owner);
+  return result;
 };
 //store in the local storage (Future Work)
 export const uploadPost = async (Token, writer, owner, post) => {

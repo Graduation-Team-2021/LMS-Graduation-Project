@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { Card } from "react-native-elements";
-const filler = "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg";
+const filler =
+  "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=johannes-plenio-qkfxBc2NQ18-unsplash.jpg&w=2400";
 const CoursePreview = (props) => {
   return (
     <TouchableOpacity
@@ -10,8 +11,7 @@ const CoursePreview = (props) => {
           routeName: "Course",
           params: {
             course: props.Course,
-            groupflag : props.groupflag, 
-          
+            groupflag: props.groupflag,
           },
         })
       }

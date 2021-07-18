@@ -2,9 +2,6 @@ import React, { useState, Fragment, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
-
-import ANHeaderButton from "../components/ANHeaderButton";
 import { Button, BottomSheet } from "react-native-elements";
 import SwipeList from "../components/SwipList";
 import Dismiss from "../components/Dismiss";
@@ -22,7 +19,6 @@ const NormalHomeScreen = (props) => {
   const [c, setC] = useState([]);
   const groupflag = true;
 
-
   const [ButtomModalVisability, setButtomModalVisability] = useState(false);
 
   const setCurrentCourses = props.currentCoursesActions.onSetCurrentCourses;
@@ -36,16 +32,18 @@ const NormalHomeScreen = (props) => {
       showBottomModalSheet: () => setButtomModalVisability(true),
       studentName: props.userData.Name,
     });
-    Interface.getCurrentCourses(props.userData.Token).then((res) => {
-      const Courses = [];
-      if (res) {
-        res.forEach((element) => {
-          let currentCourse = setCourse(element);
-          Courses.push(currentCourse);
-        });
-        setCurrentCourses(Courses);
-      }
-    });
+    Interface.getCurrentCourses(props.userData.Token)
+      .then((res) => {
+        const Courses = [];
+        if (res) {
+          res.forEach((element) => {
+            let currentCourse = setCourse(element);
+            Courses.push(currentCourse);
+          });
+          setCurrentCourses(Courses);
+        }
+      })
+      
     Interface.getCurrentGroups(props.userData.Token).then((res) => {
       const Groups = [];
       if (res) {
@@ -133,8 +131,6 @@ const NormalHomeScreen = (props) => {
     </Fragment>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   screen: {
