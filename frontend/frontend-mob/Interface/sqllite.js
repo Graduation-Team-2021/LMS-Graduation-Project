@@ -1408,74 +1408,14 @@ export function SQLGetDoctors() {
   });
 }
 
-export function SQLGetStatus(course_id,user_id) {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT * FROM learns WHERE learns.course_code = ? AND learns.student_id = ? ;",
-        [course_id,user_id],
-        (_, res) => {
-          let result = [];
-          for (let index = 0; index < res.rows.length; index++) {
-            result.push(res.rows.item(index));
-          }
-          resolve(result);
-        },
-        (_, err) => {
-          reject(err);
-        }
-      );
-    });
-  });
-}
 
-export function SQLGetBe_Enroll(course_id,user_id, student_id) {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT * FROM learns WHERE learns.course_code = ? AND learns.student_id = ? ;",
-        [course_id,student_id],
-        (_, res) => {
-          let result = [];
-          for (let index = 0; index < res.rows.length; index++) {
-            result.push(res.rows.item(index));
-          }
-          resolve(result);
-        },
-        (_, err) => {
-          reject(err);
-        }
-      );
-    });
-  });
-}
 
-export function SQLGetFroup_Be_Enroll(course_id,user_id) {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT * FROM learns , student_group_relation WHERE learns.course_code = ? AND learns.student_id = ?  AND learns.student_id = student_group_relation.student_id ;",
-        [course_id,user_id],
-        (_, res) => {
-          let result = [];
-          for (let index = 0; index < res.rows.length; index++) {
-            result.push(res.rows.item(index));
-          }
-          resolve(result);
-        },
-        (_, err) => {
-          reject(err);
-        }
-      );
-    });
-  });
-}
 
 export function SQLGetGroup() {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM group_deliverable_relation;",
+        "SELECT * FROM group_project;",
         [],
         (_, res) => {
           let result = [];
@@ -1538,7 +1478,7 @@ export function SQLGetTeachedCourse(course_id) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM teaches WHERE  teaches.course_code= ?;",
+        "SELECT * FROM teaches , course WHERE  teaches.course_code = ? AND course.course_code = teaches.course_code ;",
         [course_id],
         (_, res) => {
           let result = [];
@@ -1556,4 +1496,3 @@ export function SQLGetTeachedCourse(course_id) {
 }
 
 // exculsign up
-//
