@@ -106,11 +106,6 @@ export default connect(
   const toggleBar = () => {
     setAddBar({ showBar: !addBarVis.showBar });
   };
-
-  const handleClicked = (conversation) => {
-    let temp = Users.findIndex((ele) => ele.ID === conversation.ID);
-    props.currentMessageActions.onSetCurrentMessage(Users[temp]);
-  }
   /////////////////////////////////////////////////////////////////////////////
   let addbb = null;
   let SearchResult = [];
@@ -164,7 +159,7 @@ export default connect(
           {!(addBarVis.showBar && Query !== "") ?
             conversations.map((conversation, index) => (
               <ConversationListItem
-                onClick={() => { handleClicked(conversation) }}
+                onClick={() => { props.currentMessageActions.onSetCurrentMessage(conversation); }}
                 isOnline={CurrentActiveUsers.includes(conversation.ID)}
                 key={index}
                 data={conversation}
