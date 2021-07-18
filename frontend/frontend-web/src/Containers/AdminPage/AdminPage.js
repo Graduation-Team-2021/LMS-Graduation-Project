@@ -66,6 +66,7 @@ const AdminPage = (props) => {
       if (res.status_code === 200) {
         console.log(res);
         alert("Uploaded Successfully");
+        setShow(false);
       } else {
         alert(res.message);
       }
@@ -94,7 +95,7 @@ const AdminPage = (props) => {
                 name: value["name"],
                 value: value["user_id"],
               })),
-              post_owner_id: c['post_owner_id']
+              post_owner_id: c["post_owner_id"],
             });
           });
           console.log("Showing");
@@ -109,6 +110,11 @@ const AdminPage = (props) => {
       setContent("Course");
       setShow(true);
     }
+  };
+
+  const showUser = () => {
+    setContent("User");
+    setShow(true);
   };
 
   const setEdited = (value) => {
@@ -142,12 +148,14 @@ const AdminPage = (props) => {
   document.title = "Home Page";
 
   const Edit = (
-    <div style={{
-      width: "100%",
-      display :'flex',
-      flexFlow: 'column',
-      alignItems: 'center',
-    }}>
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        flexFlow: "column",
+        alignItems: "center",
+      }}
+    >
       <Input
         Name="Select Course"
         DataList={courses}
@@ -160,16 +168,29 @@ const AdminPage = (props) => {
   );
 
   const Upload = (
-    <div style={{
-      width: "100%",
-      display :'flex',
-      flexFlow: 'column',
-      alignItems: 'center',
-    }}>
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        flexFlow: "column",
+        alignItems: "center",
+      }}
+    >
+      <h2>
+        Please, Ensure that the Excel File contains the following Columns:
+      </h2>
+      <p>
+        name, email, password, national_id, birthday, student_year,
+        scientific_degree, role
+      </p>
+      <p></p>
+      <h2>Ensure that email, national_id are unique</h2>
+      <h2>Also, role must be either "student" or 'professor'</h2>
       <FilePicker
-        onChange={(FileObject) => {
-          handleFIleUpload(FileObject);
-        }}
+        onChange={(FileObject) =>
+          //TODO: Provide Formatted Excel Sheet
+          Sign_excel(FileObject)
+        }
         onError={(errMsg) => {
           /* do something with err msg string */
         }}
@@ -201,8 +222,17 @@ const AdminPage = (props) => {
                 <div className={classes.Details}>
                   <div className={classes.filler} />
                   <div className={classes.Name}>{props.userData.Name}</div>
-
-                  <Button className={classes.Button2}>Change Pic</Button>
+                  <FilePicker
+                    onChange={(FileObject) =>
+                      //TODO: Provide Formatted Excel Sheet
+                      handleFIleUpload(FileObject)
+                    }
+                    onError={(errMsg) => {
+                      /* do something with err msg string */
+                    }}
+                  >
+                    <Button className={classes.Button2}>Change Pic</Button>
+                  </FilePicker>
                 </div>
               </span>
             </div>
@@ -217,17 +247,9 @@ const AdminPage = (props) => {
               >
                 Add User
               </Button>
-              <FilePicker
-                onChange={(FileObject) =>
-                  //TODO: Provide Formatted Excel Sheet
-                  Sign_excel(FileObject)
-                }
-                onError={(errMsg) => {
-                  /* do something with err msg string */
-                }}
-              >
-                <Button className={classes.Button}>Add Users Via Excel</Button>
-              </FilePicker>
+              <Button onClick={showUser} className={classes.Button}>
+                Add Users Via Excel
+              </Button>
             </span>
             <span className={classes.column}>
               <Button

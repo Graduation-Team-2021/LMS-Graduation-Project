@@ -8,6 +8,7 @@ from flask import jsonify
 from models.user.professors import Professor
 from models.user.students import Student
 import werkzeug,pandas,json
+from zipfile import BadZipfile
 
 controller_object = users_controller()
 cont_stud = students_controller()
@@ -179,28 +180,31 @@ class Sign_Up_Using_Excel(Resource):
 
     def post(self):
         args = self.reqparse.parse_args()
-        raw_data = args['file'].read()
-        excel_data = pandas.read_excel(raw_data,dtype=str, engine='openpyxl')
-        excel_data = excel_data.to_json(orient='records')
-        excel_data = json.loads(excel_data)
-        for entry in excel_data:
-            try:
-                date = entry['birthday']
-                date = date.split(' ')[0]
-                entry['birthday'] = date
-                entry['email'] = entry['email'].lower() 
-                student_year = entry['student_year']
-                scientific_degree = entry['scientific_degree']
-                role = entry['role']
-                entry.pop('student_year',None)
-                entry.pop('scientific_degree',None)
-                entry.pop('role',None)
-                user = entry
-                controller_object.add_new_user(user,student_year,scientific_degree,role)
-            except ErrorHandler as e:
-                return e.error
-            except Exception as E:
-                return {"message": "File Missing proper Attribute", 'status_code': 405}
+        try:
+            raw_data = args['file'].read()
+            excel_data = pandas.read_excel(raw_data,dtype=str, engine='openpyxl')
+            excel_data = excel_data.to_json(orient='records')
+            excel_data = json.loads(excel_data)
+            for entry in excel_data:
+                
+                    date = entry['birthday']
+                    date = date.split(' ')[0]
+                    entry['birthday'] = date
+                    entry['email'] = entry['email'].lower() 
+                    student_year = entry['student_year']
+                    scientific_degree = entry['scientific_degree']
+                    role = entry['role']
+                    entry.pop('student_year',None)
+                    entry.pop('scientific_degree',None)
+                    entry.pop('role',None)
+                    user = entry
+                    controller_object.add_new_user(user,student_year,scientific_degree,role)
+        except ErrorHandler as e:
+            return e.error
+        except BadZipfile as E:
+            return {"message": "Wrong File Type", 'status_code': 405}
+        except Exception as E:
+            return {"message": "One or More Attributes are Missing", 'status_code': 405}
 
         return jsonify({
             'message': 'Users Added successfully',
