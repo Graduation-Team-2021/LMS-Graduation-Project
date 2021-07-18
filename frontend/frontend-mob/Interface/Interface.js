@@ -4,6 +4,7 @@ export const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000"; //NEVER
 export const path = "http://192.168.1.68:5000";
 import * as localStorage from "./sqllite";
 import jwt from "jwt-decode";
+import * as FileSystem from "expo-file-system";
 import NetInfo from "@react-native-community/netinfo";
 import jwtDecode from "jwt-decode";
 const instance = axios.create({
@@ -299,6 +300,23 @@ export const materialUri = async (material_id) => {
       "Content-Type": "application/json",
     },
   });
+  const downloadResumable = FileSystem.createDownloadResumable(
+    azure + res.data["url"], //azur/static/deepweb
+    FileSystem.documentDirectory + res.data["url"] //filesystemdur/static/deepweb
+  );
+  downloadResumable.downloadAsync().then((result) => {
+    console.log("====================================");
+    console.log("I want to die", result);
+    console.log("====================================");
+    const kak = res.data["url"].split("/");
+    localStorage.SQLInsertPdfs({
+      material_id: material_id,
+      course_material: kak[2],
+      material_name: kak[4].split(".")[0],
+      material_type: "." + kak[4].split(".")[1],
+      local_uri: res.data["url"],
+    });
+  });
   return res.data["url"];
 };
 //store in the local storage (Future work)
@@ -344,7 +362,7 @@ export const getAllConversations = async (Token) => {
   if (res.data["status_code"] !== 200) {
     return null;
   }
-  console.log(res.data["conversations"]);
+  console.log("[Michel]", res.data["conversations"]);
   return res.data["conversations"];
 };
 //store in the local storage(Future)
