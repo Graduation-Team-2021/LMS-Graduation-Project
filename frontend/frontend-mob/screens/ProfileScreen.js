@@ -11,28 +11,26 @@ import { connect } from "react-redux";
 import sha256 from "crypto-js/sha512";
 
 const ProfileScreen = (props) => {
-  const [TotalGrade, setTotalGrade] = useState(0);
   const [PassedCourses, setPassedCourses] = useState([]);
   const [YourPosts, setYourPosts] = useState([]);
   useEffect(() => {
-    Interface.getGradeSoFar(props.userData.ID)
-      .then((res) => {
-        let sum = 0;
-        res.forEach((e) => (sum += e.course_mark));
-        setTotalGrade(sum);
-      })
-      .catch((e) => console.log(e));
     Interface.getFinishedCourses(
       props.userData.Token,
       props.userData.ID,
       props.userData.Role
     )
-      .then((res) => setPassedCourses(res))
+      .then((res) => {
+        setPassedCourses(res);
+      })
       .catch((e) => console.log(e));
     Interface.getRecentUserPosts(props.userData.Token)
       .then((res) => setYourPosts(res))
       .catch((e) => console.log(e));
   }, []);
+  let sum = 0;
+  PassedCourses.forEach((course) => {
+    sum += course.course_mark;
+  });
   return (
     <ScrollView>
       <View style={styles.screen}>
@@ -76,7 +74,7 @@ const ProfileScreen = (props) => {
               containerStyle={styles.displayDataCardContainerStyle}
             >
               <Text style={styles.text}>Total Grade</Text>
-              <Text style={styles.text}>{TotalGrade}</Text>
+              <Text style={styles.text}>{sum}</Text>
             </Card>
           </View>
         </Card>

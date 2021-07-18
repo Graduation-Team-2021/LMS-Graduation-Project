@@ -175,17 +175,20 @@ export const getRecentEvent = async (Token, id) => {
 };
 //store in the local storage
 export const getFinishedCourses = async (Token, id, role) => {
-  const res = await instance.get(`/${role}/${id}/finishedCourses`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
-  }
-  return res.data["courses"];
+  // const res = await instance.get(`/${role}/${id}/finishedCourses`, {
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Authorization: "Bearer " + Token,
+  //   },
+  // });
+  // if (res.data["status_code"] !== 200) {
+  //   //TODO: Better Check
+  //   return null;
+  // }
+  // localStorage.SQLInsertFinishedCourses(res.data["courses"]);
+  // return res.data["courses"];
+  let result = await localStorage.SQLGetFinishedCourses(id);
+  return result;
 };
 //store in the local storage
 export const getAllPosts = async (Token, owner) => {
@@ -199,9 +202,6 @@ export const getAllPosts = async (Token, owner) => {
     //TODO: Better Check
     return null;
   }
-  console.log("[getAllPosts]====================================");
-  console.log(res.data["posts"]);
-  console.log("[getAllPosts]====================================");
   return res.data["posts"];
 };
 //store in the local storage (Future Work)

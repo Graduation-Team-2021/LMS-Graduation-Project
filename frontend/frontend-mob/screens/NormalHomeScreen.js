@@ -13,6 +13,7 @@ import * as Interface from "../Interface/Interface";
 import { setCourse } from "../Models/Course";
 import { setGroup } from "../Models/Group";
 import { setFullPost } from "../Models/Post";
+import { log } from "react-native-reanimated";
 
 const DCourses = [];
 
@@ -21,7 +22,6 @@ const DGroups = [];
 const NormalHomeScreen = (props) => {
   const [c, setC] = useState([]);
   const groupflag = true;
-
 
   const [ButtomModalVisability, setButtomModalVisability] = useState(false);
 
@@ -36,16 +36,18 @@ const NormalHomeScreen = (props) => {
       showBottomModalSheet: () => setButtomModalVisability(true),
       studentName: props.userData.Name,
     });
-    Interface.getCurrentCourses(props.userData.Token).then((res) => {
-      const Courses = [];
-      if (res) {
-        res.forEach((element) => {
-          let currentCourse = setCourse(element);
-          Courses.push(currentCourse);
-        });
-        setCurrentCourses(Courses);
-      }
-    });
+    Interface.getCurrentCourses(props.userData.Token)
+      .then((res) => {
+        const Courses = [];
+        if (res) {
+          res.forEach((element) => {
+            let currentCourse = setCourse(element);
+            Courses.push(currentCourse);
+          });
+          setCurrentCourses(Courses);
+        }
+      })
+      
     Interface.getCurrentGroups(props.userData.Token).then((res) => {
       const Groups = [];
       if (res) {
@@ -133,8 +135,6 @@ const NormalHomeScreen = (props) => {
     </Fragment>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   screen: {

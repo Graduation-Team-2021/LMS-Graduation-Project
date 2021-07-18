@@ -1008,7 +1008,7 @@ export function GetFirstConversation(user_id) {
     });
   });
 }
-export function SQLGetFinishedCourses(user_id, role, Token) {
+export function SQLGetFinishedCourses(user_id) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
