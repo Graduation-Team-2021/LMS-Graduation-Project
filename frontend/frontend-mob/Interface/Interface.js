@@ -207,17 +207,23 @@ export const getFinishedCourses = async (Token, id, role) => {
 };
 //store in the local storage
 export const getAllPosts = async (Token, owner) => {
-  const res = await instance.get(`/posts/by_owner_id/${owner}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  if (res.data["status_code"] !== 200) {
-    //TODO: Better Check
-    return null;
+  let David = jwtDecode(Token);
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/posts/by_owner_id/${owner}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    if (res.data["status_code"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    localStorage.SQLInsertPosts(res.data["posts"]);
+    return res.data["posts"];
   }
-  return res.data["posts"];
+  let result = await localStorage.SQLGetAllPosts(David.id, owner);
+  return result;
 };
 //store in the local storage (Future Work)
 export const uploadPost = async (Token, writer, owner, post) => {

@@ -965,26 +965,20 @@ export function SQLGetAllPosts(user_id, owner) {
   });
 }
 
-export function SQLInsertPosts(course) {
+export function SQLInsertPosts(posts) {
   db.transaction((tx) => {
-    tx.executeSql(
-      "INSERT OR REPLACE INTO c VALUES(?,?,?,?,?,?,?)",
-      [
-        course.course_code,
-        course.course_name,
-        course.weekly_hours,
-        course.group_number,
-        course.max_student,
-        course.course_description,
-        course.post_owner_id,
-      ],
-      (_, res) => {
-        console.log("inserting to course table successfully"), res;
-      },
-      (_, err) => {
-        console.log("insertion the the db failed with error", err);
-      }
-    );
+    posts.forEach((post) => {
+      tx.executeSql(
+        "INSERT OR REPLACE INTO post VALUES(?,?,?,?)",
+        [post.post_id, post.post_writer, post.post_owner, post.post_text],
+        (_, res) => {
+          console.log("[Ibrahim]inserting to posts table successfully"), res;
+        },
+        (_, err) => {
+          console.log("[Ibrahim]insertion the post the db failed with error", err);
+        }
+      );
+    });
   });
 }
 

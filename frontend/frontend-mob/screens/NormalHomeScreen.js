@@ -2,9 +2,6 @@ import React, { useState, Fragment, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
-
-import ANHeaderButton from "../components/ANHeaderButton";
 import { Button, BottomSheet } from "react-native-elements";
 import SwipeList from "../components/SwipList";
 import Dismiss from "../components/Dismiss";
@@ -13,7 +10,6 @@ import * as Interface from "../Interface/Interface";
 import { setCourse } from "../Models/Course";
 import { setGroup } from "../Models/Group";
 import { setFullPost } from "../Models/Post";
-import { log } from "react-native-reanimated";
 
 const DCourses = [];
 
