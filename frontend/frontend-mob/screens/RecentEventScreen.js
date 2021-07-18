@@ -1,25 +1,41 @@
-import React from "react";
-import { View, Text , FlatList } from "react-native";
-import { ListItem, Avatar } from 'react-native-elements'
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { ListItem, Avatar } from "react-native-elements";
+import * as Interface from "../Interface/Interface";
+import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+import { connect } from "react-redux";
 const RecentEventScreen = (props) => {
-const list = [
-  {event_name:"hahsdjhjsad",
-  event_deadline: "sajkhsdakjha"}
-]
+  const list = [{ event_name: "hahsdjhjsad", event_deadline: "sajkhsdakjha" }];
+  const [events, setEvents] = useState(null);
+  useEffect(() => {
+    Interface.getRecentEvent(props.userData.Token, props.userData.ID).then(
+      (res) => {
+        console.log("[ibtahim]", res);
+        setEvents(res);
+      }
+    );
+  }, []);
   return (
-    <FlatList
-      keyExtractor={(item,index) => index.toString()}
-      data={list}
-      renderItem={(item) => 
-        <ListItem bottomDivider>
-        <ListItem.Content>
-          <ListItem.Title>{item.item.event_name}</ListItem.Title>
-          <ListItem.Subtitle>{item.item.event_deadline}</ListItem.Subtitle>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>}
-    />
+    <View style={styles.container}>
+      <Text style={styles.row}>{events.event_name}</Text>
+      <Text style={styles.row}>{events.course_code}</Text>
+      <Text style={styles.row}>{events.event_description}</Text>
+      <Text style={styles.row}>{events.event_type}</Text>
+      <Text style={styles.row}>{events.event_date}</Text>
+    </View>
   );
 };
 
-export default RecentEventScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24
+  },
+  row: {
+    padding: 4,
+    borderBottomColor: "red",
+    borderBottomWidth: StyleSheet.hairlineWidth
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecentEventScreen);
