@@ -69,4 +69,17 @@
     right: 0;
     bottom: 0;
     padding: 2% 3%;
+    font-size: 1vw;
+}
+
+@media(max-width: 840px){
+    .dismissButton{
+        font-size: 1.5vw;
+    }
+}
+
+@media(max-width: 600px){
+    .dismissButton{
+        font-size: 2vw;
+    }
 }

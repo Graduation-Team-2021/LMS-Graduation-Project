@@ -8,7 +8,6 @@ import {
   faClock,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
-import CircularArray from "../../Components/CircularArray/CircularArray";
 import Waiting from "../../Components/Waiting/Waiting";
 
 import { getRecentEvent } from "../../Interface/Interface";
@@ -67,8 +66,7 @@ class Upcoming extends Component {
                   {this.state.Event.Host}
                 </span>
               </div>
-              <div className={classes.Invited}>Invited Members</div>
-              <CircularArray />
+            
               <Minibar
                 icon={faCalendarAlt}
                 color="red"
