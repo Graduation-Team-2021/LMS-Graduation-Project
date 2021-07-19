@@ -14,6 +14,7 @@ import PdfReader from "../screens/PDFScreen";
 import CreateDeliverable from "../screens/CreateDeliverable";
 import checkConnectivity from "../hocs/checkConnectivity";
 import StudentSubmissionScreen from "../screens/StudentSubmissionScreen";
+import AddCourse from '../screens/AddCourse'
 
 const HomeStack = createStackNavigator(
   {
@@ -75,6 +76,7 @@ const HomeStack = createStackNavigator(
     },
     ForeignProfile: { screen: checkConnectivity(ForeignProfileScreen) },
     SearchReasult: ResultsNavigator,
+    AddCourse: AddCourse
   },
   {
     defaultNavigationOptions: {

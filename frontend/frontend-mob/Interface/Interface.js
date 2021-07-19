@@ -781,8 +781,7 @@ export const getDoctors = async () => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res.data);
-  return res.data;
+  return res.data['professors'];
 };
 
 export const getStatus = async (id, Token) => {

@@ -11,8 +11,10 @@ const AdminHomeScreen = (props) => {
   let lastColor = "#";
   for (let index = 0; index < 6; index++) {
     const element = hashedItem.words[index];
-    const element1 = hashedItem.words[Math.abs(element%hashedItem.words.length)];
-    const element2 = hashedItem.words[Math.abs(element1%hashedItem.words.length)];
+    const element1 =
+      hashedItem.words[Math.abs(element % hashedItem.words.length)];
+    const element2 =
+      hashedItem.words[Math.abs(element1 % hashedItem.words.length)];
     const newIndex = Math.abs(element % 16);
     const newIndex1 = Math.abs(element1 % 16);
     const newIndex2 = Math.abs(element2 % 16);
@@ -44,7 +46,8 @@ const AdminHomeScreen = (props) => {
               rounded
               size="xlarge"
               source={{
-                uri: "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg",
+                uri:
+                  "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg",
               }}
               containerStyle={{
                 ...styles.avatarContainerStyle,
@@ -59,22 +62,27 @@ const AdminHomeScreen = (props) => {
           <View style={{ alignItems: "center", paddingBottom: 15 }}>
             <Text>{target.Name}</Text>
             {/* <Text>email : {target.email} </Text> */}
-            <View style={styles.buttonContrainer}>
-              <View style={styles.button}>
-                <Button
-                  title="Add User"
-                  onPress={() => console.log("Add User to be implemented")}
-                />
-              </View>
-              <View style={styles.button}>
-                <Button
-                  title="Add Course"
-                  onPress={() => console.log("Add Course to be implemented")}
-                />
-              </View>
-            </View>
           </View>
         </Card>
+        <View style={styles.buttonContrainer}>
+          <View style={styles.button}>
+            <Button
+              title="Add User"
+              onPress={() => {
+                console.log("Add User to be implemented");
+              }}
+            />
+          </View>
+          <View style={styles.button}>
+            <Button
+              title="Add Course"
+              onPress={() => {
+                console.log("Add Course to be implemented");
+                props.navigation.navigate("AddCourse")
+              }}
+            />
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
