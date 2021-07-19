@@ -13,7 +13,7 @@ class professor_course_relation_controller():
             courses = Teaches_Relation.query.join(Professor).filter(Professor.user_id == professor_id)\
                 .join(Course).filter(Course.course_code == Teaches_Relation.course_code).\
                 with_entities(Course.course_code,
-                              Course.course_name, Course.course_description, Course.post_owner_id)
+                              Course.course_name, Course.course_description, Course.post_owner_id, Course.course_pic)
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({
@@ -29,7 +29,8 @@ class professor_course_relation_controller():
                 'course_name': i[1],
                 'course_description': i[2],
                 'post_owner_id': i[3],
-                'professors': [p for p in prof]
+                'professors': [p for p in prof],
+                'course_pic': i[4]
             })
         return results_array
 

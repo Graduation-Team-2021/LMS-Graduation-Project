@@ -88,10 +88,11 @@ const ProfilePage = (props) => {
     if (Role === "student") {
       getFinishedCourses(Token, ID, Role).then((res) => {
         const Courses = [];
+        console.log(res);
         res.forEach((C) =>
           Courses.push({
             Title: `${C["course_code"]}: ${C["course_name"]}`,
-            grade: C["course_mark"],
+            grade: C["course_mark"], pic: C['course_pic']
           })
         );
         setFinished(Courses);
@@ -175,6 +176,7 @@ const ProfilePage = (props) => {
           </div>
         </Card>
         <div className={classes.Bottom}>
+        {console.log(Finished)}
           {Role === "student" ? (
             Finished.length !== 0 ? (
               <OldCourses Title="Your Passed Courses" Courses={Finished} />

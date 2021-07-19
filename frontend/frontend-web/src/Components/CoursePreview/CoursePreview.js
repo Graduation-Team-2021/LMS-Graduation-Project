@@ -22,7 +22,7 @@ const CoursePreview = (props) => {
     >
       <Card className={classes.Card} shadow>
         <div className={classes.CourseTitle}>{props.Course.CourseName}</div>
-        <ImageHolder filler={props.Course.CoursePicture||filler} />
+        <ImageHolder filler={props.Course.CoursePic||filler} />
       </Card>
     </div>
   );

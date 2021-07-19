@@ -19,7 +19,8 @@ class AddCoursePage extends Component {
     "Max Number of Students": "number",
     "Course Description": "textArea",
     "List of Doctors": "select",
-    "Enrollment Deadline": 'date'
+    "Enrollment Deadline": 'date',
+    "Course Picture(Optional)": "text",
   };
 
   EditFields = {
@@ -29,7 +30,8 @@ class AddCoursePage extends Component {
     "Max Number of Students": "number",
     "Course Description": "textArea",
     "List of Doctors": "select",
-    "Enrollment Deadline": 'date'
+    "Enrollment Deadline": 'date',
+    "Course Picture(Optional)": "text",
   };
 
   constructor(props) {

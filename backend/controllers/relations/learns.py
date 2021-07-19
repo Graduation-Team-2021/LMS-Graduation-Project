@@ -12,7 +12,7 @@ class student_course_relation_controller():
             courses = Learns_Relation.query.join(Student).filter(Student.user_id == student_id)\
                 .join(Course).filter(Course.course_code == Learns_Relation.course_code).\
                 with_entities(Course.course_code, Course.course_name,
-                              Course.course_description, Course.post_owner_id)
+                              Course.course_description, Course.post_owner_id, Course.course_pic)
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({
@@ -26,7 +26,8 @@ class student_course_relation_controller():
                     'course_code': i[0],
                     'course_name': i[1],
                     'course_description': i[2],
-                    'post_owner_id': i[3]
+                    'post_owner_id': i[3],
+                    'course_pic': i[4]
                 }
             )
         return results_array

@@ -5,7 +5,8 @@ export const setCourse = (id) => {
     DoctorName: id["professors"].map(value=>value['name']),
     CourseDescription: id["course_description"],
     PostID: id["post_owner_id"],
-    isEnrolled: id['isenrolled']
+    isEnrolled: id['isenrolled'],
+    CoursePic: id['course_pic']
   };
   return data;
 };
@@ -19,7 +20,8 @@ export const setNewCourse = (Data) => {
     max_students: Data["Max Number of Students"],
     course_description: Data["Course Description"],
     post_owner_id: Data['post_owner_id'],
-    course_deadline: Data['Enrollment Deadline']
+    course_deadline: Data['Enrollment Deadline'],
+    course_pic: Data["Course Picture(Optional)"]
   };
   let t = [];
   Data["List of Doctors"].forEach((element) => {

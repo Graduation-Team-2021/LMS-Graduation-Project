@@ -6,7 +6,7 @@ import Enroll from "../../../Components/Enroll/Enroll";
 import Modal from "../../../Components/Modal/Modal";
 
 const CourseOverview = (props) => {
-  let imageTest = props.pic;
+  let imageTest = props.CoursePic;
 
   const [show, setShow] = useState(false);
 

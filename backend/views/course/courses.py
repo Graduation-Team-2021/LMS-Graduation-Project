@@ -31,10 +31,12 @@ class Course(Resource):
         self.reqparse.add_argument('weekly_hours', type=int, location='json')
         self.reqparse.add_argument('group_number', type=int, location='json')
         self.reqparse.add_argument('max_students', type=int, location='json')
-        #self.reqparse.add_argument('course_deadline', type=int, location='json')
+        self.reqparse.add_argument('course_deadline', type=str, location='json')
         self.reqparse.add_argument('course_description', type=str, location='json')
         self.reqparse.add_argument('post_owner_id', type=str, location='json')
         self.reqparse.add_argument('doctors', type=list, location='json')
+        self.reqparse.add_argument('course_pic', type=str, location="json")
+
 
     def get(self, course_code):
         try:
@@ -67,7 +69,8 @@ class Course(Resource):
             'max_students': args['max_students'],
             'course_description': args['course_description'],
             'post_owner_id': args['post_owner_id'],
-            #'course_deadline': args['course_deadline']
+            'course_deadline': args['course_deadline'],
+            'course_pic': args['course_pic']
         }
         doctors = args['doctors']
         try:
@@ -93,6 +96,8 @@ class Courses(Resource):
         self.reqparse.add_argument(
             'course_description', type=str, location='json')
         self.reqparse.add_argument('doctors', type=list, location='json')
+        self.reqparse.add_argument('course_deadline', type=str, location='json')
+        self.reqparse.add_argument('course_pic', type=str, location="json")
 
     def get(self):
         try:
@@ -112,7 +117,9 @@ class Courses(Resource):
             'weekly_hours': args['weekly_hours'],
             'group_number': args['group_number'],
             'max_students': args['max_students'],
-            'course_description': args['course_description']
+            'course_description': args['course_description'],
+            'course_deadline': args['course_deadline'],
+            'course_pic': args['course_pic']
         }
         doctors = args['doctors']
         try:
@@ -156,7 +163,8 @@ class My_Courses(Resource):
                     'course_name': student_courses[i]["course_name"],
                     'course_description': student_courses[i]["course_description"],
                     'post_owner_id': student_courses[i]["post_owner_id"],
-                    'professors': [p for p in prof]
+                    'professors': [p for p in prof],
+                    'course_pic': student_courses[i]['course_pic']
                 })
                 
             return jsonify({

@@ -54,7 +54,6 @@ const HomePage = (props) => {
         if (res) {
           let Courses = new Map();
           res.forEach((id, index) => {
-            id["pic"] = "https://picsum.photos/200/300";
             id["isenrolled"] = "false";
             if (
               Array.from(currentCourses.keys()).includes(id["course_code"]) ||
