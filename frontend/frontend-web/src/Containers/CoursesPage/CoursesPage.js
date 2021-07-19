@@ -51,7 +51,7 @@ const HomePage = (props) => {
     getCourses(Token).then((res) => {
       getFinishedCourses(Token, ID, Role).then((r2) => {
         setLoading(false);
-        if (res) {
+        if (res && Role === "student") {
           let Courses = new Map();
           res.forEach((id, index) => {
             id["isenrolled"] = "false";
@@ -69,9 +69,24 @@ const HomePage = (props) => {
               Courses[id["course_code"]] = setCourse(id);
             }
           });
-          console.log("====================================");
-          console.log(Courses);
-          console.log("====================================");
+          setCourses(Courses);
+        } else if (res) {
+          let Courses = new Map();
+          res.forEach((id, index) => {
+            id["isenrolled"] = "false";
+            if (
+              Array.from(currentCourses.keys()).includes(id["course_code"]) 
+            ) {
+              id["isenrolled"] = "true";
+            }
+            if (props.location.state) {
+              if (id["isenrolled"] === "false") {
+                Courses[id["course_code"]] = setCourse(id);
+              }
+            } else {
+              Courses[id["course_code"]] = setCourse(id);
+            }
+          });
           setCourses(Courses);
         } else {
           TokenError();
@@ -87,13 +102,6 @@ const HomePage = (props) => {
     finishedCourses,
     props.location.state,
   ]);
-
-  //TODO: Use This, Hazem
-  useEffect(() => {
-    getGroups().then((res) => {
-      //TODO: Fit data to Components
-    });
-  }, []);
 
   let loadedCourses = [];
   Array.from(Object.keys(Courses)).forEach((key) => {

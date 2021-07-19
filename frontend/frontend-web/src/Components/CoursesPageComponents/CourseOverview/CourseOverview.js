@@ -4,6 +4,8 @@ import { withRouter } from "react-router-dom";
 import classes from "./CourseOverview.module.css";
 import Enroll from "../../../Components/Enroll/Enroll";
 import Modal from "../../../Components/Modal/Modal";
+import { connect } from "react-redux";
+import { mapDispatchToProps, mapStateToProps } from "../../../store/reduxMaps";
 
 const CourseOverview = (props) => {
   let imageTest = props.CoursePic;
@@ -23,7 +25,12 @@ const CourseOverview = (props) => {
   return (
     <div className={classes.CourseOverview}>
       <Modal show={show} onClick={dismiss}>
-        <Enroll isEnrolled={props.isEnrolled==='true'} id={props.CourseID} onCancel={dismiss} onAccept={accept} />
+        <Enroll
+          isEnrolled={props.isEnrolled === "true"}
+          id={props.CourseID}
+          onCancel={dismiss}
+          onAccept={accept}
+        />
       </Modal>
       <img src={imageTest} alt="tst" className={classes.CoursePicture} />
       <h3>{props.CourseName}</h3>
@@ -34,28 +41,30 @@ const CourseOverview = (props) => {
           : "No Instructors Yet"}
       </div>
       <div className={classes.ButtonsRow}>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.Button}
-          onClick={() => {
-            if (props.isEnrolled === "true") {
-              props.history.push({
-                pathname: `/Course/${props.CourseID}`,
-                state: {
-                  Data: props.Course,
-                  isJoined: props.isEnrolled,
-                },
-              });
-            } else {
-              setShow(true);
-            }
-          }}
-        >
-          {props.isEnrolled === "true"
-            ? `Go to ${props.CourseName}`
-            : "Enroll First"}
-        </Button>
+        {props.userData.Role === "student" ? (
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.Button}
+            onClick={() => {
+              if (props.isEnrolled === "true") {
+                props.history.push({
+                  pathname: `/Course/${props.CourseID}`,
+                  state: {
+                    Data: props.Course,
+                    isJoined: props.isEnrolled,
+                  },
+                });
+              } else {
+                setShow(true);
+              }
+            }}
+          >
+            {props.isEnrolled === "true"
+              ? `Go to ${props.CourseName}`
+              : "Enroll First"}
+          </Button>
+        ) : null}
         <Button
           color="secondary"
           className={classes.Button}
@@ -68,4 +77,4 @@ const CourseOverview = (props) => {
   );
 };
 
-export default withRouter(CourseOverview);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CourseOverview));
