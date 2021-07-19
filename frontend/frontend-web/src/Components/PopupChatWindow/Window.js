@@ -263,11 +263,7 @@ export default connect(
         minWidth: "0",
       }}
     >
-      <button className={cls.ButtCls} onClick={Dismiss}>
-        <i>
-          <img src="/messages.png" width="40" height="40" alt="Chats" />
-        </i>
-      </button>
+      <img className={cls.ButtCls} onClick={Dismiss} src="/messages.png" width="35" height="35" alt="Chats" />
       <div className={listCls.join(" ")}>
         <React.Fragment>
           <div className={cls.title}>
