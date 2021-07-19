@@ -70,6 +70,7 @@ const AdminHomeScreen = (props) => {
               title="Add User"
               onPress={() => {
                 console.log("Add User to be implemented");
+                props.navigation.navigate("AddUser")
               }}
             />
           </View>
