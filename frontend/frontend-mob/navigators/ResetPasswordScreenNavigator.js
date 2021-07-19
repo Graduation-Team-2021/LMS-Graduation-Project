@@ -1,8 +1,9 @@
 import { createStackNavigator } from "react-navigation-stack";
+import checkConnectivity from "../hocs/checkConnectivity";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 const ResetPassword = createStackNavigator(
   {
-    ResetPassword: { screen: ResetPasswordScreen },
+    ResetPassword: { screen: checkConnectivity(ResetPasswordScreen) },
   },
   {
     defaultNavigationOptions: {

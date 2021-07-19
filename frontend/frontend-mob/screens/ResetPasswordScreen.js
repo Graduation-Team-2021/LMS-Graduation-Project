@@ -2,9 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
-import ANHeaderButton from "../components/ANHeaderButton";
+import { connect } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-
+import ANHeaderButton from "../components/ANHeaderButton";
+import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+import { changePassword } from "../Interface/Interface";
 
 const ResetPasswordScreen = (props) => {
   const {
@@ -15,37 +17,20 @@ const ResetPasswordScreen = (props) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      oldPassword: "",
       newPassword: "",
       repeatedPassword: "",
     },
   });
   const onSubmit = (data) => {
-    console.log("====================================");
-    console.log(data);
-    console.log("====================================");
-    //TODO: send the request to te backend here
+    changePassword(props.userData.ID, data.newPassword).then((res) => {
+      console.log("====================================");
+      console.log(res);
+      console.log("====================================");
+    });
   };
 
   return (
     <View style={styles.main}>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="old password"
-            onChangeText={(value) => onChange(value)}
-            value={value}
-            mode="outlined"
-            secureTextEntry
-            error={errors.oldPassword}
-          />
-        )}
-        name="oldPassword"
-        rules={{ required: true }}
-        defaultValue=""
-      />
-
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -138,4 +123,7 @@ ResetPasswordScreen.navigationOptions = (navData) => {
   };
 };
 
-export default ResetPasswordScreen;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ResetPasswordScreen);

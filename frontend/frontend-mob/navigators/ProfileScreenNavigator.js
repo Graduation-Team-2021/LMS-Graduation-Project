@@ -1,8 +1,9 @@
 import { createStackNavigator } from "react-navigation-stack";
+import checkConnectivity from "../hocs/checkConnectivity";
 import ProfileScreen from "../screens/ProfileScreen";
 const ProfileNavigator = createStackNavigator(
   {
-    Profile: { screen: ProfileScreen },
+    Profile: { screen: checkConnectivity(ProfileScreen) },
   },
   {
     defaultNavigationOptions: {

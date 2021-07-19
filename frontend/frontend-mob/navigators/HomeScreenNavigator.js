@@ -14,8 +14,8 @@ import PdfReader from "../screens/PDFScreen";
 import CreateDeliverable from "../screens/CreateDeliverable";
 import checkConnectivity from "../hocs/checkConnectivity";
 import StudentSubmissionScreen from "../screens/StudentSubmissionScreen";
-import AddCourse from '../screens/AddCourse';
-import AddUser from '../screens/AddUser';
+import AddCourse from "../screens/AddCourse";
+import AddUser from "../screens/AddUser";
 
 const HomeStack = createStackNavigator(
   {
@@ -37,7 +37,7 @@ const HomeStack = createStackNavigator(
       },
     },
     Course: {
-      screen: CourseScreen,
+      screen: checkConnectivity(CourseScreen),
       navigationOptions: (navData) => {
         return {
           title: `${navData.navigation.getParam("course").CourseName}`,
@@ -76,9 +76,9 @@ const HomeStack = createStackNavigator(
       },
     },
     ForeignProfile: { screen: checkConnectivity(ForeignProfileScreen) },
-    SearchReasult: ResultsNavigator,
-    AddCourse: AddCourse,
-    AddUser: AddUser
+    SearchReasult: checkConnectivity(ResultsNavigator),
+    AddCourse: checkConnectivity(AddCourse),
+    AddUser: checkConnectivity(AddUser),
   },
   {
     defaultNavigationOptions: {
