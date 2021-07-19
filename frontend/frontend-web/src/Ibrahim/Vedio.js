@@ -42,7 +42,6 @@ class Vedioplayer extends Component {
 
   loadVideo = (id) => {
     getOneVideo(id).then((res) => {
-      console.log(res);
       this.setState({ url: url + res });
     });
   };

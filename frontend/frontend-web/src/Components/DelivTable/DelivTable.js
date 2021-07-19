@@ -113,7 +113,6 @@ export default connect(
     //TODO: Load Data
     getDeliv(props.id, props.userData.Token).then((res) => {
       setLoading(false);
-      console.log("Deliverables Collected Successfully", res);
       var temp = [];
       res.forEach((value) => {
         if (props.id) {

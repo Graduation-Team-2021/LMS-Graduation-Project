@@ -36,7 +36,6 @@ const Course = (props) => {
           onClick={() => {
             if (user.status === "Enrolled") {
               props.dismiss();
-              console.log("opening Course page");
               props.history.push({
                 pathname: `/Course/${user.course_code}`,
                 state:{
@@ -46,8 +45,7 @@ const Course = (props) => {
               });
             } else {
               /* TODO: Enroll Function */
-              props.show(true)
-              console.log("opening Enroll Modal");
+              props.show(true);
             }
           }}
         >

@@ -93,7 +93,6 @@ class CreateQuiz extends Component {
   onChange = (event, id) => {
     if (event.target.name === "Duration") {
       this.setState((prevState) => {
-        console.log();
         return {
           Duration: event.target.value,
         };
@@ -211,7 +210,6 @@ class CreateQuiz extends Component {
   };
 
   AddQuestions = () => {
-    console.log("clicked");
     this.setState((prevState) => {
       const Temp = [...prevState.Questions];
 
@@ -342,7 +340,6 @@ class CreateQuiz extends Component {
       var AE = value.Answers.length === 0;
       const CE = value.CorrectAnswers.length === 0;
       const ME = value.Points < 0;
-      console.log(QE, AE, CE, value.Points);
       for (let index = 0; index < this.state.Questions.length; index++) {
         if (
           AE ||

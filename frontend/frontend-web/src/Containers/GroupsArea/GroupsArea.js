@@ -33,7 +33,6 @@ class GroupsArea extends Component {
         const Groups = new Map();
         if (res) {
           res.forEach((element) => {
-            console.log(element);
             Groups.set(element["group_id"], setGroup(element));
           });
           this.setState({ Groups: Groups });
@@ -44,8 +43,7 @@ class GroupsArea extends Component {
         this.setState({
           Loading: false,
         });
-      })
-      .catch((error) => console.log(error));
+      });
   }
 
   loadGroups = () =>{

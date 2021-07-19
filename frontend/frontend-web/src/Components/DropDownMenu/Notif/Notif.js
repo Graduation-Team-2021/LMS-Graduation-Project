@@ -6,8 +6,6 @@ import { mapStateToProps, mapDispatchToProps } from "../../../store/reduxMaps";
 const Notif = (props) => {
   const Notif  = [];
 
-  console.log(props);
-
   props.recentUserPosts.userRecentPosts.forEach(
     (value, index)=> Notif.push(
       <h2 key={index}>{value.Name} has Posted in {value.Location}</h2>

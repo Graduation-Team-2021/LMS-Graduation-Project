@@ -45,12 +45,10 @@ class Upcoming extends Component {
         } else {
           this.TokenError();
         }
-      })
-      .catch((error) => console.log(error));
+      });
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className={classes.upcoming}>
         <Waiting Loading={this.state.Loading}>

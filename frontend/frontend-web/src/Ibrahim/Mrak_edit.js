@@ -11,23 +11,18 @@ class MarkEdit extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
     getCourseStudents(this.props.match.params.id).then(res=>{
       this.setState({
         users : res
       })
-      console.log(res)
     })
     
     
   }
 
   mark = (event , id) => {
-    // this.setState({
-    //     // marks : event.target.value
-    // })
-    // // console.log(this.state.marks);
     if (event.target.value > 50 || event.target.value < 0) {
+      //TODO: get Grades Programmatically
       console.log("Enter a suitable number ");
     } else {
       const temp = [...this.state.users]
@@ -36,8 +31,6 @@ class MarkEdit extends Component {
       this.setState({
         users: temp
       });
-      console.log("askdjhksadj");
-      // console.log({marks})
     }
   };
 

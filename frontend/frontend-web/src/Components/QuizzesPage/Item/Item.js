@@ -60,7 +60,10 @@ function Page(props) {
         student_id: props.userData.ID,
         mark: score,
         out_of_mark: ele.mark,
-      }).then((res) => console.log("Submitted"));
+      }).then((res) => {
+        //TODO: Show Submitted
+        console.log("Submitted")
+      });
     }
   }, [ele.id, ele.mark, finished, props.userData.ID, score]);
   ////////////////////////////////////////////////////////

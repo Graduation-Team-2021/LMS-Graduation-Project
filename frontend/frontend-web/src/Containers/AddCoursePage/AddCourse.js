@@ -36,7 +36,6 @@ class AddCoursePage extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props);
     let Data = props.location.state ? props.location.state.Course : {};
     let Error = {};
     let Lists = {};
@@ -122,11 +121,9 @@ class AddCoursePage extends Component {
   };
 
   onAddCourse = () => {
-    console.log(this.errorHandler(), this.state);
     if (this.errorHandler()) {
       let Course = setNewCourse(this.state.Data);
       if (!this.props.location.state) {
-        console.log("Adding Course");
         AddCourse(Course).then((res) => {
           if (res) {
             alert("Adding Course Successful");
@@ -136,7 +133,6 @@ class AddCoursePage extends Component {
           }
         });
       } else {
-        console.log(Course);
         UpdateCourse(Course).then(res=>{
           if (res) {
             alert("Editing Course Successful");
@@ -195,7 +191,6 @@ class AddCoursePage extends Component {
   };
 
   onRemove = (Item, Name) => {
-    console.log(Item, Name);
     const d = Item.map(res=>({name: res.label, value: res.value}));
     this.setState((prev) => ({
       Error: { ...prev.Error, [Name]: d.length === 0 },

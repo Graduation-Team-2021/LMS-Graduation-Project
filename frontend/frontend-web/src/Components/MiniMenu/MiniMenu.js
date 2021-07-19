@@ -164,7 +164,6 @@ const MiniMenu = (props) => {
               <button
                 className={classes.dropbtn}
                 onClick={() => {
-                  console.log(CLicked);
                   setCLicked(!CLicked);
                 }}
               >

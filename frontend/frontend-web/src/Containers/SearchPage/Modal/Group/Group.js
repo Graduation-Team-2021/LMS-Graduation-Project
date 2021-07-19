@@ -7,7 +7,6 @@ import {withRouter} from 'react-router-dom'
 
 const Group = (props) => {
   const user = props.Data;
-  console.log(user);
   return (
     <div className={classes.Main}>
       <span className={classes.Image}>
@@ -24,7 +23,6 @@ const Group = (props) => {
           onClick={() => {
             if (user.status === "Enrolled") {
               props.dismiss();
-              console.log("opening group page");
               var Group = setGroup(user)
               props.history.push({
                 pathname: `/group/${user.group_id}`,

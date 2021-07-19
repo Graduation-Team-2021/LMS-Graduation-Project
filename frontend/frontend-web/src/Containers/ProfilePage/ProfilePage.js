@@ -53,7 +53,6 @@ const ProfilePage = (props) => {
   };
 
   const Submit = (files) => {
-    console.log(files);
     //uploadFile(this.props.Token, this.state.file, this.props.CourseID);
     updatePic(props.userData.ID, files).then((res) => {
       if (res) {
@@ -88,7 +87,6 @@ const ProfilePage = (props) => {
     if (Role === "student") {
       getFinishedCourses(Token, ID, Role).then((res) => {
         const Courses = [];
-        console.log(res);
         res.forEach((C) =>
           Courses.push({
             Title: `${C["course_code"]}: ${C["course_name"]}`,
@@ -176,7 +174,6 @@ const ProfilePage = (props) => {
           </div>
         </Card>
         <div className={classes.Bottom}>
-        {console.log(Finished)}
           {Role === "student" ? (
             Finished.length !== 0 ? (
               <OldCourses Title="Your Passed Courses" Courses={Finished} />

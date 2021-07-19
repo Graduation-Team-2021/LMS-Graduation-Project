@@ -22,7 +22,6 @@ const Post = (props) => {
   };
   const commentPressHandler = async () => {
     if (currentTypingComment === "") {
-      console.log("empty comment");
       alert("this is an empty comment");
       return;
     }

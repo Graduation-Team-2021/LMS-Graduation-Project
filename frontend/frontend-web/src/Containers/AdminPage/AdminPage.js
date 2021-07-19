@@ -49,7 +49,6 @@ const AdminPage = (props) => {
   }, [ID]);
 
   const Submit = (files) => {
-    console.log(files);
     updatePic(props.userData.ID, files).then((res) => {
       if (res) {
         const temp = { ...userSelf };
@@ -64,7 +63,6 @@ const AdminPage = (props) => {
   const Sign_excel = (files) => {
     ExcelSignUp(files).then((res) => {
       if (res.status_code === 200) {
-        console.log(res);
         alert("Uploaded Successfully");
         setShow(false);
       } else {
@@ -74,14 +72,12 @@ const AdminPage = (props) => {
   };
 
   const showEdited = () => {
-    console.log("About to Show");
     if (!loaded) {
       getCourses("").then((res) => {
         setLoaded(true);
         if (res) {
           const t = [];
           res.forEach((c, i) => {
-            console.log(c);
             t.push({
               name: c["course_code"] + "-" + c["course_name"],
               value: i,
@@ -100,7 +96,6 @@ const AdminPage = (props) => {
               "Course Picture(Optional)": c['course_pic']
             });
           });
-          console.log("Showing");
           setCourses(t);
           setCourse(0);
           setContent("Course");
