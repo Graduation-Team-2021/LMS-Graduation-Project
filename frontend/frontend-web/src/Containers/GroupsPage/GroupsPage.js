@@ -51,7 +51,6 @@ const HomePage = (props) => {
       if (res) {
         let Groups = new Map();
         res.forEach((id) => {
-          id["pic"] = "https://picsum.photos/200/300";
           id["isEnrolled"] = "false";
           if (
             Array.from(currentGroups.keys()).includes(id["group_id"])) {
@@ -60,21 +59,14 @@ const HomePage = (props) => {
           Groups[id["group_id"]] = setGroup(id);
         });
         console.log("====================================");
-        console.log(props.currentGroups)
-        console.log(Groups);
+        console.log(Groups, res);
         console.log("====================================");
         setGroups(Groups);
       } else {
         TokenError();
       }
     });
-  }, [
-    ID,
-    Token,
-    TokenError,
-    currentGroups,
-    props.location.state,
-  ]);
+  }, [ID, Token, TokenError, currentGroups, props.currentGroups, props.location.state]);
 
   let loadedGroups = [];
   Array.from(Object.keys(Groups)).forEach((key) => {

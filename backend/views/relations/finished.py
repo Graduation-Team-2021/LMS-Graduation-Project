@@ -24,6 +24,7 @@ class finished_relation_view(Resource):
                         'course_code':finished_courses[i]["course_code"],
                         'course_name':finished_courses[i]["course_name"],
                         'course_mark':finished_courses[i]["total_mark_in_the_course"],
+                        'course_pic': finished_courses[i]["course_pic"]
                     }
                 )
             if not finished_courses:

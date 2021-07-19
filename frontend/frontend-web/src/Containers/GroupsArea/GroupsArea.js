@@ -33,6 +33,7 @@ class GroupsArea extends Component {
         const Groups = new Map();
         if (res) {
           res.forEach((element) => {
+            console.log(element);
             Groups.set(element["group_id"], setGroup(element));
           });
           this.setState({ Groups: Groups });

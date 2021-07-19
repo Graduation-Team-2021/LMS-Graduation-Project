@@ -31,7 +31,7 @@ class StudentGroupRelationController:
         groups=StudentGroupRelation.query.join(Student).\
             filter(Student.user_id==student_id).join(User).filter(Student.user_id==User.user_id).\
             join(GroupProject).filter(GroupProject.group_id==StudentGroupRelation.group_id).\
-            with_entities(User.name,GroupProject.group_name,StudentGroupRelation.group_id,GroupProject.group_description,GroupProject.post_owner_id)
+            with_entities(User.name,GroupProject.group_name,StudentGroupRelation.group_id,GroupProject.group_description,GroupProject.post_owner_id, GroupProject.group_pic)
         data=[g for g in groups]
         return data
 

@@ -10,7 +10,7 @@ const OldCourse = (props) => {
       <Card className={classes.Card}>
         <div className={classes.Top}>
           <div className={classes.CourseTitle}>{props.Title}</div>
-          <ImageHolder className={classes.Image} filler={filler} />
+          <ImageHolder className={classes.Image} filler={props.pic||filler} />
         </div>
         <div className={classes.Bottom}>Final Grade: {props.grade}</div>
       </Card>

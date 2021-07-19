@@ -38,7 +38,8 @@ class StudentGroupView(Resource):
                    "group_id":groups[i][2],
                    "group_name":groups[i][1],
                    "group_description":groups[i][3],
-                   'post_owner_id':groups[i][4]
+                   'post_owner_id':groups[i][4],
+                   'group_pic': groups[i][5]
                }
            )
         return {'groups':data_array,'status_code':200}

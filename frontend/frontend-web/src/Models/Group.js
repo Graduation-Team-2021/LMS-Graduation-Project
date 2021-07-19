@@ -4,7 +4,7 @@ export const setGroup = (ele) => {
     Desc: ele["group_description"],
     Post: ele["post_owner_id"],
     isEnrolled: ele["isEnrolled"],
-    pic: ele["pic"],
+    pic: ele["group_pic"],
   };
   return data;
 };

@@ -7,8 +7,9 @@ class finished_relation_controller():
     def get_finished_courses(self, student_id):
         try:
             # finished_courses = Finished.query.filter_by(student_id=student_id).all()
-            finished_courses = Finished.query.join(Course).filter(Finished.course_code == Course.course_code).with_entities(
-                Course.course_code, Course.course_name, Finished.total_mark_in_the_course)
+            finished_courses = Finished.query.join(Course).filter(Finished.course_code == Course.course_code)\
+                .filter(Finished.student_id==student_id).with_entities(
+                Course.course_code, Course.course_name, Finished.total_mark_in_the_course, Course.course_pic)
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({
@@ -17,7 +18,7 @@ class finished_relation_controller():
             })
 
         data = [{'course_code': course[0], 'course_name': course[1],
-                 'total_mark_in_the_course': course[2]} for course in finished_courses]
+                 'total_mark_in_the_course': course[2], 'course_pic': course[3]} for course in finished_courses]
         return data
 
     def post_finished_course(self, course):

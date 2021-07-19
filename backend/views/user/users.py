@@ -258,8 +258,8 @@ class Reset_password(Resource):
         args = self.reqparse.parse_args()
         try:
             if controller_object.reset_password(args['user_id'], args['password']):
-                return jsonify({"message": 'an email has been sent to you.'})
-            return jsonify("wrong national id , please re-check your data.")
+                return jsonify({"message": 'an email has been sent to you.', 'status_code': 200})
+            return jsonify({"message":"User Doesn't Exists", 'status_code': 208})
         except ErrorHandler as e:
             return e.error
 
