@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import classes from "./CourseListItem.module.css";
+import classes from "./GroupListItem.module.css";
 import CourseItemContent from "./CourseItemContent/CourseItemContent";
 class CourseListItem extends Component {
   render() {
-    const testImage = this.props.CoursePicture;
-    let selected = this.props.displayedCourse === this.props.id;
+    const testImage = this.props.pic;
+    let selected = this.props.displayedGroup === this.props.id;
     return (
       <div className={classes.CourseItemListContainer} >
         <div

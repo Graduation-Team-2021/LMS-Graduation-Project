@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import Card from "../../Components/Card/Card";
-import CourseListItem from "../../Components/GroupsPageComponents/CourseListItem/CourseListItem";
-import CourseOverView from "../../Components/GroupsPageComponents/CourseOverview/CourseOverview";
+import CourseListItem from "../../Components/GroupsPageComponents/GroupListItem/GroupListItem";
+import CourseOverView from "../../Components/GroupsPageComponents/GroupOverview/GroupOverview";
 import Waiting from "../../Components/Waiting/Waiting";
 
 import {
@@ -49,26 +49,18 @@ const HomePage = (props) => {
     getGroups(Token).then((res) => {
       setLoading(false);
       if (res) {
-        console.log(props.currentGroups)
         let Groups = new Map();
         res.forEach((id) => {
           id["pic"] = "https://picsum.photos/200/300";
-          id["isenrolled"] = "false";
+          id["isEnrolled"] = "false";
           if (
-            Array.from(currentGroups.keys()).includes(id["group_id"]) ||
-            res.find((value) => value.group_id === id["group_id"])
-          ) {
-            id["isenrolled"] = "true";
+            Array.from(currentGroups.keys()).includes(id["group_id"])) {
+            id["isEnrolled"] = "true";
           }
-          if (props.location.state) {
-            if (id["isenrolled"] === "false") {
-              Groups[id["group_id"]] = setGroup(id);
-            }
-          } else {
-            Groups[id["group_id"]] = setGroup(id);
-          }
+          Groups[id["group_id"]] = setGroup(id);
         });
         console.log("====================================");
+        console.log(props.currentGroups)
         console.log(Groups);
         console.log("====================================");
         setGroups(Groups);
@@ -101,6 +93,7 @@ const HomePage = (props) => {
     <div className={classes.CourseOverview}>
       <CourseOverView
         Group={Groups[displayedGroup]}
+        id={displayedGroup}
         {...Groups[displayedGroup]}
         removeHandler={removingFromTheStageHandler}
         Enroll={Enroll}

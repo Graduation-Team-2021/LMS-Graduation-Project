@@ -3,7 +3,7 @@ import classes from "./CourseListItem.module.css";
 import CourseItemContent from "./CourseItemContent/CourseItemContent";
 class CourseListItem extends Component {
   render() {
-    const testImage = this.props.CoursePicture;
+    const testImage = this.props.pic;
     let selected = this.props.displayedCourse === this.props.id;
     return (
       <div className={classes.CourseItemListContainer} >

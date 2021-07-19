@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Button } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
-import classes from "./CourseOverview.module.css";
+import classes from "./GroupOverview.module.css";
 import Enroll from "../../Enroll/Enroll";
 import Modal from "../../Modal/Modal";
 
 const CourseOverview = (props) => {
-  let imageTest = props.CoursePicture;
+  let imageTest = props.pic;
 
   const [show, setShow] = useState(false);
 
@@ -23,7 +23,7 @@ const CourseOverview = (props) => {
   return (
     <div className={classes.CourseOverview}>
       <Modal show={show} onClick={dismiss}>
-        <Enroll isEnrolled={props.isEnrolled==='true'} id={props.CourseID} onCancel={dismiss} onAccept={accept} />
+        <Enroll isEnrolled={props.isEnrolled==='true'} id={props.id} onCancel={dismiss} onAccept={accept} />
       </Modal>
       <img src={imageTest} alt="tst" className={classes.CoursePicture} />
       <h3>{props.Title}</h3>
@@ -36,13 +36,14 @@ const CourseOverview = (props) => {
           onClick={() => {
             if (props.isEnrolled === "true") {
               props.history.push({
-                pathname: `/Group/${props.CourseID}`,
+                pathname: `/Group/${props.id}`,
                 state: {
-                  Data: props.Course,
+                  Data: props.Group,
                   isJoined: props.isEnrolled,
                 },
               });
             } else {
+              console.log(props)
               setShow(true);
             }
           }}
