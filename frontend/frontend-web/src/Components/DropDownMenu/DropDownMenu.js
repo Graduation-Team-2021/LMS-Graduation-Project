@@ -7,6 +7,7 @@ import InNotif from "./Notif/Notif";
 import InMessages from "./Messages/Messages";
 
 const DropDownMenu = (props) => {
+
   const Menu = (
     <span className={classes.holder}>
       <Card className={classes.Card} shadow key={1}>
@@ -26,7 +27,7 @@ const DropDownMenu = (props) => {
   const Messages = (
     <span className={classes.holder}>
       <Card shadow key={3} className={classes.Card}>
-        <InMessages onClick={props.onClick} />
+        <InMessages onClick={props.onClick} setMess={props.setMess} />
       </Card>
     </span>
   );

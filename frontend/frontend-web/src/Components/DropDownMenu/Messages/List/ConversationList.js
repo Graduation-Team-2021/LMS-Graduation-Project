@@ -45,7 +45,10 @@ export default connect(
               key={index}
               Name={value.name}
               img={filler}
-              onClick={() => { props.currentMessageActions.onSetCurrentMessage({ Name: value.name, ID: value.user_id }) }}
+              onClick={() => {
+                props.currentMessageActions.onSetCurrentMessage({ Name: value.name, ID: value.user_id });
+                props.setMess(false);
+              }}
             />
           );
         });
@@ -144,7 +147,7 @@ export default connect(
     <div className={cls.conversationList}>
       <div className={cls.title}>
         Messages
-        <button className={cls.search} onClick={()=>{setAddBar({ showBar: !addBarVis.showBar });}}>
+        <button className={cls.search} onClick={() => { setAddBar({ showBar: !addBarVis.showBar }); }}>
           <img
             src="/add_box.png"
             width="25"
@@ -159,7 +162,10 @@ export default connect(
           {!(addBarVis.showBar && Query !== "") ?
             conversations.map((conversation, index) => (
               <ConversationListItem
-                onClick={() => { props.currentMessageActions.onSetCurrentMessage(conversation); }}
+                onClick={() => {
+                  props.currentMessageActions.onSetCurrentMessage(conversation);
+                  props.setMess(false)
+                }}
                 isOnline={CurrentActiveUsers.includes(conversation.ID)}
                 key={index}
                 data={conversation}
