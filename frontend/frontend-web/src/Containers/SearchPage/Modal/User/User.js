@@ -31,7 +31,6 @@ const User = (props) => {
               Name: user.name,
             });
             props.dismiss();
-            console.log("opening messenger");
           }}
         >
           Message

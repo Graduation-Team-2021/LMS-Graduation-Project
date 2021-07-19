@@ -50,7 +50,6 @@ export default connect(
         props.userData.Token,
         CURRENT_MESSAGE_ID
       ).then((res) => {
-        console.log(res);
         const temp = [];
         res.forEach((ele) => {
           let time = ele["sent_time"];

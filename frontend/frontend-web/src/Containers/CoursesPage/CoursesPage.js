@@ -49,9 +49,9 @@ const HomePage = (props) => {
 
   useEffect(() => {
     getCourses(Token).then((res) => {
+      if (res && Role === "student") {
       getFinishedCourses(Token, ID, Role).then((r2) => {
         setLoading(false);
-        if (res && Role === "student") {
           let Courses = new Map();
           res.forEach((id, index) => {
             id["isenrolled"] = "false";
@@ -70,7 +70,9 @@ const HomePage = (props) => {
             }
           });
           setCourses(Courses);
+        });
         } else if (res) {
+          setLoading(false);
           let Courses = new Map();
           res.forEach((id, index) => {
             id["isenrolled"] = "false";
@@ -92,7 +94,6 @@ const HomePage = (props) => {
           TokenError();
         }
       });
-    });
   }, [
     ID,
     Role,

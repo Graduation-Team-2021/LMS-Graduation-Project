@@ -58,9 +58,6 @@ const HomePage = (props) => {
           }
           Groups[id["group_id"]] = setGroup(id);
         });
-        console.log("====================================");
-        console.log(Groups, res);
-        console.log("====================================");
         setGroups(Groups);
       } else {
         TokenError();

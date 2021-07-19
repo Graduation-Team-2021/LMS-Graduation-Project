@@ -41,7 +41,6 @@ class CourseDesc extends Component {
   };
 
   Submit = () => {
-    console.log(this.state.file);
     this.setState({ clicked: true, done: false });
     uploadFile(
       this.props.Token,

@@ -263,39 +263,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
             onChange={handleInputChanged}
             onKeyDown={handleKeyDown}
             rightItems={[
-              <button className={cls.search} key="voice">
-                <i>
-                  <img
-                    src="/voice.png"
-                    width="20"
-                    height="20"
-                    alt="voice message"
-                  />
-                </i>
-              </button>,
-              <button
-                className={cls.search}
-                key="photo"
-                onClick={onButtonClick}
-              >
-                <i>
-                  <img src="/photo.png" width="20" height="20" alt="" />
-                </i>
-              </button>,
-              <button
-                className={cls.search}
-                key="attachment"
-                onClick={onButtonClick}
-              >
-                <i>
-                  <img
-                    src="/attachment.png"
-                    width="20"
-                    height="20"
-                    alt="attachment"
-                  />
-                </i>
-              </button>,
               <button
                 className={cls.search}
                 key="send"
@@ -307,13 +274,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
               </button>,
             ]}
           >
-            <input
-              type="file"
-              id="file"
-              ref={inputFile}
-              style={{ display: "none" }}
-              onChange={onFileChange}
-            />
           </Compose>
         </React.Fragment>
       ) :

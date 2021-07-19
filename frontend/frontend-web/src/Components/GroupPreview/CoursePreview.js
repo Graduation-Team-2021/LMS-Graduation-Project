@@ -22,7 +22,6 @@ const GroupPreview = (props) => {
       className={classes.holder}
     >
       <Card shadow className={classes.Card}>
-      {console.log(props.Group)}
         <div className={classes.CourseTitle}>{props.Group.Title}</div>
         <ImageHolder filler={props.Group.pic||filler} />
       </Card>

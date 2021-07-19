@@ -14,7 +14,6 @@ const Enroll = (props) => {
     //Load Status
     if (props.option==='Course' && !props.isEnrolled) {
       getStatus(props.id, props.userData.Token).then((res) => {
-        console.log(res);
         if (res === "Can Enroll") setResponse(0);
         else if (res === "Can't Enroll") setResponse(1);
         else setResponse(2);

@@ -29,7 +29,6 @@ class CoursesArea extends Component {
       const Courses = new Map();
       if (res) {
         res.forEach((element) => {
-          console.log(element);
           Courses.set(element["course_code"], setCourse(element));
         });
         this.setState({
@@ -38,7 +37,6 @@ class CoursesArea extends Component {
         });
         this.setCurrentCourses(Courses);
       } else {
-        console.log("the courses");
         this.TokenError();
       }
       this.setState({

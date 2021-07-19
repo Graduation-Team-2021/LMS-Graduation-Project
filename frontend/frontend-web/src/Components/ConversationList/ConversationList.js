@@ -93,9 +93,6 @@ export default connect(
   },
     [Users, conversations, Current, hasChanged, newMessID, newText,setChanged,setNewID, setNewText])
 
-  useEffect(() => {
-    console.log(props.Current)
-  }, [props.Current])
   /////////////////////////////////////////////////////////////////
   function useOutsideAlerter(ref) {
     useEffect(() => {

@@ -35,7 +35,6 @@ const TextField = (props) => {
         }))}
         onChange={(value, action) => {
           const List = "";
-          console.log("changed", action.action, value);
           if (action.action === "select-option") {
             return props.onSelect(
               List,

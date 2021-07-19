@@ -60,12 +60,10 @@ const GroupPage = (props) => {
   }, [Token, postID, Title, userID]);
 
   const SubmitPost = async (post) => {
-    console.log(post);
     let data = setNewPost(post, Title, userID, Name);
     
     let id = await uploadPost(Token, userID, postID, post);
     if (id) {
-      console.log(id)
       data.PostId=id;
       let temp = [
         <Post key={Posts.length} {...data} />,

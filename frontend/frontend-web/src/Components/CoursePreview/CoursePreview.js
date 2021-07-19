@@ -10,7 +10,6 @@ const CoursePreview = (props) => {
     <div
       className={classes.holder}
       onClick={() => {
-        console.log(props.Course);
         props.history.push({
           pathname: `/Course/${props.id}`,
           state: {

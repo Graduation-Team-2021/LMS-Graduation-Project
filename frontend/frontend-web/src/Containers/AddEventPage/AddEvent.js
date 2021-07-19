@@ -20,7 +20,6 @@ class AddEvent extends Component {
     starting_from: "",
   };
   openModal = () => {
-    console.log("Hello from OpenModal");
     this.setState({
       openedModal: true,
     });
