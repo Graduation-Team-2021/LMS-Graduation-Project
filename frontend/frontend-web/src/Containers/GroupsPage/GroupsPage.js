@@ -68,13 +68,7 @@ const HomePage = (props) => {
         TokenError();
       }
     });
-  }, [
-    ID,
-    Token,
-    TokenError,
-    currentGroups,
-    props.location.state,
-  ]);
+  }, [ID, Token, TokenError, currentGroups, props.currentGroups, props.location.state]);
 
   let loadedGroups = [];
   Array.from(Object.keys(Groups)).forEach((key) => {
