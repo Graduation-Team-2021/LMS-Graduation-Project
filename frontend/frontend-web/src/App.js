@@ -5,6 +5,7 @@ import Home from "./Containers/HomePage/HomePage";
 import Login from "./Containers/LoginPage/LoginPage";
 import Profile from "./Containers/ProfilePage/ProfilePage";
 import Courses from "./Containers/CoursesPage/CoursesPage";
+import Groups from "./Containers/GroupsPage/GroupsPage"
 import Course from "./Containers/CoursePage/CoursePage";
 import Mark_edit from "./Ibrahim/Mrak_edit.js";
 import Group from "./Containers/GroupPage/GroupPage.js";
@@ -39,6 +40,7 @@ const App = (props) => {
                 <Route path="/" exact component={Home} />
                 <Route path="/Profile" exact component={Profile} />
                 <Route path="/Courses" exact component={Courses} />
+                <Route path="/Groups" exact component={Groups} />
                 <Route path="/Course/:id" exact component={Course} />
                 <Route path="/Group/:id" exact component={Group} />
                 <Route path="/Course/:id/Marks" exact component={Mark_edit} />
@@ -73,6 +75,7 @@ const App = (props) => {
                 <Route path="/AddCourse" exact component={AddCourse} />
                 <Route path="/changePass" exact component={ResetPass} />
                 <Route path="/Search" exact component={Search} />
+                <Route path="/messenger" exact component={Messenger} />
                 <Redirect path="/login" to="/" />
               </React.Fragment>
             )}
