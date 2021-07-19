@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import classes from "./GroupListItem.module.css";
 import CourseItemContent from "./CourseItemContent/CourseItemContent";
+import filler from '../../../assets/Filler.png'
 class CourseListItem extends Component {
   render() {
     const testImage = this.props.pic;
@@ -16,7 +17,7 @@ class CourseListItem extends Component {
             this.props.getSelected(this.props.id);
           }}
         >
-          <img src={testImage} alt="tst" className={classes.CourseImage} />
+          <img src={testImage||filler} alt="tst" className={classes.CourseImage} />
           <div className={classes.CourseItemContent}>
             <CourseItemContent
               CourseName={this.props.Title}

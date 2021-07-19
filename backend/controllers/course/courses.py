@@ -75,6 +75,7 @@ class courses_controller():
                 gid = group_object.insert_group({
                     "group_name": f'{updated_course["course_code"]} - Section {group+1}',
                     "group_description": f'This is the Group for Section {group+1} of the {updated_course["course_name"]} Course',
+                    'group_pic': updated_course['course_pic']
                 })
                 group_course_object.add_group_course(course=updated_course["course_code"], group=gid)
         except SQLAlchemyError as e:

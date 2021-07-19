@@ -11,13 +11,15 @@ class GroupProject(db.Model, Base):
     group_name = db.Column(db.String(50))
     group_description = db.Column(db.Text(20000))
     post_owner_id=db.Column(db.Integer,ForeignKey('post_owner.owner_id', onupdate="CASCADE",ondelete='SET NULL'))
-
+    group_pic=db.Column(db.Text(30000))
+    
     def serialize(self):
         return {
             "group_id": self.group_id,
             "group_name": self.group_name,
             "group_description":self.group_description,
-            "post_owner_id":self.post_owner_id
+            "post_owner_id":self.post_owner_id,
+            'group_pic': self.group_pic
         }
 
     def insert(self):

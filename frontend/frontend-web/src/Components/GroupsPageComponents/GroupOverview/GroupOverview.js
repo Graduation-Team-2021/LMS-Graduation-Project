@@ -4,33 +4,14 @@ import { withRouter } from "react-router-dom";
 import classes from "./GroupOverview.module.css";
 import Enroll from "../../Enroll/Enroll";
 import Modal from "../../Modal/Modal";
+import filler from '../../../assets/Filler.png'
 
 const CourseOverview = (props) => {
   let imageTest = props.pic;
 
-  const [show, setShow] = useState(false);
-
-  const dismiss = () => {
-    setShow(false);
-  };
-
-  const accept = () => {
-    //enroll in course
-    props.Enroll();
-    setShow(false);
-  };
-
   return (
     <div className={classes.CourseOverview}>
-      <Modal show={show} onClick={dismiss}>
-        <Enroll
-          isEnrolled={props.isEnrolled === "true"}
-          id={props.id}
-          onCancel={dismiss}
-          onAccept={accept}
-        />
-      </Modal>
-      <img src={imageTest} alt="tst" className={classes.CoursePicture} />
+      <img src={imageTest||filler} alt="tst" className={classes.CoursePicture} />
       <h3>{props.Title}</h3>
       <p>{props.Desc}</p>
       <div className={classes.ButtonsRow}>

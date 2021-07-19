@@ -133,6 +133,7 @@ class Courses(Resource):
                 gid = group_object.insert_group({
                     "group_name": f'{args["course_code"]} - Section {group+1}',
                     "group_description": f'This is the Group for Section {group+1} of the {args["course_name"]} Course',
+                    'group_pic': args['course_pic']
                 })
                 group_course_object.add_group_course(course=course, group=gid)
         except ErrorHandler as e:
