@@ -44,6 +44,10 @@ class GroupsArea extends Component {
       .catch((error) => console.log(error));
   }
 
+  loadGroups = () =>{
+    this.props.history.push("/Groups");
+  }
+
   render() {
     let ids = Array.from(this.state.Groups.keys());
     let Groups = [];
@@ -62,6 +66,16 @@ class GroupsArea extends Component {
       <div className={classes.GroupsArea}>
         <div className={classes.Title}>
           <div>Groups You're In</div>
+          <div className={classes.Container}>
+            <Button
+              className={classes.Join}
+              onClick={() => {
+                this.loadGroups();
+              }}
+            >
+              See All Groups
+            </Button>
+          </div>
         </div>
         <Waiting Loading={this.state.Loading}>
           <SwipeList>{Groups}</SwipeList>
