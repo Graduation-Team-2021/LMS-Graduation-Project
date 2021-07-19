@@ -8,6 +8,7 @@
     display: flex;
     justify-self: flex-end;
     flex: 2;
+    width: 60%;
 }
 
 .Answer {

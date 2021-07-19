@@ -9,7 +9,7 @@ class Post_owner_controller:
             new_owner=PostOwner()
             new_owner=PostOwner.insert(new_owner)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -21,7 +21,7 @@ class Post_owner_controller:
             owner = PostOwner.query.order_by(PostOwner.owner_id.desc()).first()
             return owner.serialize()['owner_id']
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -33,7 +33,7 @@ class Post_owner_controller:
         try:
             to_be_deleted=PostOwner.query.filter_by(id=owner_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

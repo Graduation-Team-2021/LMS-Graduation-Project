@@ -4,8 +4,11 @@ export const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000"; //NEVER
 export const path = "http://192.168.1.68:5000";
 import * as localStorage from "./sqllite";
 import jwt from "jwt-decode";
+import * as FileSystem from "expo-file-system";
 import NetInfo from "@react-native-community/netinfo";
 import jwtDecode from "jwt-decode";
+import sha256 from "crypto-js/sha512";
+
 const instance = axios.create({
   baseURL: azure,
 });
@@ -244,18 +247,27 @@ export const uploadPost = async (Token, writer, owner, post) => {
 };
 //store and load in the local storage   DONE
 export const getCourseByID = async (Token, CourseID) => {
-  const res = await instance.get(`/courses/${CourseID}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
+  let David = jwtDecode(Token);
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/courses/${CourseID}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    });
 
-  if (res["status"] !== 200) {
-    //TODO: Better Check
-    return null;
+    if (res["status"] !== 200) {
+      //TODO: Better Check
+      return null;
+    }
+    console.log("[KAK]====================================");
+    console.log(res.data["course"]);
+    console.log("[KAK]====================================");
+    localStorage.SQLInsertCourse(res.data["course"]);
+    return res.data["course"];
   }
-  return res.data["course"];
+  const result = await localStorage.SQLGetCourseById(David.id, CourseID);
+  return result;
 };
 //store in the local storage (Future work)
 export const uploadFile = async (
@@ -285,12 +297,36 @@ export const uploadFile = async (
 };
 //store in the local storage(Future work)
 export const materialUri = async (material_id) => {
-  const res = await instance.get(`/materials/${material_id}/uri`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return res.data["url"];
+  if ((await NetInfo.fetch()).isConnected) {
+    const res = await instance.get(`/materials/${material_id}/uri`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const kak = res.data["url"].split("/");
+    const downloadResumable = FileSystem.createDownloadResumable(
+      azure + res.data["url"], //azur/static/deepweb
+      FileSystem.documentDirectory +
+        sha256(res.data["url"]).toString() +
+        "." +
+        kak[6].split(".")[1] //filesystemdur/static/deepweb
+    );
+    downloadResumable.downloadAsync().then((result) => {
+      localStorage.SQLInsertPdfs({
+        material_id: material_id,
+        course_material: kak[3],
+        material_name: kak[6].split(".")[0],
+        material_type: "." + kak[6].split(".")[1],
+        local_uri: res.data["url"],
+      });
+    });
+    return azure + res.data["url"];
+  } else {
+    const res = (await localStorage.SQLGetOnePdf(material_id))[0];
+    return (
+      FileSystem.documentDirectory + sha256(res.local_uri) + res.material_type
+    );
+  }
 };
 //store in the local storage (Future work)
 export const Like = async (Token, userID, postID) => {
@@ -335,7 +371,7 @@ export const getAllConversations = async (Token) => {
   if (res.data["status_code"] !== 200) {
     return null;
   }
-  console.log(res.data["conversations"]);
+  console.log("[Michel]", res.data["conversations"]);
   return res.data["conversations"];
 };
 //store in the local storage(Future)
@@ -630,10 +666,256 @@ export const getGradeSoFar = async (id) => {
   return res.data["courses"];
 };
 
+// new kkkkkk
+
+export const getQuizzes = async (id, Token) => {
+  //TODO: Integrate the Quizzes backend
+
+  const res = await instance.get(`/exams_by_course/${id}/${Token}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const result = res.data;
+  return result;
+};
+
+export const getQuizByID = async (id, Token) => {
+  const res = await instance.get(`/exams/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(`Getting Quizzes of All Courses`);
+  return res.data.exam;
+};
+
+export const AddQuiz = async (Data) => {
+  const res = await instance.post(
+    `/Courses/${Data.course_id}/exams`,
+    { data: Data },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  console.log(res.data);
+  if (res.data["status_code"] === 200) {
+    return true;
+  } else {
+    return false;
+  }
+};
+// ADHaM
+export const SubmitQuiz = async (Data) => {
+  const res = await instance.post(`/submit_exam`, Data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(res.data);
+  if (res.data["status_code"] === 200) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const getOnePDF = async (id) => {
+  //TODO: Integrate the PDFs backend
+  const res = await instance.get(`/materials/${id}/uri`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(`Getting PDF of id: ${id}`);
+  var materials = res.data["url"];
+  return materials;
+};
+
+export const getOneVideo = async (id) => {
+  //TODO: Integrate the PDFs backend
+  const res = await instance.get(`/materials/${id}/uri`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(`Getting Video of id: ${id}`);
+  var materials = res.data["url"];
+  return materials;
+};
+
+export const updatePic = async (id, Pic) => {
+  let data = new FormData();
+  data.append("pic", Pic);
+  const res = await instance.post(`/users/${id}/pic`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  console.log(res);
+  if (res.status === 200) {
+    return res.data;
+  }
+  return null;
+};
+
+export const changePassword = async (id, pass) => {
+  const res = await instance.post(
+    `/reset/password`,
+    { user_id: id, password: pass },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return res.data;
+};
+
+export const getDoctors = async () => {
+  const res = await instance.get(`/professors`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(res.data);
+  return res.data;
+};
+
+export const getStatus = async (id, Token) => {
+  const res = await instance.get(`/course/${id}/status`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  console.log(res.data);
+  return res.data.status;
+};
+
+export const BE_Enroll = async (id, Token, cid) => {
+  const res = await instance.post(
+    `/student/${id}/courses`,
+    { course_code: cid },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    }
+  );
+  console.log(res.data);
+  if (res.data.status_code === 200) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const BE_G_Enroll = async (cid, Token) => {
+  const res = await instance.post(
+    `group/${cid}/students`,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    }
+  );
+  console.log(res.data);
+  if (res.data.status_code === 200) {
+    return true;
+  } else {
+    return false;
+  }
+};
+// adham
+export const ExcelSignUp = async (Pic) => {
+  let data = new FormData();
+  data.append("file", Pic);
+  const res = await instance.post(`/sign_up/excel`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  console.log(res);
+  return res.data;
+};
+
+export const getGroups = async () => {
+  const res = await instance.get(`/project-groups`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["project_groups"];
+};
+
+export const getDegree = async (id) => {
+  const res = await instance.get(`/professors/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["professor"];
+};
+
+export const getYear = async (id) => {
+  const res = await instance.get(`/students/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["Student"];
+};
+
+export const getTeachedCourses = async (id) => {
+  const res = await instance.get(`/professor/${id}/courses`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["courses"];
+};
+
+export const AddNewEvent = async (data) => {
+  const res = await instance.post(`/courses/${data.course_code}/events`, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(res.data);
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["message"];
+};
+
 //change password
 //get quizes  => should be stored in the local storage
 //add quizes
-//submit quizes // store in the local storage
+//submit quizes // store in the local storage(future work)
 //get grades // store in the local storage
 //getDoctors
 //get status

@@ -14,7 +14,7 @@ class Post_Liker_controller:
             filter(Post_liker_relation.liker_id==User.user_id).\
             with_entities(User.user_id,User.name, Post_liker_relation.liker_id)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -29,7 +29,7 @@ class Post_Liker_controller:
             join(User).filter(Post_liker_relation.liker_id==User.user_id).\
             with_entities(User.user_id,User.name,Post_liker_relation.post_id)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -43,7 +43,7 @@ class Post_Liker_controller:
             new_like=Post_liker_relation(**like)
             Post_liker_relation.insert(new_like)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -60,7 +60,7 @@ class Post_Liker_controller:
                     'status_code': 404
                 })
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

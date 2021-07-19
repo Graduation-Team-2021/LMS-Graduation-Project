@@ -19,7 +19,7 @@ class students_controller():
                                                                                               User.birthday,
                                                                                               Student.student_year)
         except ErrorHandler as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -38,7 +38,7 @@ class students_controller():
         try:
             deleted_student = Student.query.filter_by(user_id=user_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -55,7 +55,7 @@ class students_controller():
         try:
             updated_student = Student.query.filter_by(user_id=user_id)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -74,7 +74,7 @@ class students_controller():
         try:
             new_student = Student.insert(new_student)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -85,7 +85,7 @@ class students_controller():
         try:
             students = Student.query.all()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404

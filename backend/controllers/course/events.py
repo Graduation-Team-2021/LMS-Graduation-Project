@@ -23,7 +23,7 @@ class events_controller():
                 event.event_date = json.dumps(event.event_date, default=str).replace("\"", "")
             data = [event.serialize() for event in events]
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -41,7 +41,7 @@ class events_controller():
             event.event_date = json.dumps(event.event_date, default=str).replace("\"", "")
             # TODO: Handle SQLAlchemyError
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -58,7 +58,7 @@ class events_controller():
                 })
             Events.delete(deleted_Event)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -79,7 +79,7 @@ class events_controller():
             updated_Event.update()
             updated_Event.event_date = json.dumps(updated_Event.event_date, default=str)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -91,7 +91,7 @@ class events_controller():
             new_Event = Events(**Event)
             new_Event = Events.insert(new_Event)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

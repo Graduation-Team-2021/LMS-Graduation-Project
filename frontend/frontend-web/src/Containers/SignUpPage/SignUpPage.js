@@ -74,11 +74,11 @@ class SignUpPage extends Component {
     if (this.errorHandler()) {
       let user = setNewUser(this.state.data);
       let res = await SignUp(user);
-      if (res) {
+      if (res.status_code===200) {
         alert("Sign Up Succesful");
         this.initSignup();
       } else {
-        alert("Sign Up failed");
+        alert(res.message);
       }
       this.initSignup();
     }

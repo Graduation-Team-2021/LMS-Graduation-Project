@@ -24,7 +24,7 @@ class deliverable_results_controller:
 
             return deliverable_result
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -43,7 +43,7 @@ class deliverable_results_controller:
         try:
             Deliverables_Results.insert(new_deliverable_result)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -58,7 +58,7 @@ class deliverable_results_controller:
             updated_deliverable_result = Deliverables_Results(**new_deliverable_result)
             updated_deliverable_result.update()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404

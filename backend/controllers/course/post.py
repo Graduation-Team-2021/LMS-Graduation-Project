@@ -21,7 +21,7 @@ class Post_Controller:
         try:
             post = Post.query.filter_by(post_id=post_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -37,7 +37,7 @@ class Post_Controller:
         try:
             to_be_deleted = Post.query.filter_by(post_id=post_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -61,7 +61,7 @@ class Post_Controller:
             to_be_updated_post = Post(**post)
             to_be_updated_post.update()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -75,7 +75,7 @@ class Post_Controller:
             new_post.insert()
         except SQLAlchemyError as e:
             print(e)
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -86,7 +86,7 @@ class Post_Controller:
         try:
             posts = Post.query.all()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

@@ -21,7 +21,6 @@ class CreateQuiz extends Component {
   }
 
   onSubmit = () => {
-    //TODO: Connect Add Quizzes to Backend
     const QE = this.state.Questions.find((value) => value.Text === "");
     const DE = this.state.Duration && this.state.Duration === 0;
     var AE = this.state.Questions.find((value) => value.Answers.length === 0);
@@ -36,10 +35,7 @@ class CreateQuiz extends Component {
       }
     }
     for (let index = 0; index < this.state.Questions.length; index++) {
-      if (
-        !this.state.Questions[index].Marks ||
-        this.state.Questions[index].Marks < 0
-      ) {
+      if (this.state.Questions[index].Points < 0) {
         ME = true;
         break;
       }
@@ -73,14 +69,14 @@ class CreateQuiz extends Component {
     });
   };
 
-  onClear=(Name)=>{
-    const d=[]
+  onClear = (Name) => {
+    const d = [];
     this.setState((old, props) => {
       const state = { ...old };
       state.Unit = d;
       return state;
     });
-  }
+  };
 
   onChangePoints = (event, index) => {
     this.setState((prevState) => {
@@ -311,7 +307,7 @@ class CreateQuiz extends Component {
                   { name: "Choose", value: "Choose" },
                   { name: "True or False", value: "True or False" },
                 ]}
-                flex={2}
+                flex={3}
               />
               <Spacer width="50px" />
               <Input
@@ -345,7 +341,8 @@ class CreateQuiz extends Component {
       const QE = value.Text === "";
       var AE = value.Answers.length === 0;
       const CE = value.CorrectAnswers.length === 0;
-      const ME = !value.Mark || value.Mark < 0;
+      const ME = value.Points < 0;
+      console.log(QE, AE, CE, value.Points);
       for (let index = 0; index < this.state.Questions.length; index++) {
         if (
           AE ||

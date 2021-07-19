@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   ScrollView,
-  TouchableOpacity,
   TouchableNativeFeedback,
+  TouchableOpacity,
   Platform,
+  Text,
 } from "react-native";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
+import NetInfo from "@react-native-community/netinfo";
 import ANHeaderButton from "../components/ANHeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import ConversationCard from "../components/ConversationCard";
@@ -17,6 +19,17 @@ import msngrskt from "../sockets/msngrskts";
 const ConversationScreen = (props) => {
   const [conversations, setConversations] = useState([]);
   const [newMessage, setNewMessage] = useState(null);
+  const [InternetConnectionState, setInternetConnectionState] = useState(true);
+  useEffect(() => {
+    const setConnectivity = (newState) =>
+      setInternetConnectionState(
+        newState.isConnected && newState.isInternetReachable
+      );
+    NetInfo.addEventListener(setConnectivity);
+    return () => {
+      NetInfo.removeEventListener(setConnectivity);
+    };
+  }, []);
   msngrskt.auth = { userID: props.userData.ID };
   msngrskt.connect();
 
@@ -75,7 +88,7 @@ const ConversationScreen = (props) => {
   };
 
   useEffect(getConversations, [props.userData.Token]);
-
+  let TouchableCmp = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
@@ -87,8 +100,12 @@ const ConversationScreen = (props) => {
     });
   };
 
-  return (
-    <View style={{ backgroundColor: "white" }}>
+  let content = (
+    <Text>Showing messeging while offline mode is not supported</Text>
+  );
+
+  if (InternetConnectionState) {
+    content = (
       <ScrollView>
         {conversations.map((msg, i) => (
           <ConversationCard
@@ -99,8 +116,10 @@ const ConversationScreen = (props) => {
           ></ConversationCard>
         ))}
       </ScrollView>
-    </View>
-  );
+    );
+  }
+
+  return <View style={{ backgroundColor: "white", flex: 1 }}>{content}</View>;
 };
 ConversationScreen.navigationOptions = (navData) => {
   return {

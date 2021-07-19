@@ -51,7 +51,7 @@ class exams_controller():
                     answers_controller.post_answer(t3)
             
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -62,7 +62,7 @@ class exams_controller():
         try:
             questions = questions_controller.get_all_questions(exam_id)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -73,7 +73,7 @@ class exams_controller():
         try:
             exam_list = Exams.query.filter_by(course_id=course_id).all()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -104,7 +104,7 @@ class exams_controller():
             updated_exam = Exams(**exam)
             updated_exam.update()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -148,7 +148,7 @@ class exams_controller():
             results_controller.post_results(results)
             return
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -228,7 +228,7 @@ class exams_controller():
 
             return formatted_results
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
