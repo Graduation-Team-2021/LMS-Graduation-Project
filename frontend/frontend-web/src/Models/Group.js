@@ -3,6 +3,8 @@ export const setGroup = (ele) => {
     Title: ele["group_name"],
     Desc: ele["group_description"],
     Post: ele["post_owner_id"],
+    isEnrolled: ele["isEnrolled"],
+    pic: ele["pic"],
   };
   return data;
 };

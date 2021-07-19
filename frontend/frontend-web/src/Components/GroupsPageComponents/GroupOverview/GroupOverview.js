@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Button } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
-import classes from "./CourseOverview.module.css";
-import Enroll from "../../../Components/Enroll/Enroll";
-import Modal from "../../../Components/Modal/Modal";
+import classes from "./GroupOverview.module.css";
+import Enroll from "../../Enroll/Enroll";
+import Modal from "../../Modal/Modal";
 
 const CourseOverview = (props) => {
   let imageTest = props.pic;
@@ -23,16 +23,11 @@ const CourseOverview = (props) => {
   return (
     <div className={classes.CourseOverview}>
       <Modal show={show} onClick={dismiss}>
-        <Enroll isEnrolled={props.isEnrolled==='true'} id={props.CourseID} onCancel={dismiss} onAccept={accept} />
+        <Enroll isEnrolled={props.isEnrolled==='true'} id={props.id} onCancel={dismiss} onAccept={accept} />
       </Modal>
       <img src={imageTest} alt="tst" className={classes.CoursePicture} />
-      <h3>{props.CourseName}</h3>
-      <p>{props.CourseDescription}</p>
-      <div className={classes.DocPic}>
-        {props.DoctorName.length !== 0
-          ? props.DoctorName.join(", ")
-          : "No Instructors Yet"}
-      </div>
+      <h3>{props.Title}</h3>
+      <p>{props.Desc}</p>
       <div className={classes.ButtonsRow}>
         <Button
           variant="contained"
@@ -41,19 +36,20 @@ const CourseOverview = (props) => {
           onClick={() => {
             if (props.isEnrolled === "true") {
               props.history.push({
-                pathname: `/Course/${props.CourseID}`,
+                pathname: `/Group/${props.id}`,
                 state: {
-                  Data: props.Course,
+                  Data: props.Group,
                   isJoined: props.isEnrolled,
                 },
               });
             } else {
+              console.log(props)
               setShow(true);
             }
           }}
         >
           {props.isEnrolled === "true"
-            ? `Go to ${props.CourseName}`
+            ? `Go to ${props.Title}`
             : "Enroll First"}
         </Button>
         <Button

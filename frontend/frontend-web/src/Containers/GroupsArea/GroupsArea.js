@@ -24,6 +24,8 @@ class GroupsArea extends Component {
   Joined = this.props.currentGroups.currentGroups;
   setJoined = this.props.currentGroupsActions.onSetCurrentGroups;
   cancel = axios.CancelToken.source();
+  CurrentGroups = this.props.currentGroups.currentGroups;
+  setCurrentGroups = this.props.currentGroupsActions.onSetCurrentGroups;
 
   componentDidMount() {
     getCurrentGroups(this.Token, this.cancel)
@@ -34,6 +36,7 @@ class GroupsArea extends Component {
             Groups.set(element["group_id"], setGroup(element));
           });
           this.setState({ Groups: Groups });
+          this.setCurrentGroups(Groups);
         } else {
           this.TokenError();
         }
@@ -42,6 +45,10 @@ class GroupsArea extends Component {
         });
       })
       .catch((error) => console.log(error));
+  }
+
+  loadGroups = () =>{
+    this.props.history.push("/Groups");
   }
 
   render() {
@@ -62,6 +69,16 @@ class GroupsArea extends Component {
       <div className={classes.GroupsArea}>
         <div className={classes.Title}>
           <div>Groups You're In</div>
+          <div className={classes.Container}>
+            <Button
+              className={classes.Join}
+              onClick={() => {
+                this.loadGroups();
+              }}
+            >
+              See All Groups
+            </Button>
+          </div>
         </div>
         <Waiting Loading={this.state.Loading}>
           <SwipeList>{Groups}</SwipeList>

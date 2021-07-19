@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import classes from "./CourseListItem.module.css";
+import classes from "./GroupListItem.module.css";
 import CourseItemContent from "./CourseItemContent/CourseItemContent";
 class CourseListItem extends Component {
   render() {
     const testImage = this.props.pic;
-    let selected = this.props.displayedCourse === this.props.id;
+    let selected = this.props.displayedGroup === this.props.id;
     return (
       <div className={classes.CourseItemListContainer} >
         <div
@@ -19,8 +19,7 @@ class CourseListItem extends Component {
           <img src={testImage} alt="tst" className={classes.CourseImage} />
           <div className={classes.CourseItemContent}>
             <CourseItemContent
-              CourseName={this.props.CourseName}
-              DoctorName={this.props.DoctorName}
+              CourseName={this.props.Title}
             />
           </div>
         </div>
