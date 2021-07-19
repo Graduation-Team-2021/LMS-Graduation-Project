@@ -42,10 +42,12 @@ const CourseOverview = (props) => {
             onClick={() => {
               if (props.isEnrolled === "true") {
                 props.history.push({
-                  pathname: `/Group/${props.id}`,
+                  pathname: `/group/${props.id}`,
                   state: {
-                    Data: props.Group,
-                    isJoined: props.isEnrolled,
+                    isJoined: props.Group.isEnrolled,
+                    postID: props.Group.Post,
+                    name: props.Group.Title,
+                    Desc: props.Group.Desc,
                   },
                 });
               }
