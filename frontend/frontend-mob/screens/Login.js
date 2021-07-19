@@ -44,8 +44,9 @@ const LoginScreen = (props) => {
           <Image
             style={styles.image}
             source={{
-              uri: "https://images7.alphacoders.com/567/thumb-1920-567688.jpg",
+              uri: "https://eng.asu.edu.eg/archive/download/68239",
             }}
+            resizeMode="contain"
           />
         </View>
         <View style={styles.inputsContainer}>

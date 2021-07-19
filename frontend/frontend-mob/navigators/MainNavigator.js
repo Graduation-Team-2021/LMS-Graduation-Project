@@ -14,9 +14,9 @@ const MainDrawer = createDrawerNavigator(
 
     Profile: ProfileNav,
     Messenger: MsgsNavs,
-    RecentEventScreen: { screen: checkConnectivity(RecentEventScreen) },
+    RecentEventScreen: { screen: RecentEventScreen },
     ResetPassword: {
-      screen: checkConnectivity(ResetPasswordScreen),
+      screen: ResetPasswordScreen,
     },
   },
   {

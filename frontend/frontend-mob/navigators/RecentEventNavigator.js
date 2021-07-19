@@ -1,4 +1,5 @@
 import { createStackNavigator } from "react-navigation-stack";
+import checkConnectivity from "../hocs/checkConnectivity";
 import RecentEventScreen from "../screens/RecentEventScreen";
 const RecentEvent = createStackNavigator(
   {

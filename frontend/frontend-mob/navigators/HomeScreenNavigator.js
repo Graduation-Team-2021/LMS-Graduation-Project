@@ -75,8 +75,8 @@ const HomeStack = createStackNavigator(
         };
       },
     },
-    ForeignProfile: { screen: checkConnectivity(ForeignProfileScreen) },
-    SearchReasult: checkConnectivity(ResultsNavigator),
+    ForeignProfile: { screen: ForeignProfileScreen },
+    SearchReasult: ResultsNavigator,
     AddCourse: checkConnectivity(AddCourse),
     AddUser: checkConnectivity(AddUser),
   },

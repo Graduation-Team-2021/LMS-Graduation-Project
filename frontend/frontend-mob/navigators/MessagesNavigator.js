@@ -22,7 +22,7 @@ const MessagesNavigator = createStackNavigator(
       screen: checkConnectivity(ConversationScreen),
     },
     Messages: {
-      screen: checkConnectivity(MessagesScreen),
+      screen: MessagesScreen,
     },
   },
   {
