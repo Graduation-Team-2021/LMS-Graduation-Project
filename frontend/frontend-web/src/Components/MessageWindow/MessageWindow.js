@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import Message from "./Message/Message";
@@ -102,7 +102,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   if (searchVis.showSearch) {
     searchbb = <SearchBar searchQuery={Query} setSearchQuery={setQuery} fillerText="Search in current conversation..." />;
     if (Query !== "") {
-      messages.forEach((value, index) => {
+      messages.forEach((value) => {
         if (value.message.toLowerCase().includes(Query.toLowerCase())) {
           searchResults.push(
             {
@@ -116,19 +116,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
       });
     }
   }
-
-  //////////////////////////////////////////////////////////////////////////////////////
-  const inputFile = useRef(null);
-
-  const onButtonClick = () => {
-    // `current` points to the mounted file input element
-    inputFile.current.click();
-  };
-
-  const onFileChange = (e) => {
-    //TODO: For Sending files in Chats
-    const file = e.target.files[0];
-  };
   //////////////////////////////////////////////////////////////////////////////////
   const [messIn, setMess] = useState({ text: "" });
   function handleInputChanged(event) {
