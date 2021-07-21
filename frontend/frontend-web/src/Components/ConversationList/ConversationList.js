@@ -35,6 +35,7 @@ export default connect(
     });
     msngrskt.on("user connected", (response) => {
       let temp = [response, ...CurrentActiveUsers]
+      console.log("New User Connected");
       setCurrentActiveUsers(temp)
     });
     msngrskt.on("private message", (res) => setNewMessage(res));
