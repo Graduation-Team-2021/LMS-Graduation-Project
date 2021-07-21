@@ -14,26 +14,28 @@ const ProfileScreen = (props) => {
   const [PassedCourses, setPassedCourses] = useState([]);
   const [YourPosts, setYourPosts] = useState([]);
   useEffect(() => {
-    Interface.getFinishedCourses(
-      props.userData.Token,
-      props.userData.ID,
-      props.userData.Role
-    )
-      .then((res) => {
-        console.log("[AN]====================================");
-        console.log(res);
-        console.log("[AN]====================================");
-        setPassedCourses(res);
-      })
-      .catch((e) => console.log(e));
-    Interface.getRecentUserPosts(props.userData.Token)
-      .then((res) => setYourPosts(res))
-      .catch((e) => console.log(e));
+    if (props.userData.Role == "student") {
+      Interface.getFinishedCourses(
+        props.userData.Token,
+        props.userData.ID,
+        props.userData.Role
+      )
+        .then((res) => {
+          setPassedCourses(res);
+        })
+        .catch((e) => console.log(e));
+      Interface.getRecentUserPosts(props.userData.Token)
+        .then((res) => setYourPosts(res))
+        .catch((e) => console.log(e));
+    }
   }, []);
   let sum = 0;
-  PassedCourses.forEach((course) => {
-    sum += course.course_mark;
-  });
+  if (props.userData.Role == "student") {
+    PassedCourses.forEach((course) => {
+      sum += course.course_mark;
+    });
+  }
+  console.log("adham nour", props.userData.pic);
   return (
     <ScrollView>
       <View style={styles.screen}>
@@ -55,7 +57,7 @@ const ProfileScreen = (props) => {
               rounded
               size="xlarge"
               source={{
-                uri: "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg",
+                uri: props.userData.pic,
               }}
               containerStyle={styles.avatarContainerStyle}
             />
@@ -69,16 +71,30 @@ const ProfileScreen = (props) => {
               wrapperStyle={styles.displayDataCardWrapperStyle}
               containerStyle={styles.displayDataCardContainerStyle}
             >
-              <Text style={styles.text}>Passed Courses</Text>
-              <Text style={styles.text}>{PassedCourses.length}</Text>
+              <Text style={styles.text}>
+                {props.userData.Role == "student"
+                  ? "Passed"
+                  : "Currnet Teaching"}{" "}
+                Courses
+              </Text>
+              <Text style={styles.text}>
+                {
+                  (props.userData.Role === "student"
+                    ? PassedCourses
+                    : props.currentCourses.currentCourses
+                  ).length
+                }
+              </Text>
             </Card>
-            <Card
-              wrapperStyle={{ ...styles.displayDataCardWrapperStyle }}
-              containerStyle={styles.displayDataCardContainerStyle}
-            >
-              <Text style={styles.text}>Total Grade</Text>
-              <Text style={styles.text}>{sum}</Text>
-            </Card>
+            {props.userData.Role == "student" ? (
+              <Card
+                wrapperStyle={{ ...styles.displayDataCardWrapperStyle }}
+                containerStyle={styles.displayDataCardContainerStyle}
+              >
+                <Text style={styles.text}>Total Grade</Text>
+                <Text style={styles.text}>{sum}</Text>
+              </Card>
+            ) : null}
           </View>
         </Card>
         <Text style={[styles.text, styles.title]}>Your Posts</Text>
@@ -135,6 +151,7 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "bold",
     fontSize: 20,
+    textAlign: "center",
   },
   title: {
     paddingTop: 40,

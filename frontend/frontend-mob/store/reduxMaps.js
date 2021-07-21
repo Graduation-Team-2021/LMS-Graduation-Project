@@ -29,8 +29,9 @@ export const mapDispatchToProps = (dispatch) => {
         dispatch(userDataActionFunctions.setRole(newRole)),
       onSetData: (newData) =>
         dispatch(userDataActionFunctions.setData(newData)),
-      onSetPicture: (newPicture) =>
-        dispatch(userDataActionFunctions.setPic(newPicture)),
+      onSetPicture: (newPicture) => {
+        dispatch(userDataActionFunctions.setPic(newPicture));
+      },
     },
     currentCoursesActions: {
       onSetCurrentCourses: (newCourses) =>

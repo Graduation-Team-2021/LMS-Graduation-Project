@@ -655,6 +655,9 @@ export const getUser = async (id) => {
       "Content-Type": "application/json",
     },
   });
+  console.log("====================================");
+  console.log("Adham Nour", res.data);
+  console.log("====================================");
   return res.data;
 };
 export const getGradeSoFar = async (id) => {
@@ -781,7 +784,7 @@ export const getDoctors = async () => {
       "Content-Type": "application/json",
     },
   });
-  return res.data['professors'];
+  return res.data["professors"];
 };
 
 export const getStatus = async (id, Token) => {

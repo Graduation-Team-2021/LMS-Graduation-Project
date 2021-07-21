@@ -676,7 +676,7 @@ export function SQLGetUser(user_id) {
           for (let index = 0; index < res.rows.length; index++) {
             result.push(res.rows.item(index));
           }
-          resolve(result);
+          resolve(result[0]);
         },
         (_, err) => {
           reject(err);
