@@ -21,7 +21,6 @@ export const f1 = async () => {
 
 export const SignUp = async (Data) => {
   //TODO: use request result
-  console.log(Data["birthday"]);
   let res = await instance.post("/sign_up", Data, {
     headers: {
       "Content-Type": "application/json",
@@ -149,7 +148,6 @@ export const getRecentUserPosts = async (Token) => {
         Authorization: "Bearer " + Token,
       },
     });
-    console.log(res);
     if (res.data["status_code"] !== 200) {
       //TODO: Better Check
       return null;
@@ -238,7 +236,6 @@ export const uploadPost = async (Token, writer, owner, post) => {
       },
     }
   );
-  console.log(res.data);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -260,9 +257,7 @@ export const getCourseByID = async (Token, CourseID) => {
       //TODO: Better Check
       return null;
     }
-    console.log("[KAK]====================================");
-    console.log(res.data["course"]);
-    console.log("[KAK]====================================");
+
     localStorage.SQLInsertCourse(res.data["course"]);
     return res.data["course"];
   }
@@ -276,7 +271,6 @@ export const uploadFile = async (
   CourseID,
   setUploadPercentage
 ) => {
-  console.log(file);
   let data = new FormData();
   data.append("file", file);
   const res = await instance.post(
@@ -348,7 +342,6 @@ export const UnLike = async (Token, userID, postID) => {
 };
 //store in the local storage (Future work)
 export const Comment = async (Token, userID, postID, text) => {
-  console.log(text);
   const res = await instance.post(
     `/comments/${userID}/${postID}`,
     { comment_text: text },
@@ -371,7 +364,6 @@ export const getAllConversations = async (Token) => {
   if (res.data["status_code"] !== 200) {
     return null;
   }
-  console.log("[Michel]", res.data["conversations"]);
   return res.data["conversations"];
 };
 //store in the local storage(Future)
@@ -395,7 +387,6 @@ export const getAllMessages = async (Token, otherID) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
   if (res.data["status_code"] !== 200) {
     return null;
   }
@@ -419,7 +410,6 @@ export const getCourseStudents = async (id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res);
   return res.data["names"];
 };
 export const setCourseStudent = async (id, Data) => {
@@ -432,11 +422,9 @@ export const setCourseStudent = async (id, Data) => {
       },
     }
   );
-  console.log(res);
 };
 //store in the local storage (Future)
 export const AddCourse = async (Data) => {
-  console.log(Data);
   const res = await instance.post("/courses", Data, {
     headers: {
       "Content-Type": "application/json",
@@ -446,7 +434,6 @@ export const AddCourse = async (Data) => {
 };
 //store in the local storage (Future)
 export const AddGroup = async (Data, Token) => {
-  console.log(Data);
   const res = await instance.post("/project-groups", Data, {
     headers: {
       "Content-Type": "application/json",
@@ -461,7 +448,6 @@ export const getStudentsByCourse = async (id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res);
   return res.data["names"];
 };
 
@@ -655,9 +641,6 @@ export const getUser = async (id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log("====================================");
-  console.log("Adham Nour", res.data);
-  console.log("====================================");
   return res.data;
 };
 export const getGradeSoFar = async (id) => {
@@ -690,7 +673,6 @@ export const getQuizByID = async (id, Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(`Getting Quizzes of All Courses`);
   return res.data.exam;
 };
 
@@ -704,7 +686,6 @@ export const AddQuiz = async (Data) => {
       },
     }
   );
-  console.log(res.data);
   if (res.data["status_code"] === 200) {
     return true;
   } else {
@@ -718,7 +699,6 @@ export const SubmitQuiz = async (Data) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res.data);
   if (res.data["status_code"] === 200) {
     return true;
   } else {
@@ -733,7 +713,6 @@ export const getOnePDF = async (id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(`Getting PDF of id: ${id}`);
   var materials = res.data["url"];
   return materials;
 };
@@ -745,7 +724,6 @@ export const getOneVideo = async (id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(`Getting Video of id: ${id}`);
   var materials = res.data["url"];
   return materials;
 };
@@ -758,7 +736,6 @@ export const updatePic = async (id, Pic) => {
       "Content-Type": "multipart/form-data",
     },
   });
-  console.log(res);
   if (res.status === 200) {
     return res.data;
   }
@@ -794,7 +771,6 @@ export const getStatus = async (id, Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res.data);
   return res.data.status;
 };
 
@@ -809,7 +785,6 @@ export const BE_Enroll = async (id, Token, cid) => {
       },
     }
   );
-  console.log(res.data);
   if (res.data.status_code === 200) {
     return true;
   } else {
@@ -828,7 +803,6 @@ export const BE_G_Enroll = async (cid, Token) => {
       },
     }
   );
-  console.log(res.data);
   if (res.data.status_code === 200) {
     return true;
   } else {
@@ -844,7 +818,6 @@ export const ExcelSignUp = async (Pic) => {
       "Content-Type": "multipart/form-data",
     },
   });
-  console.log(res);
   return res.data;
 };
 
@@ -906,7 +879,6 @@ export const AddNewEvent = async (data) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res.data);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;

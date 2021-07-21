@@ -73,7 +73,6 @@ const ConversationScreen = (props) => {
         temp.push(data);
       });
       setConversations(temp);
-      console.log("hi");
     });
   };
 

@@ -23,10 +23,8 @@ const ProfileScreen = (props) => {
         .then((res) => {
           setPassedCourses(res);
         })
-        .catch((e) => console.log(e));
       Interface.getRecentUserPosts(props.userData.Token)
         .then((res) => setYourPosts(res))
-        .catch((e) => console.log(e));
     }
   }, []);
   let sum = 0;

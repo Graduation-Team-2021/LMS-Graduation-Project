@@ -25,20 +25,18 @@ const AddCourse = (props) => {
     },
   });
   const onSubmit = (data) => {
-    console.log("====================================");
-    data['doctors'] = items;
-    data['course_deadline'] = date.toISOString().slice(0,10);
-    console.log(data);
-    console.log("====================================");
+    data["doctors"] = items;
+    data["course_deadline"] = date.toISOString().slice(0, 10);
+
     //TODO: send the request to te backend here
-    AC(data).then(res=>{
-        if(res){
-            //TODO: Show it Succeded
-            reset();
-            setDate(new Date())
-            setItems([])
-        }
-    })
+    AC(data).then((res) => {
+      if (res) {
+        //TODO: Show it Succeded
+        reset();
+        setDate(new Date());
+        setItems([]);
+      }
+    });
   };
 
   const [isVisible, setVisible] = React.useState(false);
@@ -52,8 +50,9 @@ const AddCourse = (props) => {
   React.useEffect(() => {
     getDoctors().then((res) => {
       if (res) {
-          console.log(res[0]);
-        setDoctors(res.map((val) => ({ id: val.id.toString(), name: val.name })));
+        setDoctors(
+          res.map((val) => ({ id: val.id.toString(), name: val.name }))
+        );
       }
     });
   }, []);
@@ -183,7 +182,6 @@ const AddCourse = (props) => {
           selectText="List of Doctors"
           items={Doctors}
           onSelectedItemsChange={(Items) => {
-            console.log(Items);
             setItems(Items);
           }}
           selectedItems={items}

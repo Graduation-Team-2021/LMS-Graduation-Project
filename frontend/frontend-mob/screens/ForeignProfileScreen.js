@@ -29,7 +29,6 @@ const ForeignProfileScreen = (props) => {
         <FAB
           style={styles.fab}
           icon="message"
-          onPress={() => console.log("Pressed")}
         />
       </Portal>
       <ScrollView>

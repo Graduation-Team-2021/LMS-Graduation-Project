@@ -22,11 +22,7 @@ const ResetPasswordScreen = (props) => {
     },
   });
   const onSubmit = (data) => {
-    changePassword(props.userData.ID, data.newPassword).then((res) => {
-      console.log("====================================");
-      console.log(res);
-      console.log("====================================");
-    });
+    changePassword(props.userData.ID, data.newPassword).then((res) => {});
   };
 
   return (

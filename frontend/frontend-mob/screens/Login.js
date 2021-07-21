@@ -81,7 +81,6 @@ const LoginScreen = (props) => {
                 err = true;
               }
               if (!err) {
-                console.log(Email, Password);
                 Interface.Login({ email: Email, password: Password }).then(
                   async (value) => {
                     console.log(value);

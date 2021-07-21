@@ -51,7 +51,6 @@ const Assignment = (props) => {
                     [
                       {
                         text: "Ok",
-                        onPress: () => console.log("ok"),
                         style: "default",
                       },
                     ]

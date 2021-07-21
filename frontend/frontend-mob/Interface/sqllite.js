@@ -8,10 +8,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS course(course_code TEXT PRIMARY KEY NOT NULL, course_name TEXT , weekly_hours INTEGER , group_number INTEGER UNIQUE , max_students INTEGER , course_description TEXT , post_owner_id INTEGER ,FOREIGN KEY (post_owner_id) REFERENCES post_owner(owner_id) ON UPDATE CASCADE ON DELETE SET NULL );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -21,10 +19,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS deliverables_results(deliverable_id INTEGER  , user_ID INTEGER , mark INTEGER , PRIMARY KEY(deliverable_id,user_id), FOREIGN KEY (deliverable_id) REFERENCES deliverable(deliverable_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (user_id) REFERENCES student(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -34,10 +30,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS deliverables(deliverable_id INTEGER  , deliverable_name TEXT NOT NULL, student_number INTEGER NOT NULL ,description TEXT, mark INTEGER NOT NULL, deadline TEXT NOT NULL , course_deliverables TEXT NOT NULL , PRIMARY KEY(deliverable_id), FOREIGN KEY (course_deliverables) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -47,10 +41,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS events(event_id INTEGER  , event_name TEXT NOT NULL,event_description TEXT,  event_date TEXT NOT NULL , course_code TEXT NOT NULL , event_duration INTEGER NOT NULL , event_type TEXT NOT NULL , PRIMARY KEY(event_id), FOREIGN KEY (course_code) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -60,10 +52,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS group_project(group_id INTEGER , group_name TEXT , group_description TEXT, post_owner_id INTEGER, PRIMARY KEY(group_id), FOREIGN KEY (post_owner_id) REFERENCES post_owner(owner_id) ON UPDATE CASCADE ON DELETE SET NULL );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -73,10 +63,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS materials(material_id INTEGER , material_name TEXT , material_type TEXT NOT NULL, course_material TEXT NOT NULL,local_uri TEXT, course_pic TEXT , PRIMARY KEY(material_id), FOREIGN KEY (course_material) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -86,10 +74,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS post_owner(owner_id INTEGER PRIMARY KEY);",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -99,10 +85,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS post(post_id INTEGER PRIMARY KEY , post_writer INTEGER ,post_owner INTEGER , post_text TEXT ,FOREIGN KEY (post_writer) REFERENCES user(user_id) ON UPDATE CASCADE , FOREIGN KEY (post_owner) REFERENCES post_owner(owner_id) ON UPDATE CASCADE  );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -112,10 +96,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS conversations(conversation_id INTEGER PRIMARY KEY , first_user INTEGER ,second_user INTEGER ,FOREIGN KEY (first_user) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (second_user) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -125,10 +107,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS messages(massage_id INTEGER PRIMARY KEY , conversation_id INTEGER ,sender_id INTEGER , receiver_id INTEGER, sent_time TEXT, text TEXT ,FOREIGN KEY (conversation_id) REFERENCES conversations(conversation_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (sender_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (receiver_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -138,10 +118,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS deliver(delivers_id INTEGER PRIMARY KEY , deliverable_id INTEGER ,student_id INTEGER , file_type TEXT, file_name TEXT,FOREIGN KEY (deliverable_id) REFERENCES deliverable(deliverable_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (student_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -151,10 +129,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS finish(course_code TEXT  , total_mark_in_the_cousre REAL ,student_id INTEGER ,PRIMARY KEY (course_code , student_id),FOREIGN KEY (course_code) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (student_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -164,10 +140,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS group_deliverable_relation(group_id INTEGER   ,deliverable_id INTEGER ,PRIMARY KEY (group_id,deliverable_id),FOREIGN KEY (group_id) REFERENCES group_project(group_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (deliverable_id) REFERENCES deliverable(deliverable_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -177,10 +151,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS Prerequiste(course_code TEXT PRIMARY KEY ,pre_course_code TEXT,FOREIGN KEY (course_code) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (pre_course_code) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -190,10 +162,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS learns(student_id INTEGER  ,course_code TEXT ,mid_term_mark REAL ,final_exam_mark REAL ,PRIMARY KEY (student_id,course_code)  ,FOREIGN KEY (course_code) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (student_id) REFERENCES student(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -203,10 +173,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS post_commenter(comment_id INTEGER PRIMARY KEY  ,comment_text TEXT ,commenter_id INTEGER ,post_id INTEGER , created_date TEXT ,FOREIGN KEY (commenter_id) REFERENCES user(user_id) ON UPDATE CASCADE  , FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -216,10 +184,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS post_liker(liker_id INTEGER  ,created_date TEXT ,post_id INTEGER  ,PRIMARY KEY (liker_id,post_id)  ,FOREIGN KEY (liker_id) REFERENCES user(user_id) ON UPDATE CASCADE  , FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -229,10 +195,8 @@ export function CreateTable() {
       "CREATE TABLE IF NOT EXISTS student_group_relation(group_id INTEGER  ,student_id INTEGER  ,PRIMARY KEY (group_id,student_id)  ,FOREIGN KEY (group_id) REFERENCES group_project(group_id) ON UPDATE CASCADE ON DELETE CASCADE  , FOREIGN KEY (student_id) REFERENCES student(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
       [],
       (_, res) => {
-        console.log("[creating is done with the result]", res);
       },
       (_, err) => {
-        console.log("[failed there is an error]", err);
       }
     );
   });
@@ -240,152 +204,78 @@ export function CreateTable() {
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS teaches(professor_id INTEGER  ,course_code TEXT  ,PRIMARY KEY (professor_id,course_code)  ,FOREIGN KEY (professor_id) REFERENCES professor(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (course_code) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
     );
   });
 
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS professor(user_id INTEGER PRIMARY KEY ,scientific_degree TEXT   ,FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
+      
     );
   });
 
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS student(user_id INTEGER PRIMARY KEY NOT NULL,student_year INTEGER   ,FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
+      
     );
   });
 
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS user(user_id INTEGER PRIMARY KEY ,name TEXT NOT NULL , email TEXT  , birthday TEXT, password TEXT ,  picture TEXT );",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
+      
     );
   });
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS message(massage_id INTEGER PRIMARY KEY ,sender_id INTEGER , receiver_id INTEGER, sent_time TEXT, text TEXT , FOREIGN KEY (sender_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (receiver_id) REFERENCES user(user_id) ON UPDATE CASCADE ON DELETE CASCADE );",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
+      
     );
   });
 
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS group_course_relation(group_id INTEGER  , course_id TEXT, PRIMARY KEY(group_id,course_id), FOREIGN KEY (group_id) REFERENCES group_project(group_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (course_id) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
+     
     );
   });
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS answers(answer_id INTEGER  , answer TEXT NOT NULL ,question_id INTEGER NOT NULL , right_answer INTEGER , PRIMARY KEY(answer_id), FOREIGN KEY (question_id) REFERENCES questions(question_id) ON UPDATE CASCADE ON DELETE CASCADE );",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
+      
     );
   });
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS exams(exam_id INTEGER  , course_id TEXT NOT NULL ,exam_marks INTEGER  , exam_duration TEXT , PRIMARY KEY(exam_id), FOREIGN KEY (course_id) REFERENCES course(course_code) ON UPDATE CASCADE ON DELETE CASCADE );",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
+      
     );
   });
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS questions(question_id INTEGER  , question TEXT NOT NULL ,mark INTEGER  ,exam_id INTEGER NOT NULL , PRIMARY KEY(question_id) , UNIQUE(question,exam_id), FOREIGN KEY (exam_id) REFERENCES exams(exam_id) ON UPDATE CASCADE ON DELETE CASCADE );",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
+      
     );
   });
 
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS results(student_id INTEGER  , out_of_mark REAL NOT NULL ,mark REAL NOT NULL  ,exam_id INTEGER NOT NULL , PRIMARY KEY(student_id,exam_id) , FOREIGN KEY (student_id) REFERENCES student(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (exam_id) REFERENCES exams(exam_id) ON UPDATE CASCADE ON DELETE CASCADE);",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
+      
     );
   });
 
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS student_answers(student_answer_id INTEGER  , student_question_id INTEGER  ,student_answer TEXT NOT NULL  ,correct_answer INTEGER  , PRIMARY KEY(student_answer_id) , FOREIGN KEY (student_question_id) REFERENCES student_questions(student_question_id) ON UPDATE CASCADE ON DELETE CASCADE );",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
+     
     );
   });
 
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS student_questions(student_id INTEGER  , question_id INTEGER  ,student_question_id INTEGER  , PRIMARY KEY(student_question_id) , UNIQUE(student_id,question_id)  , FOREIGN KEY (student_id) REFERENCES student(user_id) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY (question_id) REFERENCES questions(question_id) ON UPDATE CASCADE ON DELETE CASCADE);",
-      [],
-      (_, res) => {
-        console.log("[creating is done with the result]", res);
-      },
-      (_, err) => {
-        console.log("[failed there is an error]", err);
-      }
+      
     );
   });
 }
@@ -444,18 +334,10 @@ export function SQLInsertCurrentCourse(courses, user_id, role) {
           element.course_description,
         ],
         (tx, res) => {
-          console.log(
-            "inserting to course table successfully with result",
-            res
-          );
+         
         },
         (tx, err) => {
-          console.log(
-            "insertion the the db failed with error",
-            err,
-            "The inserted course is",
-            element
-          );
+      
         }
       );
       element.professors.forEach((prof) => {
@@ -463,65 +345,27 @@ export function SQLInsertCurrentCourse(courses, user_id, role) {
           "INSERT OR REPLACE INTO professor(user_id) VALUES (?) ; ",
           [prof.user_id],
           (_, res) => {
-            console.log("inserting to professors table with result", res);
           },
           (_, err) => {
-            console.log(
-              "inserting into professors table failed with error",
-              err,
-              "while inserting ",
-              prof
-            );
+            
           }
         );
         tx.executeSql(
           "INSERT OR REPLACE INTO user(user_id,name) VALUES (?,?) ; ",
           [prof.user_id, prof.name],
-          (_, res) => {
-            console.log("inserting to user table with result", res);
-          },
-          (_, err) => {
-            console.log(
-              "inserting into user table failed with error",
-              err,
-              "while inserting ",
-              prof
-            );
-          }
+          
         );
         tx.executeSql(
           "INSERT OR REPLACE INTO teaches(course_code,professor_id) VALUES (?,?);",
           [element.course_code, prof.user_id],
-          (_, res) => {
-            console.log("inserting to teach table with result", res);
-          },
-          (_, err) => {
-            console.log(
-              "inserting into teach table failed with error",
-              err,
-              "while inserting ",
-              element,
-              prof
-            );
-          }
+          
         );
       });
       if (role === "student") {
         tx.executeSql(
           "INSERT OR REPLACE INTO learns(course_code,student_id) VALUES (?,?);",
           [element.course_code, user_id],
-          (_, res) => {
-            console.log("inserting to teach table with result", res);
-          },
-          (_, err) => {
-            console.log(
-              "inserting into teach table failed with error",
-              err,
-              "while inserting ",
-              element,
-              prof
-            );
-          }
+          
         );
       }
     });
@@ -634,12 +478,7 @@ export function SQLInsertPdfs(pdf) {
         pdf.course_material,
         pdf.local_uri
       ],
-      (_, res) => {
-        console.log("inserting to materials table successfully"), res;
-      },
-      (_, err) => {
-        console.log("insertion the the db failed with error", err);
-      }
+    
     );
   });
 }
@@ -698,9 +537,6 @@ export function SQLInsertUser(user) {
         user.password,
         user.picture,
       ],
-      (_, res) => {
-        console.log("inserting to user table successfully"), res;
-      }
     );
   });
 }
@@ -820,16 +656,12 @@ export function SQLInsertRecentPosts(posts) {
           "INSERT OR REPLACE INTO post_owner(owner_id) VALUES (?)",
           [value.post_owner],
           (tx1, res) => {
-            console.log("====================================");
-            console.log("Inserting into post Owner");
-            console.log("====================================");
+
             tx1.executeSql(
               "INSERT OR REPLACE INTO user(user_id, name) VALUES (?,?)",
               [value.post_writer, value.name],
               (tx2, res) => {
-                console.log("====================================");
-                console.log("Inserting into User");
-                console.log("====================================");
+                
                 tx2.executeSql(
                   "INSERT OR REPLACE INTO post(post_owner, post_id, post_text, post_writer) VALUES (?, ?, ?, ?)",
                   [
@@ -839,9 +671,7 @@ export function SQLInsertRecentPosts(posts) {
                     value.post_writer,
                   ],
                   (tx3, res) => {
-                    console.log("====================================");
-                    console.log("Inserting into posts");
-                    console.log("====================================");
+    
                     value.likes.forEach((v2) => {
                       tx3.executeSql(
                         "INSERT OR REPLACE INTO user(user_id, name) VALUES (?,?)",
@@ -851,7 +681,6 @@ export function SQLInsertRecentPosts(posts) {
                             "INSERT OR REPLACE INTO post_liker(liker_id, post_id) VALUES (?,?)",
                             [v2.liker_id, value.post_id],
                             (_, res) => {
-                              console.log("Likes DONE YA *******");
                             },
                             (_, err) => {}
                           );
@@ -873,7 +702,6 @@ export function SQLInsertRecentPosts(posts) {
                               v2.comment_text,
                             ],
                             (_, res) => {
-                              console.log("Comments DONE YA *******");
                             },
                             (_, err) => {}
                           );
@@ -904,12 +732,7 @@ export function SQLInertVideos(video) {
         video.material_type,
         video.course_material,
       ],
-      (_, res) => {
-        console.log("inserting to materials table successfully"), res;
-      },
-      (_, err) => {
-        console.log("insertion the the db failed with error", err);
-      }
+      
     );
   });
 }
@@ -947,12 +770,7 @@ export function SQLInsertMessages(message) {
         message.sent_time,
         message.text,
       ],
-      (_, res) => {
-        console.log("inserting to messages table successfully"), res;
-      },
-      (_, err) => {
-        console.log("insertion the the db failed with error", err);
-      }
+      
     );
   });
 }
@@ -964,16 +782,7 @@ export function SQLGetCourseById(user_id, course_id) {
         tx.executeSql(
           "SELECT * FROM course, learns, teaches, user WHERE course.course_code=learns.course_code AND learns.student_id=? AND course.course_code = ? AND teaches.course_code=course.course_code AND teaches.professor_id=user.user_id; ",
           [user_id, course_id],
-          (_, res) => {
-            console.log(
-              "[Ibrahim]inserting user due to comment is done successfully with result",
-              res
-            );
-            resolve(res);
-          },
-          (_, err) => {
-            console.log("inserting user due to comment failed with error", err);
-          }
+          
         );
         
       }
@@ -994,12 +803,7 @@ export function SQLInsertCourse(course) {
         course.course_description,
         course.post_owner_id,
       ],
-      (_, res) => {
-        console.log("[Ibrahim]inserting to course table successfully"), res;
-      },
-      (_, err) => {
-        console.log("insertion the the db failed with error", err);
-      }
+      
     );
   });
 }
@@ -1031,12 +835,7 @@ export function SQLInsertPosts(posts) {
       tx.executeSql(
         "INSERT OR REPLACE INTO post VALUES(?,?,?,?)",
         [post.post_id, post.post_writer, post.post_owner, post.post_text],
-        (_, res) => {
-          console.log("[Ibrahim]inserting to posts table successfully",res) ;
-        },
-        (_, err) => {
-          console.log("[Ibrahim]insertion the post the db failed with error", err);
-        }
+        
       );
     });
   });
@@ -1069,10 +868,7 @@ export function SQLGetFinishedCourses(user_id) {
         "SELECT course.course_code,finish.total_mark_in_the_cousre as course_mark,course.course_name FROM course,finish WHERE course.course_code=finish.course_code AND finish.student_id=?;",
         [user_id],
         (_, res) => {
-          console.log(
-            "selecting finished courses is done successfully with result",
-            res
-          );
+         
           const result = [];
           for (let index = 0; index < res.rows.length; index++) {
             result.push(res.rows.item(index));
@@ -1080,7 +876,6 @@ export function SQLGetFinishedCourses(user_id) {
           resolve(result);
         },
         (_, err) => {
-          console.log("error while retriving the finished courses", err);
           reject(err);
         }
       );
@@ -1094,36 +889,12 @@ export function SQLInsertFinishedCourses(finishedCourses, user_id) {
       tx.executeSql(
         "INSERT OR REPLACE INTO course(course_code,course_name) VALUES (?,?)",
         [element.course_code, element.course_name],
-        (_, res) => {
-          console.log(
-            "inserting into course due to finished course is done successfully with result",
-            res,
-            element
-          );
-        },
-        (_, err) => {
-          console.log(
-            "inserting into course due to  finished courses failed with error",
-            err
-          );
-        }
+        
       );
       tx.executeSql(
         "INSERT OR REPLACE INTO finish (course_code,total_mark_in_the_cousre,student_id) VALUES (?,?,?)",
         [element.course_code, element.course_mark, user_id],
-        (_, res) => {
-          console.log(
-            "inserting into finish due to finished courses finished successfully with result",
-            res,
-            element
-          );
-        },
-        (_, err) => {
-          console.log(
-            "inserting into finish due to finished courses failed with error",
-            err
-          );
-        }
+  
       );
     });
   });
@@ -1142,18 +913,7 @@ export function SQLInsertIntoEvent(event) {
         event.event_duration,
         event.event_description,
       ],
-      (_, res) => {
-        console.log(
-          "inserting into finish due to finished courses finished successfully with result",
-          res
-        );
-      },
-      (_, err) => {
-        console.log(
-          "inserting into finish due to finished courses failed with error",
-          err
-        );
-      }
+      
     );
   });
 }
@@ -1165,18 +925,12 @@ export function SQLGetEvent(student_id) {
         "SELECT * FROM events , course , learns  WHERE events.course_code = course.course_code AND learns.student_id = ? AND learns.course_code = course.course_code ",
         [student_id], //FIXME: add order by
         (_, res) => {
-          console.log(
-            "selecting finished courses is done successfully with result",
-            res
-          );
+          
 
           resolve(res.rows.item(0));
         },
 
-        (_, err) => {
-          console.log("error while retriving the finished courses", err);
-          reject(err);
-        }
+        
       );
     });
   });
@@ -1188,10 +942,7 @@ export  function SQLGetQuizzes (delv_id , user_id) {
       "SELECT * FROM deliverables , course , learns  WHERE learns.course_code = course.course_code AND learns.student_id = ? AND deliverables.deliverable_id = ? AND deliverable_id.course_deliverables = course.course_code ; ",
       [delv_id,user_id],
       (_, res) => {
-        console.log(
-          "selecting finished courses is done successfully with result",
-          res
-        );
+     
         const result = [];
         for (let index = 0; index < res.rows.length; index++) {
           result.push(res.rows.item(index));
@@ -1199,7 +950,6 @@ export  function SQLGetQuizzes (delv_id , user_id) {
         resolve(result);
       },
       (_, err) => {
-        console.log("error while retriving the finished courses", err);
         reject(err);
       }
     )
@@ -1220,18 +970,7 @@ export  function SQLInsertQuiz (quiz) {
       quiz.deadline,
       quiz.course_deliverables
     ],
-    (_, res) => {
-      console.log(
-        "inserting into finish due to finished courses finished successfully with result",
-        res
-      );
-    },
-    (_, err) => {
-      console.log(
-        "inserting into finish due to finished courses failed with error",
-        err
-      );
-    }
+   
   ))
 }
 
@@ -1241,10 +980,7 @@ export  function SQLGetQuizById (delv_id , user_id) {
       "SELECT * FROM deliverables , course , learns  WHERE learns.course_code = course.course_code AND learns.student_id = ? AND deliverables.deliverable_id = ? AND deliverable_id.course_deliverables = course.course_code ; ",
       [delv_id,user_id],
       (_, res) => {
-        console.log(
-          "selecting finished courses is done successfully with result",
-          res
-        );
+        
         const result = [];
         for (let index = 0; index < res.rows.length; index++) {
           result.push(res.rows.item(index));
@@ -1252,7 +988,6 @@ export  function SQLGetQuizById (delv_id , user_id) {
         resolve(result);
       },
       (_, err) => {
-        console.log("error while retriving the finished courses", err);
         reject(err);
       }
     )
@@ -1273,18 +1008,7 @@ export  function SQLAddQuiz (quiz) {
       quiz.deadline,
       quiz.course_deliverables
     ],
-    (_, res) => {
-      console.log(
-        "inserting into finish due to finished courses finished successfully with result",
-        res
-      );
-    },
-    (_, err) => {
-      console.log(
-        "inserting into finish due to finished courses failed with error",
-        err
-      );
-    }
+    
   ))
 }
 
@@ -1335,18 +1059,7 @@ export  function SQLUpdatePic (user_id,pic) {
     tx.executeSql(
       "INSERT INTO user(picture) VALUES (?) WHERE user.user_id = ? ; ",
       [pic , user_id],
-      (_, res) => {
-        console.log(
-          "inserting into finish due to finished courses finished successfully with result",
-          res
-        );
-      },
-      (_, err) => {
-        console.log(
-          "inserting into finish due to finished courses failed with error",
-          err
-        );
-      }
+      
     )
   })
 }
@@ -1356,18 +1069,7 @@ export  function SQLChangePassword (user_id,password) {
     tx.executeSql(
       "INSERT INTO user(password) VALUES (?) WHERE user.user_id = ? ; ",
       [password , user_id],
-      (_, res) => {
-        console.log(
-          "inserting into finish due to finished courses finished successfully with result",
-          res
-        );
-      },
-      (_, err) => {
-        console.log(
-          "inserting into finish due to finished courses failed with error",
-          err
-        );
-      }
+      
     )
   })
 }
