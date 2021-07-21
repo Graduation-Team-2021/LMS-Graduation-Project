@@ -179,6 +179,8 @@ class CourseDesc extends Component {
                     pathname: `/Course/${this.props.CourseID}/Marks`,
                     state: {
                       name: this.props.Title,
+                      mid: this.props.Course.mid,
+                      final: this.props.Course.final
                     },
                   });
                 }}

@@ -21,6 +21,8 @@ class AddCoursePage extends Component {
     "List of Doctors": "select",
     "Enrollment Deadline": 'date',
     "Course Picture(Optional)": "text",
+    "Final Grades": "number",
+    "Midterm Grades": "number",
   };
 
   EditFields = {
@@ -32,6 +34,8 @@ class AddCoursePage extends Component {
     "List of Doctors": "select",
     "Enrollment Deadline": 'date',
     "Course Picture(Optional)": "text",
+    "Final Grades": "number",
+    "Midterm Grades": "number",
   };
 
   constructor(props) {

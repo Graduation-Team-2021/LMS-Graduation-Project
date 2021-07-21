@@ -1,4 +1,7 @@
 NEW TODO:
+
+20.Link Single Deliverable
+21.Link Marks Page+
 5. Deliverables integration (Michel,David) (Inside Interface)
 7. يوم النتيجة
 9. Frontend error handling (John, David) (in progress)
@@ -9,8 +12,8 @@ NEW TODO:
 16.Improve the dropdown menu design (make the 2 menus into one)
 17.Improve the Triangle
 19.Fix the Click Outside black magic
-20.Link Single Deliverable
-21.Link Marks Page
+
+
 
 Future Work:
 19.Include Multifile Upload

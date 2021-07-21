@@ -6,7 +6,9 @@ export const setCourse = (id) => {
     CourseDescription: id["course_description"],
     PostID: id["post_owner_id"],
     isEnrolled: id['isenrolled'],
-    CoursePic: id['course_pic']
+    CoursePic: id['course_pic'],
+    mid: id['mid'],
+    final: id['final']
   };
   return data;
 };
@@ -21,7 +23,9 @@ export const setNewCourse = (Data) => {
     course_description: Data["Course Description"],
     post_owner_id: Data['post_owner_id'],
     course_deadline: Data['Enrollment Deadline'],
-    course_pic: Data["Course Picture(Optional)"]
+    course_pic: Data["Course Picture(Optional)"],
+    final: Data['Final Grades'],
+    mid: Data['Midterm Grades']
   };
   let t = [];
   Data["List of Doctors"].forEach((element) => {

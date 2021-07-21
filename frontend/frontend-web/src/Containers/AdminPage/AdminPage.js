@@ -93,7 +93,9 @@ const AdminPage = (props) => {
               })),
               post_owner_id: c["post_owner_id"],
               "Enrollment Deadline": c['course_deadline'],
-              "Course Picture(Optional)": c['course_pic']
+              "Course Picture(Optional)": c['course_pic'],
+              'Final Grades': c['final'],
+              'Midterm Grades': c['mid']
             });
           });
           setCourses(t);

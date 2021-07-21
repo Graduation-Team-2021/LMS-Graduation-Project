@@ -18,7 +18,9 @@ class Course(db.Model, Base):
     course_description = db.Column(db.Text(30000))
     post_owner_id=db.Column(db.Integer,ForeignKey('post_owner.owner_id', onupdate="CASCADE",ondelete='SET NULL'))
     course_deadline=db.Column(db.DateTime)
-    course_pic = db.Column(db.Text(30000))
+    course_pic = db.Column(db.Text(30000), nullable=True)
+    final = db.Column(db.Integer, nullable=False, default=0)
+    mid = db.Column(db.Integer, nullable=False, default=0)
 
     def serialize(self):
         return {
@@ -31,7 +33,9 @@ class Course(db.Model, Base):
             "post_owner_id":self.post_owner_id,
             "course_deadline": json.dumps(
             self.course_deadline, default=str).replace("\"", ""),
-            'course_pic': self.course_pic
+            'course_pic': self.course_pic,
+            'final': self.final,
+            'mid': self.mid
         }
 
     def insert(self):

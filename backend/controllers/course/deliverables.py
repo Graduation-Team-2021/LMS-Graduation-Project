@@ -118,7 +118,8 @@ class deliverable_controller:
             })
         return {"courses_deliverables": deliverables_list}
 
-    def get_all_course_deliverables(self,course_code,user_id,role):
+    def get_all_course_deliverables(self, course_code, user_id, role):
+        #TODO: edit to get for doctor
         try:
             deliverable = Deliverables.query.filter_by(
                 course_deliverables=course_code).all()
@@ -127,15 +128,16 @@ class deliverable_controller:
             for i in deliverable:
                 deliverables_formatted.append(i.serialize())
             for i in deliverables_formatted:
-                delivers_relation = Deliver.query.filter(Deliver.deliverable_id==i['deliverable_id']).filter(Deliver.student_id==user_id).first()
+                delivers_relation = Deliver.query.filter(
+                    Deliver.deliverable_id == i['deliverable_id']).filter(Deliver.student_id == user_id).first()
                 status = ""
-                if(datetime.now()>i['deadline']):
+                if(datetime.now() > i['deadline']):
                     status = "Completed"
                 elif(delivers_relation is not None):
                     status = "In Progress"
                 else:
                     status = "Not Started"
-                i['status']=status
+                i['status'] = status
                 deliverables_modified.append(i)
         except SQLAlchemyError as e:
             error = str(e)
@@ -144,6 +146,7 @@ class deliverable_controller:
                 'status_code': 404
             })
         return deliverables_modified
+
     def get_all_deliverables_by_deliverable_id(self, deliverable_id):
         try:
             all_deliverables = Student.query.join(Deliver).join(User).filter(
@@ -190,8 +193,10 @@ class deliverable_controller:
                 Deliverables.deliverable_id, Deliverables.deliverable_name, Deliverables.course_deliverables,
                 Deliverables.deadline, Course.course_name, Deliverables.description, Deliverables.mark)
             for i in all_deliverables:
-                index = next((index for (index, d) in enumerate(deliverables_list) if d["course_id"] == i[2]), None)
-                unsolved_count = delivers_controller_object.count_number_of_ungraded_deliverables(i[0])
+                index = next((index for (index, d) in enumerate(
+                    deliverables_list) if d["course_id"] == i[2]), None)
+                unsolved_count = delivers_controller_object.count_number_of_ungraded_deliverables(
+                    i[0])
                 if index == None:
                     deliverables_list.append(
                         {"course_id": i[2], "course_name": i[4], "deliverables":

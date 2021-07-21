@@ -1,3 +1,4 @@
+from controllers.course.deliverables import deliverable_controller
 from models.relations.learns import Learns_Relation
 from models.course.courses import Course
 from models.user.students import Student
@@ -38,7 +39,7 @@ class student_course_relation_controller():
     def get_students_in_course(self, course_code):
         try:
             courses = Learns_Relation.query.filter(Learns_Relation.course_code == course_code)\
-                .join(Student).filter(Student.user_id==Learns_Relation.student_id)\
+                .join(Student).filter(Student.user_id == Learns_Relation.student_id)\
                 .join(User).filter(User.user_id == Student.user_id).\
                 with_entities(User.user_id, User.name)
         except SQLAlchemyError as e:
@@ -119,6 +120,15 @@ class student_course_relation_controller():
             t2['id'] = temp['user_id']
             t2['mid'] = i['mid_term_mark']
             t2['final'] = i['final_exam_mark']
+            t2['deliv'] = []
+            deliv_list = deliverable_controller.get_all_course_deliverables(
+                course_code, i["student_id"], 'student')
+            for d in deliv_list:
+                t2['deliv'].push({
+                    "id": d["deliverable_id"],
+                    'value': d['mark']
+                })
+                pass
             names.append(t2)
         # s=[]
         # for i in range(len(names)):

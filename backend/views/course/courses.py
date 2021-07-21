@@ -98,7 +98,9 @@ class Courses(Resource):
         self.reqparse.add_argument('doctors', type=list, location='json')
         self.reqparse.add_argument('course_deadline', type=str, location='json')
         self.reqparse.add_argument('course_pic', type=str, location="json")
-
+        self.reqparse.add_argument('final', type=int, location='json')
+        self.reqparse.add_argument('mid', type=int, location='json')
+        
     def get(self):
         try:
             courses = controller_object.get_all_courses()
@@ -119,7 +121,9 @@ class Courses(Resource):
             'max_students': args['max_students'],
             'course_description': args['course_description'],
             'course_deadline': args['course_deadline'],
-            'course_pic': args['course_pic']
+            'course_pic': args['course_pic'],
+            'final': args['final'],
+            'mid': args['mid']
         }
         doctors = args['doctors']
         try:
