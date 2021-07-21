@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, Fragment } from "react";
 import {
   View,
-  FlatList,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,40 +16,31 @@ import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import DeliverableItem from "../components/DeliverableItem";
 import { showMessage, hideMessage } from "react-native-flash-message";
-const Deliverables = [
-  {
-    name: "Creating FSD",
-    type: "Quiz",
-    status: "In Progress",
-    course: "Software Engineering",
-    coursecode: "CSE412",
-    deadline: "09-04-2021",
-    leeway: "40 minutes",
-    mark: "N/A",
-    id: 1,
-    coursePicURI: "https://images3.alphacoders.com/165/thumb-1920-165087.jpg",
-  },
-];
+import sha256 from "crypto-js/sha512";
+import { Snackbar } from "react-native-paper";
 
 const AllDelivList = (props) => {
   const [deliverables, setDeliverables] = useState();
   const [deliverablesLoaded, setDeliverablesLoaded] = useState(false);
-  const x = [0, 1];
+  const [PieData, setPieData] = useState({});
+  const [SnackBarVisablity, setSnackBarVisablity] = useState(false);
+  const snackBarMessage = useRef("");
+  const [snackBarColor, setSnackBarColor] = useState("black");
   useEffect(() => {
     retrieveStudentDeliverables();
   }, []);
   const retrieveStudentDeliverables = () => {
     getAllStudentsDeliverables(props.userData.Token).then((res) => {
-      console.log("[Delv]====================================");
-      console.log(res);
-      console.log("[Delv]====================================");
+      const pieData = {};
+      res.forEach((course) => {
+        pieData[course.course_name] = course.deliverables.length;
+      });
+      setPieData(pieData);
       setDeliverables(res);
       setDeliverablesLoaded(true);
     });
   };
-  ////////////////////////////////////////////////////////////////
-  //TODO: Modify this part
-  const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
+
   const sortDeliverables = (deliverables) => {
     deliverables.sort(function (a, b) {
       if (a.id !== b.id) {
@@ -91,54 +81,76 @@ const AllDelivList = (props) => {
       0,
       7
     );
-  const pieData = data
-    .filter((value) => value > 0)
-    .map((value, index) => ({
-      value,
+  const pieData = Object.keys(PieData).map((value, index) => {
+    const target = value;
+    const hashedItem = sha256(JSON.stringify(target));
+    let avatarColor = "#";
+    for (let index = 0; index < 6; index++) {
+      const element = hashedItem.words[index];
+      const newIndex = Math.abs(element % 16);
+      avatarColor = avatarColor.concat(newIndex.toString(16));
+    }
+    return {
+      value: PieData[value],
       svg: {
-        fill: randomColor(),
-        onPress: () => console.log("press", index),
+        fill: avatarColor,
+        onPress: () => {
+          snackBarMessage.current = value;
+          setSnackBarColor(avatarColor);
+          setSnackBarVisablity(true);
+        },
       },
       key: `pie-${index}`,
-    }));
+    };
+  });
   ////////////////////////////////////////////////////////////////
 
   return (
-    <ScrollView>
-      <Text style={styles.headerStyle}>All Deliverables</Text>
-      <Divider style={styles.dividerStyle} />
-      <PieChart style={{ height: 200 }} data={pieData} />
-      {deliverablesLoaded ? (
-        deliverables.map((course) => {
-          return (
-            <View>
-              <Divider style={styles.dividerStyle} />
-              <View style={styles.headerContainer}>
-                <Text style={styles.courseHeaderStyle}>
-                  {course.course_name}
-                </Text>
-              </View>
+    <Fragment>
+      <Snackbar
+        visible={SnackBarVisablity}
+        onDismiss={() => setSnackBarVisablity(false)}
+        duration={500}
+        style={{ backgroundColor: snackBarColor }}
+      >
+        {snackBarMessage.current}
+      </Snackbar>
+      <ScrollView>
+        <Text style={styles.headerStyle}>All Deliverables</Text>
+        <Divider style={styles.dividerStyle} />
+        <PieChart style={{ height: 200 }} data={pieData} />
+        {deliverablesLoaded ? (
+          deliverables.map((course, index) => {
+            return (
+              <View key={`course ${index}`}>
+                <Divider style={styles.dividerStyle} />
+                <View style={styles.headerContainer}>
+                  <Text style={styles.courseHeaderStyle}>
+                    {course.course_name}
+                  </Text>
+                </View>
 
-              {sortDeliverables(course.deliverables)}
-              {course.deliverables.map((deliverable, i) => {
-                return (
-                  <View key={i}>
-                    <DeliverableItem
-                      deliverable={deliverable}
-                      deleteDeliverableHandler={deleteDeliverableHandler}
-                      previewDeliverableHandler={previewDeliverableHandler}
-                    ></DeliverableItem>
-                  </View>
-                );
-              })}
-            </View>
-          );
-        })
-      ) : (
-        <ActivityIndicator size="large" style={{ marginTop: 20 }} />
-      )}
-      <Divider style={styles.dividerStyle} />
-    </ScrollView>
+                {sortDeliverables(course.deliverables)}
+                {course.deliverables.map((deliverable, i) => {
+                  return (
+                    <View key={i}>
+                      <DeliverableItem
+                        deliverable={deliverable}
+                        deleteDeliverableHandler={deleteDeliverableHandler}
+                        previewDeliverableHandler={previewDeliverableHandler}
+                      ></DeliverableItem>
+                    </View>
+                  );
+                })}
+              </View>
+            );
+          })
+        ) : (
+          <ActivityIndicator size="large" style={{ marginTop: 20 }} />
+        )}
+        <Divider style={styles.dividerStyle} />
+      </ScrollView>
+    </Fragment>
   );
 };
 
