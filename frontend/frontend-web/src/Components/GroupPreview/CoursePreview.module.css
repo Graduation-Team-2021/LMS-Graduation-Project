@@ -17,9 +17,10 @@
     transition: 500ms;
 }
 
-.Card {
+.holder .Card {
     width: 30vw;
     height: 40vh;
+    max-width: 500px;
     display: flex;
     flex-flow: column;
     justify-content: space-between;

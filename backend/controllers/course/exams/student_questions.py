@@ -11,7 +11,7 @@ class student_questions_controller():
             student_questions = Student_Questions(**student_question)
             student_questions = Student_Questions.insert(student_questions)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -27,7 +27,7 @@ class student_questions_controller():
                     'status_code': 404
                 })
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -44,7 +44,7 @@ class student_questions_controller():
                 })
             Student_Questions.delete(student_question)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -66,7 +66,7 @@ class student_questions_controller():
                 }
                 student_answers_object.post_student_answer(new_student_answer)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

@@ -8,6 +8,7 @@ from flask import jsonify
 from models.user.professors import Professor
 from models.user.students import Student
 import werkzeug,pandas,json
+from zipfile import BadZipfile
 
 controller_object = users_controller()
 cont_stud = students_controller()
@@ -152,8 +153,9 @@ class Sign_Up(Resource):
         role = args['role']
         student_year = args['student_year']
         scientific_degree = args['scientific_degree']
+        print(args['password'])
         user = {
-            'name': args['name'],
+            'name': args['name'].lower(),
             'email': args['email'],
             'national_id': args['national_id'],
             'birthday': args['birthday'],
@@ -179,25 +181,31 @@ class Sign_Up_Using_Excel(Resource):
 
     def post(self):
         args = self.reqparse.parse_args()
-        raw_data = args['file'].read()
-        excel_data = pandas.read_excel(raw_data,dtype=str)
-        excel_data = excel_data.to_json(orient='records')
-        excel_data = json.loads(excel_data)
-        for entry in excel_data:
-            date = entry['birthday']
-            date = date.split(' ')[0]
-            entry['birthday'] = date
-            student_year = entry['student_year']
-            scientific_degree = entry['scientific_degree']
-            role = entry['role']
-            entry.pop('student_year',None)
-            entry.pop('scientific_degree',None)
-            entry.pop('role',None)
-            user = entry
-            try:
-                controller_object.add_new_user(user,student_year,scientific_degree,role)
-            except ErrorHandler as e:
-                return e.error
+        try:
+            raw_data = args['file'].read()
+            excel_data = pandas.read_excel(raw_data,dtype=str, engine='openpyxl')
+            excel_data = excel_data.to_json(orient='records')
+            excel_data = json.loads(excel_data)
+            for entry in excel_data:
+                
+                    date = entry['birthday']
+                    date = date.split(' ')[0]
+                    entry['birthday'] = date
+                    entry['email'] = entry['email'].lower() 
+                    student_year = entry['student_year']
+                    scientific_degree = entry['scientific_degree']
+                    role = entry['role']
+                    entry.pop('student_year',None)
+                    entry.pop('scientific_degree',None)
+                    entry.pop('role',None)
+                    user = entry
+                    controller_object.add_new_user(user,student_year,scientific_degree,role)
+        except ErrorHandler as e:
+            return e.error
+        except BadZipfile as E:
+            return {"message": "Wrong File Type", 'status_code': 405}
+        except Exception as E:
+            return {"message": "One or More Attributes are Missing", 'status_code': 405}
 
         return jsonify({
             'message': 'Users Added successfully',
@@ -217,7 +225,7 @@ class Login(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         try:
-            user = controller_object.get_user_by_email(args['email'])
+            user = controller_object.get_user_by_email(args['email'].lower())
         except ErrorHandler as e:
             return e.error
         try:
@@ -251,8 +259,8 @@ class Reset_password(Resource):
         args = self.reqparse.parse_args()
         try:
             if controller_object.reset_password(args['user_id'], args['password']):
-                return jsonify({"message": 'an email has been sent to you.'})
-            return jsonify("wrong national id , please re-check your data.")
+                return jsonify({"message": 'an email has been sent to you.', 'status_code': 200})
+            return jsonify({"message":"User Doesn't Exists", 'status_code': 208})
         except ErrorHandler as e:
             return e.error
 

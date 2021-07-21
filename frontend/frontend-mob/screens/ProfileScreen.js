@@ -1,13 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 import ANHeaderButton from "../components/ANHeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-
 import Dismiss from "../components/Dismiss";
+import * as Interface from "../Interface/Interface";
+import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+import { connect } from "react-redux";
+import sha256 from "crypto-js/sha512";
 
-const ProfileScreen = () => {
+const ProfileScreen = (props) => {
+  const [PassedCourses, setPassedCourses] = useState([]);
+  const [YourPosts, setYourPosts] = useState([]);
+  useEffect(() => {
+    if (props.userData.Role == "student") {
+      Interface.getFinishedCourses(
+        props.userData.Token,
+        props.userData.ID,
+        props.userData.Role
+      )
+        .then((res) => {
+          setPassedCourses(res);
+        })
+      Interface.getRecentUserPosts(props.userData.Token)
+        .then((res) => setYourPosts(res))
+    }
+  }, []);
+  let sum = 0;
+  if (props.userData.Role == "student") {
+    PassedCourses.forEach((course) => {
+      sum += course.course_mark;
+    });
+  }
+  console.log("adham nour", props.userData.pic);
   return (
     <ScrollView>
       <View style={styles.screen}>
@@ -29,7 +55,7 @@ const ProfileScreen = () => {
               rounded
               size="xlarge"
               source={{
-                uri: "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg",
+                uri: props.userData.pic,
               }}
               containerStyle={styles.avatarContainerStyle}
             />
@@ -43,39 +69,45 @@ const ProfileScreen = () => {
               wrapperStyle={styles.displayDataCardWrapperStyle}
               containerStyle={styles.displayDataCardContainerStyle}
             >
-              <Text style={styles.text}>Passed Courses</Text>
-              <Text style={styles.text}>50</Text>
+              <Text style={styles.text}>
+                {props.userData.Role == "student"
+                  ? "Passed"
+                  : "Currnet Teaching"}{" "}
+                Courses
+              </Text>
+              <Text style={styles.text}>
+                {
+                  (props.userData.Role === "student"
+                    ? PassedCourses
+                    : props.currentCourses.currentCourses
+                  ).length
+                }
+              </Text>
             </Card>
-            <Card
-              wrapperStyle={{ ...styles.displayDataCardWrapperStyle }}
-              containerStyle={styles.displayDataCardContainerStyle}
-            >
-              <Text style={styles.text}>Passed Courses</Text>
-              <Text style={styles.text}>50</Text>
-            </Card>
+            {props.userData.Role == "student" ? (
+              <Card
+                wrapperStyle={{ ...styles.displayDataCardWrapperStyle }}
+                containerStyle={styles.displayDataCardContainerStyle}
+              >
+                <Text style={styles.text}>Total Grade</Text>
+                <Text style={styles.text}>{sum}</Text>
+              </Card>
+            ) : null}
           </View>
         </Card>
-        <Text style={[styles.text, styles.title]}> Your Posts</Text>
-        <Dismiss>
-          <Text>Post 1</Text>
-          <Text>Post 2</Text>
-          <Text>Post 3</Text>
-          <Text>Post 4</Text>
-          <Text>Post 5</Text>
-          <Text>Post 6</Text>
-          <Text>Post 7</Text>
+        <Text style={[styles.text, styles.title]}>Your Posts</Text>
+        <Dismiss key={sha256(JSON.stringify(YourPosts)).words[0]}>
+          {YourPosts.map((post, index) => (
+            <Text key={post}>{post.post_text}</Text>
+          ))}
         </Dismiss>
 
         <Text style={[styles.text, styles.title]}>Your Passed Courses</Text>
 
-        <Dismiss>
-          <Text>Course 1</Text>
-          <Text>Course 2</Text>
-          <Text>Course 3</Text>
-          <Text>Course 4</Text>
-          <Text>Course 5</Text>
-          <Text>Course 6</Text>
-          <Text>Course 7</Text>
+        <Dismiss key={sha256(JSON.stringify(PassedCourses)).words[1]}>
+          {PassedCourses.map((course, index) => (
+            <Text key={course}>{course.course_code}</Text>
+          ))}
         </Dismiss>
       </View>
     </ScrollView>
@@ -117,6 +149,7 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "bold",
     fontSize: 20,
+    textAlign: "center",
   },
   title: {
     paddingTop: 40,
@@ -137,4 +170,4 @@ ProfileScreen.navigationOptions = (navData) => {
   };
 };
 
-export default ProfileScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

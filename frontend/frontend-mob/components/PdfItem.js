@@ -15,9 +15,7 @@ import { Ionicons, AntDesign, Entypo } from "@expo/vector-icons";
 import { connect } from "react-redux";
 const PdfItem = (props) => {
   let TouchableCmp = TouchableOpacity;
-  if (Platform.OS === "android" && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-  }
+  
   const previewPdfHandler = () => {
     props.previewPdfHandler(props.pdf.material_id);
   };

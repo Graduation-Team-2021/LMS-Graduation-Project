@@ -33,7 +33,6 @@ class LoginPage extends Component {
             ID: jwt_decode(res.Token).id,
             Role: jwt_decode(res.Token).permissions,
           };
-          console.log(Data);
           getUser(Data.ID).then((res2) => {
             Data["Pic"] = url+res2.picture;
             localStorage.setItem('pic', Data['Pic'])
@@ -95,6 +94,7 @@ class LoginPage extends Component {
   }
 
   render() {
+    document.title="Login"
     return (
       <div className={classes.Main}>
         <Card className={classes.Card} row shadow>

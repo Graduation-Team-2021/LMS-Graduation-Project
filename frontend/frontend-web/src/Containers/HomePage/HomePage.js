@@ -13,7 +13,8 @@ import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setFullPost } from "../../Models/Post";
 
 const HomePage = (props) => {
-  
+  document.title="Home Page"
+
   const setPosts = props.recentUserPostsActions.onSetRecentUserPosts;
 
   return (

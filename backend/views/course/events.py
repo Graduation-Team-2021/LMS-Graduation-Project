@@ -84,7 +84,7 @@ class Events(Resource):
     def post(self, course_code):
         args = self.reqparse.parse_args()
         event_type = args["event_type"]
-        if event_type not in ["exam", "lecture"]:
+        if event_type not in ["exam", 'assignment']:
             return jsonify({
                 'message': 'incorrect event type',
                 'status_code': 404
@@ -108,9 +108,10 @@ class Events(Resource):
 
 # student/<student_id>/recent_events
 class Events_most_recent(Resource):
-    def get(self, student_id):
+    method_decorators = {'get':[requires_auth_identity('')]}
+    def get(self, user_id, role, student_id):
         try:
-            event = controller_object.get_most_recent_event(student_id)
+            event = controller_object.get_most_recent_event(student_id, role)
             return jsonify({
             'event':event,
             'status_code': 200

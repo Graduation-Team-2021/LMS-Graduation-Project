@@ -1,6 +1,8 @@
+from models.user.professors import Professor
 from models.course.events import Events
 from models.user.students import Student
 from models.relations.learns import Learns_Relation
+from models.relations.teaches import Teaches_Relation
 from models.course.courses import Course
 from methods.errors import *
 from flask import current_app, send_from_directory, json
@@ -21,7 +23,7 @@ class events_controller():
                 event.event_date = json.dumps(event.event_date, default=str).replace("\"", "")
             data = [event.serialize() for event in events]
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -39,7 +41,7 @@ class events_controller():
             event.event_date = json.dumps(event.event_date, default=str).replace("\"", "")
             # TODO: Handle SQLAlchemyError
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -56,7 +58,7 @@ class events_controller():
                 })
             Events.delete(deleted_Event)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -77,7 +79,7 @@ class events_controller():
             updated_Event.update()
             updated_Event.event_date = json.dumps(updated_Event.event_date, default=str)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -89,7 +91,7 @@ class events_controller():
             new_Event = Events(**Event)
             new_Event = Events.insert(new_Event)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -105,17 +107,24 @@ class events_controller():
         data.save(file_path)
         return
 
-    def get_most_recent_event(self,student_id):
-        course_codes=Student.query.join(Learns_Relation).filter(Student.user_id==Learns_Relation.student_id).\
-        join(Course).filter(Learns_Relation.course_code==Course.course_code).\
-        with_entities(Course.course_code)
-
+    def get_most_recent_event(self,student_id, role):
+        if role == 'student':
+            course_codes=Student.query.join(Learns_Relation).filter(student_id==Learns_Relation.student_id).\
+            join(Course).filter(Learns_Relation.course_code==Course.course_code).\
+            with_entities(Course.course_code)
+        else:
+            course_codes=Professor.query.join(Teaches_Relation).filter(student_id==Teaches_Relation.professor_id).\
+            join(Course).filter(Teaches_Relation.course_code==Course.course_code).\
+            with_entities(Course.course_code)
+            
         desired_course_codes=[c for c in course_codes]
 
         desired_events=[]
         for i in range(len(desired_course_codes)):
-            events=Events.query.filter(Events.course_code==desired_course_codes[i][0],str(Events.event_date)>str(datetime.now())).first().serialize()
-            desired_events.append(events)
+            events=Events.query.filter(Events.course_code==desired_course_codes[i][0],datetime.now() < Events.event_date).order_by(Events.event_date).first()
+            if events: 
+                events=events.serialize()
+                desired_events.append(events)
             # desired_events.sort(reverse=True)
         # for i in range(len(desired_events)):
             # x=(sorted(desired_events[i]))
@@ -127,6 +136,13 @@ class events_controller():
             # sorted_by_date=sorted(desired_events[i])
 
             # print(desired_events[i]["event_date"])
-        newlist = sorted(desired_events, key=lambda k: k['event_date']) 
-
-        return desired_events[0]
+        print(len(desired_events))
+        if len(desired_events)!=0:
+            newlist = sorted(desired_events, key=lambda k: k['event_date']) 
+            return newlist[0]
+        else:
+            raise ErrorHandler({
+                'description': "No Events So Far",
+                'status_code': 202
+            })
+        

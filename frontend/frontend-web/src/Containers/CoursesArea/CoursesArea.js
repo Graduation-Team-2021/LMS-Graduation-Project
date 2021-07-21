@@ -25,10 +25,6 @@ class CoursesArea extends Component {
   TokenError = this.props.userDataActions.tokenError;
 
   componentDidMount() {
-    /* if (this.state.flag) {
-      s2.cancel("Cancelling Current Groups");
-      s2 = null;
-    } */
     getCurrentCourses(this.Token).then((res) => {
       const Courses = new Map();
       if (res) {
@@ -41,7 +37,6 @@ class CoursesArea extends Component {
         });
         this.setCurrentCourses(Courses);
       } else {
-        console.log("the courses");
         this.TokenError();
       }
       this.setState({
@@ -78,7 +73,7 @@ class CoursesArea extends Component {
     return (
       <div className={classes.CoursesArea}>
         <div className={classes.Title}>
-          Courses You're Taking
+          Courses You're {this.props.userData.Role==='student'?"Taking":"Teaching"}
           <div className={classes.Container}>
             <Button
               className={classes.Join}

@@ -21,6 +21,9 @@ import {
   getGradeSoFar,
   url,
   updatePic,
+  getYear,
+  getDegree,
+  getTeachedCourses,
 } from "../../Interface/Interface";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 import { setFullUserPost } from "../../Models/Post";
@@ -43,19 +46,20 @@ const ProfilePage = (props) => {
 
   const setRecentEvent = props.recentEventsActions.onSetRecentEvents;
 
+  const [year, setYear] = useState(0);
+
   const handleFIleUpload = (file) => {
     Submit(file);
   };
 
   const Submit = (files) => {
-    console.log(files);
     //uploadFile(this.props.Token, this.state.file, this.props.CourseID);
     updatePic(props.userData.ID, files).then((res) => {
       if (res) {
         const temp = { ...userSelf };
-        temp.picture = url+res.picture;
-        props.userDataActions.onSetPic(url+res.picture)
-        localStorage.setItem('pic', url+res.picture)
+        temp.picture = url + res.picture;
+        props.userDataActions.onSetPic(url + res.picture);
+        localStorage.setItem("pic", url + res.picture);
         setuserSelf(temp);
       }
     });
@@ -74,29 +78,53 @@ const ProfilePage = (props) => {
 
   useEffect(() => {
     getUser(ID).then((res) => {
-      res.picture = url + res.picture
+      res.picture = url + res.picture;
       setuserSelf(res);
     });
   }, [ID]);
 
   useEffect(() => {
-    getFinishedCourses(Token, ID, Role).then((res) => {
-      const Courses = [];
-      res.forEach((C) =>
-        Courses.push({
-          Title: `${C["course_code"]}: ${C["course_name"]}`,
-          grade: C["course_mark"],
-        })
-      );
-      setFinished(Courses);
-    });
+    if (Role === "student") {
+      getFinishedCourses(Token, ID, Role).then((res) => {
+        const Courses = [];
+        res.forEach((C) =>
+          Courses.push({
+            Title: `${C["course_code"]}: ${C["course_name"]}`,
+            grade: C["course_mark"], pic: C['course_pic']
+          })
+        );
+        setFinished(Courses);
+      });
+    } else {
+      getTeachedCourses(ID).then((res) => {
+        if (res) setFinished(res);
+      });
+    }
   }, [Token, ID, Role]);
 
   useEffect(() => {
-    getGradeSoFar(ID).then((res) => {
-      setGrade(res.reduce((a, b) => a + b["course_mark"], 0));
-    });
-  }, [ID]);
+    if (Role === "student") {
+      getGradeSoFar(ID).then((res) => {
+        setGrade(res.reduce((a, b) => a + b["course_mark"], 0));
+      });
+    } else {
+      getDegree(ID).then(res=>{
+        if (res) {
+          setGrade(res.scientific_degree||"N/A")
+        }
+      })
+    }
+  }, [ID, Role]);
+
+  useEffect(() => {
+    if (Role === "student") {
+      getYear(ID).then((res) => {
+        if (res) setYear(res.student_year);
+      });
+    }
+  }, [ID, Role]);
+
+  document.title = props.userData.Name;
 
   return (
     <div className={classes.Center}>
@@ -108,18 +136,15 @@ const ProfilePage = (props) => {
               <ImageHolder
                 className={classes.Pic}
                 filler={
-                  userSelf && userSelf["picture"]
-                    ? userSelf["picture"]
-                    : filler
+                  userSelf && userSelf["picture"] ? userSelf["picture"] : filler
                 }
               />
               <span className={classes.D}>
-              <div className={classes.filler} />
+                <div className={classes.filler} />
                 <span className={classes.DD}>
                   <div className={classes.Details}>
                     <div className={classes.Name}>{props.userData.Name}</div>
-                    <div>Third Year{/*get from database*/}</div>
-                    <div>Computer Engineering{/*get from database*/}</div>
+                    {Role==='student'?<div>Year: {year}</div>:null}
                   </div>
                   <FilePicker
                     onChange={(FileObject) => {
@@ -136,25 +161,26 @@ const ProfilePage = (props) => {
             </div>
             <div className={classes.small}>
               <Card shadow className={classes.Note}>
-                <h2>Passed Courses</h2>
+                <h2>
+                  {Role === "student" ? "Passed Courses" : "Current Courses"}
+                </h2>
                 <h1>{Finished.length}</h1>
               </Card>
               <Card shadow className={classes.Note}>
-                <h2>Total Grade</h2>
-                <h1>
-                  {grade}
-                  {/*get from database*/}
-                </h1>
+                <h2>{Role === "student" ? "Total Grade" : "Current Title"}</h2>
+                <h1>{grade}</h1>
               </Card>
             </div>
           </div>
         </Card>
         <div className={classes.Bottom}>
-          {Finished.length !== 0 ? (
-            <OldCourses Title="Your Passed Courses" Courses={Finished} />
-          ) : (
-            <h1>Loading.....</h1>
-          )}
+          {Role === "student" ? (
+            Finished.length !== 0 ? (
+              <OldCourses Title="Your Passed Courses" Courses={Finished} />
+            ) : (
+              <h1>Loading.....</h1>
+            )
+          ) : null}
           <PostsArea
             Title="Your Posts"
             LoadingPosts={getRecentUserPosts}

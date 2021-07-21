@@ -4,16 +4,18 @@ import ImageHolder from "../../../../Components/ImageHolder/ImageHolder";
 import Button from "../../../../Components/Button/Button";
 import { withRouter } from "react-router";
 import { setCourse } from "../../../../Models/Course";
+import { mapDispatchToProps, mapStateToProps } from "../../../../store/reduxMaps";
+import {connect} from 'react-redux'
 
 const Course = (props) => {
   const user = props.Data;
+
   return (
     <div className={classes.Main}>
+    
       <span className={classes.Image}>
         <ImageHolder />
       </span>
-      {/* TODO: Add Taught By, Status */}
-      {/* TODO: Add Enroll/Goto Button */}
       <span className={classes.Details}>
         <h2>
           {user.course_code} - {user.course_name}
@@ -32,9 +34,8 @@ const Course = (props) => {
         <Button
         className={classes.Inner}
           onClick={() => {
-            props.dismiss();
             if (user.status === "Enrolled") {
-              console.log("opening Course page");
+              props.dismiss();
               props.history.push({
                 pathname: `/Course/${user.course_code}`,
                 state:{
@@ -44,7 +45,7 @@ const Course = (props) => {
               });
             } else {
               /* TODO: Enroll Function */
-              console.log("opening Enroll Modal");
+              props.show(true);
             }
           }}
         >
@@ -55,4 +56,4 @@ const Course = (props) => {
   );
 };
 
-export default withRouter(Course);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Course));

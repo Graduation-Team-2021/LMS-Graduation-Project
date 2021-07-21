@@ -9,6 +9,7 @@ import { Avatar, Button } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
+import * as localStorage from "../Interface/sqllite";
 
 const Drawer = (props) => {
   //FIXME: there is problem, the user picture is always undefined.
@@ -27,7 +28,10 @@ const Drawer = (props) => {
             rounded
             size="large"
             source={{
-              uri: props.userData.pic ===null ?"https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg": props.userData.pic,
+              uri:
+                props.userData.pic === null
+                  ? "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg"
+                  : props.userData.pic,
             }}
             containerStyle={styles.avatarContainerStyle}
           />

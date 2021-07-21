@@ -20,7 +20,7 @@ class Post_Commenter_controller:
             filter(User.user_id==user_id).\
             with_entities(User.name,Post_Commenter_relation.post_id,Post_Commenter_relation.comment_text)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -32,7 +32,7 @@ class Post_Commenter_controller:
         try:
             to_be_deleted=Post_Commenter_relation.query.filter_by(commenter_id=commenter_id,post_id=post_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -49,7 +49,7 @@ class Post_Commenter_controller:
             new_comment=Post_Commenter_relation(**comment)
             Post_Commenter_relation.insert(new_comment)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -59,7 +59,7 @@ class Post_Commenter_controller:
         try:
             to_be_udpated=Post_Commenter_relation.query.filter_by(commenter_id=commenter_id,post_id=post_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -77,9 +77,9 @@ class Post_Commenter_controller:
         try:
             comments=Post_Commenter_relation.query.filter(Post_Commenter_relation.post_id==post_id).join(User).\
             filter(Post_Commenter_relation.commenter_id==User.user_id).\
-            with_entities(User.user_id,User.name,Post_Commenter_relation.comment_text)
+            with_entities(User.user_id,User.name,Post_Commenter_relation.comment_text, Post_Commenter_relation.comment_id)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

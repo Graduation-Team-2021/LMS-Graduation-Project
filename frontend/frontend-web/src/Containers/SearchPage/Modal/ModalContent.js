@@ -9,9 +9,9 @@ const Content = (props) => {
       {props.Data!==null?(props.Type === "User" ? (
         <User dismiss={props.dismiss} Data={props.Data}/>
       ) : props.Type === "Course" ? (
-        <Course dismiss={props.dismiss} Data={props.Data}/>
+        <Course show={props.show} dismiss={props.dismiss} Data={props.Data}/>
       ) : (
-        <Group dismiss={props.dismiss} Data={props.Data}/>
+        <Group show={props.show} dismiss={props.dismiss} Data={props.Data}/>
       )):null}
     </React.Fragment>
   );

@@ -3,12 +3,10 @@ import React, { useEffect, useState } from "react";
 import cls from "./DelivTable.module.css";
 import Summary from "./DelivSummary/Summary";
 import Waiting from "../../Components/Waiting/Waiting";
-import { getDeliv } from "../../Interface/Interface";
+import { getDeliv, getStudentDeliver } from "../../Interface/Interface";
 
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../../store/reduxMaps";
-
-
 
 /* const cRows = [
   {
@@ -83,68 +81,139 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(function DeliverableList(props) {
-
   const columns = [
     { field: "name", headerName: "Name", width: 200 },
     { field: "status", headerName: "Status", width: 180 },
     { field: "deadline", headerName: "Deadline", width: 200 },
-    { field: "course", headerName: "Course", width: 250 },
-    { field: "coursecode", headerName: "Coursecode", width: 130 },
-    { field: "mark", headerName: "Mark", width: 130 },
+    { field: "course", headerName: "Course", width: 150 },
+    { field: "coursecode", headerName: "Course Code", width: 150 },
+    { field: "group_id", headerName: "Group", width: 170 },
+    { field: "smark", headerName: "Mark", width: 130 },
+    { field: "mark", headerName: "Total Mark", width: 130 },
   ];
-  
+
   const perCourseColumn = [
     { field: "name", headerName: "Name", width: 200 },
     { field: "status", headerName: "Status", width: 180 },
     { field: "deadline", headerName: "Deadline", width: 200 },
-    { field: "mark", headerName: "Mark", width: 130 },
+    { field: "group_id", headerName: "Group", width: 130 },
+    { field: "smark", headerName: "Mark", width: 130 },
+    { field: "mark", headerName: "Total Mark", width: 130 },
   ];
 
-  if (props.userData.Role!=='student') {
-    columns.splice(1,1)
-    perCourseColumn.splice(1,1)
-  }
+  const dColumn = [
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "status", headerName: "Status", width: 180 },
+    { field: "deadline", headerName: "Deadline", width: 200 },
+    { field: "course", headerName: "Course", width: 150 },
+    { field: "coursecode", headerName: "Course Code", width: 150 },
+    { field: "mark", headerName: "Total Mark", width: 130 },
+    { field: "notgraded", headerName: "Not Graded", width: 130 },
+  ];
+
+  const dPerCourseColumn = [
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "status", headerName: "Status", width: 180 },
+    { field: "deadline", headerName: "Deadline", width: 200 },
+    { field: "mark", headerName: "Total Mark", width: 130 },
+    { field: "notgraded", headerName: "Not Graded", width: 130 },
+  ];
+
+  const dperStudentColumn = [
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "status", headerName: "Status", width: 180 },
+    { field: "mark", headerName: "Mark", width: 130 },
+  ];
 
   const [Loading, setLoading] = useState(true);
 
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    //TODO: Load Data
-    getDeliv(props.id, props.userData.Token).then((res) => {
-      setLoading(false);
-      console.log("Deliverables Collected Successfully", res);
-      var temp = [];
-      res.forEach((value) => {
-        if (props.id) {
-          temp.push({
-            name: value["deliverable_name"],
-            status: value["status"],
-            course: props.name,
-            description: value["description"] || "No Description",
-            deadline: value["deadline"],
-            mark: value["mark"] || "N/A",
-            id: value["deliverable_id"],
-          });
-        } else {
-          var delivs = value["deliverables"];
-          delivs.forEach((v2) =>
-            temp.push({
-              name: v2["deliverable_name"],
+    if (!props.student) {
+      getDeliv(props.id, props.userData.Token).then((res) => {
+        var temp = [];
+        res.forEach((value) => {
+          if (props.userData.Role === "student") {
+            if (props.id) {
+              temp.push({
+                name: value["deliverable_name"],
+                status: value["status"],
+                course: props.name,
+                description: value["description"] || "No Description",
+                deadline: value["deadline"],
+                mark: value["mark"] || "Not Graded yet",
+                smark: value["mark"] || "Not Graded yet",
+                id: value["deliverable_id"],
+                group_id: value["group_id"] || "Not Chosen Yet",
+              });
+            } else {
+              var delivs = value["deliverables"];
+              delivs.forEach((v2) =>
+                temp.push({
+                  name: v2["deliverable_name"],
+                  status: v2["status"],
+                  course: value["course_name"], //Need Adjustment
+                  coursecode: value["course_id"],
+                  description: v2["description"] || "No Description",
+                  deadline: v2["deadline"],
+                  mark: v2["mark"] || "Not Graded yet",
+                  smark: value["mark"] || "Not Graded yet",
+                  id: v2["deliverable_id"],
+                  group_id: value["group_id"] || "Not Chosen Yet",
+                })
+              );
+            }
+          } else {
+            if (props.id) {
+              temp.push({
+                name: value["deliverable_name"],
+                status: value["status"],
+                description: value["description"] || "No Description",
+                deadline: value["deadline"],
+                mark: value["mark"] || "Not Graded yet",
+                id: value["deliverable_id"],
+                notgraded: value["notgraded"] || 0,
+              });
+            } else {
+              var delivs2 = value["deliverables"];
+              delivs2.forEach((v2) =>
+                temp.push({
+                  name: v2["deliverable_name"],
+                  status: v2["status"],
+                  course: value["course_name"], //Need Adjustment
+                  coursecode: value["course_id"],
+                  description: v2["description"] || "No Description",
+                  deadline: v2["deadline"],
+                  mark: v2["mark"] || "Not Graded yet",
+                  id: v2["deliverable_id"],
+                })
+              );
+            }
+          }
+          setLoading(false);
+        });
+        setRows(temp);
+      });
+    } else {
+      //Todo: Get All Delivering Groups
+      getStudentDeliver(props.id).then((res) => {
+        if (res) {
+          setRows(
+            res.map((v2) => ({
+              name: v2["group_name"],
               status: v2["status"],
-              course: value["course_name"], //Need Adjustment
-              coursecode: value["course_id"],
-              description: v2["description"] || "No Description",
-              deadline: v2["deadline"],
-              mark: v2["mark"] || "N/A",
-              id: v2["deliverable_id"],
-            })
+              mark: v2["mark"] || "Not Graded yet",
+              id: props.id,
+              gid: v2['group_id'], 
+              did: v2["delivers_id"],
+            }))
           );
+          setLoading(false)
         }
       });
-      setRows(temp);
-    });
-  }, [props.id, props.userData.Token, props.name]);
+    }
+  }, [props.id, props.userData.Token, props.name, props.userData.Role, props.student]);
 
   let newArrayOfObjects = Object.values(
     rows.reduce((mapping, item) => {
@@ -198,7 +267,17 @@ export default connect(
             <div className={cls.list}>
               <DataGrid
                 rows={rows}
-                columns={!props.id ? columns : perCourseColumn}
+                columns={
+                  props.userData.Role === "student"
+                    ? (!props.id
+                      ? columns
+                      : perCourseColumn)
+                    : (props.student
+                    ? dperStudentColumn
+                    : !props.id
+                    ? dColumn
+                    : dPerCourseColumn)
+                }
                 pageSize={6}
                 onRowClick={(rowData) => props.onRowHand(rowData)}
               />

@@ -35,6 +35,7 @@ export default connect(
     });
     msngrskt.on("user connected", (response) => {
       let temp = [response, ...CurrentActiveUsers]
+      console.log("New User Connected");
       setCurrentActiveUsers(temp)
     });
     msngrskt.on("private message", (res) => setNewMessage(res));
@@ -93,9 +94,6 @@ export default connect(
   },
     [Users, conversations, Current, hasChanged, newMessID, newText,setChanged,setNewID, setNewText])
 
-  useEffect(() => {
-    console.log(props.Current)
-  }, [props.Current])
   /////////////////////////////////////////////////////////////////
   function useOutsideAlerter(ref) {
     useEffect(() => {
@@ -139,6 +137,7 @@ export default connect(
       setLoading(false);
     });
     getAllUsers().then((res) => {
+      //TODO: use User Photo
       const temp = [];
       res.forEach((element) => {
         element["photo"] = filler;

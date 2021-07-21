@@ -17,7 +17,6 @@ import { setNewGroup } from "../../Models/Group";
 import { setCourse } from "../../Models/Course";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
-
 class AddGroupPage extends Component {
   Fields = {
     "Group Name": "text",
@@ -33,18 +32,18 @@ class AddGroupPage extends Component {
     Object.keys(this.Fields).forEach((value) => {
       Data[value] = "";
       Error[value] = false;
-      if (this.Fields[value]==='number') {
+      if (this.Fields[value] === "number") {
         Data[value] = 0;
       } else if (this.Fields[value] === "select") {
         Data[value] = [];
-        Lists[value] = []
+        Lists[value] = [];
       }
     });
     this.state = {
       Fields: this.Fields,
       Data: Data,
       Error: Error,
-      ...Lists
+      ...Lists,
     };
   }
 
@@ -74,8 +73,8 @@ class AddGroupPage extends Component {
     });
   };
 
-  onClear=(Name)=>{
-    const d=[]
+  onClear = (Name) => {
+    const d = [];
     this.setState((prev) => ({
       Error: { ...prev.Error, [Name]: d.length === 0 },
       Data: {
@@ -83,13 +82,13 @@ class AddGroupPage extends Component {
         [Name]: d,
       },
     }));
-  }
+  };
 
   onRemove = (List, Option, Name) => {
     this.setState((old, props) => {
       const state = { ...old };
-      state.Error[Name] = List.length===0;
-      state.Data[Name] = List;
+      state.Error[Name] = Option.length === 0;
+      state.Data[Name] = Option;
       return state;
     });
   };
@@ -124,18 +123,18 @@ class AddGroupPage extends Component {
     Object.keys(this.Fields).forEach((value) => {
       Data[value] = "";
       Error[value] = false;
-      if (this.Fields[value]==='number') {
+      if (this.Fields[value] === "number") {
         Data[value] = 0;
       } else if (this.Fields[value] === "select") {
         Data[value] = [];
-        Lists[value] = []
+        Lists[value] = [];
       }
     });
     this.setState({
       Fields: this.Fields,
       Data: Data,
       Error: Error,
-      ...Lists
+      ...Lists,
     });
   };
 
@@ -210,6 +209,8 @@ class AddGroupPage extends Component {
   };
 
   render() {
+    document.title = "Create New Group";
+
     const AddCourseField = (
       <React.Fragment>
         {Object.keys(this.state.Fields).map((value, index) => {
@@ -224,7 +225,7 @@ class AddGroupPage extends Component {
               onRemove={this.onRemove}
               Error={this.state.Error[value]}
               multiple={value === "List of Students"}
-              onClear={(Name)=>this.onClear(Name)}
+              onClear={(Name) => this.onClear(Name)}
               DataList={
                 value === "List of Students"
                   ? this.state.Students
@@ -238,18 +239,18 @@ class AddGroupPage extends Component {
       </React.Fragment>
     );
     return (
-        <Card row shadow>
-          <div className={classes.Login}>
-            <h1 className={classes.MainTitle}>Add New Group</h1>
-            <div className={classes.Field}>{AddCourseField}</div>
-            <div className={classes.ButtonArea}>
-              <Button onClick={this.onAddGroup} >Add Group</Button>
-            </div>
+      <Card row shadow>
+        <div className={classes.Login}>
+          <h1 className={classes.MainTitle}>Add New Group</h1>
+          <div className={classes.Field}>{AddCourseField}</div>
+          <div className={classes.ButtonArea}>
+            <Button onClick={this.onAddGroup}>Add Group</Button>
           </div>
-          <div className={classes.Blue}>
-            <ImageHolder filler={image} />
-          </div>
-        </Card>
+        </div>
+        <div className={classes.Blue}>
+          <ImageHolder filler={image} />
+        </div>
+      </Card>
     );
   }
 }

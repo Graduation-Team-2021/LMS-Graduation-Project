@@ -4,14 +4,20 @@ import { createDrawerNavigator } from "react-navigation-drawer";
 import ProfileNav from "./ProfileScreenNavigator";
 import MsgsNavs from "./MessagesNavigator";
 import Drawer from "../components/Drawer";
+import ResetPasswordScreen from "./ResetPasswordScreenNavigator";
+import RecentEventScreen from "./RecentEventNavigator";
+import checkConnectivity from "../hocs/checkConnectivity";
 
 const MainDrawer = createDrawerNavigator(
   {
-    Home: {
-      screen: HomeScreenNavigator,
-    },
+    Home: HomeScreenNavigator,
+
     Profile: ProfileNav,
     Messenger: MsgsNavs,
+    RecentEventScreen: { screen: RecentEventScreen },
+    ResetPassword: {
+      screen: ResetPasswordScreen,
+    },
   },
   {
     contentComponent: Drawer,

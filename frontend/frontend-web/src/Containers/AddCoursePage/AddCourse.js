@@ -7,7 +7,7 @@ import Card from "../../Components/Card/Card";
 import NormalTextField from "../../Components/NormalTextField/NormalTextField";
 import Button from "../../Components/Button/Button";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
-import { AddCourse, getDoctors } from "../../Interface/Interface";
+import { AddCourse, getDoctors, UpdateCourse } from "../../Interface/Interface";
 import { setNewCourse } from "../../Models/Course";
 
 class AddCoursePage extends Component {
@@ -19,23 +19,42 @@ class AddCoursePage extends Component {
     "Max Number of Students": "number",
     "Course Description": "textArea",
     "List of Doctors": "select",
+    "Enrollment Deadline": 'date',
+    "Course Picture(Optional)": "text",
+    "Final Grades": "number",
+    "Midterm Grades": "number",
+  };
+
+  EditFields = {
+    "Course Name": "text",
+    "Weekly Hours": "number",
+    "Number of Groups": "number",
+    "Max Number of Students": "number",
+    "Course Description": "textArea",
+    "List of Doctors": "select",
+    "Enrollment Deadline": 'date',
+    "Course Picture(Optional)": "text",
+    "Final Grades": "number",
+    "Midterm Grades": "number",
   };
 
   constructor(props) {
     super(props);
-    let Data = {};
+    let Data = props.location.state ? props.location.state.Course : {};
     let Error = {};
     let Lists = {};
-    Object.keys(this.Fields).forEach((value) => {
-      Data[value] = "";
-      Error[value] = false;
-      if (this.Fields[value] === "number") {
-        Data[value] = 0;
-      } else if (this.Fields[value] === "select") {
-        Data[value] = [];
-        Lists[value] = [];
+    Object.keys(props.location.state ? this.EditFields : this.Fields).forEach(
+      (value) => {
+        if (!props.location.state) Data[value] = "";
+        Error[value] = false;
+        if (!props.location.state && this.Fields[value] === "number") {
+          Data[value] = 0;
+        } else if (this.Fields[value] === "select") {
+          if (!props.location.state) Data[value] = [];
+          Lists[value] = [];
+        }
       }
-    });
+    );
     this.state = {
       Data: Data,
       Error: Error,
@@ -56,7 +75,6 @@ class AddCoursePage extends Component {
   }
 
   initAddCourse = () => {
-    console.log(this.state['List of Doctors'])
     let Data = {};
     let Error = {};
     Object.keys(this.Fields).forEach((value) => {
@@ -73,7 +91,7 @@ class AddCoursePage extends Component {
       Data: Data,
       Error: Error,
       Fields: this.Fields,
-      'List of Doctors': [...this.state['List of Doctors']]
+      "List of Doctors": [...this.state["List of Doctors"]],
     });
   };
 
@@ -107,18 +125,27 @@ class AddCoursePage extends Component {
   };
 
   onAddCourse = () => {
-    console.log(this.errorHandler(), this.state);
     if (this.errorHandler()) {
       let Course = setNewCourse(this.state.Data);
-      console.log("Adding Course");
-      AddCourse(Course).then((res) => {
-        if (res) {
-          alert("Adding Course Succesful");
-          this.initAddCourse();
-        } else {
-          alert("Adding Course failed");
-        }
-      });
+      if (!this.props.location.state) {
+        AddCourse(Course).then((res) => {
+          if (res) {
+            alert("Adding Course Successful");
+            this.initAddCourse();
+          } else {
+            alert("Adding Course failed");
+          }
+        });
+      } else {
+        UpdateCourse(Course).then(res=>{
+          if (res) {
+            alert("Editing Course Successful");
+            this.props.history.goBack();
+          } else {
+            alert("Adding Course failed");
+          }
+        })
+      }
     }
   };
 
@@ -168,9 +195,7 @@ class AddCoursePage extends Component {
   };
 
   onRemove = (Item, Name) => {
-    const d = [...this.state.Data[Name]];
-    const pos = d.findIndex((value) => value.value === Item.value);
-    d.splice(pos, 1);
+    const d = Item.map(res=>({name: res.label, value: res.value}));
     this.setState((prev) => ({
       Error: { ...prev.Error, [Name]: d.length === 0 },
       Data: {
@@ -180,8 +205,8 @@ class AddCoursePage extends Component {
     }));
   };
 
-  onClear=(Name)=>{
-    const d=[]
+  onClear = (Name) => {
+    const d = [];
     this.setState((prev) => ({
       Error: { ...prev.Error, [Name]: d.length === 0 },
       Data: {
@@ -189,9 +214,15 @@ class AddCoursePage extends Component {
         [Name]: d,
       },
     }));
-  }
+  };
 
   render() {
+    document.title = `${
+      this.props.location.state
+        ? `Edit ${this.props.location.state.Course["Course Code"]}`
+        : "Create New"
+    } Course`;
+
     const AddCourseField = (
       <React.Fragment>
         {Object.keys(this.state.Fields).map((value, index) => {
@@ -207,7 +238,7 @@ class AddCoursePage extends Component {
               Error={this.state.Error[value]}
               onSelect={(List, Item, Name) => this.onSelect(Item, Name)}
               onRemove={(List, Item, Name) => this.onRemove(Item, Name)}
-              onClear={(Name)=>this.onClear(Name)}
+              onClear={(Name) => this.onClear(Name)}
             />
           );
         })}
@@ -216,7 +247,12 @@ class AddCoursePage extends Component {
     return (
       <Card row shadow>
         <div className={classes.Login}>
-          <h1 className={classes.MainTitle}>Add New Course</h1>
+          <h1 className={classes.MainTitle}>
+            {this.props.location.state
+              ? `Edit ${this.props.location.state.Course["Course Code"]}`
+              : "Add New"}{" "}
+            Course
+          </h1>
           <div className={classes.Field}>{AddCourseField}</div>
           <div className={classes.ButtonArea}>
             <Button onClick={this.onAddCourse}>Add Course</Button>

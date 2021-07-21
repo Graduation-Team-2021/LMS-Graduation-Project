@@ -67,16 +67,6 @@ const GroupPreview = (props) => {
         <ImageHolder filler={filler} />
       </div>
       <div className={classes.Bottom}>
-        <div
-          className={classes.Button}
-          onClick={() => {
-            alert("Group Joined");
-            console.log('Called From Preview')
-            props.Joining();
-          }}
-        >
-          Join Group
-        </div>
         <div className={classes.Joined}>{Joined}</div>
       </div>
       <div onClick={props.dismiss} className={classes.dismiss}>

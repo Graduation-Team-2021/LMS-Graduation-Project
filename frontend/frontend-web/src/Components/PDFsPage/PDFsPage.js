@@ -42,7 +42,6 @@ export default function PDFsPage(props) {
   const [rows, setRows] = useState([]);
   const [loaded, setloaded] = useState(false);
   useEffect(() => {
-    console.log();
     //TODO: Load Data
     getPDFs(props.match.params.id).then((res) => {
       setloaded(true);
@@ -51,7 +50,6 @@ export default function PDFsPage(props) {
         Data.push({ name: value["material_name"], id: value["material_id"] });
       });
       setRows(Data);
-      console.log("PDFs Collected Successfully");
     });
   }, [props.match.params.id]);
 

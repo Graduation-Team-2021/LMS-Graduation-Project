@@ -23,7 +23,7 @@ const GroupPreview = (props) => {
     >
       <Card shadow className={classes.Card}>
         <div className={classes.CourseTitle}>{props.Group.Title}</div>
-        <ImageHolder filler={filler} />
+        <ImageHolder filler={props.Group.pic||filler} />
       </Card>
     </div>
   );

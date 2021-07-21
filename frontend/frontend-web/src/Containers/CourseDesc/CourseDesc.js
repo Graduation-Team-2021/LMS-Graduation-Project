@@ -41,7 +41,6 @@ class CourseDesc extends Component {
   };
 
   Submit = () => {
-    console.log(this.state.file);
     this.setState({ clicked: true, done: false });
     uploadFile(
       this.props.Token,
@@ -76,10 +75,8 @@ class CourseDesc extends Component {
         <div className={classes.EventTitle}>{this.props.desc}</div>
         <div className={classes.Title}>
           Taught By:{" "}
-          {this.props.Course.DoctorName.length > 1
+          {this.props.Course.DoctorName.length !== 0
             ? this.props.Course.DoctorName.join(", ")
-            : this.props.Course.DoctorName.length === 1
-            ? this.props.Course.DoctorName[0]
             : "No One Yet"}
         </div>
         <div className={classes.Container}>
@@ -175,6 +172,7 @@ class CourseDesc extends Component {
                   info="Add Deliverable"
                 />
               </Button>
+              {console.log(this.props.Course)}
               <Button
                 className={classes.Holder}
                 onClick={() => {
@@ -182,6 +180,8 @@ class CourseDesc extends Component {
                     pathname: `/Course/${this.props.CourseID}/Marks`,
                     state: {
                       name: this.props.Title,
+                      mid: this.props.Course.mid,
+                      final: this.props.Course.final
                     },
                   });
                 }}
@@ -193,7 +193,7 @@ class CourseDesc extends Component {
 
           {this.props.Role === "professor" ? (
             <React.Fragment>
-              <AddEvent className={classes.Holder}>
+              <AddEvent course_id={this.props.Course.CourseID} className={classes.Holder}>
                 <div
                   style={{
                     padding: "0 0 10% 0",

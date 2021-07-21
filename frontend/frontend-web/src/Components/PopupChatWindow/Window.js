@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import Message from "./Message/Message";
@@ -50,7 +50,6 @@ export default connect(
         props.userData.Token,
         CURRENT_MESSAGE_ID
       ).then((res) => {
-        console.log(res);
         const temp = [];
         res.forEach((ele) => {
           let time = ele["sent_time"];
@@ -69,7 +68,7 @@ export default connect(
         setLoading(false);
       });
     }
-  }, [props.currentMessage.currentMessage, props.userData.Token]);
+  }, [CURRENT_MESSAGE_ID, props.currentMessage.currentMessage, props.userData.Token]);
   ///////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     getMessages();
@@ -99,7 +98,7 @@ export default connect(
       setNewMes(null);
       setMessages(Temp);
     }
-  }, [messages, newMes, props.currentMessage.currentMessage]);
+  }, [CURRENT_MESSAGE_ID, messages, newMes, props.currentMessage.currentMessage]);
   //////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////
   //TODO: add another useEffect here to add the on recive message call back
@@ -126,18 +125,6 @@ export default connect(
       });
     }
   }
-  //////////////////////////////////////////////////////////////////////////////////////
-  const inputFile = useRef(null);
-
-  const onButtonClick = () => {
-    // `current` points to the mounted file input element
-    inputFile.current.click();
-  };
-
-  const onFileChange = (e) => {
-    //TODO: Send Files via attachments
-    const file = e.target.files[0];
-  };
   //////////////////////////////////////////////////////////////////////////////////
   const Dismiss = () => {
     setDismissed({ dismissed: !dismissed.dismissed });
@@ -263,11 +250,7 @@ export default connect(
         minWidth: "0",
       }}
     >
-      <button className={cls.ButtCls} onClick={Dismiss}>
-        <i>
-          <img src="/messages.png" width="40" height="40" alt="Chats" />
-        </i>
-      </button>
+      <img className={cls.ButtCls} onClick={Dismiss} src="/messages.png" width="35" height="35" alt="Chats" />
       <div className={listCls.join(" ")}>
         <React.Fragment>
           <div className={cls.title}>
@@ -298,15 +281,6 @@ export default connect(
             rightItems={[
               <button
                 className={cls.search}
-                key="photo"
-                onClick={onButtonClick}
-              >
-                <i>
-                  <img src="/photo.png" width="20" height="20" alt="" />
-                </i>
-              </button>,
-              <button
-                className={cls.search}
                 key="send"
                 onClick={handleButtonClicked}
               >
@@ -316,13 +290,6 @@ export default connect(
               </button>,
             ]}
           >
-            <input
-              type="file"
-              id="file"
-              ref={inputFile}
-              style={{ display: "none" }}
-              onChange={onFileChange}
-            />
           </Compose>
         </React.Fragment>
       </div>

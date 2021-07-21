@@ -1,133 +1,194 @@
-
-import React, { Fragment,useEffect,useState} from "react";
-import { View, FlatList,ScrollView, StyleSheet, Text,ActivityIndicator } from "react-native";
-import { Button,Divider  } from "react-native-elements";
+import React, { useEffect, useState, useRef, Fragment } from "react";
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  ActivityIndicator,
+} from "react-native";
+import { Divider } from "react-native-elements";
 import { PieChart } from "react-native-svg-charts";
-import {getAllStudentsDeliverables,deleteDeliverable} from "../Interface/Interface";
+import {
+  getAllStudentsDeliverables,
+  deleteDeliverable,
+} from "../Interface/Interface";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import DeliverableItem from "../components/DeliverableItem";
-import {showMessage, hideMessage} from "react-native-flash-message";
-import { Entypo,AntDesign} from '@expo/vector-icons';
-const Deliverables = [
-  {
-    name: "Creating FSD",
-    type: "Quiz",
-    status: "In Progress",
-    course: "Software Engineering",
-    coursecode: "CSE412",
-    deadline: "09-04-2021",
-    leeway: "40 minutes",
-    mark: "N/A",
-    id: 1,
-    coursePicURI: "https://images3.alphacoders.com/165/thumb-1920-165087.jpg",
-  }
-];
+import { showMessage, hideMessage } from "react-native-flash-message";
+import sha256 from "crypto-js/sha512";
+import { Snackbar } from "react-native-paper";
 
 const AllDelivList = (props) => {
-  const [deliverables,setDeliverables] = useState()
-  const [deliverablesLoaded,setDeliverablesLoaded]= useState(false)
-  const x =[0,1]
+  const [deliverables, setDeliverables] = useState();
+  const [deliverablesLoaded, setDeliverablesLoaded] = useState(false);
+  const [PieData, setPieData] = useState({});
+  const [SnackBarVisablity, setSnackBarVisablity] = useState(false);
+  const [snackBarColor, setSnackBarColor] = useState("black");
+  const snackBarMessage = useRef("");
+  const myCourse = props.navigation.getParam("course");
   useEffect(() => {
-    retrieveStudentDeliverables()
+    retrieveStudentDeliverables();
   }, []);
-  const retrieveStudentDeliverables=(()=>{
+  const retrieveStudentDeliverables = () => {
     getAllStudentsDeliverables(props.userData.Token).then((res) => {
-      setDeliverables(res)
-      setDeliverablesLoaded(true)
-  });
-  })
-  ////////////////////////////////////////////////////////////////
-  //TODO: Modify this part
-  const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
-  const sortDeliverables = (deliverables) =>{
-    deliverables.sort(function(a,b){
+      let newRes = res;
+      if (myCourse) {
+        newRes = newRes.filter((e) => {
+          console.log("====================================");
+          console.log(e.course_name, myCourse.CourseName);
+          console.log("====================================");
+          return e.course_name === myCourse.CourseName;
+        });
+      }
+
+      const pieData = {};
+      if (myCourse) {
+        newRes[0].deliverables.forEach((delv) => {
+          if (pieData[delv.status]) {
+            pieData[delv.status] += 1;
+          } else {
+            pieData[delv.status] = 1;
+          }
+        });
+      } else {
+        newRes.forEach((course) => {
+          pieData[course.course_name] = course.deliverables.length;
+        });
+      }
+      setPieData(pieData);
+      setDeliverables(newRes);
+      setDeliverablesLoaded(true);
+    });
+  };
+
+  const sortDeliverables = (deliverables) => {
+    deliverables.sort(function (a, b) {
       if (a.id !== b.id) {
-        return a.id - b.id
-    }
-    if (a.name === b.name) {
-      return 0;
-    }
-    return a.name > b.name ? 1 : -1;
-    })
-  }
-  const previewDeliverableHandler = (deliverable) =>{
+        return a.id - b.id;
+      }
+      if (a.name === b.name) {
+        return 0;
+      }
+      return a.name > b.name ? 1 : -1;
+    });
+  };
+  const previewDeliverableHandler = (deliverable) => {
     props.navigation.navigate({
       routeName: "DeliverableDescription",
-      params: {deliverable_id:deliverable.deliverable_id,deliverable_name:deliverable.deliverable_name,mark:deliverable.mark,deadline:deliverable.deadline,description:deliverable.description,status:deliverable.status,updateDeliverables:retrieveStudentDeliverables}})
-  }
-  const deleteDeliverableHandler = (deliverable_id) =>{ 
-    deleteDeliverable(deliverable_id).then(res=>{
-    retrieveStudentDeliverables()
-    showMessage({
-      message: "Deliverable deleted successfully.",
-      type: "success",
-      duration:"3000"
+      params: {
+        deliverable_id: deliverable.deliverable_id,
+        deliverable_name: deliverable.deliverable_name,
+        mark: deliverable.mark,
+        deadline: deliverable.deadline,
+        description: deliverable.description,
+        status: deliverable.status,
+        updateDeliverables: retrieveStudentDeliverables,
+      },
     });
-    })
-  }
+  };
+  const deleteDeliverableHandler = (deliverable_id) => {
+    deleteDeliverable(deliverable_id).then((res) => {
+      retrieveStudentDeliverables();
+      showMessage({
+        message: "Deliverable deleted successfully.",
+        type: "success",
+        duration: "3000",
+      });
+    });
+  };
   const randomColor = () =>
     ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
       0,
       7
     );
-  const pieData = data
-    .filter((value) => value > 0)
-    .map((value, index) => ({
-      value,
+  const pieData = Object.keys(PieData).map((value, index) => {
+    const target = value;
+    const hashedItem = sha256(JSON.stringify(target));
+    let avatarColor = "#";
+    for (let index = 0; index < 6; index++) {
+      const element = hashedItem.words[index];
+      const newIndex = Math.abs(element % 16);
+      avatarColor = avatarColor.concat(newIndex.toString(16));
+    }
+    return {
+      value: PieData[value],
       svg: {
-        fill: randomColor(),
-        onPress: () => console.log("press", index),
+        fill: avatarColor,
+        onPress: () => {
+          snackBarMessage.current = value;
+          setSnackBarColor(avatarColor);
+          setSnackBarVisablity(true);
+        },
       },
       key: `pie-${index}`,
-    }));
+    };
+  });
   ////////////////////////////////////////////////////////////////
 
   return (
+    <Fragment>
+      <Snackbar
+        visible={SnackBarVisablity}
+        onDismiss={() => setSnackBarVisablity(false)}
+        duration={500}
+        style={{ backgroundColor: snackBarColor }}
+      >
+        {snackBarMessage.current}
+      </Snackbar>
+      {props.userData.Role === "student" ? (
+        <PieChart style={{ height: 200, paddingTop: 10 }} data={pieData} />
+      ) : null}
       <ScrollView>
-      <Text style={styles.headerStyle}>All Deliverables</Text>
-      <Divider style={styles.dividerStyle}/>
-      <PieChart style={{ height: 200 }} data={pieData} />
-      {deliverablesLoaded?(deliverables.map((course) =>{
-        return(
-        <View>
-          <Divider style={styles.dividerStyle}/>
-        <View style={styles.headerContainer}>
-          <Text style={styles.courseHeaderStyle}>{course.course_name}</Text>
-        </View>
-        
-        
-        {sortDeliverables(course.deliverables)}
-        {course.deliverables.map((deliverable,i)=>{
-          return(
-            <View>
-            <DeliverableItem key ={i} deliverable={deliverable} deleteDeliverableHandler={deleteDeliverableHandler} previewDeliverableHandler={previewDeliverableHandler}></DeliverableItem>
-            </View>
-          )
-        })}
-        </View>
-        )
-        })):<ActivityIndicator size="large" style={{marginTop:20}}/>}
-        <Divider style={styles.dividerStyle}/>
+        {deliverablesLoaded ? (
+          deliverables.map((course, index) => {
+            return (
+              <View key={`course ${index}`}>
+                <Divider style={styles.dividerStyle} />
+                <View style={styles.headerContainer}>
+                  <Text style={styles.courseHeaderStyle}>
+                    {course.course_name}
+                  </Text>
+                </View>
+
+                {sortDeliverables(course.deliverables)}
+                {course.deliverables.map((deliverable, i) => {
+                  return (
+                    <View key={i}>
+                      <DeliverableItem
+                        deliverable={deliverable}
+                        deleteDeliverableHandler={deleteDeliverableHandler}
+                        previewDeliverableHandler={previewDeliverableHandler}
+                      ></DeliverableItem>
+                    </View>
+                  );
+                })}
+              </View>
+            );
+          })
+        ) : (
+          <ActivityIndicator size="large" style={{ marginTop: 20 }} />
+        )}
+        <Divider style={styles.dividerStyle} />
       </ScrollView>
+    </Fragment>
   );
 };
 
 const styles = StyleSheet.create({
-  dividerStyle:{
-    marginVertical:20
+  dividerStyle: {
+    marginVertical: 20,
   },
-  courseHeaderStyle:{
-    marginBottom:10,
-    fontSize:20,
-    textAlign:'center',
+  courseHeaderStyle: {
+    marginBottom: 10,
+    fontSize: 20,
+    textAlign: "center",
   },
-  headerStyle:{
-    marginTop:20,
-    fontSize:20,
-    textAlign:'center',
+  headerStyle: {
+    marginTop: 20,
+    fontSize: 20,
+    textAlign: "center",
   },
-  headerContainer:{
-  }
+  headerContainer: {},
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AllDelivList);

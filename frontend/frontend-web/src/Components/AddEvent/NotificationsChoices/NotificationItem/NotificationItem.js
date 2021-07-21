@@ -7,10 +7,6 @@ class NotificationItem extends Component {
   }
   changeHandler = (event) => {
     this.setState({ value: event.target.value });
-    console.log(
-      "from NotificationItem.js changeHandler the new value is " +
-        event.target.value
-    );
   };
   render() {
     return (

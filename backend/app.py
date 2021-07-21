@@ -148,7 +148,7 @@ Courses
 api.add_resource(Course, '/courses/<course_code>')
 api.add_resource(Courses, '/courses')
 api.add_resource(My_Courses, '/my_courses')
-api.add_resource(SearchCourseByName, '/courses/search/<name>/<uid>')
+api.add_resource(SearchCourseByName, '/courses/search/<name>')
 api.add_resource(all_group_course, '/courses/<course_code>/groups')
 api.add_resource(CourseStatus, '/course/<cid>/status')
 """

@@ -3,12 +3,11 @@
   border-radius: 5%;
   border: 2px solid black;
   bottom: 0;
-  right: 110px;
   margin: 10px;
   padding: 10px;
   display: flex;
   flex-flow: column;
-  width: 30%;
+  width: 450px;
   height: 500px;
   transform: translateX(0);
   transition: all .3s cubic-bezier(0, .52, 0, 1);
@@ -18,10 +17,8 @@
 .ButtCls {
   height: 5%;
   border: 2px solid black;
-  bottom: 2%;
-  right: 30px;
-  margin: 10px;
-  padding: 10px;
+  padding: 8px;
+  margin: 8px;
   background: #910ba3;
   color: white;
   font-size: 17px;
@@ -85,4 +82,21 @@
 
 .NONE{
   display: none;
+}
+
+@media (max-width: 850px) {
+  .list {
+    width: 60%;
+  }
+  .ButtCls {
+    padding: 1.5vw;
+    margin: 0;
+    background: #910ba3;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 50;
+    outline: none;
+  }
 }

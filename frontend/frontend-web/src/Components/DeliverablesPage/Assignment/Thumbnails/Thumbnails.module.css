@@ -1,0 +1,14 @@
+.holder {
+    outline: none;
+    width: 100%;
+    border: 2px solid;
+    padding: 1% 0;
+    margin: 1% 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    overflow: auto;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    height: 150px;
+}

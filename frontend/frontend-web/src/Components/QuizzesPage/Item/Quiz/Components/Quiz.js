@@ -90,7 +90,6 @@ const Quiz = (props) => {
   useEffect(() => {
     //TODO: Load EXAM Data HERE
     getQuizByID(props.id, props.userData.ID).then((res) => {
-      console.log(res);
       const t = [];
       res.forEach((element) => {
         const ra = [];

@@ -1,9 +1,12 @@
+from controllers.course.deliverables import deliverable_controller
 from models.relations.learns import Learns_Relation
 from models.course.courses import Course
 from models.user.students import Student
 from methods.errors import *
 from flask import jsonify
 from models.user.users import User
+
+deliv_object = deliverable_controller()
 
 
 class student_course_relation_controller():
@@ -12,9 +15,10 @@ class student_course_relation_controller():
             courses = Learns_Relation.query.join(Student).filter(Student.user_id == student_id)\
                 .join(Course).filter(Course.course_code == Learns_Relation.course_code).\
                 with_entities(Course.course_code, Course.course_name,
-                              Course.course_description, Course.post_owner_id)
+                              Course.course_description, Course.post_owner_id, Course.course_pic, Course.mid, Course.final)
+            print(courses)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -26,7 +30,10 @@ class student_course_relation_controller():
                     'course_code': i[0],
                     'course_name': i[1],
                     'course_description': i[2],
-                    'post_owner_id': i[3]
+                    'post_owner_id': i[3],
+                    'course_pic': i[4],
+                    'mid': i[5],
+                    'final': i[6]
                 }
             )
         return results_array
@@ -37,11 +44,11 @@ class student_course_relation_controller():
     def get_students_in_course(self, course_code):
         try:
             courses = Learns_Relation.query.filter(Learns_Relation.course_code == course_code)\
-                .join(Student).filter(Student.user_id==Learns_Relation.student_id)\
+                .join(Student).filter(Student.user_id == Learns_Relation.student_id)\
                 .join(User).filter(User.user_id == Student.user_id).\
                 with_entities(User.user_id, User.name)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -61,7 +68,7 @@ class student_course_relation_controller():
             new_learns_relation = Learns_Relation(**student_course_relation)
             new_learns_relation = Learns_Relation.insert(new_learns_relation)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -78,7 +85,7 @@ class student_course_relation_controller():
         try:
             relation.update()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -96,7 +103,7 @@ class student_course_relation_controller():
                 })
             Learns_Relation.delete(relation)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -118,6 +125,15 @@ class student_course_relation_controller():
             t2['id'] = temp['user_id']
             t2['mid'] = i['mid_term_mark']
             t2['final'] = i['final_exam_mark']
+            t2['deliv'] = []
+            deliv_list = deliv_object.get_all_course_deliverables(
+                course_code, i["student_id"], 'student')
+            for d in deliv_list:
+                t2['deliv'].append({
+                    "id": d["deliverable_id"],
+                    'value': d['mark']
+                })
+                pass
             names.append(t2)
         # s=[]
         # for i in range(len(names)):

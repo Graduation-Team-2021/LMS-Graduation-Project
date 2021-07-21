@@ -12,7 +12,7 @@ class Post_commenter_view(Resource):
         try:
             comments=controller_object.get_one_user_all_comments(user_id)
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

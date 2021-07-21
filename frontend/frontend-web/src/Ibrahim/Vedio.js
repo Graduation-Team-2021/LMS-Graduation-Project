@@ -42,7 +42,6 @@ class Vedioplayer extends Component {
 
   loadVideo = (id) => {
     getOneVideo(id).then((res) => {
-      console.log(res);
       this.setState({ url: url + res });
     });
   };
@@ -58,6 +57,7 @@ class Vedioplayer extends Component {
   };
 
   render() {
+    document.title="Videos Page"
     return (
       <div className={classes.container}>
         <Card shadow className={classes.Card}>
@@ -86,18 +86,6 @@ class Vedioplayer extends Component {
 
             <div className={classes.vediolist}>
               <p>Your Course Videos</p>
-              {/* <li>
-                <p onClick={this.mathurl}> Math</p>
-              </li>
-              <li>
-                <p onClick={this.Phyurl}> Physices</p>
-              </li>
-              <li>
-                <p onClick={this.compurl}> Compliers</p>
-              </li>
-              <li>
-                <p onClick={this.softwre}> Software</p>
-              </li> */}
               <div className={classes.list}>{this.state.list}</div>
               <span
                 style={{

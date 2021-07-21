@@ -2,16 +2,18 @@ from models.course.group_project import GroupProject
 from methods.errors import *
 from flask import current_app, send_from_directory, json
 from controllers.course.post_owner import Post_owner_controller
+from controllers.relations.student_group_relation import StudentGroupRelationController
 import os
 
 post_owner_controller = Post_owner_controller()
+student_group_object = StudentGroupRelationController()
 
 class GroupProjectController:
     def get_group(self, group_id):
         try:
             group = GroupProject.query.filter_by(group_id=group_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -46,7 +48,7 @@ class GroupProjectController:
         try:
             to_be_deleted = GroupProject.query.filter_by(group_id=group_id).first()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -63,7 +65,7 @@ class GroupProjectController:
         try:
             all_groups=GroupProject.query.all()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 404
@@ -71,8 +73,15 @@ class GroupProjectController:
         data=[g.serialize() for g in all_groups]
         return data
 
-    def search_for_a_group(self,name_string):
-        data=GroupProject.query.filter(GroupProject.group_name.ilike(f'%{name_string}%')).all()
-        return [d.serialize() for d in data]
+    def search_for_a_group(self,user_id,name_string):
+        data = GroupProject.query.filter(GroupProject.group_name.ilike(f'%{name_string}%')).all()
+        temp = [d.serialize() for d in data]
+        check = [g[2] for g in student_group_object.get_one_student_all_groups(user_id)]
+        for group in temp:
+            group['status'] = 'Not Enrolled'
+            print(group)
+            if check.count(group['group_id'])!=0:
+                group['status'] = 'Enrolled'
+        return temp
 
     

@@ -144,6 +144,7 @@ const MiniMenu = (props) => {
                 setMessages(false);
                 setNotif(false);
               }}
+              setMess = {setMessages}
               TokenError={props.TokenError}
               Notif={props.Notif}
               choice={Notif ? "Notif" : Messages ? "Messages" : "Menu"}
@@ -163,7 +164,6 @@ const MiniMenu = (props) => {
               <button
                 className={classes.dropbtn}
                 onClick={() => {
-                  console.log(CLicked);
                   setCLicked(!CLicked);
                 }}
               >
@@ -253,6 +253,7 @@ const MiniMenu = (props) => {
                           setMessages(false);
                           setNotif(false);
                         }}
+                        setMess = {setMessages}
                         TokenError={props.TokenError}
                         Notif={props.Notif}
                         choice={

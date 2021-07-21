@@ -5,6 +5,7 @@ import Home from "./Containers/HomePage/HomePage";
 import Login from "./Containers/LoginPage/LoginPage";
 import Profile from "./Containers/ProfilePage/ProfilePage";
 import Courses from "./Containers/CoursesPage/CoursesPage";
+import Groups from "./Containers/GroupsPage/GroupsPage"
 import Course from "./Containers/CoursePage/CoursePage";
 import Mark_edit from "./Ibrahim/Mrak_edit.js";
 import Group from "./Containers/GroupPage/GroupPage.js";
@@ -12,7 +13,6 @@ import Messenger from "./Components/Messenger/Messenger";
 import Video from "./Ibrahim/Vedio.js";
 import SignUp from "./Containers/SignUpPage/SignUpPage";
 import AddCourse from "./Containers/AddCoursePage/AddCourse";
-import AddGroup from "./Containers/AddGroupPage/AddGroup";
 import Deliv from "./Components/DeliverablesPage/DeliverablesPage";
 import Quiz from "./Components/QuizzesPage/QuizzesPage";
 import PDFs from "./Components/PDFsPage/PDFsPage";
@@ -28,11 +28,7 @@ import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import Search from "./Containers/SearchPage/SearchPage";
 import CreateQuiz from "./Containers/CreateQuiz/CreateQuiz";
 
-
 const App = (props) => {
-  const Joining = (courseID) => {
-    console.log(courseID);
-  };
 
   return (
     <BrowserRouter>
@@ -44,20 +40,17 @@ const App = (props) => {
                 <Route path="/" exact component={Home} />
                 <Route path="/Profile" exact component={Profile} />
                 <Route path="/Courses" exact component={Courses} />
-                <Route
-                  path="/Course/:id"
-                  exact
-                  render={(props) => <Course {...props} Joining={Joining} />}
-                />
+                <Route path="/Groups" exact component={Groups} />
+                <Route path="/Course/:id" exact component={Course} />
                 <Route path="/Group/:id" exact component={Group} />
                 <Route path="/Course/:id/Marks" exact component={Mark_edit} />
                 <Route path="/messenger" exact component={Messenger} />
                 <Route path="/Course/:id/Videos" exact component={Video} />
                 <Route path="/Course/:id/PDFs" exact component={PDFs} />
-                <Route path="/AddGroup" exact component={AddGroup} />
                 <Route path="/Deliv" exact component={Deliv} />
                 <Route path="/Quiz/:id" exact component={Quiz} />
                 <Route path="/Deliv/Assignment/:id" exact component={Deliv} />
+                <Route path="/Deliv/Assignment/:id/:group_id" exact component={Deliv} />
                 <Route path="/Course/:id/Deliv" exact component={Deliv} />
                 <Route path="/Course/:id/Quiz" exact component={Quiz} />
                 <Route path="/Course/:cid/PDFs/:id" exact component={PDF} />
@@ -66,8 +59,8 @@ const App = (props) => {
                   exact
                   component={AddDelivPage}
                 />
-                <Route path='/changePass' exact component={ResetPass}/>
-                <Route path='/Search' exact component={Search}/>
+                <Route path="/changePass" exact component={ResetPass} />
+                <Route path="/Search" exact component={Search} />
                 {/* TODO: ADD Enroll Route */}
                 <Route
                   path="/Course/:id/newQuiz"
@@ -78,15 +71,12 @@ const App = (props) => {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <Route
-                  path="/"
-                  exact
-                  component={AdminPage}
-                />
-                <Route path="/SignUp" exact component={SignUp}/>
-                <Route path="/AddCourse" exact component={AddCourse}/>
-                <Route path='/changePass' exact component={ResetPass}/>
-                <Route path='/Search' exact component={Search}/>
+                <Route path="/" exact component={AdminPage} />
+                <Route path="/SignUp" exact component={SignUp} />
+                <Route path="/AddCourse" exact component={AddCourse} />
+                <Route path="/changePass" exact component={ResetPass} />
+                <Route path="/Search" exact component={Search} />
+                <Route path="/messenger" exact component={Messenger} />
                 <Redirect path="/login" to="/" />
               </React.Fragment>
             )}

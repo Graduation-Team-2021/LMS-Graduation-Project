@@ -12,7 +12,7 @@ const Messages = (props) => {
           overflow: "auto",
         }}
       >
-        <List />
+        <List setMess={props.setMess}/>
       </div>
       <div
         onClick={() => {

@@ -32,8 +32,7 @@ const HomePage = (props) => {
         temp[displayedCourse].isEnrolled = "true";
         setCourses(temp);
         alert("Enroll Successful");
-      }
-      else{
+      } else {
         alert("Enroll Failed, please Try Again");
       }
     });
@@ -49,20 +48,12 @@ const HomePage = (props) => {
 
   useEffect(() => {
     getCourses(Token).then((res) => {
+      if (res && Role === "student") {
       getFinishedCourses(Token, ID, Role).then((r2) => {
         setLoading(false);
-        if (res) {
           let Courses = new Map();
           res.forEach((id, index) => {
-            id["pic"] = "https://picsum.photos/200/300";
             id["isenrolled"] = "false";
-            id["professors"] = id["professors"].map((value) => value.name);
-            console.log(
-              Array.from(currentCourses.keys()),
-              r2.find((value) => value.course_code === id["course_code"]),
-              id["course_code"],
-              Array.from(currentCourses.keys()).includes(id["course_code"])
-            );
             if (
               Array.from(currentCourses.keys()).includes(id["course_code"]) ||
               r2.find((value) => value.course_code === id["course_code"])
@@ -77,15 +68,31 @@ const HomePage = (props) => {
               Courses[id["course_code"]] = setCourse(id);
             }
           });
-          console.log("====================================");
-          console.log(Courses);
-          console.log("====================================");
+          setCourses(Courses);
+        });
+        } else if (res) {
+          setLoading(false);
+          let Courses = new Map();
+          res.forEach((id, index) => {
+            id["isenrolled"] = "false";
+            if (
+              Array.from(currentCourses.keys()).includes(id["course_code"]) 
+            ) {
+              id["isenrolled"] = "true";
+            }
+            if (props.location.state) {
+              if (id["isenrolled"] === "false") {
+                Courses[id["course_code"]] = setCourse(id);
+              }
+            } else {
+              Courses[id["course_code"]] = setCourse(id);
+            }
+          });
           setCourses(Courses);
         } else {
           TokenError();
         }
       });
-    });
   }, [
     ID,
     Role,

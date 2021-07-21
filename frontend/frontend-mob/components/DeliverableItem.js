@@ -14,10 +14,7 @@ import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 const DeliverableItem = (props) => {
-  let TouchableCmp = TouchableOpacity;
-  if (Platform.OS === "android" && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-  }
+
   const previewDeliverableHandler = () => {
     props.previewDeliverableHandler(props.deliverable);
   };
@@ -46,7 +43,7 @@ const DeliverableItem = (props) => {
         paddingRight: 20,
       }}
     >
-      <TouchableCmp
+      <TouchableOpacity
         onPress={previewDeliverableHandler}
         style={{ flexDirection: "row", alignItems: "center" }}
       >
@@ -58,7 +55,7 @@ const DeliverableItem = (props) => {
           />
           <Text>{props.deliverable.deliverable_name}</Text>
         </Fragment>
-      </TouchableCmp>
+      </TouchableOpacity>
       {props.userData.Role != "professor" && (
         <View
           style={{
@@ -87,9 +84,9 @@ const DeliverableItem = (props) => {
       )}
       {props.userData.Role == "professor" && (
         <View style={{ marginLeft: "auto" }}>
-          <TouchableCmp onPress={deleteAlertHandler}>
+          <TouchableOpacity onPress={deleteAlertHandler}>
             <Entypo name="circle-with-cross" size={20} color="red" />
-          </TouchableCmp>
+          </TouchableOpacity>
         </View>
       )}
     </View>

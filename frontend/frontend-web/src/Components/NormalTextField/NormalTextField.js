@@ -35,9 +35,7 @@ const TextField = (props) => {
         }))}
         onChange={(value, action) => {
           const List = "";
-          console.log("changed", action.action, value);
           if (action.action === "select-option") {
-            console.log("Selected", value[value.length - 1]);
             return props.onSelect(
               List,
               {
@@ -49,10 +47,10 @@ const TextField = (props) => {
           } else if (action.action === "remove-value") {
             return props.onRemove(
               List,
-              {
-                name: props.multiple?value[value.length - 1].label:value.label,
-                value: props.multiple?value[value.length - 1].value:value.value,
-              },
+              (!props.multiple?{
+                name: value.label,
+                value: value.value,
+              }:value),
               props.Name
             );
           } else if (action.action === "clear"){
@@ -78,7 +76,7 @@ const TextField = (props) => {
   }
   return (
     <span
-      style={{ display: "flex", alignItems: "center", flex: props.flex || 1 }}
+      style={{ display: "flex", alignItems: "center", flex: props.flex || 1 , width:"100%"}}
     >
       {!props.hide ? <h2 className={classes.Title}>{props.Name}</h2> : null}
       {inputField}

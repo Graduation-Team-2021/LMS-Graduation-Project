@@ -1,11 +1,15 @@
 export const setCourse = (id) => {
+  console.log(id);
   let data = {
     CourseID: id["course_code"],
     CourseName: id["course_name"],
-    DoctorName: id["professors"],
+    DoctorName: id["professors"].map(value=>value['name']),
     CourseDescription: id["course_description"],
     PostID: id["post_owner_id"],
-    isEnrolled: id['isenrolled']
+    isEnrolled: id['isenrolled'],
+    CoursePic: id['course_pic'],
+    mid: id['mid'],
+    final: id['final']
   };
   return data;
 };
@@ -18,6 +22,11 @@ export const setNewCourse = (Data) => {
     group_number: Data["Number of Groups"],
     max_students: Data["Max Number of Students"],
     course_description: Data["Course Description"],
+    post_owner_id: Data['post_owner_id'],
+    course_deadline: Data['Enrollment Deadline'],
+    course_pic: Data["Course Picture(Optional)"],
+    final: Data['Final Grades'],
+    mid: Data['Midterm Grades']
   };
   let t = [];
   Data["List of Doctors"].forEach((element) => {

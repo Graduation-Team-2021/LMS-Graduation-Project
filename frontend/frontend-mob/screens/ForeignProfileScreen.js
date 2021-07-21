@@ -22,16 +22,13 @@ const ForeignProfileScreen = (props) => {
     firstColor = firstColor.concat(newIndex1.toString(16));
     lastColor = lastColor.concat(newIndex2.toString(16));
   }
-  console.log("====================================");
-  console.log(target);
-  console.log("====================================");
+
   return (
     <Fragment>
       <Portal>
         <FAB
           style={styles.fab}
           icon="message"
-          onPress={() => console.log("Pressed")}
         />
       </Portal>
       <ScrollView>

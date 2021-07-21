@@ -5,10 +5,13 @@ import classes from "./SearchPage.module.css";
 import Card from "../../Components/Card/Card";
 import Search from "../../Components/Search/Search";
 import Waiting from "../../Components/Waiting/Waiting";
+import Enroll from "../../Components/Enroll/Enroll";
 import {
   searchUsers,
   searchCourses,
   searchGroups,
+  BE_Enroll,
+  BE_G_Enroll,
 } from "../../Interface/Interface";
 import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 import { AppBar, Tab } from "@material-ui/core";
@@ -34,9 +37,50 @@ const SearchPage = (props) => {
 
   const [ModalData, setModalData] = useState(null);
 
+  const [enroll, setEnroll] = useState(false);
+
   const onDismiss = () => {
     setShow(false);
     setModalData(null);
+  };
+
+  const onCancel = () => {
+    setEnroll(false);
+  };
+
+  const onAccept = () => {
+    if (option === "Course") {
+      BE_Enroll(
+        props.userData.ID,
+        props.userData.Token,
+        ModalData.course_code
+      ).then((res) => {
+        if (res) {
+          alert("Enroll Successful");
+          setEnroll(false);
+          const user = { ...ModalData };
+          user.status = "Enrolled";
+          setModalData(user);
+        } else {
+          alert("Enroll Failed, please Try Again");
+        }
+      });
+    } else {
+      BE_G_Enroll(
+        ModalData.group_id,
+        props.userData.Token,
+      ).then((res) => {
+        if (res) {
+          alert("Enroll Successful");
+          setEnroll(false);
+          const user = { ...ModalData };
+          user.status = "Enrolled";
+          setModalData(user);
+        } else {
+          alert("Enroll Failed, please Try Again");
+        }
+      });
+    }
   };
 
   const onShow = (Data) => {
@@ -56,28 +100,21 @@ const SearchPage = (props) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
-            let temp = { ...value }
-            temp['ID'] = temp['user_id']
-            temp['Name'] = temp['name']
             tempResults.push(
-              <div style={{ display: 'flex', flexDirection: 'row', width: '80%' }} key={index}>
-                <h1 onClick={() => { onShow(value) }}>{value["name"]}</h1>
-                <button className={classes.search} onClick={() => { props.currentMessageActions.onSetCurrentMessage(temp) }}>
-                  <i>
-                    <img
-                      src="/messages.png"
-                      width="20"
-                      height="20"
-                      alt="Start a Conversation"
-                    />
-                  </i>
-                </button>
-              </div>);
+              <h1
+                key={index}
+                onClick={() => {
+                  onShow(value);
+                }}
+              >
+                {value["name"]}
+              </h1>
+            );
           });
           setResults(tempResults);
         });
       } else if (option === "Course") {
-        searchCourses(query, props.userData.ID).then((res) => {
+        searchCourses(query, props.userData.Token).then((res) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
@@ -90,7 +127,7 @@ const SearchPage = (props) => {
           setResults(tempResults);
         });
       } else {
-        searchGroups(query).then((res) => {
+        searchGroups(query, props.userData.Token).then((res) => {
           setLoading(false);
           let tempResults = [];
           res.forEach((value, index) => {
@@ -104,7 +141,7 @@ const SearchPage = (props) => {
         });
       }
     }
-  }, [option, props.currentMessageActions, props.userData.ID, query, started]);
+  }, [option, props.userData.Token, query, started]);
 
   useEffect(() => {
     if (query !== "") {
@@ -115,11 +152,36 @@ const SearchPage = (props) => {
     }
   }, [onSearch, option, query]);
 
+  document.title="Search"
+
   return (
     <span className={classes.Holder}>
       <Modal show={show} onClick={onDismiss}>
-        <Content dismiss={onDismiss} Data={ModalData} Type={option} />
+        <Content
+          show={() => {
+            setShow(false);
+            setEnroll(true);
+          }}
+          dismiss={onDismiss}
+          Data={ModalData}
+          Type={option}
+        />
       </Modal>
+      {ModalData &&
+      ((option === "Course" && ModalData.course_code) ||
+        (option === "Group" && ModalData.group_id)) ? (
+        <Modal show={enroll} onClick={onCancel}>
+          <Enroll
+            option={option}
+            isEnrolled={ModalData.status !== "Enrolled"}
+            id={
+              option === "Course" ? ModalData.course_code : ModalData.group_id
+            }
+            onAccept={onAccept}
+            onCancel={onCancel}
+          />
+        </Modal>
+      ) : null}
       <Card shadow className={classes.Card}>
         <Search setQuery={setQuery} />
         <Spacer height="25px" />

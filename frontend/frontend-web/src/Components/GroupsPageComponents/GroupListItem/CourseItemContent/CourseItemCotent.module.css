@@ -1,0 +1,28 @@
+.CourseItemContentContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 110%;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+    padding: 20px 0;
+}
+
+.CourseItemContentContainer h5 {
+    padding-bottom: 10px;
+}
+
+.DoctorName {
+    flex: 1 1 auto;
+    font-size: x-small;
+    margin-bottom: 30px;
+    max-width: 70px;
+    min-width: 20px;
+}
+
+.CourseName {
+    overflow-wrap: break-word;
+    flex: 5 1 auto;
+    margin-top: 10px;
+}

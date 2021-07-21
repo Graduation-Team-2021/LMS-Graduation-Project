@@ -31,6 +31,13 @@ class Course(Resource):
         self.reqparse.add_argument('weekly_hours', type=int, location='json')
         self.reqparse.add_argument('group_number', type=int, location='json')
         self.reqparse.add_argument('max_students', type=int, location='json')
+        self.reqparse.add_argument(
+            'course_deadline', type=str, location='json')
+        self.reqparse.add_argument(
+            'course_description', type=str, location='json')
+        self.reqparse.add_argument('post_owner_id', type=str, location='json')
+        self.reqparse.add_argument('doctors', type=list, location='json')
+        self.reqparse.add_argument('course_pic', type=str, location="json")
 
     def get(self, course_code):
         try:
@@ -62,11 +69,14 @@ class Course(Resource):
             'group_number': args['group_number'],
             'max_students': args['max_students'],
             'course_description': args['course_description'],
-            'post_owner_id': args['post_owner_id']
-
+            'post_owner_id': args['post_owner_id'],
+            'course_deadline': args['course_deadline'],
+            'course_pic': args['course_pic']
         }
+        doctors = args['doctors']
         try:
-            course = controller_object.update_course(course_code, course)
+            course = controller_object.update_course(
+                course_code, course, doctors)
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -88,6 +98,11 @@ class Courses(Resource):
         self.reqparse.add_argument(
             'course_description', type=str, location='json')
         self.reqparse.add_argument('doctors', type=list, location='json')
+        self.reqparse.add_argument(
+            'course_deadline', type=str, location='json')
+        self.reqparse.add_argument('course_pic', type=str, location="json")
+        self.reqparse.add_argument('final', type=int, location='json')
+        self.reqparse.add_argument('mid', type=int, location='json')
 
     def get(self):
         try:
@@ -107,7 +122,11 @@ class Courses(Resource):
             'weekly_hours': args['weekly_hours'],
             'group_number': args['group_number'],
             'max_students': args['max_students'],
-            'course_description': args['course_description']
+            'course_description': args['course_description'],
+            'course_deadline': args['course_deadline'],
+            'course_pic': args['course_pic'],
+            'final': args['final'],
+            'mid': args['mid']
         }
         doctors = args['doctors']
         try:
@@ -121,6 +140,7 @@ class Courses(Resource):
                 gid = group_object.insert_group({
                     "group_name": f'{args["course_code"]} - Section {group+1}',
                     "group_description": f'This is the Group for Section {group+1} of the {args["course_name"]} Course',
+                    'group_pic': args['course_pic']
                 })
                 group_course_object.add_group_course(course=course, group=gid)
         except ErrorHandler as e:
@@ -146,14 +166,18 @@ class My_Courses(Resource):
             for i in range(len(student_courses)):
                 prof = professor_controller_object.get_teachers(
                     student_courses[i]['course_code'])
+                print(student_courses[i])
                 data_array.append({
                     'course_code': student_courses[i]['course_code'],
                     'course_name': student_courses[i]["course_name"],
                     'course_description': student_courses[i]["course_description"],
                     'post_owner_id': student_courses[i]["post_owner_id"],
-                    'professors': [p['name'] for p in prof]
+                    'professors': [p for p in prof],
+                    'course_pic': student_courses[i]['course_pic'],
+                    'final': student_courses[i]['final'],
+                    'mid': student_courses[i]['mid'],
                 })
-                
+
             return jsonify({
                 'status_code': 200,
                 'courses': data_array
@@ -166,7 +190,6 @@ class My_Courses(Resource):
                 return e.error
             data_array = list()
             for i in range(len(professor_courses)):
-                print(professor_courses[i])
                 data_array.append(professor_courses[i])
             return jsonify({
                 'status_code': 200,
@@ -177,11 +200,12 @@ class My_Courses(Resource):
 
 
 class SearchCourseByName(Resource):
+    method_decorators = {'get': [requires_auth_identity('')]}
     # def __init__(self):
     #     self.reqparse = reqparse.RequestParser()
     #     self.reqparse.add_argument('course_name', type=str, location='json')
 
-    def get(self, name, uid):
+    def get(self, user_id, role, name):
         # args = self.reqparse.parse_args()
         # course_name=args['course_name']
         try:
@@ -194,44 +218,45 @@ class SearchCourseByName(Resource):
                     Course['course_code'])
                 inside = False
                 for p in prof:
-                    if int(p['user_id']) == int(uid):
+                    if int(p['user_id']) == int(user_id):
                         inside = True
                         break
 
                 if not inside:
                     for s in stud:
-                        if int(s['user_id']) == int(uid):
+                        if int(s['user_id']) == int(user_id):
                             inside = True
                             break
                 Course['status'] = 'Enrolled' if inside else "Not Enrolled"
-            return {"data":temp, "status_code":200}
+            return {"data": temp, "status_code": 200}
         except ErrorHandler as e:
             return e.error
 
-#/course/<cid>/status
+# /course/<cid>/status
+
+
 class CourseStatus(Resource):
     method_decorators = {'get': [requires_auth_identity("")]}
+
     def get(self, user_id, role, cid):
         """
         docstring
         """
         status = "Can Enroll"
         try:
-            #to handle deadline
-            courses = controller_object.get_all_courses()
+            # to handle deadline
+            course = controller_object.get_course(cid)
             ###
-            courses = finished_object.get_finished_courses(user_id)
-            print(courses)
-            pre = prequisite_object.get_one_course_all_prequisites(cid)
-            for course in pre:
-                if courses.count(course['course_code'])==0:
-                    status="Can't Enroll"
-                    break
-            for i in courses:
-                if i['course_code']==cid and datetime.utcnow > i['course_deadline']:
-                    status="Can't Enroll"
-                    break
+            if course['course_code'] == cid and datetime.now() > datetime.strptime(course['course_deadline'], '%Y-%m-%d %H:%M:%S'):
+                status = "Too Late"
+            if status == 'Can Enroll':
+                fcourses = finished_object.get_finished_courses(user_id)
+                pre = prequisite_object.get_one_course_all_prequisites(cid)
+                for course in pre:
+                    if fcourses.count(course['course_code']) == 0:
+                        status = "Can't Enroll"
+                        break
+
             return {"status": status, "status_code": 200}
         except ErrorHandler as e:
-                return e.error
-        
+            return e.error

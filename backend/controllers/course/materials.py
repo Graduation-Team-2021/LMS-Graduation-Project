@@ -80,7 +80,7 @@ class materials_controller():
             file_path = f"courses/{course_code}/materials/{material_id}/{material_name}{material_type.lower()}"
             return url_for('static',filename=file_path)                      
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
@@ -104,7 +104,7 @@ class materials_controller():
             
     #         return data
     #     except SQLAlchemyError as e:
-    #         error = str(e.__dict__['orig'])
+    #         error = str(e)
     #         raise ErrorHandler({
     #             'description': error,
     #             'status_code': 500
@@ -140,7 +140,7 @@ class materials_controller():
             url_for("static", filename=file_path)
             return
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500

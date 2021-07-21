@@ -55,7 +55,7 @@ const reducer = (state = intialState, action) => {
   if (action.type === SET_PIC) {
     return {
       ...state,
-      pic: action.value.pic,
+      pic: action.value,
     };
   }
   return state;

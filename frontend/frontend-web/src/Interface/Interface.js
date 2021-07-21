@@ -9,7 +9,7 @@ const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const local = "http://localhost:5000";
 
-export const url = azure;
+export const url = local;
 const instance = axios.create({
   baseURL: url,
   //"http://localhost:5000",
@@ -24,16 +24,12 @@ export const f1 = async () => {
 
 export const SignUp = async (Data) => {
   //TODO: use request result
-  console.log(Data["birthday"]);
   let res = await instance.post("/sign_up", Data, {
     headers: {
       "Content-Type": "application/json",
     },
   });
-  if (res.data["status_code"] !== 200) {
-    return null;
-  }
-  return 1;
+  return res.data;
 };
 
 export const Login = async (Data) => {
@@ -71,7 +67,6 @@ export const getCurrentGroups = async (Token, cancel) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res.data);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -128,11 +123,11 @@ export const getRecentEvent = async (Token, id) => {
       Authorization: "Bearer " + Token,
     },
   });
-  if (res.data["status_code"] !== 200) {
+  if (res.data["status_code"] !== 200 && res.data["status_code"] !== 202) {
     //TODO: Better Check
     return null;
   }
-  return res.data["event"];
+  return res.data;
 };
 
 export const getFinishedCourses = async (Token, id, role) => {
@@ -194,8 +189,7 @@ export const getCourseByID = async (Token, CourseID) => {
       Authorization: "Bearer " + Token,
     },
   });
-
-  if (res["status"] !== 200) {
+  if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
   }
@@ -203,7 +197,6 @@ export const getCourseByID = async (Token, CourseID) => {
 };
 
 export const uploadFile = async (Token, file, CourseID) => {
-  console.log(file);
   let data = new FormData();
   data.append("file", file);
   const res = await instance.post(
@@ -216,7 +209,6 @@ export const uploadFile = async (Token, file, CourseID) => {
       },
     }
   );
-  console.log(res);
   /* if(res.data['status_code']===200) return true
   else return false */
 };
@@ -228,7 +220,6 @@ export const Like = async (Token, userID, postID) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
 };
 
 export const UnLike = async (Token, userID, postID) => {
@@ -238,11 +229,9 @@ export const UnLike = async (Token, userID, postID) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
 };
 
 export const Comment = async (Token, userID, postID, text) => {
-  console.log(text);
   const res = await instance.post(
     `/comments/${userID}/${postID}`,
     { comment_text: text },
@@ -265,7 +254,6 @@ export const getAllConversations = async (Token) => {
   if (res.data["status_code"] !== 200) {
     return null;
   }
-  console.log(res.data["conversations"]);
   return res.data["conversations"];
 };
 
@@ -289,7 +277,6 @@ export const getAllMessages = async (Token, otherID) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res);
   if (res.data["status_code"] !== 200) {
     return null;
   }
@@ -313,7 +300,6 @@ export const getCourseStudents = async (id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res);
   return res.data["names"];
 };
 export const setCourseStudent = async (id, Data) => {
@@ -326,22 +312,18 @@ export const setCourseStudent = async (id, Data) => {
       },
     }
   );
-  console.log(res);
 };
 
 export const AddCourse = async (Data) => {
-  console.log(Data);
   const res = await instance.post("/courses", Data, {
     headers: {
       "Content-Type": "application/json",
     },
   });
-  console.log(res.data);
   return res.data["status_code"] === 200;
 };
 
 export const AddGroup = async (Data, Token) => {
-  console.log(Data);
   const res = await instance.post("/project-groups", Data, {
     headers: {
       "Content-Type": "application/json",
@@ -356,7 +338,6 @@ export const getStudentsByCourse = async (id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res);
   return res.data["names"];
 };
 
@@ -370,7 +351,6 @@ export const getDeliv = async (id, Token) => {
         Authorization: "Bearer " + Token,
       },
     });
-    console.log(res.data);
     return res.data.deliverables;
   } else {
     res = await instance.get(`/deliverables`, {
@@ -379,8 +359,6 @@ export const getDeliv = async (id, Token) => {
         Authorization: "Bearer " + Token,
       },
     });
-    console.log(`Getting Deliverables of All Courses`);
-    console.log(res.data);
     return res.data["courses_deliverables"];
   }
 };
@@ -393,8 +371,6 @@ export const getDelivByID = async (id, Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(`Getting Deliverables of Course ${id}`);
-  console.log(res.data);
   /*return res.data["names"]; */
 };
 
@@ -406,14 +382,10 @@ export const SubmitDelivByID = async (id, Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(`Getting Deliverables of Course ${id}`);
-  console.log(res.data);
   /*return res.data["names"]; */
 };
 
 export const getQuizzes = async (id, Token) => {
-  //TODO: Integrate the Quizzes backend
-
   const res = await instance.get(`/exams_by_course/${id}/${Token}`, {
     headers: {
       "Content-Type": "application/json",
@@ -430,7 +402,6 @@ export const getQuizByID = async (id, Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(`Getting Quizzes of All Courses`);
   return res.data.exam;
 };
 
@@ -441,7 +412,6 @@ export const getPDFs = async (id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(`Getting PDFs of Course ${id}`);
   var materials = res.data["materials"];
   return materials;
 };
@@ -453,7 +423,6 @@ export const getOnePDF = async (id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(`Getting PDF of id: ${id}`);
   var materials = res.data["url"];
   return materials;
 };
@@ -465,9 +434,7 @@ export const getVideos = async (id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(`Getting Videos of Course ${id}`);
   var materials = res.data["materials"];
-  console.log(materials);
   return materials;
 };
 
@@ -478,7 +445,6 @@ export const getOneVideo = async (id) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(`Getting Video of id: ${id}`);
   var materials = res.data["url"];
   return materials;
 };
@@ -490,7 +456,6 @@ export const AddNewDeliv = async (Data) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res.data);
   return res.data;
 };
 
@@ -502,7 +467,6 @@ export const updatePic = async (id, Pic) => {
       "Content-Type": "multipart/form-data",
     },
   });
-  console.log(res);
   if (res.status === 200) {
     return res.data;
   }
@@ -540,17 +504,19 @@ export const searchUsers = async (text) => {
   return res.data.data;
 };
 export const searchCourses = async (text, id) => {
-  const res = await instance.get(`/courses/search/${text}/${id}`, {
+  const res = await instance.get(`/courses/search/${text}`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + id,
     },
   });
   return res.data.data;
 };
-export const searchGroups = async (text) => {
+export const searchGroups = async (text, id) => {
   const res = await instance.get(`/groups/search/${text}`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + id,
     },
   });
   return res.data.data;
@@ -566,7 +532,6 @@ export const AddQuiz = async (Data) => {
       },
     }
   );
-  console.log(res.data);
   if (res.data["status_code"] === 200) {
     return true;
   } else {
@@ -580,7 +545,6 @@ export const SubmitQuiz = async (Data) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res.data);
   if (res.data["status_code"] === 200) {
     return true;
   } else {
@@ -603,7 +567,6 @@ export const getDoctors = async () => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res.data);
   return res.data;
 };
 
@@ -614,7 +577,6 @@ export const getStatus = async (id, Token) => {
       Authorization: "Bearer " + Token,
     },
   });
-  console.log(res.data);
   return res.data.status;
 };
 
@@ -629,11 +591,135 @@ export const BE_Enroll = async (id, Token, cid) => {
       },
     }
   );
-  console.log(res.data);
-  if (res.data.status_code===200) {
-    return true
+  if (res.data.status_code === 200) {
+    return true;
+  } else {
+    return false;
   }
-  else{
-    return false
+};
+
+export const BE_G_Enroll = async (cid, Token) => {
+  const res = await instance.post(
+    `group/${cid}/students`,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    }
+  );
+  if (res.data.status_code === 200) {
+    return true;
+  } else {
+    return false;
   }
+};
+
+export const ExcelSignUp = async (Pic) => {
+  let data = new FormData();
+  data.append("file", Pic);
+  const res = await instance.post(`/sign_up/excel`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+};
+
+export const getGroups = async () => {
+  const res = await instance.get(`/project-groups`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["project_groups"];
+};
+
+export const getDegree = async (id) => {
+  const res = await instance.get(`/professors/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["professor"];
+};
+
+export const getYear = async (id) => {
+  const res = await instance.get(`/students/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["Student"];
+};
+
+export const getTeachedCourses = async (id) => {
+  const res = await instance.get(`/professor/${id}/courses`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["courses"];
+};
+
+export const AddNewEvent = async (data) => {
+  const res = await instance.post(`/courses/${data.course_code}/events`, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["message"];
+};
+
+export const UpdateCourse = async (data) => {
+  const res = await instance.put(`/courses/${data.course_code}`, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    //TODO: Better Check
+    return null;
+  }
+  return res.data["message"];
+};
+
+export const getStudentDeliver = async (id, Token) => {
+  //TODO: Wait for michel to get all delivers by student
+  /* const res = await instance.get(
+
+  ) */
+  console.log(`Getting all students delivering ${id}`);
+  return [
+    {
+      'group_name': "DJ",
+      status: 'Delivered',
+      mark: null,
+      id: id,
+      group_id: 2,
+      delivers_id: 2,
+      notgraded: false,
+    },
+  ];
 };
