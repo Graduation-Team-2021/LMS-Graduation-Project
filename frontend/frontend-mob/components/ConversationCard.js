@@ -22,7 +22,7 @@ const ConversationCard = props => {
 
   return (
     <TouchableCmp onPress={onClickHandler}>
-      <View>
+      <View style={{backgroundColor:'red'}}>
         <ListItem bottomDivider>
           <Avatar rounded source={{ uri: props.data.avatar_url }} />
           <ListItem.Content>

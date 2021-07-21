@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import classes from "./GroupOverview.module.css";
-import Enroll from "../../Enroll/Enroll";
-import Modal from "../../Modal/Modal";
 import filler from '../../../assets/Filler.png'
 
 const CourseOverview = (props) => {

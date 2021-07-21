@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import Message from "./Message/Message";
@@ -125,18 +125,6 @@ export default connect(
       });
     }
   }
-  //////////////////////////////////////////////////////////////////////////////////////
-  const inputFile = useRef(null);
-
-  const onButtonClick = () => {
-    // `current` points to the mounted file input element
-    inputFile.current.click();
-  };
-
-  const onFileChange = (e) => {
-    //TODO: Send Files via attachments
-    const file = e.target.files[0];
-  };
   //////////////////////////////////////////////////////////////////////////////////
   const Dismiss = () => {
     setDismissed({ dismissed: !dismissed.dismissed });
@@ -293,15 +281,6 @@ export default connect(
             rightItems={[
               <button
                 className={cls.search}
-                key="photo"
-                onClick={onButtonClick}
-              >
-                <i>
-                  <img src="/photo.png" width="20" height="20" alt="" />
-                </i>
-              </button>,
-              <button
-                className={cls.search}
                 key="send"
                 onClick={handleButtonClicked}
               >
@@ -311,13 +290,6 @@ export default connect(
               </button>,
             ]}
           >
-            <input
-              type="file"
-              id="file"
-              ref={inputFile}
-              style={{ display: "none" }}
-              onChange={onFileChange}
-            />
           </Compose>
         </React.Fragment>
       </div>

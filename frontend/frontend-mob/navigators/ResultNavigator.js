@@ -4,11 +4,12 @@ import UsersSearchResult from "../screens/UsersSearchResult";
 import GroupsSearchResult from "../screens/GroupSearchResult";
 import { MaterialIcons, Entypo, AntDesign } from "@expo/vector-icons";
 import CoursesListScreen from "../screens/CoursesListScreen";
+import checkConnectivity from "../hocs/checkConnectivity";
 
 const tabnav = createMaterialBottomTabNavigator(
   {
     Users: {
-      screen: UsersSearchResult,
+      screen: checkConnectivity(UsersSearchResult),
       navigationOptions: {
         tabBarIcon: (tabInfo) => (
           <AntDesign name="user" size={24} color={tabInfo.tintColor} />
@@ -17,7 +18,7 @@ const tabnav = createMaterialBottomTabNavigator(
       },
     },
     Courses: {
-      screen: CoursesListScreen,
+      screen: checkConnectivity(CoursesListScreen),
       navigationOptions: {
         tabBarIcon: (tabInfo) => (
           <Entypo name="book" size={24} color={tabInfo.tintColor} />
@@ -26,7 +27,7 @@ const tabnav = createMaterialBottomTabNavigator(
       },
     },
     Groups: {
-      screen: GroupsSearchResult,
+      screen: checkConnectivity(GroupsSearchResult),
       navigationOptions: {
         tabBarIcon: (tabInfo) => (
           <MaterialIcons name="groups" size={24} color={tabInfo.tintColor} />

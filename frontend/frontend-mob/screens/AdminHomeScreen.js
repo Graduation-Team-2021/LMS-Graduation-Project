@@ -22,9 +22,6 @@ const AdminHomeScreen = (props) => {
     firstColor = firstColor.concat(newIndex1.toString(16));
     lastColor = lastColor.concat(newIndex2.toString(16));
   }
-  console.log("====================================");
-  console.log(firstColor, lastColor);
-  console.log("====================================");
   return (
     <ScrollView>
       <View style={styles.screen}>
@@ -69,7 +66,6 @@ const AdminHomeScreen = (props) => {
             <Button
               title="Add User"
               onPress={() => {
-                console.log("Add User to be implemented");
                 props.navigation.navigate("AddUser")
               }}
             />
@@ -78,7 +74,6 @@ const AdminHomeScreen = (props) => {
             <Button
               title="Add Course"
               onPress={() => {
-                console.log("Add Course to be implemented");
                 props.navigation.navigate("AddCourse")
               }}
             />

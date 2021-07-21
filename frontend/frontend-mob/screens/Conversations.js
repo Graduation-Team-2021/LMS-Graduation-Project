@@ -1,12 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  ScrollView,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  Platform,
-  Text,
-} from "react-native";
+import React, { useState, useEffect, Fragment } from "react";
+import { View, ScrollView, Text } from "react-native";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
 import NetInfo from "@react-native-community/netinfo";
@@ -26,9 +19,6 @@ const ConversationScreen = (props) => {
         newState.isConnected && newState.isInternetReachable
       );
     NetInfo.addEventListener(setConnectivity);
-    return () => {
-      NetInfo.removeEventListener(setConnectivity);
-    };
   }, []);
   msngrskt.auth = { userID: props.userData.ID };
   msngrskt.connect();
@@ -83,15 +73,10 @@ const ConversationScreen = (props) => {
         temp.push(data);
       });
       setConversations(temp);
-      console.log("hi");
     });
   };
 
   useEffect(getConversations, [props.userData.Token]);
-  let TouchableCmp = TouchableOpacity;
-  if (Platform.OS === "android" && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-  }
 
   const navigationHandler = (second_id) => {
     props.navigation.navigate({
@@ -119,7 +104,7 @@ const ConversationScreen = (props) => {
     );
   }
 
-  return <View style={{ backgroundColor: "white", flex: 1 }}>{content}</View>;
+  return content;
 };
 ConversationScreen.navigationOptions = (navData) => {
   return {

@@ -23,20 +23,18 @@ const AddUser = (props) => {
     },
   });
   const onSubmit = (data) => {
-    console.log("====================================");
-    data['role'] = items[0];
-    data['birthday'] = date.toISOString().slice(0,10);
-    console.log(data);
-    console.log("====================================");
+    data["role"] = items[0];
+    data["birthday"] = date.toISOString().slice(0, 10);
+
     //TODO: send the request to te backend here
-    AC(data).then(res=>{
-        if(res){
-            //TODO: Show it Succeded
-            reset();
-            setDate(new Date())
-            setItems([])
-        }
-    })
+    AC(data).then((res) => {
+      if (res) {
+        //TODO: Show it Succeded
+        reset();
+        setDate(new Date());
+        setItems([]);
+      }
+    });
   };
 
   const [isVisible, setVisible] = React.useState(false);
@@ -133,7 +131,10 @@ const AddUser = (props) => {
         <MultiSelect
           uniqueKey="id"
           selectText="Role"
-          items={[{id:'professor',name:'Professor or TA'},{id:'student',name:'Student'}]}
+          items={[
+            { id: "professor", name: "Professor or TA" },
+            { id: "student", name: "Student" },
+          ]}
           onSelectedItemsChange={(Items) => {
             setItems(Items);
           }}

@@ -11,7 +11,6 @@ import {
   getCourses,
   getFinishedCourses,
   BE_Enroll,
-  getGroups,
 } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import { setCourse } from "../../Models/Course";

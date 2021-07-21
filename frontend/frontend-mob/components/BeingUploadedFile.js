@@ -18,7 +18,6 @@ const BeingUploadedFile = (props) => {
         rounded
         title={props.file.name.split(".")[1]}
         activeOpacity={0.7}
-        onPress={() => console.log("hello")}
         containerStyle={{
           backgroundColor: fileExtenstionColor,
           justifyContent: "center",

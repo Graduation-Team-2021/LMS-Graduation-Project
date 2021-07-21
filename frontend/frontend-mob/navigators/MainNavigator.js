@@ -6,6 +6,7 @@ import MsgsNavs from "./MessagesNavigator";
 import Drawer from "../components/Drawer";
 import ResetPasswordScreen from "./ResetPasswordScreenNavigator";
 import RecentEventScreen from "./RecentEventNavigator";
+import checkConnectivity from "../hocs/checkConnectivity";
 
 const MainDrawer = createDrawerNavigator(
   {

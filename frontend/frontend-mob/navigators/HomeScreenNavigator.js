@@ -14,8 +14,10 @@ import PdfReader from "../screens/PDFScreen";
 import CreateDeliverable from "../screens/CreateDeliverable";
 import checkConnectivity from "../hocs/checkConnectivity";
 import StudentSubmissionScreen from "../screens/StudentSubmissionScreen";
-import AddCourse from '../screens/AddCourse';
-import AddUser from '../screens/AddUser';
+import AddCourse from "../screens/AddCourse";
+import AddUser from "../screens/AddUser";
+import CoursePDFScreen from "../screens/CoursePDFScreen";
+import CourseVideoScreen from "../screens/CoruseVideoScreen";
 
 const HomeStack = createStackNavigator(
   {
@@ -37,7 +39,7 @@ const HomeStack = createStackNavigator(
       },
     },
     Course: {
-      screen: CourseScreen,
+      screen: checkConnectivity(CourseScreen),
       navigationOptions: (navData) => {
         return {
           title: `${navData.navigation.getParam("course").CourseName}`,
@@ -48,7 +50,15 @@ const HomeStack = createStackNavigator(
     StudentSubmission: { screen: StudentSubmissionScreen },
     Pdf: { screen: PdfReader },
     CourseList: { screen: checkConnectivity(CourseListScreen) },
-    DeliverableList: { screen: checkConnectivity(DeliverableList) },
+    DeliverableList: { screen: checkConnectivity(DeliverableList),navigationOptions:(navData) => {
+      const myCourse = navData.navigation.getParam("course");
+      if(myCourse){
+        return {title:`${myCourse.CourseName} Deliverable`}
+      }
+      else{
+        return{title:'Your Deliverable'}
+      }
+    }},
     CourseDescription: {
       screen: CourseDescriptionScreen,
       navigationOptions: (navData) => {
@@ -75,10 +85,12 @@ const HomeStack = createStackNavigator(
         };
       },
     },
-    ForeignProfile: { screen: checkConnectivity(ForeignProfileScreen) },
+    ForeignProfile: { screen: ForeignProfileScreen },
     SearchReasult: ResultsNavigator,
-    AddCourse: AddCourse,
-    AddUser: AddUser
+    AddCourse: checkConnectivity(AddCourse),
+    AddUser: checkConnectivity(AddUser),
+    CoursePDFs: { screen: checkConnectivity(CoursePDFScreen) },
+    CourseVideos: { screen: checkConnectivity(CourseVideoScreen) },
   },
   {
     defaultNavigationOptions: {

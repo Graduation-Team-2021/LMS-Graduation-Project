@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
@@ -49,7 +49,7 @@ const checkConnectivity = (WrappedComponnent) => {
       alertMessage = null;
     }
     return (
-      <View>
+      <Fragment>
         {alertMessage}
         <Portal>
           <Dialog visible={dialogVisible} onDismiss={hideDialog}>
@@ -58,6 +58,8 @@ const checkConnectivity = (WrappedComponnent) => {
               <Paragraph>
                 Although there is not internet connection, you can still use the
                 LMS application to browse the matierial and continue learning
+                from the material saverd on your device, but some feature might
+                not be available
               </Paragraph>
             </Dialog.Content>
             <Dialog.Actions>
@@ -65,8 +67,8 @@ const checkConnectivity = (WrappedComponnent) => {
             </Dialog.Actions>
           </Dialog>
         </Portal>
-          <WrappedComponnent {...props} />
-        </View>
+        <WrappedComponnent {...props} />
+      </Fragment>
     );
   };
   ModifiedComponenect.navigationOptions = WrappedComponnent.navigationOptions;
