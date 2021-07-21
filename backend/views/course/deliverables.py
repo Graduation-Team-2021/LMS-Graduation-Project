@@ -92,7 +92,9 @@ class All_Deliverables(Resource):
             "mark": args["mark"]
         }
         try:
-            controller_object.post_deliverable(deliverable)
+            deliverable_id = controller_object.post_deliverable(deliverable)
+            controller_object.create_groups_for_deliverable(deliverable_id,args["course_deliverables"])
+            controller_object.create_deliverable_event(args["course_deliverables"],deliverable)
         except ErrorHandler as e:
             return e.error
         return jsonify({
