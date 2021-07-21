@@ -32,18 +32,17 @@ const NormalHomeScreen = (props) => {
       showBottomModalSheet: () => setButtomModalVisability(true),
       studentName: props.userData.Name,
     });
-    Interface.getCurrentCourses(props.userData.Token)
-      .then((res) => {
-        const Courses = [];
-        if (res) {
-          res.forEach((element) => {
-            let currentCourse = setCourse(element);
-            Courses.push(currentCourse);
-          });
-          setCurrentCourses(Courses);
-        }
-      })
-      
+    Interface.getCurrentCourses(props.userData.Token).then((res) => {
+      const Courses = [];
+      if (res) {
+        res.forEach((element) => {
+          let currentCourse = setCourse(element);
+          Courses.push(currentCourse);
+        });
+        setCurrentCourses(Courses);
+      }
+    });
+
     Interface.getCurrentGroups(props.userData.Token).then((res) => {
       const Groups = [];
       if (res) {
