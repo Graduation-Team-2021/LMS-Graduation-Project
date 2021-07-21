@@ -47,6 +47,9 @@ const NormalHomeScreen = (props) => {
       const Groups = [];
       if (res) {
         res.forEach((element) => {
+          console.log("====================================");
+          console.log(element);
+          console.log("====================================");
           Groups.push(setGroup(element));
         });
         setCurrentGroups(Groups);
