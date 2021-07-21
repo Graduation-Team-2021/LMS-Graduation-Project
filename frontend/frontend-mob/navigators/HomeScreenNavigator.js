@@ -50,15 +50,17 @@ const HomeStack = createStackNavigator(
     StudentSubmission: { screen: StudentSubmissionScreen },
     Pdf: { screen: PdfReader },
     CourseList: { screen: checkConnectivity(CourseListScreen) },
-    DeliverableList: { screen: checkConnectivity(DeliverableList),navigationOptions:(navData) => {
-      const myCourse = navData.navigation.getParam("course");
-      if(myCourse){
-        return {title:`${myCourse.CourseName} Deliverable`}
-      }
-      else{
-        return{title:'Your Deliverable'}
-      }
-    }},
+    DeliverableList: {
+      screen: checkConnectivity(DeliverableList),
+      navigationOptions: (navData) => {
+        const myCourse = navData.navigation.getParam("course");
+        if (myCourse) {
+          return { title: `${myCourse.CourseName} Deliverable` };
+        } else {
+          return { title: "Your Deliverable" };
+        }
+      },
+    },
     CourseDescription: {
       screen: CourseDescriptionScreen,
       navigationOptions: (navData) => {
@@ -77,13 +79,6 @@ const HomeStack = createStackNavigator(
     },
     DeliverableSubmission: {
       screen: checkConnectivity(DeliverableSubmetionScreen),
-      navigationOptions: (navData) => {
-        return {
-          title: `${navData.navigation.getParam(
-            "delevrableName"
-          )} ${navData.navigation.getParam("deliverableType")}`,
-        };
-      },
     },
     ForeignProfile: { screen: ForeignProfileScreen },
     SearchReasult: ResultsNavigator,
