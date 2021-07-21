@@ -15,11 +15,16 @@ const UsersSearchResultItem = (props) => {
     Dimensions.get("window").width >= Dimensions.get("window").height
       ? Dimensions.get("window").width * 0.35
       : Dimensions.get("window").width * 0.9;
+  console.log("====================================");
+  console.log(props.item);
+  console.log("====================================");
   return (
     <View style={{ width: elementWidth, margin: 3 }}>
       <ListItem
         onPress={() =>
-          props.navigation.navigate("ForeignProfile", { target: props.item })
+          props.navigation.navigate("Messages", {
+            second_id: props.item.user_id,
+          })
         }
       >
         <Avatar
