@@ -172,6 +172,7 @@ class CourseDesc extends Component {
                   info="Add Deliverable"
                 />
               </Button>
+              {console.log(this.props.Course)}
               <Button
                 className={classes.Holder}
                 onClick={() => {

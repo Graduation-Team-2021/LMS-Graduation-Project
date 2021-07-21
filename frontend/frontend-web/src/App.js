@@ -50,6 +50,7 @@ const App = (props) => {
                 <Route path="/Deliv" exact component={Deliv} />
                 <Route path="/Quiz/:id" exact component={Quiz} />
                 <Route path="/Deliv/Assignment/:id" exact component={Deliv} />
+                <Route path="/Deliv/Assignment/:id/:group_id" exact component={Deliv} />
                 <Route path="/Course/:id/Deliv" exact component={Deliv} />
                 <Route path="/Course/:id/Quiz" exact component={Quiz} />
                 <Route path="/Course/:cid/PDFs/:id" exact component={PDF} />

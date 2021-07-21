@@ -84,7 +84,7 @@ class Events(Resource):
     def post(self, course_code):
         args = self.reqparse.parse_args()
         event_type = args["event_type"]
-        if event_type not in ["exam", "lecture"]:
+        if event_type not in ["exam", 'assignment']:
             return jsonify({
                 'message': 'incorrect event type',
                 'status_code': 404

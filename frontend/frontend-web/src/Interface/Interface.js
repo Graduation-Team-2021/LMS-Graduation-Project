@@ -9,7 +9,7 @@ const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const local = "http://localhost:5000";
 
-export const url = azure;
+export const url = local;
 const instance = axios.create({
   baseURL: url,
   //"http://localhost:5000",
@@ -386,8 +386,6 @@ export const SubmitDelivByID = async (id, Token) => {
 };
 
 export const getQuizzes = async (id, Token) => {
-  //TODO: Integrate the Quizzes backend
-
   const res = await instance.get(`/exams_by_course/${id}/${Token}`, {
     headers: {
       "Content-Type": "application/json",
@@ -705,4 +703,23 @@ export const UpdateCourse = async (data) => {
     return null;
   }
   return res.data["message"];
+};
+
+export const getStudentDeliver = async (id, Token) => {
+  //TODO: Wait for michel to get all delivers by student
+  /* const res = await instance.get(
+
+  ) */
+  console.log(`Getting all students delivering ${id}`);
+  return [
+    {
+      'group_name': "DJ",
+      status: 'Delivered',
+      mark: null,
+      id: id,
+      group_id: 2,
+      delivers_id: 2,
+      notgraded: false,
+    },
+  ];
 };

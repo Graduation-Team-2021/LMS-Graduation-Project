@@ -1,6 +1,7 @@
 NEW TODO:
 
 20.Link Single Deliverable
+22.Add Correct Deliverable
 21.Link Marks Page+
 5. Deliverables integration (Michel,David) (Inside Interface)
 7. يوم النتيجة
@@ -33,3 +34,24 @@ Mobile TODO:
 9. add users for the Admin
 10. add Quizzes for professrs
 11. integrating the pie with the backend
+
+
+
+
+
+Deliverables TODO:
+1. Status (All Null, Some Null, No Null)
+2. All Students in One Deliverable (Use Same as Add Deliverable)
+3. One Deliverable (Add Grade) 
+4. Add Drag and Drop in Student
+5. Get Downlaod Deliv
+
+Sequence:
+1. Create Deliverable (Create Group, Add to Events)
+2. Student Get all Deliverables (get group id)
+3.0. (Student Joins Group of Deliverable inside Single Deliverable, only once)
+3. Student Upload Deliverable (Upload, add to delivers)
+4. Doctor Check all Deliverables (get Number, status of deliverable)
+4. Doctor Check all Delivering students (get Submited, graded)
+5. Doctor Check Single Deliverable (get submission)
+6. Doctor Submit Mark (mark goes to all Students in group)

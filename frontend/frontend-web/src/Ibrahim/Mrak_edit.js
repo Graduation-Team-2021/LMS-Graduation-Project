@@ -35,13 +35,15 @@ class MarkEdit extends Component {
                 [vall.id]: vall.value,
               }));
               course.forEach((valll) => {
-                var mark = 0;
+                var mark = "";
                 if (Object.keys(student).includes(valll.id)) {
                   mark = student[valll.id];
                 }
-                delivs.push({[valll.id]:mark});
+                delivs.push({id:valll.id,mark: mark});
               });
               return {
+                name: val.name,
+                id: val.id,
                 mid: val.mid,
                 final: val.final,
                 Deliverables: delivs,
@@ -109,7 +111,7 @@ class MarkEdit extends Component {
               <tr>
                 <th>Name</th>
                 <th>id</th>
-                {this.state.Devisions.map(val=><th>{val.name}</th>)}
+                {this.state.Devisions.map((val, index)=><th key={index}>{val.name}</th>)}
                 <th>midterm</th>
                 <th>final</th>
               </tr>
@@ -118,17 +120,20 @@ class MarkEdit extends Component {
               {this.state.users.map((user, key) => {
                 return (
                   <tr key={key}>
+                  {console.log(this.props.location.state)}
                     <td>{user.name}</td>
                     <td>{user.id}</td>
                     <td>
                       {this.state.Devisions.map((value, index) => (
                         <React.Fragment key={index}>
+                        {console.log(value)}
                           <input
                             type="number"
                             name={value.name}
                             onChange={(event) => this.mark(event, key, index)}
+                            value={user.Deliverables[index].mark}
                           />
-                          <pre> out of {value.marks} </pre>
+                          <pre> out of {value.mark} </pre>
                         </React.Fragment>
                       ))}
                     </td>
@@ -139,6 +144,7 @@ class MarkEdit extends Component {
                         onChange={(event) => this.mid(event, key)}
                         value={user.mid}
                       />
+
                       <pre> out of {this.state.mid} </pre>
                     </td>
                     <td>

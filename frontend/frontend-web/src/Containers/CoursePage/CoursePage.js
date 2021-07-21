@@ -117,6 +117,7 @@ const CoursePage = (props) => {
           </Waiting>
         </Card>
         <div className={classes.large}>
+        {console.log(props.location.state.Data)}
           <CourseDescription
             Role={props.userData.Role}
             desc={Desc}

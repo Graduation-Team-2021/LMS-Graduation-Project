@@ -6,6 +6,8 @@ from methods.errors import *
 from flask import jsonify
 from models.user.users import User
 
+deliv_object = deliverable_controller()
+
 
 class student_course_relation_controller():
     def get_courses_by_student_id(self, student_id):
@@ -13,7 +15,8 @@ class student_course_relation_controller():
             courses = Learns_Relation.query.join(Student).filter(Student.user_id == student_id)\
                 .join(Course).filter(Course.course_code == Learns_Relation.course_code).\
                 with_entities(Course.course_code, Course.course_name,
-                              Course.course_description, Course.post_owner_id, Course.course_pic)
+                              Course.course_description, Course.post_owner_id, Course.course_pic, Course.mid, Course.final)
+            print(courses)
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({
@@ -28,7 +31,9 @@ class student_course_relation_controller():
                     'course_name': i[1],
                     'course_description': i[2],
                     'post_owner_id': i[3],
-                    'course_pic': i[4]
+                    'course_pic': i[4],
+                    'mid': i[5],
+                    'final': i[6]
                 }
             )
         return results_array
@@ -121,10 +126,10 @@ class student_course_relation_controller():
             t2['mid'] = i['mid_term_mark']
             t2['final'] = i['final_exam_mark']
             t2['deliv'] = []
-            deliv_list = deliverable_controller.get_all_course_deliverables(
+            deliv_list = deliv_object.get_all_course_deliverables(
                 course_code, i["student_id"], 'student')
             for d in deliv_list:
-                t2['deliv'].push({
+                t2['deliv'].append({
                     "id": d["deliverable_id"],
                     'value': d['mark']
                 })

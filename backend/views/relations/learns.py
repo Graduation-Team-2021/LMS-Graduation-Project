@@ -95,12 +95,6 @@ class Student_Courses_Relation(Resource):
 class All_Students_in_one_course(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('student_id', type=str, location='json')
-        self.reqparse.add_argument('course_code', type=str, location='json')
-        self.reqparse.add_argument(
-            'mid_term_mark', type=float, location='json')
-        self.reqparse.add_argument(
-            'final_exam_mark', type=float, location='json')
         self.reqparse.add_argument('Data', type=list, location='json')
 
     def get(self, course_code):
@@ -128,6 +122,7 @@ class All_Students_in_one_course(Resource):
             try:
                 controller_object.update_student_course_relation(
                     i['id'], course_code, new)
+                
             except ErrorHandler as e:
                 return e.error
         return jsonify(

@@ -12,8 +12,8 @@ class Learns_Relation(db.Model, Base):
                            primary_key=True)
     course_code = db.Column(db.String(7), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                             primary_key=True)
-    mid_term_mark=db.Column(db.Float)
-    final_exam_mark=db.Column(db.Float)
+    mid_term_mark=db.Column(db.Float, default=0)
+    final_exam_mark=db.Column(db.Float, default=0)
     def serialize(self):
         return {
             'student_id': self.student_id,

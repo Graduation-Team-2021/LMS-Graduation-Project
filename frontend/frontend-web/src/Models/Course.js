@@ -1,4 +1,5 @@
 export const setCourse = (id) => {
+  console.log(id);
   let data = {
     CourseID: id["course_code"],
     CourseName: id["course_name"],
