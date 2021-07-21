@@ -5,12 +5,14 @@ import {
   StyleSheet,
   Text,
   ActivityIndicator,
+  FlatList,
 } from "react-native";
 import { Divider } from "react-native-elements";
 import { PieChart } from "react-native-svg-charts";
 import {
   getAllStudentsDeliverables,
   deleteDeliverable,
+  getQuizzes,
 } from "../Interface/Interface";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
@@ -18,26 +20,51 @@ import DeliverableItem from "../components/DeliverableItem";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import sha256 from "crypto-js/sha512";
 import { Snackbar } from "react-native-paper";
+import QuizItem from "../components/QuizItem";
 
 const AllDelivList = (props) => {
-  const [deliverables, setDeliverables] = useState();
+  const [deliverables, setDeliverables] = useState([]);
   const [deliverablesLoaded, setDeliverablesLoaded] = useState(false);
   const [PieData, setPieData] = useState({});
   const [SnackBarVisablity, setSnackBarVisablity] = useState(false);
   const [snackBarColor, setSnackBarColor] = useState("black");
   const snackBarMessage = useRef("");
   const myCourse = props.navigation.getParam("course");
+  const isQuiz = props.navigation.getParam("isQuiz");
   useEffect(() => {
-    retrieveStudentDeliverables();
+    if (isQuiz) {
+      retrieveCourseQuizes();
+    } else {
+      retrieveStudentDeliverables();
+    }
   }, []);
+
+  const retrieveCourseQuizes = () => {
+    if (myCourse && isQuiz) {
+      getQuizzes(myCourse.CourseID, props.userData.Token).then((res) => {
+        console.log("[Quiz]====================================");
+        console.log(res);
+        console.log("[Quiz]====================================");
+        let pieData = {};
+        res.forEach((quiz) => {
+          if (pieData[quiz.status]) {
+            pieData[quiz.status] += 1;
+          } else {
+            pieData[quiz.status] = 1;
+          }
+        });
+        setPieData(pieData);
+        setDeliverables(res);
+        setDeliverablesLoaded(true);
+      });
+    }
+  };
+
   const retrieveStudentDeliverables = () => {
     getAllStudentsDeliverables(props.userData.Token).then((res) => {
       let newRes = res;
       if (myCourse) {
         newRes = newRes.filter((e) => {
-          console.log("====================================");
-          console.log(e.course_name, myCourse.CourseName);
-          console.log("====================================");
           return e.course_name === myCourse.CourseName;
         });
       }
@@ -97,11 +124,7 @@ const AllDelivList = (props) => {
       });
     });
   };
-  const randomColor = () =>
-    ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
-      0,
-      7
-    );
+
   const pieData = Object.keys(PieData).map((value, index) => {
     const target = value;
     const hashedItem = sha256(JSON.stringify(target));
@@ -124,7 +147,50 @@ const AllDelivList = (props) => {
       key: `pie-${index}`,
     };
   });
-  ////////////////////////////////////////////////////////////////
+
+  const DeliverableContent = isQuiz
+    ? null
+    : deliverables.map((course, index) => {
+        return (
+          <View key={`course ${index}`}>
+            <Divider style={styles.dividerStyle} />
+            <View style={styles.headerContainer}>
+              <Text style={styles.courseHeaderStyle}>{course.course_name}</Text>
+            </View>
+
+            {sortDeliverables(course.deliverables)}
+            {course.deliverables.map((deliverable, i) => {
+              return (
+                <View key={i}>
+                  <DeliverableItem
+                    deliverable={deliverable}
+                    deleteDeliverableHandler={deleteDeliverableHandler}
+                    previewDeliverableHandler={previewDeliverableHandler}
+                  ></DeliverableItem>
+                </View>
+              );
+            })}
+          </View>
+        );
+      });
+
+  const QuizContent = (
+    <FlatList
+      data={deliverables}
+      keyExtractor={(_, index) => index.toString()}
+      renderItem={(item) => (
+        <QuizItem
+          Quiz={item.item}
+          previewQuizHandler={() =>
+            props.navigation.navigate("DeliverableSubmission", {
+              Quiz: item.item,
+            })
+          }
+        />
+      )}
+    />
+  );
+  const ScrollViewContent = isQuiz ? QuizContent : DeliverableContent;
 
   return (
     <Fragment>
@@ -141,31 +207,7 @@ const AllDelivList = (props) => {
       ) : null}
       <ScrollView>
         {deliverablesLoaded ? (
-          deliverables.map((course, index) => {
-            return (
-              <View key={`course ${index}`}>
-                <Divider style={styles.dividerStyle} />
-                <View style={styles.headerContainer}>
-                  <Text style={styles.courseHeaderStyle}>
-                    {course.course_name}
-                  </Text>
-                </View>
-
-                {sortDeliverables(course.deliverables)}
-                {course.deliverables.map((deliverable, i) => {
-                  return (
-                    <View key={i}>
-                      <DeliverableItem
-                        deliverable={deliverable}
-                        deleteDeliverableHandler={deleteDeliverableHandler}
-                        previewDeliverableHandler={previewDeliverableHandler}
-                      ></DeliverableItem>
-                    </View>
-                  );
-                })}
-              </View>
-            );
-          })
+          ScrollViewContent
         ) : (
           <ActivityIndicator size="large" style={{ marginTop: 20 }} />
         )}

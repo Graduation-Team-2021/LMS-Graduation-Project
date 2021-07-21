@@ -1,10 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import {
   View,
-  ScrollView,
   TouchableOpacity,
-  TouchableNativeFeedback,
-  Platform,
   Text,
   StyleSheet,
   Alert,

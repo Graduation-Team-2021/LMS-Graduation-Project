@@ -288,13 +288,21 @@ const CourseScreen = (props) => {
             icon={FABOpen ? "close" : "plus"}
             actions={[
               {
+                icon: "help",
+                label: "Quizzes",
+                onPress: () =>
+                  props.navigation.navigate("DeliverableList", {
+                    course: myCourse,
+                    isQuiz: true,
+                  }),
+              },
+              {
                 icon: "folder-open",
                 label: "Delivrables",
                 onPress: () =>
                   props.navigation.navigate("DeliverableList", {
                     course: myCourse,
                   }),
-                small: false,
               },
               {
                 icon: "youtube",
@@ -303,14 +311,12 @@ const CourseScreen = (props) => {
                   props.navigation.navigate("CourseVideos", {
                     course: myCourse,
                   }),
-                small: false,
               },
               {
                 icon: "file-pdf",
                 label: "PDFs",
                 onPress: () =>
                   props.navigation.navigate("CoursePDFs", { course: myCourse }),
-                small: false,
               },
             ]}
             onStateChange={({ open }) => setFABOpen(open)}

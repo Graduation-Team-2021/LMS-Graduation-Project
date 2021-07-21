@@ -117,6 +117,7 @@ class User(Resource):
 
 # /users
 class Users(Resource):
+    # method_decorators = {'get': [requires_auth('')]}
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
 
