@@ -25,6 +25,7 @@
 
 .Group_Select{
   display: flex;
+  width: 60%
 }
 
 .button {

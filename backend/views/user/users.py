@@ -14,10 +14,9 @@ controller_object = users_controller()
 cont_stud = students_controller()
 cont_professor = professors_controller()
 
-
 # /users/<user_id>
 class User(Resource):
-    # method_decorators = {'get': [requires_auth('')]}
+    method_decorators = {'get': [requires_auth('')]}
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()

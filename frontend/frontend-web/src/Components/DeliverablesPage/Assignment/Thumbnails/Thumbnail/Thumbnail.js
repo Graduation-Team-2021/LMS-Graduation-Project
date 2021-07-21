@@ -13,7 +13,7 @@ const type = {
 
 const Thumbnail = (props) => {
     var src;
-    console.log(props.type);
+    //TODO: use assoiciated file type
     if (Object.keys(type).includes(props.type)) {
         src = type[props.type]
     } else if(props.type.includes('video')) {

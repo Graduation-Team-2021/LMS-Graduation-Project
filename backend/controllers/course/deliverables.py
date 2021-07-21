@@ -19,6 +19,7 @@ from controllers.relations.delivers import delivers_controller
 from controllers.course.group_project import GroupProjectController
 from controllers.course.events import events_controller
 from controllers.relations.group_course_relation import group_course_controller
+from controllers.relations.student_group_relation import StudentGroupRelationController
 from flask import json
 from datetime import datetime
 from sqlalchemy import func
@@ -28,6 +29,8 @@ delivers_controller_object = delivers_controller()
 groups_controller = GroupProjectController()
 events_controllers = events_controller()
 group_course_controller_object = group_course_controller()
+student_object = StudentGroupRelationController()
+
 
 class deliverable_controller:
     def get_deliverable(self, deliverable_id):
@@ -46,7 +49,8 @@ class deliverable_controller:
         new_deliverable = Deliverables(**deliverable)
         try:
             new_deliverable = Deliverables.insert(new_deliverable)
-            deliverable = Deliverables.query.order_by(Deliverables.deliverable_id.desc()).first()
+            deliverable = Deliverables.query.order_by(
+                Deliverables.deliverable_id.desc()).first()
             deliverable_id = deliverable.serialize()['deliverable_id']
         except SQLAlchemyError as e:
             error = str(e)
@@ -69,28 +73,32 @@ class deliverable_controller:
             })
         return True
 
-    def create_groups_for_deliverable(self,deliverable_id,course_code):
+    def create_groups_for_deliverable(self, deliverable_id, course_code):
         student_number = deliverable = Deliverables.query.filter_by(
             deliverable_id=deliverable_id).first().serialize()['students_number']
-        total_number_of_students = Learns_Relation.query.filter_by(course_code=course_code).with_entities(func.count(Learns_Relation.course_code)).group_by(Learns_Relation.course_code).all()[0][0]
+        total_number_of_students = Learns_Relation.query.filter_by(course_code=course_code).with_entities(
+            func.count(Learns_Relation.course_code)).group_by(Learns_Relation.course_code).all()[0][0]
         number_of_groups = math.ceil(total_number_of_students/student_number)
-        course = Course.query.filter_by(course_code=course_code).first().serialize()
+        course = Course.query.filter_by(
+            course_code=course_code).first().serialize()
         if student_number > 1:
             for i in range(number_of_groups):
                 new_group = {
-                    'group_name':course['course_code']+"_"+str(i) 
+                    'group_name': course['course_code']+"_"+str(i)
                 }
                 groups_controller.insert_group(new_group)
-                new_group = GroupProject.query.order_by(GroupProject.group_id.desc()).first().serialize()
-                group_course_controller_object.add_group_course(course_code,new_group['group_id'])
+                new_group = GroupProject.query.order_by(
+                    GroupProject.group_id.desc()).first().serialize()
+                group_course_controller_object.add_group_course(
+                    course_code, new_group['group_id'])
                 group_deliverable = {
-                    'group_id':new_group['group_id'],
+                    'group_id': new_group['group_id'],
                     'deliverable_id': deliverable_id
                 }
-                GroupDeliverableRelation.insert(GroupDeliverableRelation(**group_deliverable))
-                
-    
-    def create_deliverable_event(self,course_code,deliverable):
+                GroupDeliverableRelation.insert(
+                    GroupDeliverableRelation(**group_deliverable))
+
+    def create_deliverable_event(self, course_code, deliverable):
         event = {
             "event_name": deliverable['deliverable_name'],
             "event_date": deliverable['deadline'],
@@ -107,7 +115,6 @@ class deliverable_controller:
                 'status_code': 404
             })
         return True
-
 
     def update_deliverable(self, deliverable_id, deliverable):
         old_deliverable = Deliverables.query.filter_by(
@@ -136,6 +143,11 @@ class deliverable_controller:
                 Deliverables.deliverable_id, Deliverables.deliverable_name, Deliverables.course_deliverables,
                 Deliverables.deadline, Course.course_name, Deliverables.description, Deliverables.mark)
             for i in all_deliverables:
+                result = Deliverables_Results.query.filter(Deliverables_Results.deliverable_id == i.deliverable_id).filter(
+                    Deliverables_Results.user_id == student_id
+                ).first()
+                if result:
+                    result = result['mark']
                 delivers_relation = Deliver.query.filter(Deliver.deliverable_id == i.deliverable_id).filter(
                     Deliver.student_id == student_id).first()
                 status = ""
@@ -147,8 +159,10 @@ class deliverable_controller:
                     status = "Not Started"
                 index = next((index for (index, d) in enumerate(
                     deliverables_list) if d["course_id"] == i[2]), None)
-                student_group = StudentGroupRelation.query.filter(StudentGroupRelation.student_id==student_id).all()
-                deliverable_group = GroupDeliverableRelation.query.filter(GroupDeliverableRelation.deliverable_id==i.deliverable_id).all()
+                student_group = StudentGroupRelation.query.filter(
+                    StudentGroupRelation.student_id == student_id).all()
+                deliverable_group = GroupDeliverableRelation.query.filter(
+                    GroupDeliverableRelation.deliverable_id == i.deliverable_id).all()
                 deliverable_group_formatted = []
                 student_group_formatted = []
                 for j in student_group:
@@ -158,8 +172,8 @@ class deliverable_controller:
                 group_id = None
                 for k in deliverable_group_formatted:
                     for j in student_group_formatted:
-                        if k['group_id']==j['group_id']:
-                            group_id = k['group_id']
+                        if k['group_id'] == j['group_id']:
+                            group_id = groups_controller.get_group(j['group_id'])['group_name']
                             break
 
                 if index == None:
@@ -170,7 +184,7 @@ class deliverable_controller:
                               "mark": i[6],
                               "deadline": json.dumps(i[3], default=str).replace("\"", ""),
                               "status":status,
-                              "group_id":group_id}]})
+                              "group_id":group_id, "smark": result}]})
                 else:
                     deliverables_list[index]['deliverables'].append({"deliverable_id": i[0],
                                                                      "deliverable_name": i[1],
@@ -179,7 +193,7 @@ class deliverable_controller:
                                                                      "deadline": json.dumps(i[3], default=str).replace(
                                                                          "\"", ""),
                                                                      "status": status,
-                                                                     "group_id":group_id})
+                                                                     "group_id": group_id, "smark": result})
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({
@@ -189,7 +203,7 @@ class deliverable_controller:
         return {"courses_deliverables": deliverables_list}
 
     def get_all_course_deliverables(self, course_code, user_id, role):
-        #TODO: edit to get for doctor
+        # TODO: edit to get for doctor
         try:
             deliverable = Deliverables.query.filter_by(
                 course_deliverables=course_code).all()
@@ -267,6 +281,7 @@ class deliverable_controller:
                     deliverables_list) if d["course_id"] == i[2]), None)
                 unsolved_count = delivers_controller_object.count_number_of_ungraded_deliverables(
                     i[0])
+                # TODO: Get Status
                 if index == None:
                     deliverables_list.append(
                         {"course_id": i[2], "course_name": i[4], "deliverables":
@@ -290,3 +305,23 @@ class deliverable_controller:
                 'status_code': 404
             })
         return {"courses_deliverables": deliverables_list}
+
+    def get_groups(self, deliv):
+        try:
+            groups = GroupDeliverableRelation.query.filter(GroupDeliverableRelation.deliverable_id == deliv).join(
+                GroupProject).filter(GroupDeliverableRelation.group_id==GroupProject.group_id).join(Deliverables)\
+                    .filter(Deliverables.deliverable_id == GroupDeliverableRelation.deliverable_id).with_entities(GroupDeliverableRelation.group_id, GroupProject.group_name, Deliverables.students_number).all()
+            temp = []
+            for g in groups:
+                s = student_object.get_one_group_all_students(g[0])
+                if g[2]-len(s)>0:
+                    temp.append({
+                    'gid': g[0], 'name': g[1], 'number': g[2]
+                })
+        except SQLAlchemyError as e:
+            error = str(e)
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+            })
+        return temp

@@ -47,11 +47,7 @@ Deliverables TODO:
 5. Get Downlaod Deliv
 
 Sequence:
-1. Create Deliverable (Create Group, Add to Events)
-2. Student Get all Deliverables (get group id)
 3.0. (Student Joins Group of Deliverable inside Single Deliverable, only once)
-3. Student Upload Deliverable (Upload, add to delivers)
-4. Doctor Check all Deliverables (get Number, status of deliverable)
 4. Doctor Check all Delivering students (get Submited, graded)
 5. Doctor Check Single Deliverable (get submission)
 6. Doctor Submit Mark (mark goes to all Students in group)

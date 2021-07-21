@@ -12,7 +12,7 @@ class Deliver(db.Model, Base):
     deliverable_id = db.Column(db.Integer,
                                ForeignKey('deliverable.deliverable_id', ondelete='CASCADE', onupdate="CASCADE"))
     student_id = db.Column(db.Integer, ForeignKey('student.user_id', ondelete='CASCADE', onupdate="CASCADE"))
-    file_type = db.Column(db.String(6))
+    file_type = db.Column(db.String(50))
     file_name = db.Column(db.String(50))
 
     student = relationship("Student", foreign_keys=[student_id])
@@ -28,6 +28,7 @@ class Deliver(db.Model, Base):
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self.delivers_id
 
     def update(self):
         db.session.merge(self)

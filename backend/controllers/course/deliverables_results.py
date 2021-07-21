@@ -6,12 +6,12 @@ from controllers.course.deliverables import deliverable_controller
 from flask import json
 
 
-deliverable_controller = deliverable_controller()
+deliverable_object = deliverable_controller()
 
 class deliverable_results_controller:
     def get_deliverable_result(self,deliverable_id,user_id):
         try:
-            deliverable = deliverable_controller.get_deliverable(deliverable_id)
+            deliverable = deliverable_object.get_deliverable(deliverable_id)
             deliverable_result = Deliverables_Results.query.filter(Deliverables_Results.deliverable_id==deliverable_id).filter(
                 Deliverables_Results.user_id==user_id
             ).first()
@@ -32,7 +32,7 @@ class deliverable_results_controller:
             }) 
 
     def post_deliverable_result(self, deliverable_result):
-        deliverable = deliverable_controller.get_deliverable(deliverable_result['deliverable_id'])
+        deliverable = deliverable_object.get_deliverable(deliverable_result['deliverable_id'])
         if deliverable['mark']<deliverable_result['mark']:
 
             raise ErrorHandler({

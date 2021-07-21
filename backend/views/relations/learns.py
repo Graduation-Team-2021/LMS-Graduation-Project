@@ -1,3 +1,4 @@
+from controllers.relations.delivers import delivers_controller
 from controllers.relations.learns import student_course_relation_controller
 from controllers.course.courses import courses_controller
 from methods.auth import *
@@ -5,7 +6,7 @@ from flask_restful import Resource, reqparse
 from flask import current_app, jsonify
 
 controller_object = student_course_relation_controller()
-
+delivers_object = delivers_controller()
 
 # /student/<student_id>/courses
 class Student_Course_Relation(Resource):
@@ -122,7 +123,7 @@ class All_Students_in_one_course(Resource):
             try:
                 controller_object.update_student_course_relation(
                     i['id'], course_code, new)
-                
+                delivers_object.update_delivers_relation()
             except ErrorHandler as e:
                 return e.error
         return jsonify(

@@ -73,7 +73,7 @@ from views.relations.messages import Messages_Relation, DeleteMessageById, Messa
 from views.relations.delivers import Delivers_Relation, Delete_Delivers_Relation, Upload_Deliverable_File, Download_Deliverable_File, Student_Deliverables
 from views.course.deliverables_results import Deliverable_Results
 
-from views.course.deliverables import Deliverable_view, All_Deliverables,Students_Deliverables,Course_Deliverables
+from views.course.deliverables import Deliverable_view, All_Deliverables,Students_Deliverables,Course_Deliverables, getGroups
 from views.course.events import Event, Events
 from views.course.exams.questions import Question, Questions
 from views.course.exams.answers import Answers, Answer,Get_All_Right_Answers,Get_All_Wrong_Answers
@@ -180,7 +180,7 @@ Each student deliverables
 api.add_resource(Delivers_Relation, '/my_deliverables')
 api.add_resource(Deliverable_Results,'/students/<student_id>/deliverable/<deliverable_id>/results')
 api.add_resource(Students_Deliverables,'/students_deliverables/<deliverable_id>')
-
+api.add_resource(getGroups, '/deliverable_groups/<deliv>')
 
 
 """

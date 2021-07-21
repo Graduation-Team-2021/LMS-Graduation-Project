@@ -9,7 +9,7 @@ const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const local = "http://localhost:5000";
 
-export const url = local;
+export const url = azure;
 const instance = axios.create({
   baseURL: url,
   //"http://localhost:5000",
@@ -343,7 +343,6 @@ export const getStudentsByCourse = async (id) => {
 
 export const getDeliv = async (id, Token) => {
   var res;
-  //TODO: Integrate the Deliverables backend
   if (id) {
     res = await instance.get(`/courses/${id}/deliverable`, {
       headers: {
@@ -364,25 +363,59 @@ export const getDeliv = async (id, Token) => {
 };
 
 export const getDelivByID = async (id, Token) => {
-  //TODO: LOAD Single Deliverable filez
-  const res = await instance.get(`/deliverables/${id}`, {
+  const res = await instance.get(`/students/${Token}/deliverables/${id}`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
     },
   });
+  return res.data.data;
   /*return res.data["names"]; */
 };
 
-export const SubmitDelivByID = async (id, Token) => {
+export const getDelivGroup = async (id) => {
+  //TODO: get groups of deliverable
+  const res = await instance.get(`/deliverable_groups/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data.groups;
+};
+
+export const SubmitGroup = async (id, data) => {
+  //TODO: get groups of deliverable
+  const res = await instance.post(`/deliverable_groups/${id}`, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data.groups;
+};
+
+export const SubmitDelivByID = async (Token, data, data2) => {
   //TODO: Integrate the Deliverables backend
-  const res = await instance.get(`/deliverables/${id}`, {
+  console.log(data);
+  var res = await instance.post(`/my_deliverables`, data, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + Token,
     },
   });
-  /*return res.data["names"]; */
+ const delivs = res.data["delivers_id"];
+ console.log(delivs);
+ for (let index = 0; index < delivs.length; index++) {
+   let file = new FormData()
+   file.append('file', data2[index])
+   res = await instance.post(`/my_deliverables/${delivs[index]}/upload`, file,{
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  return res.data 
+   
+ }
+  /*return res.data["names"];*/
 };
 
 export const getQuizzes = async (id, Token) => {
@@ -706,15 +739,12 @@ export const UpdateCourse = async (data) => {
 };
 
 export const getStudentDeliver = async (id, Token) => {
-  //TODO: Wait for michel to get all delivers by student
-  /* const res = await instance.get(
-
-  ) */
+  const res = await instance.get(`/students_deliverables/${id}`);
   console.log(`Getting all students delivering ${id}`);
   return [
     {
-      'group_name': "DJ",
-      status: 'Delivered',
+      group_name: "DJ",
+      status: "Delivered",
       mark: null,
       id: id,
       group_id: 2,
@@ -722,4 +752,12 @@ export const getStudentDeliver = async (id, Token) => {
       notgraded: false,
     },
   ];
+};
+
+export const getSDbyID = async (id, Token, gid) => {
+  const res = await instance.get(`/students/${gid}/deliverables/${id}`);
+};
+
+export const downloadD = async (did) => {
+  const res = await instance.get(`/my_deliverables/${did}/download`);
 };

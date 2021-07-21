@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import cls from "./Assignment.module.css";
-import { getDelivByID } from "../../../Interface/Interface";
+import {
+  downloadD,
+  getDelivByID,
+  getDelivGroup,
+  SubmitDelivByID,
+  SubmitGroup,
+} from "../../../Interface/Interface";
 import { mapStateToProps, mapDispatchToProps } from "../../../store/reduxMaps";
 import { connect } from "react-redux";
 import Dropzone from "react-dropzone";
@@ -11,6 +17,9 @@ import arrow from "../../../assets/arrow.gif";
 import ImageHolder from "../../ImageHolder/ImageHolder";
 import Thumbnails from "./Thumbnails/Thumbnails";
 import Input from "../../NormalTextField/NormalTextField";
+import Modal from "../../Modal/Modal";
+import Button from "../../Button/Button";
+import Waiting from "../../Waiting/Waiting";
 
 function Page(props) {
   const ele = props.location.state.data;
@@ -21,20 +30,107 @@ function Page(props) {
 
   const [group, setGroup] = useState([]);
 
+  const [cg, setCg] = useState([]);
+
+  const [show, setShow] = useState(false);
+
+  const [content, setContent] = useState("Submit");
+
+  const [Loading, setLoading] = useState(false);
+
+  const [done, setDone] = useState(false);
+
   useEffect(() => {
     //TODO: Load Submitted Files By Michel
     console.log(ele);
-    getDelivByID(ele.id, props.userData.Token, gid).then((res) => {
-      /* if(ele.number>1&&res.group_id===null){
+    getDelivByID(ele.id, props.userData.ID, gid).then((res) => {
+      setFile(
+        res.map((val) => ({
+          name: val.file_name,
+          type: val.file_type,
+          delivers_id: val.delivers_id,
+        }))
+      );
+      if (ele.group_id === "Not Chosen Yet") {
         //TODO: Get all Groups
-      } */
+        getDelivGroup(ele.id).then((res2) => {
+          setGroup(res2.map((val) => ({ name: val.name, value: val.gid })));
+        });
+      }
     });
-  }, [ele, ele.id, gid, props.userData.Token]);
+  }, [ele, ele.id, gid, props.userData.ID]);
 
   const Submit = () => {
-    //TODO: Submit Assignment by Michel
-    console.log("Submitted");
+    setLoading(true);
+    SubmitDelivByID(
+      props.userData.Token,
+      {
+        deliverable_id: ele.id,
+        delives: selfile.map((value) => ({
+          file_name: value.name,
+          file_type: value.type,
+        })),
+      },
+      selfile
+    ).then((res) => {
+      if (res["status_code"] === 200) {
+        setLoading(false);
+        setDone(true);
+      }
+    });
   };
+
+  const ChooseGroup = () => {
+    SubmitGroup(ele.id, {
+      user_id: props.userData.ID,
+      group_id: cg[0].value,
+    }).then((res) => {
+      ele.group_id = cg[0].name;
+      setShow(false);
+    });
+  };
+
+  const cSubmit = (
+    <Waiting Loading={Loading}>
+      {!done ? (
+        <React.Fragment>
+          <p>Are You sure you want to Submit?</p>
+          <p>You can't Edit after Submission</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Button type="cancel" onClick={() => setShow(false)}>
+              Cancel
+            </Button>
+            <Button type="correct" onClick={Submit}>
+              Confirm
+            </Button>
+          </div>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <p>Uploaded Sucessfully</p>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button type="correct" onClick={()=>setShow(false)}>
+              Close
+            </Button>
+            </div>
+        </React.Fragment>
+      )}
+    </Waiting>
+  );
+
+  const cGroup = cg[0] ? (
+    <React.Fragment>
+      <p>Are You sure you want to select group {cg[0].name}?</p>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Button type="cancel" onClick={() => setShow(false)}>
+          Cancel
+        </Button>
+        <Button type="correct" onClick={ChooseGroup}>
+          Confirm
+        </Button>
+      </div>
+    </React.Fragment>
+  ) : null;
 
   const changeGrade = (e) => {
     setGrade(e.target.value);
@@ -45,18 +141,22 @@ function Page(props) {
     setFile([...selfile, e[0]]);
   };
 
-  const SetGroup = () => {
-    //ToDO: Set group
+  const remove = (index) => {
+    if (!gid) {
+      const temp = [...selfile];
+      temp.splice(index, 1);
+      setFile(temp);
+    } else {
+      downloadD(selfile[index]);
+    }
   };
 
-  const remove = (index) => {
-    console.log(`Removed file number ${index}`);
-    const temp = [...selfile];
-    temp.splice(index, 1);
-    setFile(temp);
-  };
+  const modCont = content === "Submit" ? cSubmit : cGroup;
   return (
     <div className={cls.page}>
+      <Modal show={show}>
+        {modCont}
+      </Modal>
       <div className={cls.content}>
         <h1>
           {" "}
@@ -78,13 +178,36 @@ function Page(props) {
               Name="Grade"
               onChange={changeGrade}
             />
-          ) : null}
-          {/*<span className={classes.Group_Select}>
-               <Input type="select" Name="Group" DataList onSelect value /> 
-              <button className={cls.button} onClick={SetGroup}>
+          ) : ele.group_id === "Not Chosen Yet" ? (
+            <span className={classes.Group_Select}>
+              <Input
+                type="select"
+                Name="Group"
+                DataList={group}
+                onSelect={(list, item, name) => {
+                  setCg([item]);
+                }}
+                value={cg}
+              />
+              <button
+                className={cls.button}
+                onClick={() => {
+                  if (cg.length !== 0) {
+                    setContent("Group");
+                    setShow(true);
+                  } else {
+                    alert("Select Group First");
+                  }
+                }}
+              >
                 Choose Group
               </button>
-            </span>*/}
+            </span>
+          ) : (
+            <span className={classes.Group_Select}>
+              <div>Group Name: {ele.group_id}</div>
+            </span>
+          )}
         </span>
         <span className={classes.Holder}>
           <Card shadow className={classes.Input}>
@@ -108,7 +231,18 @@ function Page(props) {
             </div>
           </Card>
         </span>
-        <button className={cls.button} onClick={Submit}>
+        <button
+          className={cls.button}
+          onClick={() => {
+            if (selfile.length !== 0) {
+              setContent("Submit");
+              setDone(false);
+              setShow(true);
+            } else {
+              alert("Upload Files Before Submitting");
+            }
+          }}
+        >
           Submit
         </button>
       </div>

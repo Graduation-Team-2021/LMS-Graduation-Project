@@ -135,6 +135,7 @@ export default connect(
         var temp = [];
         res.forEach((value) => {
           if (props.userData.Role === "student") {
+            console.log(value);
             if (props.id) {
               temp.push({
                 name: value["deliverable_name"],
@@ -142,8 +143,8 @@ export default connect(
                 course: props.name,
                 description: value["description"] || "No Description",
                 deadline: value["deadline"],
-                mark: value["mark"] || "Not Graded yet",
-                smark: value["mark"] || "Not Graded yet",
+                mark: value["mark"],
+                smark: value["smark"] || "Not Graded yet",
                 id: value["deliverable_id"],
                 group_id: value["group_id"] || "Not Chosen Yet",
               });
@@ -157,10 +158,10 @@ export default connect(
                   coursecode: value["course_id"],
                   description: v2["description"] || "No Description",
                   deadline: v2["deadline"],
-                  mark: v2["mark"] || "Not Graded yet",
-                  smark: value["mark"] || "Not Graded yet",
+                  mark: v2["mark"],
+                  smark: value["smark"] || "Not Graded yet",
                   id: v2["deliverable_id"],
-                  group_id: value["group_id"] || "Not Chosen Yet",
+                  group_id: v2["group_id"] || "Not Chosen Yet",
                 })
               );
             }
@@ -201,12 +202,11 @@ export default connect(
         if (res) {
           setRows(
             res.map((v2) => ({
+              uploader: v2['name'],
               name: v2["group_name"],
-              status: v2["status"],
               mark: v2["mark"] || "Not Graded yet",
               id: props.id,
-              gid: v2['group_id'], 
-              did: v2["delivers_id"],
+              gid: v2['user_id'],
             }))
           );
           setLoading(false)

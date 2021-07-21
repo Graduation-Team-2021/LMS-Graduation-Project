@@ -9,6 +9,7 @@ from models.user.students import Student
 import os
 
 
+
 class delivers_controller():
     def get_all_delivers_by_user_id_and_deliverable_id(self, user_id, deliverable_id):
         try:
@@ -32,15 +33,14 @@ class delivers_controller():
     def post_delivers_relation(self, delivers_relation):
         new_delivers_relation = Deliver(**delivers_relation)
         try:
-            Deliver.insert(new_delivers_relation)
-            new_delivers_id = Deliver.query.order_by(Deliver.delivers_id.desc()).first()
+            new_delivers_id = Deliver.insert(new_delivers_relation)
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
             })
-        return new_delivers_id.delivers_id
+        return new_delivers_id
 
     def delete_delivers_relation(self, delivers_id):
         try:
@@ -73,7 +73,8 @@ class delivers_controller():
 
     def upload_deliverable(self, delivers_id, file):
         try:
-            file_name, file_type = os.path.splitext(file.filename)
+            file_name = file.filename
+            file_type = file.content_type
             delivers_relation = Deliver.query.filter_by(delivers_id=delivers_id).first()
             if delivers_relation is None:
                 raise ErrorHandler({
@@ -83,9 +84,9 @@ class delivers_controller():
             deliverable_id = delivers_relation.deliverable_id
             student_id = delivers_relation.student_id
             course_code = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().course_deliverables
-            file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
-                                     f"deliverables\{deliverable_id}",
-                                     f"student-id{student_id}",
+            file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses/{course_code}",
+                                     f"deliverables/{deliverable_id}",
+                                     f"student-id/{student_id}",
                                      f"{delivers_id}")
             if not os.path.exists(file_path):
                 os.makedirs(file_path)

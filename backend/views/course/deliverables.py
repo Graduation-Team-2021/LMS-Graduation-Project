@@ -1,4 +1,5 @@
 from controllers.course.deliverables import deliverable_controller
+from controllers.relations.student_group_relation import StudentGroupRelationController
 from flask_restful import Resource, reqparse
 import werkzeug
 from flask import jsonify
@@ -6,7 +7,7 @@ from methods.errors import *
 from methods.auth import *
 
 controller_object = deliverable_controller()
-
+group_controller = StudentGroupRelationController()
 
 # /deliverables/<deliverable_id>
 class Deliverable_view(Resource):
@@ -123,4 +124,32 @@ class Course_Deliverables(Resource):
         return jsonify({
             'status_code':200,
             'deliverables':course_deliverables
+        })
+        
+#/deliverable_groups/<deliv>
+class getGroups(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_id', type=int, location='json')
+        self.reqparse.add_argument('group_id', type=int, location='json')
+        
+    def get(self, deliv):
+        try:
+            groups = controller_object.get_groups(deliv)
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'status_code':200,
+            'groups':groups
+        })
+        
+    def post(self, deliv):
+        args = self.reqparse.parse_args()
+        try:
+            group_controller.enroll_in_group(args['user_id'], args['group_id'])
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'status_code':200,
+            'message':"Success"
         })
