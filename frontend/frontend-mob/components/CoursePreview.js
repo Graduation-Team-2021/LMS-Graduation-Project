@@ -2,9 +2,7 @@ import React from "react";
 import {
   View,
   Text,
-  Image,
   TouchableOpacity,
-  TouchableNativeFeedback,
   StyleSheet,
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";

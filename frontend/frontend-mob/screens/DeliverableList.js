@@ -74,9 +74,6 @@ const AllDelivList = (props) => {
     });
   };
   const previewDeliverableHandler = (deliverable) => {
-    console.log('====================================');
-    console.log('kaaaaaaaaaaaaaaaaaaaaaaaaak');
-    console.log('====================================');
     props.navigation.navigate({
       routeName: "DeliverableDescription",
       params: {
