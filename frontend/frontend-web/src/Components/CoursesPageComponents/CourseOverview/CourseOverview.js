@@ -6,6 +6,8 @@ import Enroll from "../../../Components/Enroll/Enroll";
 import Modal from "../../../Components/Modal/Modal";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../../../store/reduxMaps";
+import filler from "../../../assets/Filler.png";
+import ImageHolder from "../../ImageHolder/ImageHolder";
 
 const CourseOverview = (props) => {
   let imageTest = props.CoursePic;
@@ -32,7 +34,13 @@ const CourseOverview = (props) => {
           onAccept={accept}
         />
       </Modal>
-      <img src={imageTest} alt="tst" className={classes.CoursePicture} />
+      <span className={classes.holder}>
+        <ImageHolder
+          filler={imageTest}
+          alt="tst"
+          className={classes.CoursePicture}
+        />
+      </span>
       <h3>{props.CourseName}</h3>
       <p>{props.CourseDescription}</p>
       <div className={classes.DocPic}>
@@ -77,4 +85,6 @@ const CourseOverview = (props) => {
   );
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CourseOverview));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(CourseOverview)
+);
