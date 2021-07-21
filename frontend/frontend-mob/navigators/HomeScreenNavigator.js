@@ -16,6 +16,8 @@ import checkConnectivity from "../hocs/checkConnectivity";
 import StudentSubmissionScreen from "../screens/StudentSubmissionScreen";
 import AddCourse from "../screens/AddCourse";
 import AddUser from "../screens/AddUser";
+import CoursePDFScreen from "../screens/CoursePDFScreen";
+import CourseVideoScreen from "../screens/CoruseVideoScreen";
 
 const HomeStack = createStackNavigator(
   {
@@ -79,6 +81,8 @@ const HomeStack = createStackNavigator(
     SearchReasult: ResultsNavigator,
     AddCourse: checkConnectivity(AddCourse),
     AddUser: checkConnectivity(AddUser),
+    CoursePDFs: { screen: checkConnectivity(CoursePDFScreen) },
+    CourseVideos: { screen: checkConnectivity(CourseVideoScreen) },
   },
   {
     defaultNavigationOptions: {
