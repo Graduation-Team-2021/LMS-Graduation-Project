@@ -50,7 +50,15 @@ const HomeStack = createStackNavigator(
     StudentSubmission: { screen: StudentSubmissionScreen },
     Pdf: { screen: PdfReader },
     CourseList: { screen: checkConnectivity(CourseListScreen) },
-    DeliverableList: { screen: checkConnectivity(DeliverableList) },
+    DeliverableList: { screen: checkConnectivity(DeliverableList),navigationOptions:(navData) => {
+      const myCourse = navData.navigation.getParam("course");
+      if(myCourse){
+        return {title:`${myCourse.CourseName} Deliverable`}
+      }
+      else{
+        return{title:'Your Deliverable'}
+      }
+    }},
     CourseDescription: {
       screen: CourseDescriptionScreen,
       navigationOptions: (navData) => {

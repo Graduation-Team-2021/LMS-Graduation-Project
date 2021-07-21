@@ -24,19 +24,40 @@ const AllDelivList = (props) => {
   const [deliverablesLoaded, setDeliverablesLoaded] = useState(false);
   const [PieData, setPieData] = useState({});
   const [SnackBarVisablity, setSnackBarVisablity] = useState(false);
-  const snackBarMessage = useRef("");
   const [snackBarColor, setSnackBarColor] = useState("black");
+  const snackBarMessage = useRef("");
+  const myCourse = props.navigation.getParam("course");
   useEffect(() => {
     retrieveStudentDeliverables();
   }, []);
   const retrieveStudentDeliverables = () => {
     getAllStudentsDeliverables(props.userData.Token).then((res) => {
+      let newRes = res;
+      if (myCourse) {
+        newRes = newRes.filter((e) => {
+          console.log("====================================");
+          console.log(e.course_name, myCourse.CourseName);
+          console.log("====================================");
+          return e.course_name === myCourse.CourseName;
+        });
+      }
+
       const pieData = {};
-      res.forEach((course) => {
-        pieData[course.course_name] = course.deliverables.length;
-      });
+      if (myCourse) {
+        newRes[0].deliverables.forEach((delv) => {
+          if (pieData[delv.status]) {
+            pieData[delv.status] += 1;
+          } else {
+            pieData[delv.status] = 1;
+          }
+        });
+      } else {
+        newRes.forEach((course) => {
+          pieData[course.course_name] = course.deliverables.length;
+        });
+      }
       setPieData(pieData);
-      setDeliverables(res);
+      setDeliverables(newRes);
       setDeliverablesLoaded(true);
     });
   };
@@ -115,10 +136,10 @@ const AllDelivList = (props) => {
       >
         {snackBarMessage.current}
       </Snackbar>
+      {props.userData.Role === "student" ? (
+        <PieChart style={{ height: 200, paddingTop: 10 }} data={pieData} />
+      ) : null}
       <ScrollView>
-        <Text style={styles.headerStyle}>All Deliverables</Text>
-        <Divider style={styles.dividerStyle} />
-        <PieChart style={{ height: 200 }} data={pieData} />
         {deliverablesLoaded ? (
           deliverables.map((course, index) => {
             return (

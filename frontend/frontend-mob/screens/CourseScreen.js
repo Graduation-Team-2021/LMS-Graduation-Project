@@ -23,6 +23,9 @@ import * as DocumentPicker from "expo-document-picker";
 const data = ["sklahjdlsa"];
 const CourseScreen = (props) => {
   const myCourse = props.navigation.getParam("course");
+  console.log("====================================");
+  console.log("[myCourse]", myCourse);
+  console.log("====================================");
   const [Data, setData] = useState(data);
   const [deliverables, setDeliverables] = useState([]);
   const [deliverablesLoaded, setDeliverablesLoaded] = useState(false);
@@ -147,38 +150,16 @@ const CourseScreen = (props) => {
     setPost("");
   };
 
-  const previewPdfHandler = (pdf_id) => {
-    props.navigation.navigate({
-      routeName: "Pdf",
-      params: { pdfId: pdf_id },
-    });
-  };
-
-  const previewDeliverableHandler = (deliverable) => {
-    props.navigation.navigate({
-      routeName: "DeliverableDescription",
-      params: {
-        deliverable_id: deliverable.deliverable_id,
-        deliverable_name: deliverable.deliverable_name,
-        mark: deliverable.mark,
-        deadline: deliverable.deadline,
-        description: deliverable.description,
-        updateDeliverables: updateDeliverables,
-        status: deliverable.status,
-      },
-    });
-  };
-
-  const createNewDeliverableHandler = () => {
-    props.navigation.navigate({
-      routeName: "CreateDeliverable",
-      params: {
-        courseId: myCourse.CourseID,
-        alertDeliverableCreated: alertDeliverableCreated,
-        updateDeliverables: updateDeliverables,
-      },
-    });
-  };
+  // const createNewDeliverableHandler = () => {
+  //   props.navigation.navigate({
+  //     routeName: "CreateDeliverable",
+  //     params: {
+  //       courseId: myCourse.CourseID,
+  //       alertDeliverableCreated: alertDeliverableCreated,
+  //       updateDeliverables: updateDeliverables,
+  //     },
+  //   });
+  // };
   // const materialsDetails = (
   //   <View style={styles.materialsContainer}>
   //     <Divider style={styles.dividerStyle} />
@@ -300,45 +281,47 @@ const CourseScreen = (props) => {
   const groupflag = props.navigation.getParam("groupflag");
   return (
     <Portal.Host>
-      <Portal>
-        <FAB.Group
-          open={FABOpen}
-          icon={FABOpen ? "close" : "plus"}
-          actions={[
-            {
-              icon: "folder-open",
-              label: "Delivrables",
-              onPress: () => props.navigation.navigate("DeliverableList"),
-              small: false,
-            },
-            {
-              icon: "youtube",
-              label: "Videos",
-              onPress: () =>
-                props.navigation.navigate("CourseVideos", { course: myCourse }),
-              small: false,
-            },
-            {
-              icon: "file-pdf",
-              label: "PDFs",
-              onPress: () =>
-                props.navigation.navigate("CoursePDFs", { course: myCourse }),
-              small: false,
-            },
-          ]}
-          onStateChange={({ open }) => setFABOpen(open)}
-          onPress={() => {
-            if (FABOpen) {
-              // do something if the speed dial is open
-            }
-          }}
-        />
-      </Portal>
+      {groupflag ? null : (
+        <Portal>
+          <FAB.Group
+            open={FABOpen}
+            icon={FABOpen ? "close" : "plus"}
+            actions={[
+              {
+                icon: "folder-open",
+                label: "Delivrables",
+                onPress: () =>
+                  props.navigation.navigate("DeliverableList", {
+                    course: myCourse,
+                  }),
+                small: false,
+              },
+              {
+                icon: "youtube",
+                label: "Videos",
+                onPress: () =>
+                  props.navigation.navigate("CourseVideos", {
+                    course: myCourse,
+                  }),
+                small: false,
+              },
+              {
+                icon: "file-pdf",
+                label: "PDFs",
+                onPress: () =>
+                  props.navigation.navigate("CoursePDFs", { course: myCourse }),
+                small: false,
+              },
+            ]}
+            onStateChange={({ open }) => setFABOpen(open)}
+          />
+        </Portal>
+      )}
       <View style={styles.screen}>
         <View style={styles.topContainer}>
           <About description={myCourse.CourseDescription} />
         </View>
-        {/* {groupflag ? null : materialsDetails} */}
+        {/*  */}
         <View style={{ width: "90%", flex: 1 }}>
           <FlatList
             data={Data}
