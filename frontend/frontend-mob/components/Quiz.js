@@ -5,6 +5,7 @@ import Question from "./Question";
 import { getQuizByID } from "../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
+import { FlatList } from "react-native";
 const Quiz = (props) => {
   const [Questions, setQuestions] = useState([]);
   const quiz = props.navigation.getParam("Quiz");
@@ -25,13 +26,17 @@ const Quiz = (props) => {
   return (
     <View style={styles.parentView}>
       <Text> The Quiz consists of {Questions.length} questions </Text>
-      <ScrollView horizontal>
-        {Questions.map((question, index) => (
-          <Card containerStyle={styles.cardContainerStyle} key={index}>
-            <Question question={question} />
+
+      <FlatList
+        horizontal
+        renderItem={(item) => (
+          <Card containerStyle={styles.cardContainerStyle}>
+            <Question question={item.item} />
           </Card>
-        ))}
-      </ScrollView>
+        )}
+        keyExtractor={(_, i) => i.toString()}
+        data={Questions}
+      />
     </View>
   );
 };
