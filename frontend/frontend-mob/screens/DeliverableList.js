@@ -148,9 +148,9 @@ const AllDelivList = (props) => {
     };
   });
 
-  const DeliverableContent = isQuiz
-    ? null
-    : deliverables.map((course, index) => {
+  const DeliverableContent = isQuiz ? null : (
+    <ScrollView>
+      {deliverables.map((course, index) => {
         return (
           <View key={`course ${index}`}>
             <Divider style={styles.dividerStyle} />
@@ -172,7 +172,9 @@ const AllDelivList = (props) => {
             })}
           </View>
         );
-      });
+      })}
+    </ScrollView>
+  );
 
   const QuizContent = (
     <FlatList
@@ -205,14 +207,12 @@ const AllDelivList = (props) => {
       {props.userData.Role === "student" ? (
         <PieChart style={{ height: 200, paddingTop: 10 }} data={pieData} />
       ) : null}
-      <ScrollView>
-        {deliverablesLoaded ? (
-          ScrollViewContent
-        ) : (
-          <ActivityIndicator size="large" style={{ marginTop: 20 }} />
-        )}
-        <Divider style={styles.dividerStyle} />
-      </ScrollView>
+      {deliverablesLoaded ? (
+        ScrollViewContent
+      ) : (
+        <ActivityIndicator size="large" style={{ marginTop: 20 }} />
+      )}
+      <Divider style={styles.dividerStyle} />
     </Fragment>
   );
 };

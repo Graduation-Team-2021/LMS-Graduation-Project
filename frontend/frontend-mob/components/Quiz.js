@@ -1,19 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
-import { Card, Button } from "react-native-elements";
+import { Card } from "react-native-elements";
 import Question from "./Question";
+import { getQuizByID } from "../Interface/Interface";
+import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+import { connect } from "react-redux";
 const Quiz = (props) => {
-  const questions = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-  ];
+  const [Questions, setQuestions] = useState([]);
+  const quiz = props.navigation.getParam("Quiz");
+  useEffect(() => {
+    getQuizByID(quiz.exam_id, props.userData.Token).then((result) => {
+      setQuestions(result);
+    });
+
+    props.navigation.setParams({
+      submetQuizButton: () => {
+        console.log("====================================");
+        console.log("submitting the quiz");
+        console.log("====================================");
+      },
+    });
+  }, []);
+
   return (
     <View style={styles.parentView}>
-      <Text> The Quiz consists of {questions.length} questions </Text>
+      <Text> The Quiz consists of {Questions.length} questions </Text>
       <ScrollView horizontal>
-        {questions.map((question,index) => (
-          <Card containerStyle={styles.cardContainerStyle} key = {index}>
-            <Question question={`Qestion Numbers ${question}`} answers={['a','b','c','d','e']} />
+        {Questions.map((question, index) => (
+          <Card containerStyle={styles.cardContainerStyle} key={index}>
+            <Question question={question} />
           </Card>
         ))}
       </ScrollView>
@@ -44,4 +59,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Quiz;
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
