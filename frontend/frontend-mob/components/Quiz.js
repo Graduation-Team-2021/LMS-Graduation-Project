@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
 import { Card } from "react-native-elements";
 import Question from "./Question";
-import { getQuizByID } from "../Interface/Interface";
+import { getQuizByID, SubmitQuiz } from "../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
+import { FlatList } from "react-native";
 const Quiz = (props) => {
   const [Questions, setQuestions] = useState([]);
   const quiz = props.navigation.getParam("Quiz");
+  const score = useRef(0);
   useEffect(() => {
     getQuizByID(quiz.exam_id, props.userData.Token).then((result) => {
       setQuestions(result);
@@ -15,9 +17,17 @@ const Quiz = (props) => {
 
     props.navigation.setParams({
       submetQuizButton: () => {
-        console.log("====================================");
-        console.log("submitting the quiz");
-        console.log("====================================");
+        //TODO:make sure that the user is sure
+        SubmitQuiz({
+          exam_id: quiz.exam_id,
+          student_id: props.userData.ID,
+          mark: score.current,
+          out_of_mark: quiz.exam_marks,
+        }).then((result) => {
+          console.log("====================================");
+          console.log(result);
+          console.log("====================================");
+        });
       },
     });
   }, []);
@@ -25,13 +35,17 @@ const Quiz = (props) => {
   return (
     <View style={styles.parentView}>
       <Text> The Quiz consists of {Questions.length} questions </Text>
-      <ScrollView horizontal>
-        {Questions.map((question, index) => (
-          <Card containerStyle={styles.cardContainerStyle} key={index}>
-            <Question question={question} />
+
+      <FlatList
+        horizontal
+        renderItem={(item) => (
+          <Card containerStyle={styles.cardContainerStyle}>
+            <Question question={item.item} />
           </Card>
-        ))}
-      </ScrollView>
+        )}
+        keyExtractor={(_, i) => i.toString()}
+        data={Questions}
+      />
     </View>
   );
 };
