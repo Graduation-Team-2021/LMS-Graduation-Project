@@ -41,7 +41,7 @@ const AllDelivList = (props) => {
 
   const retrieveCourseQuizes = () => {
     if (myCourse && isQuiz) {
-      getQuizzes(myCourse.CourseID, props.userData.Token).then((res) => {
+      getQuizzes(myCourse.CourseID, props.userData.ID).then((res) => {
         console.log("[Quiz]====================================");
         console.log(res);
         console.log("[Quiz]====================================");

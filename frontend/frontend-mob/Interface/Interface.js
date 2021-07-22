@@ -699,6 +699,9 @@ export const SubmitQuiz = async (Data) => {
       "Content-Type": "application/json",
     },
   });
+  console.log("====================================");
+  console.log(res.data);
+  console.log("====================================");
   if (res.data["status_code"] === 200) {
     return true;
   } else {
