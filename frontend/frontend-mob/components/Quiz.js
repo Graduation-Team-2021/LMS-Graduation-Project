@@ -12,6 +12,14 @@ const Quiz = (props) => {
     getQuizByID(quiz.exam_id, props.userData.Token).then((result) => {
       setQuestions(result);
     });
+
+    props.navigation.setParams({
+      submetQuizButton: () => {
+        console.log("====================================");
+        console.log("submitting the quiz");
+        console.log("====================================");
+      },
+    });
   }, []);
 
   return (
