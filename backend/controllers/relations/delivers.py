@@ -119,12 +119,11 @@ class delivers_controller():
             deliverable_id = delivers_relation.deliverable_id
             student_id = delivers_relation.student_id
             course_code = Deliverables.query.filter_by(deliverable_id=deliverable_id).first().course_deliverables
-            file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses\{course_code}",
-                                     f"deliverables\{deliverable_id}",
-                                     f"student-id{student_id}",
+            file_path = os.path.join(current_app.config['STATIC_PATH'], f"courses/{course_code}",
+                                     f"deliverables/{deliverable_id}",
+                                     f"student-id/{student_id}",
                                      f"{delivers_id}")
-
-            return send_from_directory(file_path, filename=f"{file_name}{file_type.lower()}", as_attachment=True)
+            return send_from_directory(file_path, filename=f"{file_name}", as_attachment=True, mimetype=file_type)
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({

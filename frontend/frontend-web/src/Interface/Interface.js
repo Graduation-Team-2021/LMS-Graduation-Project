@@ -362,13 +362,22 @@ export const getDeliv = async (id, Token) => {
   }
 };
 
-export const getDelivByID = async (id, Token) => {
-  const res = await instance.get(`/students/${Token}/deliverables/${id}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return res.data.data;
+export const getDelivByID = async (id, Token, gid) => {
+  if (!gid) {
+    const res = await instance.get(`/students/${Token}/deliverables/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return res.data.data;
+  } else {
+    const res = await instance.get(`/students/${gid}/deliverables/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return res.data.data;
+  }
   /*return res.data["names"]; */
 };
 
@@ -401,20 +410,23 @@ export const SubmitDelivByID = async (Token, data, data2) => {
       Authorization: "Bearer " + Token,
     },
   });
- const delivs = res.data["delivers_id"];
- console.log(delivs);
- for (let index = 0; index < delivs.length; index++) {
-   let file = new FormData()
-   file.append('file', data2[index])
-   res = await instance.post(`/my_deliverables/${delivs[index]}/upload`, file,{
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  return res.data 
-   
- }
+  const delivs = res.data["delivers_id"];
+  console.log(delivs);
+  for (let index = 0; index < delivs.length; index++) {
+    let file = new FormData();
+    file.append("file", data2[index]);
+    res = await instance.post(
+      `/my_deliverables/${delivs[index]}/upload`,
+      file,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + Token,
+        },
+      }
+    );
+    return res.data;
+  }
   /*return res.data["names"];*/
 };
 
@@ -740,18 +752,14 @@ export const UpdateCourse = async (data) => {
 
 export const getStudentDeliver = async (id, Token) => {
   const res = await instance.get(`/students_deliverables/${id}`);
-  console.log(`Getting all students delivering ${id}`);
-  return [
-    {
-      group_name: "DJ",
-      status: "Delivered",
-      mark: null,
-      id: id,
-      group_id: 2,
-      delivers_id: 2,
-      notgraded: false,
-    },
-  ];
+  return res.data.map((val) => ({
+    group_name: val.name,
+    status: "Delivered",
+    mark: val.mark,
+    id: id,
+    user_id: val.user_id,
+    notgraded: val.mark === null,
+  }));
 };
 
 export const getSDbyID = async (id, Token, gid) => {
@@ -759,5 +767,23 @@ export const getSDbyID = async (id, Token, gid) => {
 };
 
 export const downloadD = async (did) => {
-  const res = await instance.get(`/my_deliverables/${did}/download`);
+  const res = await instance.post(
+    `/my_deliverables/${did}/download`,
+    {},
+    { responseType: "blob" }
+  );
+  return res.data;
 };
+
+export const SubmitDgrade = async (did, sid, mark) => {
+  const res = await instance.post(
+    `/students/${sid}/deliverable/${did}/results`,
+    {mark:mark},{
+      headers:{
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return res.data;
+};
+

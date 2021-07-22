@@ -34,14 +34,16 @@ class deliverable_results_controller:
     def post_deliverable_result(self, deliverable_result):
         deliverable = deliverable_object.get_deliverable(deliverable_result['deliverable_id'])
         if deliverable['mark']<deliverable_result['mark']:
-
             raise ErrorHandler({
                 'description': "Mark assigned is higher than the maximum allowed.",
                 'status_code': 404
             })
         new_deliverable_result = Deliverables_Results(**deliverable_result)
         try:
-            Deliverables_Results.insert(new_deliverable_result)
+            if self.get_deliverable_result(deliverable_result['deliverable_id'], deliverable_result['user_id']):
+                Deliverables_Results.update(new_deliverable_result)
+            else:
+                Deliverables_Results.insert(new_deliverable_result)
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({

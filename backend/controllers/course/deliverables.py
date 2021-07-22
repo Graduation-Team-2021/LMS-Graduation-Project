@@ -173,7 +173,8 @@ class deliverable_controller:
                 for k in deliverable_group_formatted:
                     for j in student_group_formatted:
                         if k['group_id'] == j['group_id']:
-                            group_id = groups_controller.get_group(j['group_id'])['group_name']
+                            group_id = groups_controller.get_group(j['group_id'])[
+                                'group_name']
                             break
 
                 if index == None:
@@ -203,26 +204,48 @@ class deliverable_controller:
         return {"courses_deliverables": deliverables_list}
 
     def get_all_course_deliverables(self, course_code, user_id, role):
-        # TODO: edit to get for doctor
+        
         try:
-            deliverable = Deliverables.query.filter_by(
-                course_deliverables=course_code).all()
-            deliverables_formatted = []
-            deliverables_modified = []
-            for i in deliverable:
-                deliverables_formatted.append(i.serialize())
-            for i in deliverables_formatted:
-                delivers_relation = Deliver.query.filter(
-                    Deliver.deliverable_id == i['deliverable_id']).filter(Deliver.student_id == user_id).first()
-                status = ""
-                if(datetime.now() > i['deadline']):
-                    status = "Completed"
-                elif(delivers_relation is not None):
-                    status = "In Progress"
-                else:
-                    status = "Not Started"
-                i['status'] = status
-                deliverables_modified.append(i)
+            if role == 'student':
+                deliverable = Deliverables.query.filter_by(
+                    course_deliverables=course_code).all()
+                deliverables_formatted = []
+                deliverables_modified = []
+                for i in deliverable:
+                    deliverables_formatted.append(i.serialize())
+                for i in deliverables_formatted:
+                    delivers_relation = Deliver.query.filter(
+                        Deliver.deliverable_id == i['deliverable_id']).filter(Deliver.student_id == user_id).first()
+                    status = ""
+                    if(datetime.now() > i['deadline']):
+                        status = "Completed"
+                    elif(delivers_relation is not None):
+                        status = "In Progress"
+                    else:
+                        status = "Not Started"
+                    i['status'] = status
+                    deliverables_modified.append(i)
+            else:
+                deliverable = Deliverables.query.filter_by(
+                    course_deliverables=course_code).all()
+                deliverables_formatted = []
+                deliverables_modified = []
+                for i in deliverable:
+                    deliverables_formatted.append(i.serialize())
+                for i in deliverables_formatted:
+                    print('loading')
+                    delivers_relation = delivers_controller_object.count_number_of_ungraded_deliverables(
+                        i['deliverable_id'])
+                    i['unsolved_deliverables'] = delivers_relation
+                    status = ""
+                    if(datetime.now() > i['deadline']):
+                        status = "Completed"
+                    elif(delivers_relation != 0):
+                        status = "In Progress"
+                    else:
+                        status = "Not Started"
+                    i['status'] = status
+                    deliverables_modified.append(i)
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({
@@ -309,15 +332,15 @@ class deliverable_controller:
     def get_groups(self, deliv):
         try:
             groups = GroupDeliverableRelation.query.filter(GroupDeliverableRelation.deliverable_id == deliv).join(
-                GroupProject).filter(GroupDeliverableRelation.group_id==GroupProject.group_id).join(Deliverables)\
-                    .filter(Deliverables.deliverable_id == GroupDeliverableRelation.deliverable_id).with_entities(GroupDeliverableRelation.group_id, GroupProject.group_name, Deliverables.students_number).all()
+                GroupProject).filter(GroupDeliverableRelation.group_id == GroupProject.group_id).join(Deliverables)\
+                .filter(Deliverables.deliverable_id == GroupDeliverableRelation.deliverable_id).with_entities(GroupDeliverableRelation.group_id, GroupProject.group_name, Deliverables.students_number).all()
             temp = []
             for g in groups:
                 s = student_object.get_one_group_all_students(g[0])
-                if g[2]-len(s)>0:
+                if g[2]-len(s) > 0:
                     temp.append({
-                    'gid': g[0], 'name': g[1], 'number': g[2]
-                })
+                        'gid': g[0], 'name': g[1], 'number': g[2]
+                    })
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({

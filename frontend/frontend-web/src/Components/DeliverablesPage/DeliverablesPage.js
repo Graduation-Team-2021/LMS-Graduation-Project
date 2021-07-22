@@ -7,24 +7,23 @@ import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 function DeliverablesPage(props) {
-
   const onRowClickHandler = (rowData) => {
     if (props.userData.Role === "student") {
       props.history.push({
         pathname: `/Deliv/Assignment/${rowData.id}`,
         state: { data: rowData["row"] },
       });
-      } else {
+    } else {
       if (!props.location.state || !props.location.state.student) {
+        console.log(rowData["row"]);
         props.history.push({
           pathname: `/Deliv/Assignment/${rowData.id}`,
           state: { data: rowData["row"], student: true },
         });
       } else {
-        console.log(rowData);
         props.history.push({
           pathname: `/Deliv/Assignment/${rowData.id}/${rowData["row"].gid}`,
-          state: { data: rowData["row"]},
+          state: { data: rowData["row"] },
         });
       }
     }
@@ -61,6 +60,8 @@ function DeliverablesPage(props) {
                   name={props.location.state.data.name}
                   id={props.match.params.id}
                   onRowHand={onRowClickHandler}
+                  course={props.location.state.data.course}
+                  mark={props.location.state.data.mark}
                 />
               );
           }}
@@ -68,9 +69,7 @@ function DeliverablesPage(props) {
         <Route
           path="/Deliv/Assignment/:id/:group_id"
           exact
-          render={() => {
-            <Assignment group={props.match.params.group_id} />;
-          }}
+          render={() => <Assignment group={props.match.params.group_id} />}
         />
       </Switch>
     </Card>
