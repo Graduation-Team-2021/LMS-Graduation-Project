@@ -47,6 +47,11 @@ class Delivers_Relation(Resource):
 
 # /my_deliverables/<delivers_id>
 class Delete_Delivers_Relation(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('data', type=dict,
+                                   location='json', required=True)
+    
     def delete(self, delivers_id):
         try:
             controller_object.delete_delivers_relation(delivers_id)
@@ -54,6 +59,18 @@ class Delete_Delivers_Relation(Resource):
             return e.error
         return jsonify({
             'message': 'deliverable deleted successfully',
+            'status_code': 200
+        })
+    
+    def put(self, delivers_id):
+        args = self.reqparse.parse_args()
+        try:
+            print(args['data'])
+            controller_object.update_delivers_relation(delivers_id, args['data'])
+        except ErrorHandler as e:
+            return e.error
+        return jsonify({
+            'message': 'deliverable updated successfully',
             'status_code': 200
         })
 

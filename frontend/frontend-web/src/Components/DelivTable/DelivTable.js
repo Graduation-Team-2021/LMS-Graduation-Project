@@ -87,7 +87,7 @@ export default connect(
     { field: "deadline", headerName: "Deadline", width: 200 },
     { field: "course", headerName: "Course", width: 150 },
     { field: "coursecode", headerName: "Course Code", width: 150 },
-    { field: "group_id", headerName: "Group", width: 170 },
+    { field: "group_name", headerName: "Group", width: 170 },
     { field: "smark", headerName: "Mark", width: 130 },
     { field: "mark", headerName: "Total Mark", width: 130 },
   ];
@@ -96,7 +96,7 @@ export default connect(
     { field: "name", headerName: "Name", width: 200 },
     { field: "status", headerName: "Status", width: 180 },
     { field: "deadline", headerName: "Deadline", width: 200 },
-    { field: "group_id", headerName: "Group", width: 130 },
+    { field: "group_name", headerName: "Group", width: 130 },
     { field: "smark", headerName: "Mark", width: 130 },
     { field: "mark", headerName: "Total Mark", width: 130 },
   ];
@@ -133,7 +133,6 @@ export default connect(
       getDeliv(props.id, props.userData.Token).then((res) => {
         var temp = [];
         res.forEach((value) => {
-          console.log(value);
           if (props.userData.Role === "student") {
             console.log(value);
             if (props.id) {
@@ -146,7 +145,8 @@ export default connect(
                 mark: value["mark"],
                 smark: value["smark"] || "Not Graded yet",
                 id: value["deliverable_id"],
-                group_id: value["group_id"] || "Not Chosen Yet",
+                group_id: value["group_id"],
+                group_name: value['group_name'] || "Not Chosen Yet"
               });
             } else {
               var delivs = value["deliverables"];

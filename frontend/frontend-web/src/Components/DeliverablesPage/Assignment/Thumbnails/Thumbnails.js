@@ -12,6 +12,7 @@ const Thumbnails = (props) => {
           remove={() => props.remove(index)}
           type={val.type}
           name={val.name}
+          delivers_id = {val.delivers_id}
         />
       ))}
     </div>

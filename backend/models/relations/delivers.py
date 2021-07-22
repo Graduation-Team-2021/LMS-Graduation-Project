@@ -13,7 +13,7 @@ class Deliver(db.Model, Base):
                                ForeignKey('deliverable.deliverable_id', ondelete='CASCADE', onupdate="CASCADE"))
     student_id = db.Column(db.Integer, ForeignKey('student.user_id', ondelete='CASCADE', onupdate="CASCADE"))
     file_type = db.Column(db.String(50))
-    file_name = db.Column(db.String(50))
+    file_name = db.Column(db.String(500))
 
     student = relationship("Student", foreign_keys=[student_id])
     deliverable = relationship("Deliverables", foreign_keys=[deliverable_id])

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import cls from "./Assignment.module.css";
+import { FilePicker } from "react-file-picker";
 import {
   downloadD,
   getDelivByID,
@@ -8,8 +9,11 @@ import {
   SubmitDelivByID,
   SubmitDgrade,
   SubmitGroup,
+  deleteFile,
+  UpdateDelivByID,
 } from "../../../Interface/Interface";
-import FileSaver, { saveAs } from "file-saver";
+import FileSaver from "file-saver";
+import { useFilePicker } from "react-sage";
 import { mapStateToProps, mapDispatchToProps } from "../../../store/reduxMaps";
 import { connect } from "react-redux";
 import Dropzone from "react-dropzone";
@@ -42,6 +46,8 @@ function Page(props) {
 
   const [done, setDone] = useState(false);
 
+  const [current, setCurrent] = useState(null);
+
   useEffect(() => {
     getDelivByID(ele.id, props.userData.ID, gid).then((res) => {
       setFile(
@@ -61,24 +67,30 @@ function Page(props) {
   }, [ele, ele.id, gid, props.userData.ID]);
 
   const Submit = () => {
-    setLoading(true);
     if (!gid) {
-      SubmitDelivByID(
-        props.userData.Token,
-        {
-          deliverable_id: ele.id,
-          delives: selfile.map((value) => ({
-            file_name: value.name,
-            file_type: value.type,
-          })),
-        },
-        selfile
-      ).then((res) => {
-        if (res["status_code"] === 200) {
-          setLoading(false);
-          setDone(true);
-        }
-      });
+      const selfile2 = selfile.filter(value=>value.delivers_id===null)
+      if (selfile2.length!==0) {
+        setLoading(true);
+        SubmitDelivByID(
+          props.userData.Token,
+          {
+            deliverable_id: ele.id,
+            delives: selfile2.map((value) => ({
+              file_name: value.name,
+              file_type: value.type,
+            })),
+          },
+          selfile
+        ).then((res) => {
+          if (res["status_code"] === 200) {
+            setLoading(false);
+            setDone(true);
+          }
+        });
+      } else {
+        alert("No New Files Are Added")
+        setShow(false)
+      }
     } else {
     }
   };
@@ -98,7 +110,6 @@ function Page(props) {
       {!done ? (
         <React.Fragment>
           <p>Are You sure you want to Submit?</p>
-          <p>You can't Edit after Submission</p>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Button type="cancel" onClick={() => setShow(false)}>
               Cancel
@@ -135,29 +146,143 @@ function Page(props) {
     </React.Fragment>
   ) : null;
 
-  const changeGrade = (e) => {
-    setGrade(e.target.value);
+  const download = (index) => {
+    downloadD(selfile[index].delivers_id).then((res) => {
+      //let file = new File([res], selfile[index].name, {type:selfile[index].type});
+      FileSaver.saveAs(res, selfile[index].name);
+    });
   };
-
   const [selfile, setFile] = useState([]);
   const onFileChange = (e) => {
     setFile([...selfile, e[0]]);
   };
-
   const remove = (index) => {
     if (!gid) {
-      const temp = [...selfile];
-      temp.splice(index, 1);
-      setFile(temp);
+      if (!selfile[index].delivers_id) {
+        const temp = [...selfile];
+        temp.splice(index, 1);
+        setFile(temp);
+      } else {
+        deleteFile(selfile[index].delivers_id).then((res) => {
+          if (res) {
+            const temp = [...selfile];
+            temp.splice(index, 1);
+            setFile(temp);
+          }
+        });
+      }
+      setShow(false);
     } else {
-      downloadD(selfile[index].delivers_id).then((res) => {
-        //let file = new File([res], selfile[index].name, {type:selfile[index].type});
-        FileSaver.saveAs(res, selfile[index].name);
-      });
+      download(index);
     }
   };
 
-  const modCont = content === "Submit" ? cSubmit : cGroup;
+  const replace = (index, newFIle) => {
+    UpdateDelivByID(
+      selfile[index].delivers_id,
+      {
+        delivers_id: selfile[index].delivers_id,
+        file_name: newFIle.name,
+        file_type: newFIle.type,
+      },
+      newFIle
+    ).then((res) => {
+      if (res) {
+        const temp = [...selfile];
+        temp[index].name = newFIle.name;
+        temp[index].type = newFIle.type;
+        setFile(temp);
+        setShow(false);
+      }
+    });
+  };
+
+  const { files, onClick, errors, HiddenFileInput } = useFilePicker({
+    maxFileSize: 1000,
+  })
+
+  const cFile = selfile[current] ? (
+    <React.Fragment>
+      <p>What do you want to do with {selfile[current].name}?</p>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Button type="cancel" onClick={() => setShow(false)}>
+          Do Nothing
+        </Button>
+        <Button
+          type="cancel"
+          onClick={() => {
+            setContent("Delete");
+          }}
+        >
+          Remove
+        </Button>
+        <Button onClick={() => download(current)}>Download</Button>
+        <Button type="correct" onClick={() => setContent("Replace")}>
+          Replace
+        </Button>
+      </div>
+    </React.Fragment>
+  ) : null;
+
+  const cRemove = selfile[current] ? (
+    <React.Fragment>
+      <p>Are You Sure You Want to Delete {selfile[current].name}?</p>
+      <p>You Can't restore it</p>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Button onClick={() => setShow(false)}>Dismiss</Button>
+        <Button
+          type="cancel"
+          onClick={() => {
+            remove(current);
+          }}
+        >
+          Remove
+        </Button>
+      </div>
+    </React.Fragment>
+  ) : null;
+
+  const cReplace = selfile[current] ? (
+    <React.Fragment>
+      <p>Please Choose File to replace {selfile[current].name}</p>
+      <p>Then Press "Submit" to replace it</p>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Button type="cancel" onClick={() => setShow(false)}>
+          Dismiss
+        </Button>
+        <Button onClick={onClick}>Select File</Button>
+        <HiddenFileInput multiple={false} />
+        <Button
+          type="correct"
+          onClick={() => {
+            if (files[0]) {
+              replace(current, files[0]);
+            } else {
+              alert("Choose File First");
+            }
+          }}
+        >
+          Submit
+        </Button>
+      </div>
+    </React.Fragment>
+  ) : null;
+
+  const changeGrade = (e) => {
+    setGrade(e.target.value);
+  };
+
+  const modCont =
+    content === "Submit"
+      ? cSubmit
+      : content === "Group"
+      ? cGroup
+      : content === "Files"
+      ? cFile
+      : content === "Delete"
+      ? cRemove
+      : cReplace;
+  console.log(content);
   return (
     <div className={cls.page}>
       {!gid ? <Modal show={show}>{modCont}</Modal> : null}
@@ -186,7 +311,7 @@ function Page(props) {
               />
               <p style={{ flex: "1" }}>out of {ele.total}</p>
             </span>
-          ) : ele.group_id === "Not Chosen Yet" ? (
+          ) : ele.group_id === null ? (
             <span className={classes.Group_Select}>
               <Input
                 type="select"
@@ -213,7 +338,7 @@ function Page(props) {
             </span>
           ) : (
             <span className={classes.Group_Select}>
-              <div>Group Name: {ele.group_id}</div>
+              <div>Group Name: {ele.group_name}</div>
             </span>
           )}
         </span>
@@ -221,7 +346,18 @@ function Page(props) {
           <Card shadow className={classes.Input}>
             <div>
               {selfile.length === 0 ? null : (
-                <Thumbnails remove={remove} files={selfile} />
+                <Thumbnails
+                  remove={(index) => {
+                    if (!gid && selfile[index].delivers_id) {
+                      setCurrent(index);
+                      setContent("Files");
+                      setShow(true);
+                    } else {
+                      remove(index);
+                    }
+                  }}
+                  files={selfile}
+                />
               )}
               {!gid ? (
                 <Dropzone onDrop={onFileChange}>

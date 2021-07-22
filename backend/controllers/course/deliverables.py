@@ -204,15 +204,26 @@ class deliverable_controller:
         return {"courses_deliverables": deliverables_list}
 
     def get_all_course_deliverables(self, course_code, user_id, role):
-        
+
         try:
             if role == 'student':
                 deliverable = Deliverables.query.filter_by(
                     course_deliverables=course_code).all()
                 deliverables_formatted = []
                 deliverables_modified = []
+
                 for i in deliverable:
-                    deliverables_formatted.append(i.serialize())
+                    t = i.serialize()
+                    group = GroupDeliverableRelation.query.join(GroupProject)\
+                        .filter(GroupProject.group_id == GroupDeliverableRelation.group_id)\
+                        .filter(GroupDeliverableRelation.deliverable_id == t['deliverable_id'])\
+                        .join(StudentGroupRelation).filter(StudentGroupRelation.group_id == GroupProject.group_id)\
+                        .filter(StudentGroupRelation.student_id == user_id)\
+                        .with_entities(GroupProject.group_name, GroupProject.group_id).first()
+                    if group:
+                        t['group_name'] = group[0]
+                        t["group_id"] = group[1]
+                    deliverables_formatted.append(t)
                 for i in deliverables_formatted:
                     delivers_relation = Deliver.query.filter(
                         Deliver.deliverable_id == i['deliverable_id']).filter(Deliver.student_id == user_id).first()
