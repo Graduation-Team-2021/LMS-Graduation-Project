@@ -16,7 +16,6 @@ cont_professor = professors_controller()
 
 # /users/<user_id>
 class User(Resource):
-    method_decorators = {'get': [requires_auth('')]}
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
