@@ -19,7 +19,7 @@ import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import DeliverableItem from "../components/DeliverableItem";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import sha256 from "crypto-js/sha512";
-import { Snackbar } from "react-native-paper";
+import { Snackbar, Portal, FAB } from "react-native-paper";
 import QuizItem from "../components/QuizItem";
 
 const AllDelivList = (props) => {
@@ -195,7 +195,19 @@ const AllDelivList = (props) => {
   const ScrollViewContent = isQuiz ? QuizContent : DeliverableContent;
 
   return (
-    <Fragment>
+    <Portal.Host>
+      <Portal>
+        <FAB
+          style={styles.fab}
+          icon="plus"
+          onPress={() =>
+            props.navigation.navigate("CreateQuiz", {
+              course: myCourse,
+              isQuiz: isQuiz,
+            })
+          }
+        />
+      </Portal>
       <Snackbar
         visible={SnackBarVisablity}
         onDismiss={() => setSnackBarVisablity(false)}
@@ -213,7 +225,7 @@ const AllDelivList = (props) => {
         <ActivityIndicator size="large" style={{ marginTop: 20 }} />
       )}
       <Divider style={styles.dividerStyle} />
-    </Fragment>
+    </Portal.Host>
   );
 };
 
@@ -232,5 +244,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   headerContainer: {},
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 5,
+    bottom: 15,
+  },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AllDelivList);

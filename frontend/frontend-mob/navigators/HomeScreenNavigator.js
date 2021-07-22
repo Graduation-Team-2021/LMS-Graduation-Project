@@ -18,6 +18,7 @@ import AddCourse from "../screens/AddCourse";
 import AddUser from "../screens/AddUser";
 import CoursePDFScreen from "../screens/CoursePDFScreen";
 import CourseVideoScreen from "../screens/CoruseVideoScreen";
+import CreateQuizScreen from "../screens/CreateQuizScreen";
 
 const HomeStack = createStackNavigator(
   {
@@ -86,6 +87,10 @@ const HomeStack = createStackNavigator(
     AddUser: checkConnectivity(AddUser),
     CoursePDFs: { screen: checkConnectivity(CoursePDFScreen) },
     CourseVideos: { screen: checkConnectivity(CourseVideoScreen) },
+    CreateQuiz: { screen: checkConnectivity(CreateQuizScreen), navigationOptions: (navData) => {
+      const Course = navData.navigation.getParam("course")
+      const isQuiz = navData.navigation.getParam("course")
+    }},
   },
   {
     defaultNavigationOptions: {
