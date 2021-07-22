@@ -6,8 +6,10 @@ import {
   getDelivByID,
   getDelivGroup,
   SubmitDelivByID,
+  SubmitDgrade,
   SubmitGroup,
 } from "../../../Interface/Interface";
+import FileSaver, { saveAs } from "file-saver";
 import { mapStateToProps, mapDispatchToProps } from "../../../store/reduxMaps";
 import { connect } from "react-redux";
 import Dropzone from "react-dropzone";
@@ -24,7 +26,7 @@ import Waiting from "../../Waiting/Waiting";
 function Page(props) {
   const ele = props.location.state.data;
 
-  const gid = props.group_id;
+  const gid = ele.gid;
 
   const [grade, setGrade] = useState(0);
 
@@ -41,8 +43,6 @@ function Page(props) {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    //TODO: Load Submitted Files By Michel
-    console.log(ele);
     getDelivByID(ele.id, props.userData.ID, gid).then((res) => {
       setFile(
         res.map((val) => ({
@@ -62,22 +62,25 @@ function Page(props) {
 
   const Submit = () => {
     setLoading(true);
-    SubmitDelivByID(
-      props.userData.Token,
-      {
-        deliverable_id: ele.id,
-        delives: selfile.map((value) => ({
-          file_name: value.name,
-          file_type: value.type,
-        })),
-      },
-      selfile
-    ).then((res) => {
-      if (res["status_code"] === 200) {
-        setLoading(false);
-        setDone(true);
-      }
-    });
+    if (!gid) {
+      SubmitDelivByID(
+        props.userData.Token,
+        {
+          deliverable_id: ele.id,
+          delives: selfile.map((value) => ({
+            file_name: value.name,
+            file_type: value.type,
+          })),
+        },
+        selfile
+      ).then((res) => {
+        if (res["status_code"] === 200) {
+          setLoading(false);
+          setDone(true);
+        }
+      });
+    } else {
+    }
   };
 
   const ChooseGroup = () => {
@@ -109,10 +112,10 @@ function Page(props) {
         <React.Fragment>
           <p>Uploaded Sucessfully</p>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button type="correct" onClick={()=>setShow(false)}>
+            <Button type="correct" onClick={() => setShow(false)}>
               Close
             </Button>
-            </div>
+          </div>
         </React.Fragment>
       )}
     </Waiting>
@@ -147,21 +150,22 @@ function Page(props) {
       temp.splice(index, 1);
       setFile(temp);
     } else {
-      downloadD(selfile[index]);
+      downloadD(selfile[index].delivers_id).then((res) => {
+        //let file = new File([res], selfile[index].name, {type:selfile[index].type});
+        FileSaver.saveAs(res, selfile[index].name);
+      });
     }
   };
 
   const modCont = content === "Submit" ? cSubmit : cGroup;
   return (
     <div className={cls.page}>
-      <Modal show={show}>
-        {modCont}
-      </Modal>
+      {!gid ? <Modal show={show}>{modCont}</Modal> : null}
       <div className={cls.content}>
         <h1>
           {" "}
           This is "{ele.name}" {ele.type} from "{ele.course}" course
-          {gid ? `, Submitted by ${gid}` : ""}
+          {gid ? `, Submitted by ${ele.user_name}` : ""}
         </h1>
         <span
           style={{
@@ -172,12 +176,16 @@ function Page(props) {
         >
           Description: {ele.description}
           {gid ? (
-            <Input
-              value={grade}
-              type="number"
-              Name="Grade"
-              onChange={changeGrade}
-            />
+            <span className={classes.Group_Select}>
+              <Input
+                value={grade}
+                type="number"
+                Name="Grade"
+                onChange={changeGrade}
+                flex={1}
+              />
+              <p style={{ flex: "1" }}>out of {ele.total}</p>
+            </span>
           ) : ele.group_id === "Not Chosen Yet" ? (
             <span className={classes.Group_Select}>
               <Input
@@ -215,31 +223,42 @@ function Page(props) {
               {selfile.length === 0 ? null : (
                 <Thumbnails remove={remove} files={selfile} />
               )}
-              <Dropzone onDrop={onFileChange}>
-                {({ getRootProps, getInputProps }) => (
-                  <div className={classes.Handle} {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    {selfile.length === 0 ? (
-                      <ImageHolder className={classes.image} filler={arrow} />
-                    ) : null}
-                    <p>
-                      Drag 'n' drop some files here, or click to select files
-                    </p>
-                  </div>
-                )}
-              </Dropzone>
+              {!gid ? (
+                <Dropzone onDrop={onFileChange}>
+                  {({ getRootProps, getInputProps }) => (
+                    <div className={classes.Handle} {...getRootProps()}>
+                      <input {...getInputProps()} />
+                      {selfile.length === 0 ? (
+                        <ImageHolder className={classes.image} filler={arrow} />
+                      ) : null}
+                      <p>
+                        Drag 'n' drop some files here, or click to select files
+                      </p>
+                    </div>
+                  )}
+                </Dropzone>
+              ) : null}
             </div>
           </Card>
         </span>
         <button
           className={cls.button}
           onClick={() => {
-            if (selfile.length !== 0) {
-              setContent("Submit");
-              setDone(false);
-              setShow(true);
+            if (!gid) {
+              if (selfile.length !== 0) {
+                setContent("Submit");
+                setDone(false);
+                setShow(true);
+              } else {
+                alert("Upload Files Before Submitting");
+              }
             } else {
-              alert("Upload Files Before Submitting");
+              if (grade >= 0 && grade <= ele.total)
+                SubmitDgrade(ele.id, gid, grade).then((res) => {
+                  console.log(res);
+                  alert("Submitted");
+                });
+              else alert("put proper grade");
             }
           }}
         >

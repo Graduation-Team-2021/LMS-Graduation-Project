@@ -47,7 +47,5 @@ Deliverables TODO:
 5. Get Downlaod Deliv
 
 Sequence:
-3.0. (Student Joins Group of Deliverable inside Single Deliverable, only once)
-4. Doctor Check all Delivering students (get Submited, graded)
 5. Doctor Check Single Deliverable (get submission)
 6. Doctor Submit Mark (mark goes to all Students in group)

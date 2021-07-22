@@ -45,7 +45,6 @@ class Deliverable_Results(Resource):
         args = self.reqparse.parse_args()
         deliverable_result = {
             "deliverable_id": deliverable_id,
-
             "user_id": student_id,
             "mark": args["mark"]
         }

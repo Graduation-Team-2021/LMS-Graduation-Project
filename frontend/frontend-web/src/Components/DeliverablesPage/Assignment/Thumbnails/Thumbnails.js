@@ -3,7 +3,6 @@ import React from "react";
 import Thumbnail from "./Thumbnail/Thumbnail";
 
 const Thumbnails = (props) => {
-  console.log(props.files);
   return (
     <div className={classes.holder}>
       {props.files.map((val, index) => (

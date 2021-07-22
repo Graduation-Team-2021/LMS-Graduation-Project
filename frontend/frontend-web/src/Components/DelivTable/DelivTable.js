@@ -120,8 +120,7 @@ export default connect(
   ];
 
   const dperStudentColumn = [
-    { field: "name", headerName: "Name", width: 200 },
-    { field: "status", headerName: "Status", width: 180 },
+    { field: "user_name", headerName: "Name", width: 200 },
     { field: "mark", headerName: "Mark", width: 130 },
   ];
 
@@ -134,13 +133,14 @@ export default connect(
       getDeliv(props.id, props.userData.Token).then((res) => {
         var temp = [];
         res.forEach((value) => {
+          console.log(value);
           if (props.userData.Role === "student") {
             console.log(value);
             if (props.id) {
               temp.push({
                 name: value["deliverable_name"],
                 status: value["status"],
-                course: props.name,
+                course: value["course_deliverables"],
                 description: value["description"] || "No Description",
                 deadline: value["deadline"],
                 mark: value["mark"],
@@ -174,7 +174,8 @@ export default connect(
                 deadline: value["deadline"],
                 mark: value["mark"] || "Not Graded yet",
                 id: value["deliverable_id"],
-                notgraded: value["notgraded"] || 0,
+                notgraded: value["unsolved_deliverables"] || 0,
+                course: props.name,
               });
             } else {
               var delivs2 = value["deliverables"];
@@ -188,6 +189,7 @@ export default connect(
                   deadline: v2["deadline"],
                   mark: v2["mark"] || "Not Graded yet",
                   id: v2["deliverable_id"],
+                  notgraded: v2["unsolved_deliverables"] || 0,
                 })
               );
             }
@@ -202,18 +204,21 @@ export default connect(
         if (res) {
           setRows(
             res.map((v2) => ({
-              uploader: v2['name'],
-              name: v2["group_name"],
+              user_name: v2["group_name"],
               mark: v2["mark"] || "Not Graded yet",
               id: props.id,
-              gid: v2['user_id'],
+              gid: v2["user_id"],
+              name: props.name,
+              type: "Assignment",
+              course: props.course,
+              total: props.mark,
             }))
           );
-          setLoading(false)
+          setLoading(false);
         }
       });
     }
-  }, [props.id, props.userData.Token, props.name, props.userData.Role, props.student]);
+  }, [props.id, props.userData.Token, props.name, props.userData.Role, props.student, props.course, props.mark]);
 
   let newArrayOfObjects = Object.values(
     rows.reduce((mapping, item) => {
@@ -269,14 +274,14 @@ export default connect(
                 rows={rows}
                 columns={
                   props.userData.Role === "student"
-                    ? (!props.id
+                    ? !props.id
                       ? columns
-                      : perCourseColumn)
-                    : (props.student
+                      : perCourseColumn
+                    : props.student
                     ? dperStudentColumn
                     : !props.id
                     ? dColumn
-                    : dPerCourseColumn)
+                    : dPerCourseColumn
                 }
                 pageSize={6}
                 onRowClick={(rowData) => props.onRowHand(rowData)}
