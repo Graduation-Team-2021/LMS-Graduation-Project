@@ -53,12 +53,14 @@ const CreateQuizScreen = (props) => {
               <Controller
                 key={item.id}
                 control={control}
-                render={({ field }) => {
+                render={({ field: { onBlur, onChange, value } }) => {
                   return (
                     <TextInput
-                      label={`answer #${index}`}
-                      {...field}
+                      label={`answer #${index + 1}`}
                       error={errors.newPassword}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
                     />
                   );
                 }}
@@ -79,7 +81,7 @@ const CreateQuizScreen = (props) => {
         })}
       </ScrollView>
       <View style={styles.buttonPadding}>
-        <Button mode="contained" onPress={() => append({ answer: null })}>
+        <Button mode="contained" onPress={() => append({ answer: "" })}>
           add new answer
         </Button>
       </View>
