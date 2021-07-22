@@ -87,10 +87,20 @@ const HomeStack = createStackNavigator(
     AddUser: checkConnectivity(AddUser),
     CoursePDFs: { screen: checkConnectivity(CoursePDFScreen) },
     CourseVideos: { screen: checkConnectivity(CourseVideoScreen) },
-    CreateQuiz: { screen: checkConnectivity(CreateQuizScreen), navigationOptions: (navData) => {
-      const Course = navData.navigation.getParam("course")
-      const isQuiz = navData.navigation.getParam("course")
-    }},
+    CreateQuiz: {
+      screen: checkConnectivity(CreateQuizScreen),
+      navigationOptions: (navData) => {
+        const Course = navData.navigation.getParam("course");
+        const isQuiz = navData.navigation.getParam("isQuiz");
+        let type = "Delverable";
+        if (isQuiz) {
+          type = "Quiz";
+        }
+        return {
+          title: `Create ${type} for ${Course.CourseName} `,
+        };
+      },
+    },
   },
   {
     defaultNavigationOptions: {

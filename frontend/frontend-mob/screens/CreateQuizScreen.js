@@ -1,10 +1,10 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { Fragment } from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { TextInput, Button } from "react-native-paper";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
-import { changePassword } from "../Interface/Interface";
+import { ErrorMessage } from "@hookform/error-message";
 
 const CreateQuizScreen = (props) => {
   const {
@@ -13,71 +13,77 @@ const CreateQuizScreen = (props) => {
     reset,
     getValues,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      newPassword: "",
-      repeatedPassword: "",
-    },
-  });
+  } = useForm({ defaultValues: { question: "", answers: [{ answer: "" }] } });
+
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
+    { control, name: "answers" }
+  );
+
   const onSubmit = (data) => {
-    changePassword(props.userData.ID, data.newPassword).then((res) => {});
+    console.log("[DATA]====================================");
+    console.log(data);
+    console.log("[DATA]====================================");
   };
 
   return (
     <View style={styles.main}>
       <Controller
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="Your New Password"
-            onChangeText={(value) => onChange(value)}
-            value={value}
-            mode="outlined"
-            onBlur={onBlur}
-            secureTextEntry
-            error={errors.newPassword}
-          />
-        )}
-        name="newPassword"
-        rules={{ required: true, validate: (value) => value.length > 4 }}
-        defaultValue=""
-      />
-
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="Confirm Your New Password"
-            onChangeText={(value) => onChange(value)}
-            value={value}
-            onBlur={onBlur}
-            mode="outlined"
-            secureTextEntry
-            error={errors.repeatedPassword}
-          />
-        )}
-        name="repeatedPassword"
-        rules={{
-          required: true,
-          validate: (value) =>
-            value === getValues("newPassword") && value.length > 0,
+        render={({ field }) => {
+          return (
+            <TextInput label="question" {...field} error={errors.newPassword} />
+          );
         }}
-        defaultValue=""
+        name="question"
+        defaultValue={""}
+        rules={{ minLength: 1 }}
       />
+      <ErrorMessage
+        errors={errors}
+        name="question"
+        render={(kak) => {
+          console.log("message", kak);
+          return <Text>Hi</Text>;
+        }}
+      />
+      <ScrollView>
+        {fields.map((item, index) => {
+          return (
+            <Fragment key={item.id}>
+              <Controller
+                key={item.id}
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <TextInput
+                      label={`answer #${index}`}
+                      {...field}
+                      error={errors.newPassword}
+                    />
+                  );
+                }}
+                name={`answers.${index}`}
+                defaultValue={item.value}
+                rules={{ minLength: 1 }}
+              />
+              <ErrorMessage
+                errors={errors}
+                name={`answers.${index}`}
+                render={(kak) => {
+                  console.log("message", kak);
+                  return <Text>Hi</Text>;
+                }}
+              />
+            </Fragment>
+          );
+        })}
+      </ScrollView>
       <View style={styles.buttonPadding}>
-        <Button
-          mode="contained"
-          onPress={() =>
-            reset({
-              oldPassword: "",
-              newPassword: "",
-              repeatedPassword: "",
-            })
-          }
-        >
-          empty the fields
+        <Button mode="contained" onPress={() => append({ answer: null })}>
+          add new answer
         </Button>
       </View>
+
       <View style={styles.buttonPadding}>
         <Button
           icon="lock-reset"
