@@ -130,6 +130,7 @@ const MiniMenu = (props) => {
           >
             <div className={classes.status} />
             <div className={classes.Back} />
+            {console.log(props.userData.Pic)}
             <ImageHolder
               className={classes.UserImage}
               filler={props.userData.Pic ? props.userData.Pic : filler}

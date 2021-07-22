@@ -17,6 +17,7 @@ class MarkEdit extends Component {
     final: this.props.location.state.final,
     Devisions: [],
   };
+  
 
   componentDidMount() {
     getDeliv(this.props.match.params.id, this.props.userData.Token).then(
@@ -39,7 +40,7 @@ class MarkEdit extends Component {
                 if (Object.keys(student).includes(valll.id)) {
                   mark = student[valll.id];
                 }
-                delivs.push({id:valll.id,mark: mark});
+                delivs.push({ id: valll.id, mark: mark });
               });
               return {
                 name: val.name,
@@ -111,7 +112,9 @@ class MarkEdit extends Component {
               <tr>
                 <th>Name</th>
                 <th>id</th>
-                {this.state.Devisions.map((val, index)=><th key={index}>{val.name}</th>)}
+                {this.state.Devisions.map((val, index) => (
+                  <th key={index}>{val.name}</th>
+                ))}
                 <th>midterm</th>
                 <th>final</th>
               </tr>
@@ -120,23 +123,19 @@ class MarkEdit extends Component {
               {this.state.users.map((user, key) => {
                 return (
                   <tr key={key}>
-                  {console.log(this.props.location.state)}
                     <td>{user.name}</td>
                     <td>{user.id}</td>
-                    <td>
-                      {this.state.Devisions.map((value, index) => (
-                        <React.Fragment key={index}>
-                        {console.log(value)}
-                          <input
-                            type="number"
-                            name={value.name}
-                            onChange={(event) => this.mark(event, key, index)}
-                            value={user.Deliverables[index].mark}
-                          />
-                          <pre> out of {value.mark} </pre>
-                        </React.Fragment>
-                      ))}
-                    </td>
+                    {this.state.Devisions.map((value, index) => (
+                      <td key={index}>
+                        <input
+                          type="number"
+                          name={value.name}
+                          onChange={(event) => this.mark(event, key, index)}
+                          value={user.Deliverables[index].mark}
+                        />
+                        <pre> out of {value.mark} </pre>
+                      </td>
+                    ))}
                     <td>
                       <input
                         type="number"
