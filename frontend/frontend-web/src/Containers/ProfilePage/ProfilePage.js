@@ -147,10 +147,12 @@ const ProfilePage = (props) => {
                     {Role==='student'?<div>Year: {year}</div>:null}
                   </div>
                   <FilePicker
+                   maxSize={1000}
                     onChange={(FileObject) => {
                       handleFIleUpload(FileObject);
                     }}
                     onError={(errMsg) => {
+                      console.log(errMsg);
                       /* do something with err msg string */
                     }}
                   >

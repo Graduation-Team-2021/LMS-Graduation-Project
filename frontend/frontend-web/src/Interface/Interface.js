@@ -778,8 +778,9 @@ export const downloadD = async (did) => {
 export const SubmitDgrade = async (did, sid, mark) => {
   const res = await instance.post(
     `/students/${sid}/deliverable/${did}/results`,
-    {mark:mark},{
-      headers:{
+    { mark: mark },
+    {
+      headers: {
         "Content-Type": "application/json",
       },
     }
@@ -787,3 +788,38 @@ export const SubmitDgrade = async (did, sid, mark) => {
   return res.data;
 };
 
+export const deleteFile = async (id) => {
+  const res = await instance.delete(`/my_deliverables/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (res.data["status_code"] !== 200) {
+    return null;
+  }
+  return res.data;
+};
+
+export const UpdateDelivByID = async (Token, data, data2) => {
+  //TODO: Integrate the Deliverables backend
+  var res = await instance.put(`/my_deliverables/${Token}`, {data:data}, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + Token,
+    },
+  });
+  if (res.data['status_code']===200) {
+    let file = new FormData();
+    file.append("file", data2);
+    res = await instance.post(`/my_deliverables/${Token}/upload`, file, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + Token,
+      },
+    });
+    return res.data;
+  } else {
+    return null;
+  }
+  /*return res.data["names"];*/
+};

@@ -6,7 +6,6 @@ import Enroll from "../../../Components/Enroll/Enroll";
 import Modal from "../../../Components/Modal/Modal";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../../../store/reduxMaps";
-import filler from "../../../assets/Filler.png";
 import ImageHolder from "../../ImageHolder/ImageHolder";
 
 const CourseOverview = (props) => {

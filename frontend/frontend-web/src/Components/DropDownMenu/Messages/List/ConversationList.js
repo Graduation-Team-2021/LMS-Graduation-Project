@@ -2,15 +2,21 @@ import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
 import ConversationListItem from "./Item/Item";
 import cls from "./ConversationList.module.css";
-import { getAllConversations, getUser, searchUsers } from "../../../../Interface/Interface";
+import {
+  getAllConversations,
+  getUser,
+  searchUsers,
+} from "../../../../Interface/Interface";
 import { setUser } from "../../../../Models/User";
 import filler from "../../../../assets/Filler.png";
-import { mapDispatchToProps, mapStateToProps } from "../../../../store/reduxMaps";
+import {
+  mapDispatchToProps,
+  mapStateToProps,
+} from "../../../../store/reduxMaps";
 import msngrskt from "../../../../sockets/msngrskts";
-import Waiting from '../../../Waiting/Waiting'
+import Waiting from "../../../Waiting/Waiting";
 import SearchItem from "./SearchItem/SearchItem";
 import SearchBar from "./SearchBar/SearchBar";
-
 
 export default connect(
   mapStateToProps,
@@ -30,8 +36,16 @@ export default connect(
   ///////////////////////////////////////////////////////////////////////////
   let addbb = null;
   if (addBarVis.showBar) {
-    addbb = <SearchBar searchQuery={Query} setSearchQuery={setQuery} fillerText="Search for someone to start a new chat..." />;
+    addbb = (
+      <SearchBar
+        searchQuery={Query}
+        setSearchQuery={setQuery}
+        fillerText="Search for someone to start a new chat..."
+      />
+    );
   }
+
+  const {setMess} = props;
   ///////////////////////////////////////////////////////////////////////////
   const onSearch = useCallback(() => {
     if (Query !== "") {
@@ -46,8 +60,11 @@ export default connect(
               Name={value.name}
               img={filler}
               onClick={() => {
-                props.currentMessageActions.onSetCurrentMessage({ Name: value.name, ID: value.user_id });
-                props.setMess(false);
+                props.currentMessageActions.onSetCurrentMessage({
+                  Name: value.name,
+                  ID: value.user_id,
+                });
+                setMess(false);
               }}
             />
           );
@@ -55,7 +72,7 @@ export default connect(
         setResult(tempResults);
       });
     }
-  }, [Query, started, props.currentMessageActions])
+  }, [Query, started, props.currentMessageActions, setMess]);
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
   useEffect(() => {
@@ -63,14 +80,19 @@ export default connect(
       setCurrentActiveUsers(response);
     });
     msngrskt.on("user connected", (response) => {
-      let temp = [response, ...CurrentActiveUsers]
-      setCurrentActiveUsers(temp)
+      let temp = [response, ...CurrentActiveUsers];
+      setCurrentActiveUsers(temp);
     });
     msngrskt.on("private message", (res) => setNewMessage(res));
     msngrskt.on("user disconnected", (response) => {
-      let temp = [...CurrentActiveUsers]
-      temp.splice(temp.findIndex(el => { return el === response }), 1)
-      setCurrentActiveUsers(temp)
+      let temp = [...CurrentActiveUsers];
+      temp.splice(
+        temp.findIndex((el) => {
+          return el === response;
+        }),
+        1
+      );
+      setCurrentActiveUsers(temp);
     });
   }, [CurrentActiveUsers]);
   ///////////////////////////////////////////////////////////////////////////
@@ -97,7 +119,7 @@ export default connect(
           user["isOnline"] = true;
           let temp = [user, ...conversations];
           setConversations(temp);
-        })
+        });
       }
     }
   }, [conversations, newMessage]);
@@ -147,7 +169,12 @@ export default connect(
     <div className={cls.conversationList}>
       <div className={cls.title}>
         Messages
-        <button className={cls.search} onClick={() => { setAddBar({ showBar: !addBarVis.showBar }); }}>
+        <button
+          className={cls.search}
+          onClick={() => {
+            setAddBar({ showBar: !addBarVis.showBar });
+          }}
+        >
           <img
             src="/add_box.png"
             width="25"
@@ -159,19 +186,21 @@ export default connect(
       {addbb}
       <Waiting Loading={loading}>
         <div className={cls.scrollableList}>
-          {!(addBarVis.showBar && Query !== "") ?
+          {!(addBarVis.showBar && Query !== "") ? (
             conversations.map((conversation, index) => (
               <ConversationListItem
                 onClick={() => {
                   props.currentMessageActions.onSetCurrentMessage(conversation);
-                  props.setMess(false)
+                  props.setMess(false);
                 }}
                 isOnline={CurrentActiveUsers.includes(conversation.ID)}
                 key={index}
                 data={conversation}
               />
-            )) : <Waiting Loading={loading}>{SearchResult}</Waiting>
-          }
+            ))
+          ) : (
+            <Waiting Loading={loading}>{SearchResult}</Waiting>
+          )}
         </div>
       </Waiting>
     </div>

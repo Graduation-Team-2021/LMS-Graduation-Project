@@ -12,6 +12,11 @@
     flex:1;
     border-radius: 0;
 }
+
+.border{
+    border: 3px solid red;
+    border-radius: 5px;
+}
 .Title{
     overflow: hidden;
     white-space: nowrap;

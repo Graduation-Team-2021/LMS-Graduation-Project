@@ -63,6 +63,7 @@ class delivers_controller():
         try:
             updated_delivers_relation = Deliver(**updated_delivers)
             updated_delivers_relation.update()
+            print('updated')
             return
         except SQLAlchemyError as e:
             error = str(e)
