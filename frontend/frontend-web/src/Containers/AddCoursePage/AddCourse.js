@@ -7,8 +7,10 @@ import Card from "../../Components/Card/Card";
 import NormalTextField from "../../Components/NormalTextField/NormalTextField";
 import Button from "../../Components/Button/Button";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
-import { AddCourse, getDoctors, UpdateCourse } from "../../Interface/Interface";
+import { AddCourse, getCourses, getDoctors, UpdateCourse } from "../../Interface/Interface";
 import { setNewCourse } from "../../Models/Course";
+import { connect } from "react-redux";
+import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 class AddCoursePage extends Component {
   Fields = {
@@ -19,6 +21,7 @@ class AddCoursePage extends Component {
     "Max Number of Students": "number",
     "Course Description": "textArea",
     "List of Doctors": "select",
+    "Prerequisites" : 'select',
     "Enrollment Deadline": "date",
     "Course Picture(Optional)": "text",
     "Final Grades": "number",
@@ -32,6 +35,7 @@ class AddCoursePage extends Component {
     "Max Number of Students": "number",
     "Course Description": "textArea",
     "List of Doctors": "select",
+    "Prerequisites" : 'select',
     "Enrollment Deadline": "date",
     "Course Picture(Optional)": "text",
     "Final Grades": "number",
@@ -72,6 +76,14 @@ class AddCoursePage extends Component {
         })),
       });
     });
+    getCourses(this.props.userData.Token).then(res=>{
+      this.setState({
+        "Prerequisites": res.professors.map((value) => ({
+          name: value.name,
+          value: value.id,
+        })),
+      });
+    })
   }
 
   initAddCourse = () => {
@@ -92,6 +104,7 @@ class AddCoursePage extends Component {
       Error: Error,
       Fields: this.Fields,
       "List of Doctors": [...this.state["List of Doctors"]],
+      "Prerequisites": [...this.state["Prerequisites"]],
     });
   };
 
@@ -268,4 +281,4 @@ class AddCoursePage extends Component {
   }
 }
 
-export default AddCoursePage;
+export default connect(mapStateToProps, mapDispatchToProps)(AddCoursePage);
