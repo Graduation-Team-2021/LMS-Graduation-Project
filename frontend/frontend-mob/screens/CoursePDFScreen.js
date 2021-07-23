@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ActivityIndicator } from "react-native";
 import PdfList from "../components/pdf_list";
-import { getPDFs,uploadFile } from "../Interface/Interface";
+import { getPDFs, uploadFile } from "../Interface/Interface";
 import { Portal, FAB, Paragraph, Dialog, Button } from "react-native-paper";
 
 const CoursePDFScreen = (props) => {
@@ -71,7 +71,7 @@ const CoursePDFScreen = (props) => {
 
   return (
     <Portal.Host>
-      <Portal>
+      {/* <Portal>
         <FAB
           style={styles.fab}
           small
@@ -89,7 +89,7 @@ const CoursePDFScreen = (props) => {
             <Button onPress={hideDialog}>Done</Button>
           </Dialog.Actions>
         </Dialog>
-      </Portal>
+      </Portal> */}
       {pdfsLoaded ? (
         <PdfList Pdfs={pdfs} navigation={props.navigation} />
       ) : (

@@ -7,11 +7,12 @@ import * as DocumentPicker from "expo-document-picker";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
+import * as FileSystem from "expo-file-system";
 const CourseVideoScreen = (props) => {
   const myCourse = props.navigation.getParam("course");
   const [videos, setVideos] = useState([]);
   const [videosLoaded, setVideosLoaded] = useState(false);
-  const file = useRef();
+  const [file, setFile] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
   const [visible, setVisible] = useState(false);
 
@@ -27,9 +28,13 @@ const CourseVideoScreen = (props) => {
     console.log(result);
     console.log("====================================");
     if (result.type != "cancel") {
-      file.current = result;
-      showDialog();
-      uploadFileHandler();
+      
+      FileSystem.readAsStringAsync(result.uri).then((res) => {
+        let f = new File(new Blob(res), result.name)
+        setFile(f);
+        showDialog();
+        uploadFileHandler();
+      });
     }
   };
   const retrieveVideos = () => {
@@ -50,7 +55,7 @@ const CourseVideoScreen = (props) => {
   let uploadFileHandler = () => {
     uploadFile(
       props.userData.Token,
-      file.current,
+      file,
       myCourse.CourseID,
       setUploadPercentage
     ).then((res) => {
@@ -77,7 +82,7 @@ const CourseVideoScreen = (props) => {
 
   return (
     <Portal.Host>
-      <Portal>
+      {/* <Portal>
         <FAB
           style={styles.fab}
           small
@@ -95,7 +100,7 @@ const CourseVideoScreen = (props) => {
             <Button onPress={hideDialog}>Done</Button>
           </Dialog.Actions>
         </Dialog>
-      </Portal>
+      </Portal> */}
       {videosLoaded ? (
         <VideoList videos={videos} navigation={props.navigation} />
       ) : (
