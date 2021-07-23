@@ -37,6 +37,7 @@ class Course(Resource):
             'course_description', type=str, location='json')
         self.reqparse.add_argument('post_owner_id', type=str, location='json')
         self.reqparse.add_argument('doctors', type=list, location='json')
+        self.reqparse.add_argument('pre', type=list, location='json')
         self.reqparse.add_argument('course_pic', type=str, location="json")
 
     def get(self, course_code):
@@ -74,9 +75,10 @@ class Course(Resource):
             'course_pic': args['course_pic']
         }
         doctors = args['doctors']
+        pre = args['pre']
         try:
             course = controller_object.update_course(
-                course_code, course, doctors)
+                course_code, course, doctors, pre)
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -138,6 +140,9 @@ class Courses(Resource):
                     'professor_id': doc,
                     'course_code': course
                 })
+            for p in pre:
+                prequisite_object.post_prequisite({"pre_course_code":p, 'course_code': course})
+                pass
             for group in range(args['group_number']):
                 gid = group_object.insert_group({
                     "group_name": f'{args["course_code"]} - Section {group+1}',

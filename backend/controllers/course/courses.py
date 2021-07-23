@@ -1,3 +1,4 @@
+from models.relations.has_prerequistes import Prerequiste
 from controllers.relations.has_prerequisites import prequisite_controller
 from controllers.course.group_project import GroupProjectController
 from controllers.relations.group_course_relation import group_course_controller
@@ -49,7 +50,7 @@ class courses_controller():
             })
         return
 
-    def update_course(self, course_code, course, doctors):
+    def update_course(self, course_code, course, doctors, pre):
         try:
             updated_course = Course.query.filter_by(
                 course_code=course_code).first()
@@ -63,11 +64,19 @@ class courses_controller():
             updated_course = updated_course.serialize()
             professors = Teaches_Relation.query.filter_by(
                 course_code=course_code).all()
+            pree = Prerequiste.query.filter_by(
+                course_code=course_code).all()
             for p in professors:
                 Teaches_Relation.delete(p)
             for prof in doctors:
                 new_prof = Teaches_Relation(
                     **{"professor_id": prof, 'course_code': course_code})
+                new_prof.insert()
+            for p in pree:
+                Prerequiste.delete(p)
+            for p in pre:
+                new_prof = Prerequiste(
+                    **{"pre_course_code": p, 'course_code': course_code})
                 new_prof.insert()
             original_groups = group_course_object.get_all_course_groups(updated_course["course_code"])
             for group in original_groups:
@@ -117,6 +126,10 @@ class courses_controller():
                 Teaches_Relation.course_code == code).all()
             professors = [professor.serialize() for professor in professors]
             pre = pre_object.get_one_course_all_prequisites(code)
+            course['pre'] = []
+            if len(pre)>0:
+                for p in pre:
+                    course['pre'].append(self.get_course(p['pre_course_id']))
             course['professors'] = []
             if len(professors) > 0:
                 for professor in professors:
