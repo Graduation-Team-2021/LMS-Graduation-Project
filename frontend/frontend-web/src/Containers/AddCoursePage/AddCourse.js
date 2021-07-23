@@ -19,7 +19,7 @@ class AddCoursePage extends Component {
     "Max Number of Students": "number",
     "Course Description": "textArea",
     "List of Doctors": "select",
-    "Enrollment Deadline": 'date',
+    "Enrollment Deadline": "date",
     "Course Picture(Optional)": "text",
     "Final Grades": "number",
     "Midterm Grades": "number",
@@ -32,7 +32,7 @@ class AddCoursePage extends Component {
     "Max Number of Students": "number",
     "Course Description": "textArea",
     "List of Doctors": "select",
-    "Enrollment Deadline": 'date',
+    "Enrollment Deadline": "date",
     "Course Picture(Optional)": "text",
     "Final Grades": "number",
     "Midterm Grades": "number",
@@ -137,14 +137,14 @@ class AddCoursePage extends Component {
           }
         });
       } else {
-        UpdateCourse(Course).then(res=>{
+        UpdateCourse(Course).then((res) => {
           if (res) {
             alert("Editing Course Successful");
             this.props.history.goBack();
           } else {
             alert("Adding Course failed");
           }
-        })
+        });
       }
     }
   };
@@ -195,7 +195,7 @@ class AddCoursePage extends Component {
   };
 
   onRemove = (Item, Name) => {
-    const d = Item.map(res=>({name: res.label, value: res.value}));
+    const d = Item.map((res) => ({ name: res.label, value: res.value }));
     this.setState((prev) => ({
       Error: { ...prev.Error, [Name]: d.length === 0 },
       Data: {
@@ -255,7 +255,9 @@ class AddCoursePage extends Component {
           </h1>
           <div className={classes.Field}>{AddCourseField}</div>
           <div className={classes.ButtonArea}>
-            <Button onClick={this.onAddCourse}>Add Course</Button>
+            <Button onClick={this.onAddCourse}>
+              {this.props.location.state ? "Add Course" : "Submit Course"}
+            </Button>
           </div>
         </div>
         <div className={classes.Blue}>

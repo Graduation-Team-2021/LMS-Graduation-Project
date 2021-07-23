@@ -34,7 +34,6 @@ class LoginPage extends Component {
             Role: jwt_decode(res.Token).permissions,
           };
           getUser(Data.ID).then((res2) => {
-            console.log(res2.picture, res2);
             Data["Pic"] = url+res2.picture;
             localStorage.setItem('pic', Data['Pic'])
             this.props.userDataActions.onSetData(Data);

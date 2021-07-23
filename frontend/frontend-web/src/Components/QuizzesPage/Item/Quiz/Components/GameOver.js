@@ -20,7 +20,7 @@ const Dovy = styled.div`
 const GameOver = (props) => {
     return (
         <Dovy>
-            <Title>Game Over</Title>
+            <Title>Quiz is Finished</Title>
             <Points>You did {props.pts} out of {props.totalScore}!</Points>
             <h3>Summary:</h3>
             {

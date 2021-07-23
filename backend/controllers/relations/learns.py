@@ -36,6 +36,7 @@ class student_course_relation_controller():
                     'final': i[6]
                 }
             )
+            print(results_array)
         return results_array
         # data = [course for course in courses]
         # print(courses)

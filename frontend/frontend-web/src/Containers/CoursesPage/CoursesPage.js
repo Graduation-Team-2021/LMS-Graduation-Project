@@ -25,7 +25,6 @@ const HomePage = (props) => {
   const [loading, setLoading] = useState(true);
 
   const Enroll = () => {
-    //TODO:enroll in Backend
     BE_Enroll(ID, Token, displayedCourse).then((res) => {
       if (res) {
         var temp = { ...Courses };
@@ -80,6 +79,7 @@ const HomePage = (props) => {
             ) {
               id["isenrolled"] = "true";
             }
+            console.log(id);
             if (props.location.state) {
               if (id["isenrolled"] === "false") {
                 Courses[id["course_code"]] = setCourse(id);
