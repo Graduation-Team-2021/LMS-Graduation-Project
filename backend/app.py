@@ -267,5 +267,4 @@ api.add_resource(insert_Delete_like,'/like/<liker_id>/<post_id>')
 Run app
 """
 if __name__ == "__main__":
-    app.config["DEBUG"] = True
     app.run(host='0.0.0.0')

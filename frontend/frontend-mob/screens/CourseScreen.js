@@ -261,7 +261,7 @@ const CourseScreen = (props) => {
         <Portal>
           <FAB.Group
             open={FABOpen}
-            icon={FABOpen ? "close" : "plus"}
+            icon={FABOpen ? "close" : "menu"}
             actions={[
               {
                 icon: "help",
