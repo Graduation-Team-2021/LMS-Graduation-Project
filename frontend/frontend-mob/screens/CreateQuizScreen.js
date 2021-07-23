@@ -19,7 +19,7 @@ const CreateQuizScreen = (props) => {
     reset,
     getValues,
     formState: { errors },
-  } = useForm({ defaultValues: { question: "" } });
+  } = useForm({ defaultValues: { question: "", score: 0 } });
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     { control, name: "answers" }
@@ -42,24 +42,27 @@ const CreateQuizScreen = (props) => {
     }
   }, [value]);
 
+  console.log("[error]====================================");
+  console.log(errors);
+  console.log("[error]====================================");
+
   return (
     <View style={styles.main}>
       <Controller
         control={control}
-        render={({ field }) => {
-          return <TextInput label="question" {...field} />;
+        render={({ field: { onChange, onBlur, value } }) => {
+          return (
+            <TextInput
+              label="question"
+              onBlur={onBlur}
+              onChangeText={(text) => onChange(text)}
+              value={value}
+            />
+          );
         }}
         name="question"
         defaultValue={""}
         rules={{ minLength: 1 }}
-      />
-      <ErrorMessage
-        errors={errors}
-        name="question"
-        render={(kak) => {
-          console.log("message", kak);
-          return <Text>Hi</Text>;
-        }}
       />
       <View
         style={{
@@ -85,7 +88,23 @@ const CreateQuizScreen = (props) => {
           </RadioButton.Group>
         </View>
         <View style={{ flex: 1, paddingHorizontal: 5 }}>
-          <TextInput mode="outlined" label="score" />
+          <Controller
+            control={control}
+            render={({ field: { onBlur, onChange, value } }) => {
+              return (
+                <TextInput
+                  label="score"
+                  onBlur={onBlur}
+                  onChangeText={(text) => onChange(text)}
+                  value={value.toString()}
+                  keyboardType="phone-pad"
+                />
+              );
+            }}
+            name="score"
+            defaultValue={0}
+            rules={{ minLength: 1 }}
+          />
         </View>
       </View>
       <ScrollView>
@@ -133,7 +152,6 @@ const CreateQuizScreen = (props) => {
                   }}
                   name={`answers.${index}.correct`}
                   defaultValue={item.value}
-                  rules={{ minLength: 1, required: true }}
                 />
 
                 <IconButton
@@ -143,26 +161,21 @@ const CreateQuizScreen = (props) => {
                   onPress={() => remove(index)}
                 />
               </View>
-              <ErrorMessage
-                errors={errors}
-                name={`answers.${index}.answer`}
-                render={(kak) => {
-                  console.log("message", kak);
-                  return <Text>Hi</Text>;
-                }}
-              />
+              
             </Fragment>
           );
         })}
       </ScrollView>
-      <View style={styles.buttonPadding}>
-        <Button
-          mode="contained"
-          onPress={() => append({ answer: "", correct: false })}
-        >
-          add new answer
-        </Button>
-      </View>
+      {value === "choose" ? (
+        <View style={styles.buttonPadding}>
+          <Button
+            mode="contained"
+            onPress={() => append({ answer: "", correct: false })}
+          >
+            add new answer
+          </Button>
+        </View>
+      ) : null}
 
       <View style={styles.buttonPadding}>
         <Button icon="check" mode="contained" onPress={handleSubmit(onSubmit)}>
