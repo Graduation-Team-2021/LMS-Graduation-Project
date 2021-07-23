@@ -95,7 +95,11 @@ const AdminPage = (props) => {
               "Enrollment Deadline": c['course_deadline'],
               "Course Picture(Optional)": c['course_pic'],
               'Final Grades': c['final'],
-              'Midterm Grades': c['mid']
+              'Midterm Grades': c['mid'],
+              'Prerequisites': c['pre'].map(val=>({
+                name: val["course_name"],
+                value: val["course_code"],
+              }))
             });
           });
           setCourses(t);

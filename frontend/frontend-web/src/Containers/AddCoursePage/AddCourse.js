@@ -77,10 +77,11 @@ class AddCoursePage extends Component {
       });
     });
     getCourses(this.props.userData.Token).then(res=>{
+      console.log(res);
       this.setState({
-        "Prerequisites": res.professors.map((value) => ({
-          name: value.name,
-          value: value.id,
+        "Prerequisites": res.map((value) => ({
+          name: value['course_name'],
+          value: value['course_code'],
         })),
       });
     })
