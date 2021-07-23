@@ -126,7 +126,7 @@ class AddCoursePage extends Component {
         Error[element] = true;
       }
       if (
-        this.state.Fields[element] === "select" &&
+        this.state.Fields[element] === "select" && element==='List of Doctors' &&
         this.state.Data[element].length === 0
       ) {
         Error[element] = true;
@@ -158,7 +158,7 @@ class AddCoursePage extends Component {
             alert("Editing Course Successful");
             this.props.history.goBack();
           } else {
-            alert("Adding Course failed");
+            alert("Editing Course failed");
           }
         });
       }

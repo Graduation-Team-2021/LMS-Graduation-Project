@@ -14,8 +14,10 @@ class StudentGroupRelationController:
             filter(Learns_Relation.student_id==student_id).join(Course)\
                 .filter(Course.course_code==Learns_Relation.course_code)\
                         .join(GroupCourseRelation)\
-            .filter(Course.course_code==GroupCourseRelation.course_id).join(GroupProject).filter(GroupProject.group_id==StudentGroupRelation.group_id).\
-            with_entities(GroupProject.group_name,GroupProject.group_name,GroupCourseRelation.group_id,GroupProject.group_description,GroupProject.post_owner_id, GroupProject.group_pic)
+            .filter(Course.course_code==GroupCourseRelation.course_id).join(GroupProject).\
+                filter(GroupProject.group_id==StudentGroupRelation.group_id).join(StudentGroupRelation)\
+            .filter(StudentGroupRelation.student_id==student_id)\
+                .with_entities(GroupProject.group_name,GroupProject.group_name,GroupCourseRelation.group_id,GroupProject.group_description,GroupProject.post_owner_id, GroupProject.group_pic)
         data=[g for g in groups]
         return data
 
