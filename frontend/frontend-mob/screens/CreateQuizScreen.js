@@ -1,10 +1,15 @@
-import React, { Fragment } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { TextInput, Button } from "react-native-paper";
+import React, { Fragment, useState, useEffect, useRef } from "react";
+import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
+import {
+  TextInput,
+  Button,
+  IconButton,
+  Colors,
+  RadioButton,
+} from "react-native-paper";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
-import { ErrorMessage } from "@hookform/error-message";
 
 const CreateQuizScreen = (props) => {
   const {
@@ -13,86 +18,194 @@ const CreateQuizScreen = (props) => {
     reset,
     getValues,
     formState: { errors },
-  } = useForm({ defaultValues: { question: "", answers: [{ answer: "" }] } });
+  } = useForm({ defaultValues: { question: "", score: "" } });
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    { control, name: "answers" }
-  );
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "answers",
+  });
+
+  const questions = useRef([]);
 
   const onSubmit = (data) => {
-    console.log("[DATA]====================================");
-    console.log(data);
-    console.log("[DATA]====================================");
+    questions.current.push(data);
+    remove();
+    reset();
   };
+  const [value, setValue] = useState("choose");
+
+  useEffect(() => {
+    remove();
+    if (value === "true/false") {
+      append([
+        { answer: "true", correct: false },
+        { answer: "false", correct: false },
+      ]);
+    }
+  }, [value]);
 
   return (
     <View style={styles.main}>
       <Controller
         control={control}
-        render={({ field }) => {
+        render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <TextInput label="question" {...field} error={errors.newPassword} />
+            <TextInput
+              label="question"
+              onBlur={onBlur}
+              onChangeText={(text) => onChange(text)}
+              value={value}
+            />
           );
         }}
         name="question"
         defaultValue={""}
         rules={{ minLength: 1 }}
       />
-      <ErrorMessage
-        errors={errors}
-        name="question"
-        render={(kak) => {
-          console.log("message", kak);
-          return <Text>Hi</Text>;
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
         }}
-      />
+      >
+        <View>
+          <Text>Choose Type</Text>
+          <RadioButton.Group
+            onValueChange={(newValue) => setValue(newValue)}
+            value={value}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <RadioButton value="true/false" />
+              <Text>true/false</Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <RadioButton value="choose" />
+              <Text>choose</Text>
+            </View>
+          </RadioButton.Group>
+        </View>
+        <View style={{ flex: 1, paddingHorizontal: 5 }}>
+          <Controller
+            control={control}
+            render={({ field: { onBlur, onChange, value } }) => {
+              return (
+                <TextInput
+                  label="score"
+                  onBlur={onBlur}
+                  onChangeText={(text) => onChange(text)}
+                  value={value.toString()}
+                  keyboardType="phone-pad"
+                />
+              );
+            }}
+            name="score"
+            defaultValue={""}
+            rules={{ minLength: 1 }}
+          />
+        </View>
+      </View>
       <ScrollView>
         {fields.map((item, index) => {
           return (
             <Fragment key={item.id}>
-              <Controller
-                key={item.id}
-                control={control}
-                render={({ field: { onBlur, onChange, value } }) => {
-                  return (
-                    <TextInput
-                      label={`answer #${index + 1}`}
-                      error={errors.newPassword}
-                      onBlur={onBlur}
-                      onChange={onChange}
-                      value={value}
-                    />
-                  );
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: 10,
                 }}
-                name={`answers.${index}`}
-                defaultValue={item.value}
-                rules={{ minLength: 1 }}
-              />
-              <ErrorMessage
-                errors={errors}
-                name={`answers.${index}`}
-                render={(kak) => {
-                  console.log("message", kak);
-                  return <Text>Hi</Text>;
-                }}
-              />
+              >
+                <Controller
+                  control={control}
+                  render={({ field: { onBlur, onChange, value } }) => {
+                    return (
+                      <TextInput
+                        label={`answer #${index + 1}`}
+                        onBlur={onBlur}
+                        onChangeText={(text) => onChange(text)}
+                        value={value}
+                        style={{ flex: 1 }}
+                        mode="outlined"
+                      />
+                    );
+                  }}
+                  name={`answers.${index}.answer`}
+                  defaultValue={item.value}
+                  rules={{ minLength: 1, required: true }}
+                />
+
+                <Controller
+                  control={control}
+                  render={({ field: { onBlur, onChange, value } }) => {
+                    return (
+                      <IconButton
+                        icon={value ? "check" : "close"}
+                        color={value ? Colors.green500 : Colors.red700}
+                        size={20}
+                        onPress={() => onChange(!value)}
+                      />
+                    );
+                  }}
+                  name={`answers.${index}.correct`}
+                  defaultValue={item.value}
+                />
+
+                <IconButton
+                  icon="delete"
+                  color={Colors.red400}
+                  size={20}
+                  onPress={() => remove(index)}
+                />
+              </View>
             </Fragment>
           );
         })}
       </ScrollView>
-      <View style={styles.buttonPadding}>
-        <Button mode="contained" onPress={() => append({ answer: "" })}>
-          add new answer
-        </Button>
-      </View>
+      {value === "choose" ? (
+        <View style={styles.buttonPadding}>
+          <Button
+            mode="contained"
+            onPress={() => append({ answer: "", correct: false })}
+          >
+            add new answer
+          </Button>
+        </View>
+      ) : null}
 
       <View style={styles.buttonPadding}>
+        <Button icon="check" mode="text" onPress={handleSubmit(onSubmit)}>
+          submit Question
+        </Button>
+      </View>
+      <View style={styles.buttonPadding}>
         <Button
-          icon="lock-reset"
-          mode="contained"
-          onPress={handleSubmit(onSubmit)}
+          icon="send"
+          mode="outlined"
+          onPress={() => {
+            Alert.alert(
+              "Are you sure that you want to submit?",
+              `the quiz contains of ${questions.current.length} questions `,
+              [
+                {
+                  text: "not yet",
+                  style: "destructive",
+                },
+                {
+                  text: "send",
+                  style: "default",
+                  onPress: () => {
+                    console.log("====================================");
+                    console.log("ok");
+                    console.log("====================================");
+                  },
+                },
+              ]
+            );
+          }}
         >
-          Reset My Password
+          submit the entire quiz
         </Button>
       </View>
     </View>
@@ -102,7 +215,6 @@ const CreateQuizScreen = (props) => {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    // backgroundColor: "red",
     justifyContent: "center",
     margin: 0,
     padding: 10,

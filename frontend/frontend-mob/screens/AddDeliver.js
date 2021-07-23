@@ -5,7 +5,7 @@ import { TextInput, Button } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AddNewDeliv as AC } from "../Interface/Interface";
 
-const AddUser = (props) => {
+const AddDeliver = (props) => {
   const {
     handleSubmit,
     control,
@@ -21,7 +21,7 @@ const AddUser = (props) => {
     },
   });
 
-  const course = props.navigation.getParent("course");
+  const course = props.navigation.getParam("course");
 
   const onSubmit = (data) => {
     data["deadline"] = date.toISOString().slice(0, 10);
@@ -119,6 +119,7 @@ const AddUser = (props) => {
               value={value}
               mode="outlined"
               error={errors.description}
+              multiline
             />
           )}
           name="description"
@@ -156,4 +157,4 @@ const AddUser = (props) => {
   );
 };
 
-export default AddUser;
+export default AddDeliver;

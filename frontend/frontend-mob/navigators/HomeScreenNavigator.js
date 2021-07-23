@@ -16,6 +16,7 @@ import checkConnectivity from "../hocs/checkConnectivity";
 import StudentSubmissionScreen from "../screens/StudentSubmissionScreen";
 import AddCourse from "../screens/AddCourse";
 import AddUser from "../screens/AddUser";
+import addDeliverScreen from "../screens/AddDeliver";
 import CoursePDFScreen from "../screens/CoursePDFScreen";
 import CourseVideoScreen from "../screens/CoruseVideoScreen";
 import CreateQuizScreen from "../screens/CreateQuizScreen";
@@ -55,8 +56,13 @@ const HomeStack = createStackNavigator(
       screen: checkConnectivity(DeliverableList),
       navigationOptions: (navData) => {
         const myCourse = navData.navigation.getParam("course");
+        const isQuiz = navData.navigation.getParam("isQuiz");
+        let type = "Deliverables";
+        if (isQuiz) {
+          type = "Quizzes";
+        }
         if (myCourse) {
-          return { title: `${myCourse.CourseName} Deliverable` };
+          return { title: `${myCourse.CourseName} ${type}` };
         } else {
           return { title: "Your Deliverable" };
         }
@@ -101,6 +107,7 @@ const HomeStack = createStackNavigator(
         };
       },
     },
+    AddDelivPage: { screen: addDeliverScreen },
   },
   {
     defaultNavigationOptions: {
