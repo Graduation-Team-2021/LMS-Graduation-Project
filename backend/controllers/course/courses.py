@@ -1,3 +1,4 @@
+from controllers.relations.has_prerequisites import prequisite_controller
 from controllers.course.group_project import GroupProjectController
 from controllers.relations.group_course_relation import group_course_controller
 from models.course.courses import Course
@@ -10,6 +11,7 @@ from methods.errors import *
 post_owner_controller = Post_owner_controller()
 group_object = GroupProjectController()
 group_course_object = group_course_controller()
+pre_object = prequisite_controller()
 
 class courses_controller():
 
@@ -114,6 +116,7 @@ class courses_controller():
             professors = Teaches_Relation.query.filter(
                 Teaches_Relation.course_code == code).all()
             professors = [professor.serialize() for professor in professors]
+            pre = pre_object.get_one_course_all_prequisites(code)
             course['professors'] = []
             if len(professors) > 0:
                 for professor in professors:
