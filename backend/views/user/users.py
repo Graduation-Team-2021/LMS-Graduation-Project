@@ -151,7 +151,6 @@ class Sign_Up(Resource):
         role = args['role']
         student_year = args['student_year']
         scientific_degree = args['scientific_degree']
-        print(args['password'])
         user = {
             'name': args['name'].lower(),
             'email': args['email'],
@@ -229,8 +228,6 @@ class Login(Resource):
         try:
             if check_hash(user["password"], args["password"]) or user['password'] == args[
                 'password']:  # hashed password #zawedt el b3d el or 3ashan 7war el reset password by email msh sha3'al
-                 print(user)
-                 print(user['user'])
                  return jsonify({
                     'status_code': 200,
                     "name":user['user']['name'],

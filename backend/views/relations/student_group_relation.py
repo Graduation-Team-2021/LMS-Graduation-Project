@@ -65,7 +65,6 @@ class EachGroupStudents(Resource):
     
     def post(self,user_id, role, group_id):
         try:
-            print("Enrolling")
             controller_object.enroll_in_group(user_id, group_id)
         except ErrorHandler as e:
             return e.error

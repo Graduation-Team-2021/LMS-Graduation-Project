@@ -7,7 +7,6 @@ class group_course_controller():
             q = GroupCourseRelation(**{"group_id": group, "course_id": course})
             q = GroupCourseRelation.insert(q)
         except SQLAlchemyError as e:
-            print(e)
             error = str(e)
             raise ErrorHandler({
                 'description': error,

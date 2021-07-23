@@ -43,7 +43,7 @@ class professor_course_relation_controller():
                 join(User).filter(Professor.user_id == User.user_id).\
                 with_entities(User.user_id, User.name)
         except SQLAlchemyError as e:
-            print(e)
+
             error = str(e)
             raise ErrorHandler({
                 'description': error,

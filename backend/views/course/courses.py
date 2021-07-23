@@ -173,7 +173,6 @@ class My_Courses(Resource):
             for i in range(len(student_courses)):
                 prof = professor_controller_object.get_teachers(
                     student_courses[i]['course_code'])
-                print(student_courses[i])
                 data_array.append({
                     'course_code': student_courses[i]['course_code'],
                     'course_name': student_courses[i]["course_name"],
@@ -246,9 +245,7 @@ class CourseStatus(Resource):
     method_decorators = {'get': [requires_auth_identity("")]}
 
     def get(self, user_id, role, cid):
-        """
-        docstring
-        """
+        print("getting")
         status = "Can Enroll"
         try:
             # to handle deadline
@@ -259,6 +256,7 @@ class CourseStatus(Resource):
             if status == 'Can Enroll':
                 fcourses = finished_object.get_finished_courses(user_id)
                 pre = prequisite_object.get_one_course_all_prequisites(cid)
+                fcourses = [f['course_code'] for f in fcourses]
                 for course in pre:
                     if fcourses.count(course['course_code']) == 0:
                         status = "Can't Enroll"

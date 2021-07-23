@@ -1,3 +1,4 @@
+from sqlalchemy.exc import SQLAlchemyError
 from controllers.relations.post_commenter import Post_Commenter_controller
 from methods.auth import *
 from flask_restful import Resource, reqparse
@@ -36,7 +37,6 @@ class CommentView_Update_Delete(Resource):
 
     def post(self,commenter_id,post_id):
         args = self.reqparse.parse_args()
-        print(args)
         new_comment={
             'commenter_id':commenter_id,
             'post_id':post_id,
