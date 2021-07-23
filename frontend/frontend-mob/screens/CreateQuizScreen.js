@@ -18,16 +18,19 @@ const CreateQuizScreen = (props) => {
     reset,
     getValues,
     formState: { errors },
-  } = useForm({ defaultValues: { question: "", score: 0 } });
+  } = useForm({ defaultValues: { question: "", score: "" } });
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    { control, name: "answers" }
-  );
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "answers",
+  });
 
   const questions = useRef([]);
 
   const onSubmit = (data) => {
     questions.current.push(data);
+    remove();
+    reset();
   };
   const [value, setValue] = useState("choose");
 
@@ -97,7 +100,7 @@ const CreateQuizScreen = (props) => {
               );
             }}
             name="score"
-            defaultValue={0}
+            defaultValue={""}
             rules={{ minLength: 1 }}
           />
         </View>

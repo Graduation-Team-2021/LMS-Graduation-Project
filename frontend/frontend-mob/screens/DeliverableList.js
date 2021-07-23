@@ -196,18 +196,23 @@ const AllDelivList = (props) => {
 
   return (
     <Portal.Host>
-      <Portal>
-        <FAB
-          style={styles.fab}
-          icon="plus"
-          onPress={() =>
-            props.navigation.navigate("CreateQuiz", {
-              course: myCourse,
-              isQuiz: isQuiz,
-            })
-          }
-        />
-      </Portal>
+      {props.userData.Role === "professor" ? (
+        <Portal>
+          <FAB
+            style={styles.fab}
+            icon="plus"
+            onPress={() =>
+              props.navigation.navigate(
+                isQuiz ? "CreateQuiz" : "AddDelivPage",
+                {
+                  course: myCourse,
+                  isQuiz: isQuiz,
+                }
+              )
+            }
+          />
+        </Portal>
+      ) : null}
       <Snackbar
         visible={SnackBarVisablity}
         onDismiss={() => setSnackBarVisablity(false)}
