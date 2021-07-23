@@ -7,7 +7,12 @@ import Card from "../../Components/Card/Card";
 import NormalTextField from "../../Components/NormalTextField/NormalTextField";
 import Button from "../../Components/Button/Button";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
-import { AddCourse, getCourses, getDoctors, UpdateCourse } from "../../Interface/Interface";
+import {
+  AddCourse,
+  getCourses,
+  getDoctors,
+  UpdateCourse,
+} from "../../Interface/Interface";
 import { setNewCourse } from "../../Models/Course";
 
 class AddCoursePage extends Component {
@@ -19,7 +24,7 @@ class AddCoursePage extends Component {
     "Max Number of Students": "number",
     "Course Description": "textArea",
     "List of Doctors": "select",
-    "Prerequisites" : 'select',
+    Prerequisites: "select",
     "Enrollment Deadline": "date",
     "Course Picture(Optional)": "text",
     "Final Grades": "number",
@@ -33,7 +38,7 @@ class AddCoursePage extends Component {
     "Max Number of Students": "number",
     "Course Description": "textArea",
     "List of Doctors": "select",
-    "Prerequisites" : 'select',
+    Prerequisites: "select",
     "Enrollment Deadline": "date",
     "Course Picture(Optional)": "text",
     "Final Grades": "number",
@@ -60,7 +65,7 @@ class AddCoursePage extends Component {
     this.state = {
       Data: Data,
       Error: Error,
-      Fields: this.Fields,
+      Fields: props.location.state ? this.EditFields : this.Fields,
       ...Lists,
     };
   }
@@ -74,15 +79,14 @@ class AddCoursePage extends Component {
         })),
       });
     });
-    getCourses("").then(res=>{
-      console.log(res);
+    getCourses("").then((res) => {
       this.setState({
-        "Prerequisites": res.map((value) => ({
-          name: value['course_name'],
-          value: value['course_code'],
+        Prerequisites: res.map((value) => ({
+          name: value["course_name"],
+          value: value["course_code"],
         })),
       });
-    })
+    });
   }
 
   initAddCourse = () => {
@@ -103,7 +107,7 @@ class AddCoursePage extends Component {
       Error: Error,
       Fields: this.Fields,
       "List of Doctors": [...this.state["List of Doctors"]],
-      "Prerequisites": [...this.state["Prerequisites"]],
+      Prerequisites: [...this.state["Prerequisites"]],
     });
   };
 
@@ -280,4 +284,4 @@ class AddCoursePage extends Component {
   }
 }
 
-export default (AddCoursePage);
+export default AddCoursePage;

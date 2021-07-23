@@ -141,7 +141,7 @@ class Courses(Resource):
                     'course_code': course
                 })
             for p in pre:
-                prequisite_object.post_prequisite({"pre_course_code":p, 'course_code': course})
+                prequisite_object.post_prequisite({"pre_course_id":p, 'course_code': course})
                 pass
             for group in range(args['group_number']):
                 gid = group_object.insert_group({

@@ -9,9 +9,9 @@ Base = declarative_base()
 class Prerequiste(db.Model, Base):
     __tablename__ = 'Prerequiste'
 
-    course_code = db.Column(db.String(5), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
+    course_code = db.Column(db.String(10), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                             primary_key=True)
-    pre_course_id = db.Column(db.String(5), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),primary_key=True)
+    pre_course_id = db.Column(db.String(10), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),primary_key=True)
 
     def serialize(self):
         return {
