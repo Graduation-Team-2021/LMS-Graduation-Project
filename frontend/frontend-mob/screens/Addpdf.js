@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet , Divider , Text , Button} from "react-native";
 import {
   getAllPosts,
   uploadPost,
@@ -11,6 +11,8 @@ import {
   uploadFile,
 } from "../Interface/Interface";
 import { connect } from "react-redux";
+import VideoItem from '../components/VideoItem';
+import PdfItem from '../components/PdfItem';
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import { showMessage, hideMessage } from "react-native-flash-message";
 
