@@ -9,9 +9,9 @@ Base = declarative_base()
 class Materials(db.Model, Base):
     __tablename__ = 'material'
     material_id = db.Column(db.Integer, primary_key=True)
-    material_name = db.Column(db.Text)
+    material_name = db.Column(db.String(300))
     material_type = db.Column(db.String(50), nullable=False)
-    course_material = db.Column(db.String(5), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
+    course_material = db.Column(db.String(10), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                                 nullable=False)
 
     def serialize(self):

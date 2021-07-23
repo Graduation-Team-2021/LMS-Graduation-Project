@@ -25,12 +25,9 @@ export const setNewCourse = (Data) => {
     course_deadline: Data['Enrollment Deadline'],
     course_pic: Data["Course Picture(Optional)"],
     final: Data['Final Grades'],
-    mid: Data['Midterm Grades']
+    mid: Data['Midterm Grades'],
+    pre: Data['Prerequisites'].map(val => val.value),
+    doctors: Data["List of Doctors"].map(val => val.value)
   };
-  let t = [];
-  Data["List of Doctors"].forEach((element) => {
-    t.push(element.value);
-  });
-  newData["doctors"] = t;
   return newData;
 };

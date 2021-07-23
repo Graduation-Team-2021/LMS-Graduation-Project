@@ -98,6 +98,7 @@ class Courses(Resource):
         self.reqparse.add_argument(
             'course_description', type=str, location='json')
         self.reqparse.add_argument('doctors', type=list, location='json')
+        self.reqparse.add_argument('pre', type=list, location='json')
         self.reqparse.add_argument(
             'course_deadline', type=str, location='json')
         self.reqparse.add_argument('course_pic', type=str, location="json")
@@ -129,6 +130,7 @@ class Courses(Resource):
             'mid': args['mid']
         }
         doctors = args['doctors']
+        pre = args['pre']
         try:
             course = controller_object.post_course(course)
             for doc in doctors:

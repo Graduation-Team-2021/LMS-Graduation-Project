@@ -9,8 +9,6 @@ import Button from "../../Components/Button/Button";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
 import { AddCourse, getCourses, getDoctors, UpdateCourse } from "../../Interface/Interface";
 import { setNewCourse } from "../../Models/Course";
-import { connect } from "react-redux";
-import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 
 class AddCoursePage extends Component {
   Fields = {
@@ -76,7 +74,7 @@ class AddCoursePage extends Component {
         })),
       });
     });
-    getCourses(this.props.userData.Token).then(res=>{
+    getCourses("").then(res=>{
       console.log(res);
       this.setState({
         "Prerequisites": res.map((value) => ({
@@ -282,4 +280,4 @@ class AddCoursePage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddCoursePage);
+export default (AddCoursePage);
