@@ -72,30 +72,6 @@ const CourseScreen = (props) => {
   //   });
   // };
 
-  // let uploadFileHandler = () => {
-  //   uploadFile(
-  //     props.userData.Token,
-  //     file,
-  //     myCourse.CourseID,
-  //     setUploadPercentage
-  //   ).then((res) => {
-  //     setFile("");
-  //     showMessage({
-  //       message: "File uploaded successfully.",
-  //       type: "success",
-  //       duration: "3000",
-  //     });
-  //     setUploadPercentage(0);
-  //     retrievePdfs();
-  //     retrieveVideos();
-  //     showMessage({
-  //       message: "Material uploaded successfully.",
-  //       type: "success",
-  //       duration: "3000",
-  //     });
-  //   });
-  // };
-
   const [post, setPost] = useState("");
   const alertDeliverableCreated = () => {
     showMessage({
