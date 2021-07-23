@@ -1,14 +1,21 @@
 from controllers.relations.delivers import delivers_controller
 from controllers.relations.learns import student_course_relation_controller
 from controllers.course.courses import courses_controller
+from controllers.relations.student_group_relation import StudentGroupRelationController
+from controllers.relations.group_course_relation import group_course_controller
 from methods.auth import *
 from flask_restful import Resource, reqparse
 from flask import current_app, jsonify
 
 controller_object = student_course_relation_controller()
 delivers_object = delivers_controller()
+group_obj = StudentGroupRelationController()
+course_obj = courses_controller()
+gc_obj = group_course_controller()
 
 # /student/<student_id>/courses
+
+
 class Student_Course_Relation(Resource):
     method_decorators = {'post': [requires_auth_identity("")]}
 
@@ -39,6 +46,15 @@ class Student_Course_Relation(Resource):
         try:
             controller_object.post_student_course_relation(
                 student_course_relation)
+            number = course_obj.get_course(args['course_code'])["max_students"]
+            groups = [g["group_id"]
+                      for g in gc_obj.get_all_course_groups(args['course_code'])]
+            for g in range(len(groups)):
+                if g==(len(groups)-1) or \
+                    (g<(len(groups)-1) and \
+                        len(group_obj.get_one_group_all_students(groups[g]))<number):
+                    group_obj.enroll_in_group(user_id, g)
+                    break
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -119,7 +135,7 @@ class All_Students_in_one_course(Resource):
                 'course_code': course_code,
                 'mid_term_mark': i['mid'],
                 'final_exam_mark': i['final']
-                }
+            }
             try:
                 controller_object.update_student_course_relation(
                     i['id'], course_code, new)

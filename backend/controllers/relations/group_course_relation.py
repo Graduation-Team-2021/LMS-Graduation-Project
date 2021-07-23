@@ -7,7 +7,6 @@ class group_course_controller():
             q = GroupCourseRelation(**{"group_id": group, "course_id": course})
             q = GroupCourseRelation.insert(q)
         except SQLAlchemyError as e:
-            print(e)
             error = str(e)
             raise ErrorHandler({
                 'description': error,
@@ -28,7 +27,8 @@ class group_course_controller():
     
     def delete_group_course(self, course, group):
         try:
-            GroupCourseRelation.delete(course_id=course, group_id=group)
+            group = GroupCourseRelation.query.filter(GroupCourseRelation.course_id==course, GroupCourseRelation.group_id==group).first()
+            GroupCourseRelation.delete(group)
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({

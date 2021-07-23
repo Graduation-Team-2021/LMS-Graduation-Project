@@ -74,7 +74,7 @@ class Post_Controller:
             # new_post = Post.insert(new_post)
             new_post.insert()
         except SQLAlchemyError as e:
-            print(e)
+
             error = str(e)
             raise ErrorHandler({
                 'description': error,
@@ -170,14 +170,14 @@ class Post_Controller:
                 temp['likes'] = t2
                 t3 = []
                 for c in commentGetter.get_one_post_all_comments(temp['post_id']):
-                    print(c)
+
                     Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2], 'comment_id':c[3]}
                     t3.append(Comment)
                 temp['comments'] = t3
                 temp['owner_name'] = courses_post_owner_ids[i][1]
                 desired_posts.append(temp)
                 # desired_posts.append(posts)
-                print(posts)
+
 
         post_writers_ids = []
         for i in desired_posts:
@@ -257,7 +257,7 @@ class Post_Controller:
                 Temp['likes'] = t2
                 t3 = []
                 for c in commentGetter.get_one_post_all_comments(Temp['post_id']):
-                    print(c)
+
                     Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2]}
                     t3.append(Comment)
                 Temp['comments'] = t3
@@ -281,7 +281,7 @@ class Post_Controller:
             Temp['likes'] = t2
             t3 = []
             for c in commentGetter.get_one_post_all_comments(Temp['post_id']):
-                print(c)
+
                 Comment = {'commenter_id': c[0], 'commenter_name': c[1], 'comment':c[2]}
                 t3.append(Comment)
             Temp['comments'] = t3
@@ -293,7 +293,7 @@ class Post_Controller:
         for i in range(len(post_writer_ids)):
             users = User.query.filter(User.user_id ==post_writer_ids[i]).with_entities(User.name).all()
             post_writers.append(users)
-        print(post_writers)
+
         for i in range(len(data)):
             data[i]['name'] = post_writers[i][0][0]
         return data

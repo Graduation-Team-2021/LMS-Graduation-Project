@@ -16,7 +16,6 @@ class student_course_relation_controller():
                 .join(Course).filter(Course.course_code == Learns_Relation.course_code).\
                 with_entities(Course.course_code, Course.course_name,
                               Course.course_description, Course.post_owner_id, Course.course_pic, Course.mid, Course.final)
-            print(courses)
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({
@@ -38,7 +37,6 @@ class student_course_relation_controller():
             )
         return results_array
         # data = [course for course in courses]
-        # print(courses)
         # return data
 
     def get_students_in_course(self, course_code):

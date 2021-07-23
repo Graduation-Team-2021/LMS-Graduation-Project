@@ -37,6 +37,7 @@ class Course(Resource):
             'course_description', type=str, location='json')
         self.reqparse.add_argument('post_owner_id', type=str, location='json')
         self.reqparse.add_argument('doctors', type=list, location='json')
+        self.reqparse.add_argument('pre', type=list, location='json')
         self.reqparse.add_argument('course_pic', type=str, location="json")
 
     def get(self, course_code):
@@ -74,9 +75,10 @@ class Course(Resource):
             'course_pic': args['course_pic']
         }
         doctors = args['doctors']
+        pre = args['pre']
         try:
             course = controller_object.update_course(
-                course_code, course, doctors)
+                course_code, course, doctors, pre)
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -98,6 +100,7 @@ class Courses(Resource):
         self.reqparse.add_argument(
             'course_description', type=str, location='json')
         self.reqparse.add_argument('doctors', type=list, location='json')
+        self.reqparse.add_argument('pre', type=list, location='json')
         self.reqparse.add_argument(
             'course_deadline', type=str, location='json')
         self.reqparse.add_argument('course_pic', type=str, location="json")
@@ -129,6 +132,7 @@ class Courses(Resource):
             'mid': args['mid']
         }
         doctors = args['doctors']
+        pre = args['pre']
         try:
             course = controller_object.post_course(course)
             for doc in doctors:
@@ -136,6 +140,9 @@ class Courses(Resource):
                     'professor_id': doc,
                     'course_code': course
                 })
+            for p in pre:
+                prequisite_object.post_prequisite({"pre_course_id":p, 'course_code': course})
+                pass
             for group in range(args['group_number']):
                 gid = group_object.insert_group({
                     "group_name": f'{args["course_code"]} - Section {group+1}',
@@ -166,7 +173,6 @@ class My_Courses(Resource):
             for i in range(len(student_courses)):
                 prof = professor_controller_object.get_teachers(
                     student_courses[i]['course_code'])
-                print(student_courses[i])
                 data_array.append({
                     'course_code': student_courses[i]['course_code'],
                     'course_name': student_courses[i]["course_name"],
@@ -239,9 +245,7 @@ class CourseStatus(Resource):
     method_decorators = {'get': [requires_auth_identity("")]}
 
     def get(self, user_id, role, cid):
-        """
-        docstring
-        """
+        print("getting")
         status = "Can Enroll"
         try:
             # to handle deadline
@@ -252,6 +256,7 @@ class CourseStatus(Resource):
             if status == 'Can Enroll':
                 fcourses = finished_object.get_finished_courses(user_id)
                 pre = prequisite_object.get_one_course_all_prequisites(cid)
+                fcourses = [f['course_code'] for f in fcourses]
                 for course in pre:
                     if fcourses.count(course['course_code']) == 0:
                         status = "Can't Enroll"

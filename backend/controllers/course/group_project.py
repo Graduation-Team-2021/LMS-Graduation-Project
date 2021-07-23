@@ -79,7 +79,6 @@ class GroupProjectController:
         check = [g[2] for g in student_group_object.get_one_student_all_groups(user_id)]
         for group in temp:
             group['status'] = 'Not Enrolled'
-            print(group)
             if check.count(group['group_id'])!=0:
                 group['status'] = 'Enrolled'
         return temp

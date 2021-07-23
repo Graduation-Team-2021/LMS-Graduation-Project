@@ -244,7 +244,7 @@ class deliverable_controller:
                 for i in deliverable:
                     deliverables_formatted.append(i.serialize())
                 for i in deliverables_formatted:
-                    print('loading')
+
                     delivers_relation = delivers_controller_object.count_number_of_ungraded_deliverables(
                         i['deliverable_id'])
                     i['unsolved_deliverables'] = delivers_relation

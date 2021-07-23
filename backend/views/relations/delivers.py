@@ -65,7 +65,6 @@ class Delete_Delivers_Relation(Resource):
     def put(self, delivers_id):
         args = self.reqparse.parse_args()
         try:
-            print(args['data'])
             controller_object.update_delivers_relation(delivers_id, args['data'])
         except ErrorHandler as e:
             return e.error
@@ -85,7 +84,6 @@ class Upload_Deliverable_File(Resource):
 
     def post(self, delivers_id):
         args = self.reqparse.parse_args()
-        print(args)
         file_to_be_uploaded = args['file']
         try:
             controller_object.upload_deliverable(delivers_id, file_to_be_uploaded)

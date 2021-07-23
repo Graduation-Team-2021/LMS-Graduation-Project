@@ -1,5 +1,8 @@
+from models.relations.has_prerequistes import Prerequiste
+from controllers.relations.has_prerequisites import prequisite_controller
 from controllers.course.group_project import GroupProjectController
 from controllers.relations.group_course_relation import group_course_controller
+from controllers.relations.student_group_relation import StudentGroupRelationController
 from models.course.courses import Course
 from models.user.professors import Professor
 from models.relations.teaches import Teaches_Relation
@@ -10,6 +13,8 @@ from methods.errors import *
 post_owner_controller = Post_owner_controller()
 group_object = GroupProjectController()
 group_course_object = group_course_controller()
+pre_object = prequisite_controller()
+student_object = StudentGroupRelationController()
 
 class courses_controller():
 
@@ -47,7 +52,7 @@ class courses_controller():
             })
         return
 
-    def update_course(self, course_code, course, doctors):
+    def update_course(self, course_code, course, doctors, pre):
         try:
             updated_course = Course.query.filter_by(
                 course_code=course_code).first()
@@ -61,16 +66,27 @@ class courses_controller():
             updated_course = updated_course.serialize()
             professors = Teaches_Relation.query.filter_by(
                 course_code=course_code).all()
+            pree = Prerequiste.query.filter_by(
+                course_code=course_code).all()
             for p in professors:
                 Teaches_Relation.delete(p)
             for prof in doctors:
                 new_prof = Teaches_Relation(
                     **{"professor_id": prof, 'course_code': course_code})
                 new_prof.insert()
+            for p in pree:
+                Prerequiste.delete(p)
+            for p in pre:
+                new_prof = Prerequiste(
+                    **{"pre_course_code": p, 'course_code': course_code})
+                new_prof.insert()
             original_groups = group_course_object.get_all_course_groups(updated_course["course_code"])
+            students = []
             for group in original_groups:
+                students.append(student_object.get_one_group_all_students(group['group_id']))
                 group_object.delete_group(group['group_id'])
-                group_course_object.delete_group_course(group['course_id'], group['group_id'])
+            students = [s for ss in students for s in ss]
+            remaining = [s for s in students]
             for group in range(updated_course['group_number']):
                 gid = group_object.insert_group({
                     "group_name": f'{updated_course["course_code"]} - Section {group+1}',
@@ -78,6 +94,18 @@ class courses_controller():
                     'group_pic': updated_course['course_pic']
                 })
                 group_course_object.add_group_course(course=updated_course["course_code"], group=gid)
+                students = remaining
+                remaining = []
+                count = 0
+                for stu in students:
+                    if group==updated_course['group_number']-1 or (group<updated_course['group_number']-1 and count<updated_course['max_students']):
+                        student_object.enroll_in_group(stu[1],gid)
+                        count+=1
+                    elif count==updated_course['max_students']:
+                        remaining = [stu]
+                    else:
+                        remaining.append(stu)
+                        
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({
@@ -114,6 +142,11 @@ class courses_controller():
             professors = Teaches_Relation.query.filter(
                 Teaches_Relation.course_code == code).all()
             professors = [professor.serialize() for professor in professors]
+            pre = pre_object.get_one_course_all_prequisites(code)
+            course['pre'] = []
+            if len(pre)>0:
+                for p in pre:
+                    course['pre'].append(self.get_course(p['pre_course_id']))
             course['professors'] = []
             if len(professors) > 0:
                 for professor in professors:

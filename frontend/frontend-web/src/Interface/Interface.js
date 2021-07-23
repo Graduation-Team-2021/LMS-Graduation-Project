@@ -743,6 +743,7 @@ export const UpdateCourse = async (data) => {
       "Content-Type": "application/json",
     },
   });
+  console.log(res.data);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;

@@ -20,4 +20,3 @@ url="https://lms-backend-2099.herokuapp.com"
 
 r = requests.post(f"{url}/sign_up", headers=headers, data=json.dumps(data))
 
-print(json.dumps(r.text))

@@ -71,6 +71,24 @@ const CourseOverview = (props) => {
               ? `Go to ${props.CourseName}`
               : "Enroll First"}
           </Button>
+        ) : props.userData.Role === "professor" &&
+          props.isEnrolled === "true" ? (
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.Button}
+            onClick={() => {
+              props.history.push({
+                pathname: `/Course/${props.CourseID}`,
+                state: {
+                  Data: props.Course,
+                  isJoined: props.isEnrolled,
+                },
+              });
+            }}
+          >
+            {`Go to ${props.CourseName}`}
+          </Button>
         ) : null}
         <Button
           color="secondary"

@@ -7,7 +7,12 @@ import Card from "../../Components/Card/Card";
 import NormalTextField from "../../Components/NormalTextField/NormalTextField";
 import Button from "../../Components/Button/Button";
 import ImageHolder from "../../Components/ImageHolder/ImageHolder";
-import { AddCourse, getDoctors, UpdateCourse } from "../../Interface/Interface";
+import {
+  AddCourse,
+  getCourses,
+  getDoctors,
+  UpdateCourse,
+} from "../../Interface/Interface";
 import { setNewCourse } from "../../Models/Course";
 
 class AddCoursePage extends Component {
@@ -19,7 +24,8 @@ class AddCoursePage extends Component {
     "Max Number of Students": "number",
     "Course Description": "textArea",
     "List of Doctors": "select",
-    "Enrollment Deadline": 'date',
+    Prerequisites: "select",
+    "Enrollment Deadline": "date",
     "Course Picture(Optional)": "text",
     "Final Grades": "number",
     "Midterm Grades": "number",
@@ -32,7 +38,8 @@ class AddCoursePage extends Component {
     "Max Number of Students": "number",
     "Course Description": "textArea",
     "List of Doctors": "select",
-    "Enrollment Deadline": 'date',
+    Prerequisites: "select",
+    "Enrollment Deadline": "date",
     "Course Picture(Optional)": "text",
     "Final Grades": "number",
     "Midterm Grades": "number",
@@ -58,7 +65,7 @@ class AddCoursePage extends Component {
     this.state = {
       Data: Data,
       Error: Error,
-      Fields: this.Fields,
+      Fields: props.location.state ? this.EditFields : this.Fields,
       ...Lists,
     };
   }
@@ -69,6 +76,14 @@ class AddCoursePage extends Component {
         "List of Doctors": res.professors.map((value) => ({
           name: value.name,
           value: value.id,
+        })),
+      });
+    });
+    getCourses("").then((res) => {
+      this.setState({
+        Prerequisites: res.map((value) => ({
+          name: value["course_name"],
+          value: value["course_code"],
         })),
       });
     });
@@ -92,6 +107,7 @@ class AddCoursePage extends Component {
       Error: Error,
       Fields: this.Fields,
       "List of Doctors": [...this.state["List of Doctors"]],
+      Prerequisites: [...this.state["Prerequisites"]],
     });
   };
 
@@ -110,7 +126,7 @@ class AddCoursePage extends Component {
         Error[element] = true;
       }
       if (
-        this.state.Fields[element] === "select" &&
+        this.state.Fields[element] === "select" && element==='List of Doctors' &&
         this.state.Data[element].length === 0
       ) {
         Error[element] = true;
@@ -137,14 +153,14 @@ class AddCoursePage extends Component {
           }
         });
       } else {
-        UpdateCourse(Course).then(res=>{
+        UpdateCourse(Course).then((res) => {
           if (res) {
             alert("Editing Course Successful");
             this.props.history.goBack();
           } else {
-            alert("Adding Course failed");
+            alert("Editing Course failed");
           }
-        })
+        });
       }
     }
   };
@@ -195,7 +211,7 @@ class AddCoursePage extends Component {
   };
 
   onRemove = (Item, Name) => {
-    const d = Item.map(res=>({name: res.label, value: res.value}));
+    const d = Item.map((res) => ({ name: res.label, value: res.value }));
     this.setState((prev) => ({
       Error: { ...prev.Error, [Name]: d.length === 0 },
       Data: {
@@ -255,7 +271,9 @@ class AddCoursePage extends Component {
           </h1>
           <div className={classes.Field}>{AddCourseField}</div>
           <div className={classes.ButtonArea}>
-            <Button onClick={this.onAddCourse}>Add Course</Button>
+            <Button onClick={this.onAddCourse}>
+              {this.props.location.state ? "Add Course" : "Submit Course"}
+            </Button>
           </div>
         </div>
         <div className={classes.Blue}>

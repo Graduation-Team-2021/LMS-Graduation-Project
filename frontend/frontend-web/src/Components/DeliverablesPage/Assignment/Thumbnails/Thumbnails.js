@@ -7,7 +7,7 @@ const Thumbnails = (props) => {
     <div className={classes.holder}>
       {props.files.map((val, index) => (
         <Thumbnail
-            file={val}
+          file={val}
           key={index}
           remove={() => props.remove(index)}
           type={val.type}

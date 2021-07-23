@@ -97,7 +97,6 @@ class users_controller:
     
     def update_profile_pic(self, user_id, pic):
         # add to Local then to Database
-        print(pic)
         file_path = os.path.join(current_app.config['STATIC_PATH'], f"users/{user_id}")
         if not os.path.exists(file_path):
             os.makedirs(file_path)
@@ -192,8 +191,6 @@ class users_controller:
                 # db.session.commit()
                 # self.send_email_2(f"your new password is {str(generate_hash(national_id))}", user.email) el satr da feh moshkela
                 # lessa ma3'airtsh el password nafso fl database
-                # print(user.password)
-                # print(str(generate_hash(national_id)))
                 return True
             except ErrorHandler as e:
                 return e.error

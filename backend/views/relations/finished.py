@@ -17,7 +17,6 @@ class finished_relation_view(Resource):
         try:
             finished_courses = controller_object.get_finished_courses(student_id)
             data_list=[]
-            print(finished_courses)
             for i in range(len(finished_courses)):
                 data_list.append(
                     {
