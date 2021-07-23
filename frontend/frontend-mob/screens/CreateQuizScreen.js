@@ -1,5 +1,5 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { Fragment, useState, useEffect, useRef } from "react";
+import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import {
   TextInput,
   Button,
@@ -10,7 +10,6 @@ import {
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
-import { ErrorMessage } from "@hookform/error-message";
 
 const CreateQuizScreen = (props) => {
   const {
@@ -25,10 +24,10 @@ const CreateQuizScreen = (props) => {
     { control, name: "answers" }
   );
 
+  const questions = useRef([]);
+
   const onSubmit = (data) => {
-    console.log("[DATA]====================================");
-    console.log(data);
-    console.log("[DATA]====================================");
+    questions.current.push(data);
   };
   const [value, setValue] = useState("choose");
 
@@ -41,10 +40,6 @@ const CreateQuizScreen = (props) => {
       ]);
     }
   }, [value]);
-
-  console.log("[error]====================================");
-  console.log(errors);
-  console.log("[error]====================================");
 
   return (
     <View style={styles.main}>
@@ -161,7 +156,6 @@ const CreateQuizScreen = (props) => {
                   onPress={() => remove(index)}
                 />
               </View>
-              
             </Fragment>
           );
         })}
@@ -178,8 +172,37 @@ const CreateQuizScreen = (props) => {
       ) : null}
 
       <View style={styles.buttonPadding}>
-        <Button icon="check" mode="contained" onPress={handleSubmit(onSubmit)}>
+        <Button icon="check" mode="text" onPress={handleSubmit(onSubmit)}>
           submit Question
+        </Button>
+      </View>
+      <View style={styles.buttonPadding}>
+        <Button
+          icon="send"
+          mode="outlined"
+          onPress={() => {
+            Alert.alert(
+              "Are you sure that you want to submit?",
+              `the quiz contains of ${questions.current.length} questions `,
+              [
+                {
+                  text: "not yet",
+                  style: "destructive",
+                },
+                {
+                  text: "send",
+                  style: "default",
+                  onPress: () => {
+                    console.log("====================================");
+                    console.log("ok");
+                    console.log("====================================");
+                  },
+                },
+              ]
+            );
+          }}
+        >
+          submit the entire quiz
         </Button>
       </View>
     </View>
