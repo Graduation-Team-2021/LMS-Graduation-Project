@@ -1,9 +1,14 @@
 from controllers.relations.finished import finished_relation_controller
+from controllers.relations.learns import student_course_relation_controller
+from controllers.course.group_project import GroupProjectController
+from controllers.relations.student_group_relation import StudentGroupRelationController
 from methods.errors import *
 from flask_restful import Resource, reqparse
 from flask import jsonify
 
 controller_object = finished_relation_controller()
+current_object = student_course_relation_controller()
+student_course_object = StudentGroupRelationController()
 
 
 # /student/<student_id>/finishedCourses
@@ -12,17 +17,19 @@ class finished_relation_view(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('course_code', type=str, location='json')
         self.reqparse.add_argument('student_id', type=str, location='json')
+        self.reqparse.add_argument('total', type=str, location='json')
 
     def get(self, student_id):
         try:
-            finished_courses = controller_object.get_finished_courses(student_id)
-            data_list=[]
+            finished_courses = controller_object.get_finished_courses(
+                student_id)
+            data_list = []
             for i in range(len(finished_courses)):
                 data_list.append(
                     {
-                        'course_code':finished_courses[i]["course_code"],
-                        'course_name':finished_courses[i]["course_name"],
-                        'course_mark':finished_courses[i]["total_mark_in_the_course"],
+                        'course_code': finished_courses[i]["course_code"],
+                        'course_name': finished_courses[i]["course_name"],
+                        'course_mark': finished_courses[i]["total_mark_in_the_course"],
                         'course_pic': finished_courses[i]["course_pic"]
                     }
                 )
@@ -34,9 +41,16 @@ class finished_relation_view(Resource):
 
     def post(self, student_id):
         args = self.reqparse.parse_args()
-        course = {"course_code": args["course_code"], "student_id": student_id}
+        course = {"course_code": args["course_code"],
+                  "student_id": student_id, "total_mark_in_the_course": args['total']}
         try:
             controller_object.post_finished_course(course)
+            current_object.delete_student_course_relation(
+                student_id, args["course_code"])
+            groups = student_course_object.get_one_student_one_course_all_groups(
+                student_id, args["course_code"])
+            for g in groups:
+                student_course_object.remove_from_group(student_id, g[0])
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -55,7 +69,8 @@ class finished_relation_using_the_two_keys(Resource):
 
     def delete(self, student_id, course_code):
         try:
-            course = controller_object.delete_finished_course(student_id, course_code)
+            course = controller_object.delete_finished_course(
+                student_id, course_code)
         except ErrorHandler as e:
             return e.error
         return jsonify({

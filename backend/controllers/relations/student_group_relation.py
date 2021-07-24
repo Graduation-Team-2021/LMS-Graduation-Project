@@ -21,6 +21,18 @@ class StudentGroupRelationController:
         data=[g for g in groups]
         return data
 
+    def get_one_student_one_course_all_groups(self,student_id, course):
+        groups=Learns_Relation.query.\
+            filter(Learns_Relation.student_id==student_id).join(Course)\
+                .filter(Course.course_code==Learns_Relation.course_code)\
+                        .join(GroupCourseRelation)\
+            .filter(Course.course_code==GroupCourseRelation.course_id).join(GroupProject).\
+                filter(GroupProject.group_id==StudentGroupRelation.group_id).join(StudentGroupRelation)\
+            .filter(StudentGroupRelation.student_id==student_id).filter(Learns_Relation.course_code==course)\
+                .with_entities(GroupCourseRelation.group_id)
+        data=[g for g in groups]
+        return data
+
     def get_one_group_all_students(self,group_id):
         # try:
         #     students=StudentGroupRelation.query.filter(StudentGroupRelation.group_id==group_id).all()
@@ -48,4 +60,15 @@ class StudentGroupRelationController:
                 'description': error,
                 'status_code': 500
             })
-        
+    
+    def remove_from_group(self, user, group):
+        enroll = StudentGroupRelation.query.filter(StudentGroupRelation.student_id == user)\
+            .filter(StudentGroupRelation.group_id == group).first()
+        try:
+            StudentGroupRelation.delete(enroll) 
+        except SQLAlchemyError as e:
+            error = str(e)
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
