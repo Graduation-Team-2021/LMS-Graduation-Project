@@ -18,7 +18,7 @@ const CreateQuizScreen = (props) => {
     reset,
     getValues,
     formState: { errors },
-  } = useForm({ defaultValues: { question: "", score: "" } });
+  } = useForm({ defaultValues: { question: "", score: "", duration: "" } });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -48,6 +48,24 @@ const CreateQuizScreen = (props) => {
     <View style={styles.main}>
       <Controller
         control={control}
+        render={({ field: { onBlur, onChange, value } }) => {
+          return (
+            <TextInput
+              label="duration"
+              onBlur={onBlur}
+              onChangeText={(text) => onChange(text)}
+              value={value.toString()}
+              keyboardType="phone-pad"
+            />
+          );
+        }}
+        name="duration"
+        defaultValue={""}
+        rules={{ minLength: 1 }}
+      />
+      <View style={{paddingVertical:3}} />
+      <Controller
+        control={control}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
             <TextInput
@@ -75,11 +93,23 @@ const CreateQuizScreen = (props) => {
             onValueChange={(newValue) => setValue(newValue)}
             value={value}
           >
-            <View style={{ flexDirection: "row" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <RadioButton value="true/false" />
               <Text>true/false</Text>
             </View>
-            <View style={{ flexDirection: "row" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <RadioButton value="choose" />
               <Text>choose</Text>
             </View>
