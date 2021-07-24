@@ -8,6 +8,7 @@ import {
 } from "../Interface/Interface";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+import Button from "../Components/Button/Button";
 
 class MarkEdit extends Component {
   state = {
@@ -17,7 +18,6 @@ class MarkEdit extends Component {
     final: this.props.location.state.final,
     Devisions: [],
   };
-  
 
   componentDidMount() {
     getDeliv(this.props.match.params.id, this.props.userData.Token).then(
@@ -162,10 +162,9 @@ class MarkEdit extends Component {
           </table>
         </div>
         <div>
-          <button className="finish" onClick={this.sumbit}>
-            {" "}
+          <Button className="finish" onClick={this.sumbit}>
             Submit
-          </button>
+          </Button>
         </div>
       </div>
     );

@@ -1,7 +1,7 @@
 from controllers.course.materials import materials_controller
 from methods.errors import *
 from methods.auth import *
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, request
 from flask import current_app, jsonify, send_from_directory
 import werkzeug
 
@@ -97,6 +97,7 @@ class upload_material(Resource):
         self.reqparse.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
 
     def post(self, course_code):
+        print(request.values)
         args = self.reqparse.parse_args()
         file_to_be_uploaded = args['file']
         text = controller_object.upload_material(file_to_be_uploaded, course_code)

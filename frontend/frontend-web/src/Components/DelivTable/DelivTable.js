@@ -146,7 +146,7 @@ export default connect(
                 smark: value["smark"] || "Not Graded yet",
                 id: value["deliverable_id"],
                 group_id: value["group_id"],
-                group_name: value['group_name'] || "Not Chosen Yet"
+                group_name: value["group_name"] || "Not Chosen Yet",
               });
             } else {
               var delivs = value["deliverables"];
@@ -238,10 +238,22 @@ export default connect(
         return Ar.status === "Completed";
       })
     ]?.count || 0;
+  let overdueN =
+    newArrayOfObjects[
+      newArrayOfObjects.findIndex((Ar) => {
+        return Ar.status === "Overdue";
+      })
+    ]?.count || 0;
   let progressN =
     newArrayOfObjects[
       newArrayOfObjects.findIndex((Ar) => {
         return Ar.status === "In Progress";
+      })
+    ]?.count || 0;
+  let GradedN =
+    newArrayOfObjects[
+      newArrayOfObjects.findIndex((Ar) => {
+        return Ar.status === "Graded";
       })
     ]?.count || 0;
   let notN =
@@ -266,7 +278,9 @@ export default connect(
               total={rows.length}
               complete={completedN}
               progress={progressN}
+              over={overdueN}
               notS={notN}
+              graded={GradedN}
             />
             <div className={cls.title}>Deliverables List</div>
             <div className={cls.list}>

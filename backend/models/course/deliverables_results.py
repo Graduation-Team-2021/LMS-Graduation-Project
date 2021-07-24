@@ -10,7 +10,7 @@ class Deliverables_Results(db.Model, Base):
     __tablename__ = 'deliverables_results'
     deliverable_id = db.Column(db.Integer,ForeignKey('deliverable.deliverable_id', ondelete='CASCADE', onupdate="CASCADE"), primary_key=True)
     user_id = db.Column(db.Integer,ForeignKey('student.user_id', ondelete='CASCADE', onupdate="CASCADE"), primary_key=True)
-    mark = db.Column(db.Integer, nullable=False)
+    mark = db.Column(db.Integer)
 
     def serialize(self):
         return {

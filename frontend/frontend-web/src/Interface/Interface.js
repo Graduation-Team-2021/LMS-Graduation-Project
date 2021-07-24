@@ -196,7 +196,7 @@ export const getCourseByID = async (Token, CourseID) => {
   return res.data["course"];
 };
 
-export const uploadFile = async (Token, file, CourseID) => {
+export const uploadFile = async (file, CourseID) => {
   let data = new FormData();
   data.append("file", file);
   const res = await instance.post(
@@ -205,7 +205,6 @@ export const uploadFile = async (Token, file, CourseID) => {
     {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: "Bearer " + Token,
       },
     }
   );
@@ -824,3 +823,8 @@ export const UpdateDelivByID = async (Token, data, data2) => {
   }
   /*return res.data["names"];*/
 };
+
+export const getMarks = async (Token, id)=>{
+  const res = await instance.get(`/student/${Token}/courses/${id}`);
+  return res.data['status_code']===200?res.data['data']:null;
+}

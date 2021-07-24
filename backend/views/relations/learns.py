@@ -76,7 +76,7 @@ class Student_Courses_Relation(Resource):
         self.reqparse.add_argument('Data', type=list, location='json')
 
     def get(self, student_id, course_code):
-        return controller_object.get_student_marks(student_id, course_code)
+        return {"data":controller_object.get_student_marks(student_id, course_code), "status_code":200}
 
     def post(self, student_id, course_code):
         args = self.reqparse.parse_args()

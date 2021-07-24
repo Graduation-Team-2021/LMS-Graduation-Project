@@ -1,3 +1,6 @@
+from models.course.group_project import GroupProject
+from models.relations.group_deliverable_relation import GroupDeliverableRelation
+from models.relations.student_group_relation import StudentGroupRelation
 from models.relations.delivers import Deliver
 from sqlalchemy import or_, and_
 from methods.errors import *
@@ -11,9 +14,17 @@ import os
 
 
 class delivers_controller():
-    def get_all_delivers_by_user_id_and_deliverable_id(self, user_id, deliverable_id):
+    def get_all_delivers_by_user_id_and_deliverable_id(self, user_id, deliverable_id, number):
         try:
-            delivers_relations = Deliver.query.filter(Deliver.student_id == user_id).filter(
+            if number == 1 :
+                delivers_relations = Deliver.query.filter(Deliver.student_id == user_id).filter(
+                Deliver.deliverable_id == deliverable_id)
+            else:
+                delivers_relations = Deliver.query.join(GroupDeliverableRelation)\
+                    .filter(GroupDeliverableRelation.deliverable_id == deliverable_id)\
+                    .join(GroupProject).filter(GroupDeliverableRelation.group_id == GroupProject.group_id)\
+                    .join(StudentGroupRelation).filter(GroupProject.group_id==StudentGroupRelation.group_id)\
+                    .filter(StudentGroupRelation.student_id == user_id).filter(
                 Deliver.deliverable_id == deliverable_id)
         except SQLAlchemyError as e:
             error = str(e)
@@ -57,14 +68,14 @@ class delivers_controller():
                 "status_code": 404
             })
         Deliver.delete(deleted_deliverable)
-        return True
+        return deleted_deliverable
 
     def update_delivers_relation(self, delivers_id, updated_delivers):
         try:
             updated_delivers_relation = Deliver(**updated_delivers)
-            updated_delivers_relation.update()
+            updated_delivers_relation = updated_delivers_relation.update()
 
-            return
+            return updated_delivers_relation
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({

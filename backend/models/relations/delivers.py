@@ -33,6 +33,7 @@ class Deliver(db.Model, Base):
     def update(self):
         db.session.merge(self)
         db.session.commit()
+        return self.deliverable_id
 
     def delete(self):
         db.session.delete(self)

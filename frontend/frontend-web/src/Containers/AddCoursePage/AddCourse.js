@@ -272,7 +272,7 @@ class AddCoursePage extends Component {
           <div className={classes.Field}>{AddCourseField}</div>
           <div className={classes.ButtonArea}>
             <Button onClick={this.onAddCourse}>
-              {this.props.location.state ? "Add Course" : "Submit Course"}
+              {!this.props.location.state ? "Add Course" : "Submit Course"}
             </Button>
           </div>
         </div>

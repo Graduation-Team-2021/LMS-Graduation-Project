@@ -129,9 +129,10 @@ class student_course_relation_controller():
             for d in deliv_list:
                 t2['deliv'].append({
                     "id": d["deliverable_id"],
-                    'value': d['mark']
+                    'name': d['deliverable_name'],
+                    'total': d['mark'],
+                    'value': d['smark']
                 })
-                pass
             names.append(t2)
         # s=[]
         # for i in range(len(names)):
@@ -140,4 +141,22 @@ class student_course_relation_controller():
         return names
 
     def get_student_marks(self, student_id, course_code):
-        return Learns_Relation.query.filter(student_id == student_id, course_code == course_code).first().serialize()
+        try:
+            t2 = Learns_Relation.query.filter(Learns_Relation.student_id == student_id, Learns_Relation.course_code == course_code).first().serialize()
+            t2['assign'] = []
+            deliv_list = deliv_object.get_all_course_deliverables(
+                course_code, student_id, 'student')
+            for d in deliv_list:
+                t2['assign'].append({
+                    "id": d["deliverable_id"],
+                    'name': d['deliverable_name'],
+                    'total': d['mark'],
+                    'value': d['smark']
+                })
+        except SQLAlchemyError as e:
+            error = str(e)
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 500
+            })
+        return t2

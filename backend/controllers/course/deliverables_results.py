@@ -12,7 +12,7 @@ class deliverable_results_controller:
     def get_deliverable_result(self,deliverable_id,user_id):
         try:
             deliverable = deliverable_object.get_deliverable(deliverable_id)
-            deliverable_result = Deliverables_Results.query.filter(Deliverables_Results.deliverable_id==deliverable_id).filter(
+            deliverable_result = Deliverables_Results.query.filter(Deliverables_Results.deliverable_id==deliverable_id['deliverable_id']).filter(
                 Deliverables_Results.user_id==user_id
             ).first()
             if deliverable_result is None:
@@ -59,6 +59,19 @@ class deliverable_results_controller:
 
             updated_deliverable_result = Deliverables_Results(**new_deliverable_result)
             updated_deliverable_result.update()
+        except SQLAlchemyError as e:
+            error = str(e)
+            raise ErrorHandler({
+                'description': error,
+                'status_code': 404
+
+            }) 
+            
+    def delete_deliverable_result(self,new_deliverable_result):
+        try:
+            deliverable_result = self.get_deliverable_result(new_deliverable_result['deliverable_id'],new_deliverable_result['user_id'])
+
+            deliverable_result.delete()
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({

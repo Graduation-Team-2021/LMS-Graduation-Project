@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import classes from "./CourseDesc.module.css";
 import Card from "../../Components/Card/Card";
 import Minibar from "../../Components/Minibar/Minibar";
-import Modal from "../../Components/Modal/Modal";
 
 import {
   faVideo,
@@ -13,8 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
 import AddEvent from "../AddEventPage/AddEvent";
-import { uploadFile } from "../../Interface/Interface";
-import Waiting from "../../Components/Waiting/Waiting";
+import { uploadFile, getMarks } from "../../Interface/Interface";
 import Button from "../../Components/Button/Button";
 
 class CourseDesc extends Component {
@@ -41,36 +39,39 @@ class CourseDesc extends Component {
   };
 
   Submit = () => {
-    this.setState({ clicked: true, done: false });
-    uploadFile(
-      this.props.Token,
-      this.state.file,
-      this.props.CourseID
-    ).then(() => this.setState({ done: true, file: null }));
+    if (this.state.file) {
+      this.props.setContent("Upload");
+      this.props.setShow(true);
+      this.props.setWaiting(true);
+      uploadFile(this.state.file, this.props.CourseID).then(() => {
+        this.props.setWaiting(false);
+        this.setState({ file: null });
+      });
+    } else {
+      alert("Add Files First");
+    }
   };
 
-  Uploading = (
-    <Waiting Loading={!this.state.done}>
-      <div
-        style={{
-          display: "flex",
-          flexFlow: "column",
-          alignItems: "center",
-        }}
-      >
-        <h2>Upload Successful</h2>
-        <Button
-          value="Close"
-          onClick={() => this.setState({ clicked: false })}
-        />
-      </div>
-    </Waiting>
-  );
+  Marks = () => {
+    this.props.setWaiting(true);
+    this.props.setShow(true);
+    getMarks(this.props.ID, this.props.CourseID).then((res) => {
+      if (res) {
+        console.log(res);
+        this.props.setFinal(res.final_exam_mark);
+        this.props.setMid(res.mid_term_mark);
+        this.props.setAssign(res.assign);
+        this.props.setContent("Grades");
+        this.props.setWaiting(false);
+      } else {
+        alert("Error occured, Please try Again Later")
+      }
+    });
+  };
 
   render() {
     return (
       <div className={classes.upcoming}>
-        <Modal show={this.state.clicked}>{this.Uploading}</Modal>
         <div className={classes.Title}>About</div>
         <div className={classes.EventTitle}>{this.props.desc}</div>
         <div className={classes.Title}>
@@ -172,7 +173,6 @@ class CourseDesc extends Component {
                   info="Add Deliverable"
                 />
               </Button>
-              {console.log(this.props.Course)}
               <Button
                 className={classes.Holder}
                 onClick={() => {
@@ -181,7 +181,7 @@ class CourseDesc extends Component {
                     state: {
                       name: this.props.Title,
                       mid: this.props.Course.mid,
-                      final: this.props.Course.final
+                      final: this.props.Course.final,
                     },
                   });
                 }}
@@ -189,11 +189,18 @@ class CourseDesc extends Component {
                 <Minibar icon={faPercent} color="orange" info="Edit Grades" />
               </Button>
             </React.Fragment>
-          ) : null}
+          ) : (
+            <Button className={classes.Holder} onClick={this.Marks}>
+              <Minibar icon={faPercent} color="orange" info="Show Grades" />
+            </Button>
+          )}
 
           {this.props.Role === "professor" ? (
             <React.Fragment>
-              <AddEvent course_id={this.props.Course.CourseID} className={classes.Holder}>
+              <AddEvent
+                course_id={this.props.Course.CourseID}
+                className={classes.Holder}
+              >
                 <div
                   style={{
                     padding: "0 0 10% 0",
@@ -236,6 +243,7 @@ class CourseDesc extends Component {
                 name="myfile"
                 multiple
                 onChange={this.handleFIleUpload}
+                value={this.state.file}
               />
               <br />
               <Button className={classes.Button} onClick={this.Submit}>

@@ -1,10 +1,14 @@
 from controllers.relations.delivers import delivers_controller
+from controllers.course.deliverables_results import deliverable_results_controller
+from controllers.course.deliverables import deliverable_controller
 from flask_restful import Resource, reqparse, request
 from methods.auth import *
 from models.course.deliverables import Deliverables
 import werkzeug
 
 controller_object = delivers_controller()
+res_obj = deliverable_results_controller()
+deliv_obj = deliverable_controller()
 
 
 # /my_deliverables
@@ -27,15 +31,26 @@ class Delivers_Relation(Resource):
         delivs = args['delives']
         delivers_id = []
         try:
+            deliv_number = deliv_obj.get_deliverable(args["deliverable_id"])['students_number']
+            delives = controller_object\
+                .get_all_delivers_by_user_id_and_deliverable_id(user_id,\
+                    args["deliverable_id"], deliv_number)
             for d in range(len(delivs)):
+                if len(delives) ==0:
+                    student_id = student_id
+                else:
+                    student_id = delivs[0]['student_id']
                 delivers_relation = {
                     "deliverable_id": args["deliverable_id"],
                     "student_id": student_id,
                     'file_name': delivs[d]['file_name'],
                     'file_type': delivs[d]["file_type"]
                 }
-                delivers_id.append( controller_object.post_delivers_relation(
+                    
+                delivers_id.append(controller_object.post_delivers_relation(
                     delivers_relation))
+                res_obj.post_deliverable_result(
+                    {"deliverable_id": args["deliverable_id"], "mark": None})
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -51,21 +66,31 @@ class Delete_Delivers_Relation(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('data', type=dict,
                                    location='json', required=True)
-    
+
     def delete(self, delivers_id):
         try:
-            controller_object.delete_delivers_relation(delivers_id)
+            did = controller_object.delete_delivers_relation(delivers_id)
+            print(did)
+            gid = controller_object.get_all_delivers_by_user_id_and_deliverable_id(did[2], did[1])
+            if len(gid)>0:
+                res_obj.post_deliverable_result(
+                    {"deliverable_id": did[0], "mark": None})
+            else:
+                res_obj.delete_deliverable_result(did[0])
         except ErrorHandler as e:
             return e.error
         return jsonify({
             'message': 'deliverable deleted successfully',
             'status_code': 200
         })
-    
+
     def put(self, delivers_id):
         args = self.reqparse.parse_args()
         try:
-            controller_object.update_delivers_relation(delivers_id, args['data'])
+            did = controller_object.update_delivers_relation(
+                delivers_id, args['data'])
+            res_obj.update_deliverable_result(
+                    {"deliverable_id": did, "mark": None})
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -86,7 +111,8 @@ class Upload_Deliverable_File(Resource):
         args = self.reqparse.parse_args()
         file_to_be_uploaded = args['file']
         try:
-            controller_object.upload_deliverable(delivers_id, file_to_be_uploaded)
+            controller_object.upload_deliverable(
+                delivers_id, file_to_be_uploaded)
         except ErrorHandler as e:
             return e.error
         return jsonify({
