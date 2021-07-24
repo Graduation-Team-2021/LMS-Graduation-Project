@@ -83,7 +83,7 @@ class Download_Deliverable_File(Resource):
             return e.error
 
 
-# /students/<student_id>/deliverables/<deliverable_id>
+#   
 class Student_Deliverables(Resource):
 
     def get(self, student_id, deliverable_id):
