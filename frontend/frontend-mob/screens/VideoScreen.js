@@ -20,7 +20,7 @@ export default function VideoScreen(props) {
         ref={video}
         style={styles.video}
         source={{
-          uri:"http://lmsproj.centralus.cloudapp.azure.com:5000"+videoUrl,
+          uri:videoUrl,
         }}
         useNativeControls
         resizeMode="contain"
