@@ -60,8 +60,8 @@ class materials_controller():
         material = self.get_material_with_id(material_id)
         deleted_Materials = Materials.query.filter_by(material_id=material_id).first()
         course_code = material['course_material']
-        file_path = os.path.join(current_app.config['STATIC_PATH'],f"courses\{course_code}",
-                                    f"materials\{material_id}")
+        file_path = os.path.join(current_app.config['STATIC_PATH'],f"courses/{course_code}",
+                                    f"materials/{material_id}")
         shutil.rmtree(file_path)
         if deleted_Materials is None:
             raise ErrorHandler({
