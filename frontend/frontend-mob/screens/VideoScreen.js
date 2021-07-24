@@ -20,7 +20,7 @@ export default function VideoScreen(props) {
         ref={video}
         style={styles.video}
         source={{
-          uri:"http://192.168.1.68:5000"+videoUrl,
+          uri:videoUrl,
         }}
         useNativeControls
         resizeMode="contain"

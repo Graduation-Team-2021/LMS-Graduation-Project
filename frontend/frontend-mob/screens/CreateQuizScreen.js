@@ -10,6 +10,7 @@ import {
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
+import { AddQuiz } from "../Interface/Interface";
 
 const CreateQuizScreen = (props) => {
   const {
@@ -18,7 +19,7 @@ const CreateQuizScreen = (props) => {
     reset,
     getValues,
     formState: { errors },
-  } = useForm({ defaultValues: { question: "", score: "", duration: "" } });
+  } = useForm({ defaultValues: { question: "", mark: "" } });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -38,32 +39,15 @@ const CreateQuizScreen = (props) => {
     remove();
     if (value === "true/false") {
       append([
-        { answer: "true", correct: false },
-        { answer: "false", correct: false },
+        { answer: "true", right_answer: false },
+        { answer: "false", right_answer: false },
       ]);
     }
   }, [value]);
 
   return (
     <View style={styles.main}>
-      <Controller
-        control={control}
-        render={({ field: { onBlur, onChange, value } }) => {
-          return (
-            <TextInput
-              label="duration"
-              onBlur={onBlur}
-              onChangeText={(text) => onChange(text)}
-              value={value.toString()}
-              keyboardType="phone-pad"
-            />
-          );
-        }}
-        name="duration"
-        defaultValue={""}
-        rules={{ minLength: 1 }}
-      />
-      <View style={{paddingVertical:3}} />
+      <View style={{ paddingVertical: 3 }} />
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
@@ -129,7 +113,7 @@ const CreateQuizScreen = (props) => {
                 />
               );
             }}
-            name="score"
+            name="mark"
             defaultValue={""}
             rules={{ minLength: 1 }}
           />
@@ -178,7 +162,7 @@ const CreateQuizScreen = (props) => {
                       />
                     );
                   }}
-                  name={`answers.${index}.correct`}
+                  name={`answers.${index}.right_answer`}
                   defaultValue={item.value}
                 />
 
@@ -197,7 +181,7 @@ const CreateQuizScreen = (props) => {
         <View style={styles.buttonPadding}>
           <Button
             mode="contained"
-            onPress={() => append({ answer: "", correct: false })}
+            onPress={() => append({ answer: "", right_answer: false })}
           >
             add new answer
           </Button>
@@ -216,7 +200,7 @@ const CreateQuizScreen = (props) => {
           onPress={() => {
             Alert.alert(
               "Are you sure that you want to submit?",
-              `the quiz contains of ${questions.current.length} questions `,
+              `the quiz contains of ${questions.current.length} questions in 15 minute, if you want more please purchase the full version `,
               [
                 {
                   text: "not yet",
@@ -226,9 +210,31 @@ const CreateQuizScreen = (props) => {
                   text: "send",
                   style: "default",
                   onPress: () => {
-                    console.log("====================================");
-                    console.log("ok");
-                    console.log("====================================");
+                    let total_marks = 0;
+                    questions.current.forEach((question) => {
+                      total_marks += parseInt(question.mark);
+                    });
+                    let kak = {
+                      course_id: props.navigation.getParam("course").CourseID,
+                      exam_duration: "15 Minutes",
+                      exam_marks: total_marks,
+                      questions: questions.current,
+                    };
+                    console.log(kak);
+                    AddQuiz(kak).then((res) => {
+                      console.log(
+                        "[Davids wanna sleep]===================================="
+                      );
+                      console.log(res);
+                      console.log(
+                        "[Davids wanna sleep]===================================="
+                      );
+                      return Alert.alert(
+                        "Quiz Uploaded Successfully",
+                        "You have made one successfull upload for a quiz",
+                        [{ text: "Okay" }]
+                      );
+                    });
                   },
                 },
               ]

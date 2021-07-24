@@ -7,7 +7,7 @@ import { deleteMaterial } from "../Interface/Interface";
 const VideoList = (props) => {
   const previewVideoHandler = (video_id) => {
     props.navigation.navigate({
-      routeName: "StudentSubmission",
+      routeName: "Video",
       params: { videoId: video_id },
     });
   };
