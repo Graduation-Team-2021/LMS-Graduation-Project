@@ -98,7 +98,7 @@ class upload_material(Resource):
 
     def post(self, course_code):
         args = self.reqparse.parse_args()
-        file_to_be_uploaded = args['file']
+        file_to_be_uploaded = args['myfile']
         print(request.values)
         text = controller_object.upload_material(file_to_be_uploaded, course_code)
         return jsonify({

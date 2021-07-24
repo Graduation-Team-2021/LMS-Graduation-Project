@@ -25,7 +25,7 @@ const CourseVideoScreen = (props) => {
 
   let pickDocumentHandler = async () => {
     let result = await DocumentPicker.getDocumentAsync({
-      multiple: true,
+      multiple: false,
     });
     console.log("[result]====================================");
     console.log(result);
