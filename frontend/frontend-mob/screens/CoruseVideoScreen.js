@@ -38,10 +38,18 @@ const CourseVideoScreen = (props) => {
       const fileBase64 = await FileSystem.readAsStringAsync(result.uri, {
         encoding: FileSystem.EncodingType.Base64,
       });
-      console.log("====================================");
-      console.log(fileBase64);
-      console.log("====================================");
-      uploadFileHandler(new File(fileBase64, result.name));
+      // console.log("====================================");
+      // console.log(fileBase64);
+      // console.log("====================================");
+
+      uploadFileHandler(result, fileBase64);
+
+      // const base64Response = await fetch(
+      //   `data:application/pdf;base64,${fileBase64}`
+      // );
+      // const blob = await base64Response.blob();
+
+      // uploadFileHandler(new File(blob, result.name));
 
       // FileSystem.uploadAsync(
       //   `${azure}/courses/${myCourse.CourseID}/materials/upload`,
@@ -110,12 +118,13 @@ const CourseVideoScreen = (props) => {
     });
   };
 
-  let uploadFileHandler = (res) => {
+  let uploadFileHandler = (res, b64) => {
     uploadFile(
       props.userData.Token,
       res,
       myCourse.CourseID,
-      setUploadPercentage
+      setUploadPercentage,
+      b64
     ).then((res) => {
       setFile("");
       showMessage({

@@ -269,10 +269,12 @@ export const uploadFile = async (
   Token,
   file,
   CourseID,
-  setUploadPercentage
+  setUploadPercentage,
+  b64
 ) => {
   let data = new FormData();
-  data.append("file", file);
+  data.append("file", b64, file.name);
+
   const res = await instance.post(
     `/courses/${CourseID}/materials/upload`,
     data,
