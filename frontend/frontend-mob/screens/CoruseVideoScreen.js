@@ -41,7 +41,7 @@ const CourseVideoScreen = (props) => {
       console.log("====================================");
       console.log(fileBase64);
       console.log("====================================");
-      uploadFileHandler(fileBase64);
+      uploadFileHandler(new File(fileBase64, result.name));
 
       // FileSystem.uploadAsync(
       //   `${azure}/courses/${myCourse.CourseID}/materials/upload`,
