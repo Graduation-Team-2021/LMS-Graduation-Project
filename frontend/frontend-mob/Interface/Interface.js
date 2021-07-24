@@ -688,6 +688,7 @@ export const AddQuiz = async (Data) => {
       },
     }
   );
+  console.log(res.data);
   if (res.data["status_code"] === 200) {
     return true;
   } else {
