@@ -149,7 +149,7 @@ const CourseVideoScreen = (props) => {
 
   return (
     <Portal.Host>
-      {/* <Portal>
+      <Portal>
         <FAB style={styles.fab} icon="plus" onPress={pickDocumentHandler} />
       </Portal>
       <Portal>
@@ -162,7 +162,7 @@ const CourseVideoScreen = (props) => {
             <Button onPress={hideDialog}>Done</Button>
           </Dialog.Actions>
         </Dialog>
-      </Portal> */}
+      </Portal>
       {videosLoaded ? (
         <VideoList videos={videos} navigation={props.navigation} />
       ) : (
