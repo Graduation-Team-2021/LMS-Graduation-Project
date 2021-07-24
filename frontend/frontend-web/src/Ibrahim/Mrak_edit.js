@@ -5,6 +5,7 @@ import {
   getCourseStudents,
   setCourseStudent,
   getDeliv,
+  finish,
 } from "../Interface/Interface";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
@@ -43,7 +44,7 @@ class MarkEdit extends Component {
               console.log(student);
               course.forEach((valll) => {
                 var mark = "";
-                if (Object.keys(student).includes((valll.id).toString())) {
+                if (Object.keys(student).includes(valll.id.toString())) {
                   mark = student[valll.id].value;
                 }
                 delivs.push({
@@ -65,6 +66,19 @@ class MarkEdit extends Component {
       }
     );
   }
+
+  finishCourse = (Key) => {
+    finish(
+      this.state.users[Key].id,
+      this.props.match.params.id,
+      this.state.users[Key].final +
+        this.state.users[Key].mid +
+        this.state.users[Key].Deliverables.reduce((val, newVal) => {
+          console.log(val, newVal, newVal.mark);
+          return val + (newVal.mark || 0);
+        }, 0)
+    );
+  };
 
   mark = (event, id, index) => {
     if (
@@ -131,6 +145,7 @@ class MarkEdit extends Component {
                 ))}
                 <th>midterm</th>
                 <th>final</th>
+                <th>Finish Course</th>
               </tr>
             </thead>
             <tbody>
@@ -174,6 +189,11 @@ class MarkEdit extends Component {
                         value={user.final}
                       />
                       <pre> out of {this.state.final} </pre>
+                    </td>
+                    <td>
+                      <Button onClick={() => this.finishCourse(key)}>
+                        Finish Course
+                      </Button>
                     </td>
                   </tr>
                 );

@@ -803,13 +803,17 @@ export const deleteFile = async (id) => {
 
 export const UpdateDelivByID = async (Token, data, data2) => {
   //TODO: Integrate the Deliverables backend
-  var res = await instance.put(`/my_deliverables/${Token}`, {data:data}, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + Token,
-    },
-  });
-  if (res.data['status_code']===200) {
+  var res = await instance.put(
+    `/my_deliverables/${Token}`,
+    { data: data },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Token,
+      },
+    }
+  );
+  if (res.data["status_code"] === 200) {
     let file = new FormData();
     file.append("file", data2);
     res = await instance.post(`/my_deliverables/${Token}/upload`, file, {
@@ -825,7 +829,29 @@ export const UpdateDelivByID = async (Token, data, data2) => {
   /*return res.data["names"];*/
 };
 
-export const getMarks = async (Token, id)=>{
-  const res = await instance.get(`/student/${Token}/courses/${id}`);
-  return res.data['status_code']===200?res.data['data']:null;
-}
+export const getMarks = async (Token, id) => {
+  const res = await instance.get(`/student/${Token}/courses/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data["status_code"] === 200 ? res.data["data"] : null;
+};
+
+export const finish = async (id, course, total) => {
+  console.log(total);
+  const res = await instance.post(
+    `/student/${id}/finishedCourses`,
+    {
+      course_code: course,
+      student_id: id,
+      total: total
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  console.log(res.data);
+};

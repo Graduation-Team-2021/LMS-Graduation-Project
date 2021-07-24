@@ -18,7 +18,7 @@ const InputPart = (props) => {
         />
         <TextField
           type="select"
-          DataList={[{name:"Exam", value:'exam'}, {name: 'Lecture', value:"lecture"}]}
+          DataList={[{name:"Exam", value:'exam'}]}
           value={props.item}
           onSelect={props.onSelect}
         />
