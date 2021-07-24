@@ -18,7 +18,7 @@ const CreateQuizScreen = (props) => {
     reset,
     getValues,
     formState: { errors },
-  } = useForm({ defaultValues: { question: "", score: "", duration: "" } });
+  } = useForm({ defaultValues: { question: "", mark: "" } });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -38,32 +38,16 @@ const CreateQuizScreen = (props) => {
     remove();
     if (value === "true/false") {
       append([
-        { answer: "true", correct: false },
-        { answer: "false", correct: false },
+        { answer: "true", right_answer: false },
+        { answer: "false", right_answer: false },
       ]);
     }
   }, [value]);
 
   return (
     <View style={styles.main}>
-      <Controller
-        control={control}
-        render={({ field: { onBlur, onChange, value } }) => {
-          return (
-            <TextInput
-              label="duration"
-              onBlur={onBlur}
-              onChangeText={(text) => onChange(text)}
-              value={value.toString()}
-              keyboardType="phone-pad"
-            />
-          );
-        }}
-        name="duration"
-        defaultValue={""}
-        rules={{ minLength: 1 }}
-      />
-      <View style={{paddingVertical:3}} />
+      
+      <View style={{ paddingVertical: 3 }} />
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => {
@@ -129,7 +113,7 @@ const CreateQuizScreen = (props) => {
                 />
               );
             }}
-            name="score"
+            name="mark"
             defaultValue={""}
             rules={{ minLength: 1 }}
           />
@@ -178,7 +162,7 @@ const CreateQuizScreen = (props) => {
                       />
                     );
                   }}
-                  name={`answers.${index}.correct`}
+                  name={`answers.${index}.right_answer`}
                   defaultValue={item.value}
                 />
 
@@ -197,7 +181,7 @@ const CreateQuizScreen = (props) => {
         <View style={styles.buttonPadding}>
           <Button
             mode="contained"
-            onPress={() => append({ answer: "", correct: false })}
+            onPress={() => append({ answer: "", right_answer: false })}
           >
             add new answer
           </Button>
@@ -227,7 +211,7 @@ const CreateQuizScreen = (props) => {
                   style: "default",
                   onPress: () => {
                     console.log("====================================");
-                    console.log("ok");
+                    console.log(questions.current);
                     console.log("====================================");
                   },
                 },
