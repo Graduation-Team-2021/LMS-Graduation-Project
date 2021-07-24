@@ -32,15 +32,25 @@ class MarkEdit extends Component {
             Devisions: course,
             users: res.map((val) => {
               const delivs = [];
-              const student = val.deliv.map((vall) => ({
-                [vall.id]: vall.value,
-              }));
+              console.log(val);
+              const student = {};
+              for (let index = 0; index < val.deliv.length; index++) {
+                student[val.deliv[index].id] = {
+                  value: val.deliv[index].value,
+                  submit: val.deliv[index].submit,
+                };
+              }
+              console.log(student);
               course.forEach((valll) => {
                 var mark = "";
-                if (Object.keys(student).includes(valll.id)) {
-                  mark = student[valll.id];
+                if (Object.keys(student).includes((valll.id).toString())) {
+                  mark = student[valll.id].value;
                 }
-                delivs.push({ id: valll.id, mark: mark });
+                delivs.push({
+                  id: valll.id,
+                  mark: mark,
+                  submit: student[valll.id].submit,
+                });
               });
               return {
                 name: val.name,
@@ -65,7 +75,11 @@ class MarkEdit extends Component {
     } else {
       const temp = [...this.state.users];
       const user = temp[id];
-      user[event.target.name].Deliverables[index] = event.target.value;
+      console.log(user);
+      user.Deliverables[index] = {
+        ...user.Deliverables[index],
+        mark: event.target.value,
+      };
       this.setState({
         users: temp,
       });
@@ -78,7 +92,7 @@ class MarkEdit extends Component {
     } else {
       const temp = [...this.state.users];
       const user = temp[id];
-      user[event.target.name].mid = event.target.value;
+      user.mid = event.target.value;
       this.setState({
         users: temp,
       });
@@ -91,7 +105,7 @@ class MarkEdit extends Component {
     } else {
       const temp = [...this.state.users];
       const user = temp[id];
-      user[event.target.name].final = event.target.value;
+      user.final = event.target.value;
       this.setState({
         users: temp,
       });
@@ -127,13 +141,19 @@ class MarkEdit extends Component {
                     <td>{user.id}</td>
                     {this.state.Devisions.map((value, index) => (
                       <td key={index}>
-                        <input
-                          type="number"
-                          name={value.name}
-                          onChange={(event) => this.mark(event, key, index)}
-                          value={user.Deliverables[index].mark}
-                        />
-                        <pre> out of {value.mark} </pre>
+                        {user.Deliverables[index].submit !== null ? (
+                          <React.Fragment>
+                            <input
+                              type="number"
+                              name={value.name}
+                              onChange={(event) => this.mark(event, key, index)}
+                              value={user.Deliverables[index].mark}
+                            />
+                            <pre> out of {value.mark} </pre>
+                          </React.Fragment>
+                        ) : (
+                          <pre> Not Submitted Yet </pre>
+                        )}
                       </td>
                     ))}
                     <td>

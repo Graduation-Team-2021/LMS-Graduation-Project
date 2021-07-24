@@ -1,4 +1,4 @@
-from controllers.relations.delivers import delivers_controller
+from controllers.course.deliverables_results import deliverable_results_controller
 from controllers.relations.learns import student_course_relation_controller
 from controllers.course.courses import courses_controller
 from controllers.relations.student_group_relation import StudentGroupRelationController
@@ -8,7 +8,7 @@ from flask_restful import Resource, reqparse
 from flask import current_app, jsonify
 
 controller_object = student_course_relation_controller()
-delivers_object = delivers_controller()
+delivers_object = deliverable_results_controller()
 group_obj = StudentGroupRelationController()
 course_obj = courses_controller()
 gc_obj = group_course_controller()
@@ -50,9 +50,9 @@ class Student_Course_Relation(Resource):
             groups = [g["group_id"]
                       for g in gc_obj.get_all_course_groups(args['course_code'])]
             for g in range(len(groups)):
-                if g==(len(groups)-1) or \
-                    (g<(len(groups)-1) and \
-                        len(group_obj.get_one_group_all_students(groups[g]))<number):
+                if g == (len(groups)-1) or \
+                    (g < (len(groups)-1) and
+                        len(group_obj.get_one_group_all_students(groups[g])) < number):
                     group_obj.enroll_in_group(user_id, g)
                     break
         except ErrorHandler as e:
@@ -76,7 +76,7 @@ class Student_Courses_Relation(Resource):
         self.reqparse.add_argument('Data', type=list, location='json')
 
     def get(self, student_id, course_code):
-        return {"data":controller_object.get_student_marks(student_id, course_code), "status_code":200}
+        return {"data": controller_object.get_student_marks(student_id, course_code), "status_code": 200}
 
     def post(self, student_id, course_code):
         args = self.reqparse.parse_args()
@@ -115,6 +115,7 @@ class All_Students_in_one_course(Resource):
         self.reqparse.add_argument('Data', type=list, location='json')
 
     def get(self, course_code):
+        print('Reading!!!')
         try:
             result = controller_object.get_all_students_in_one_course(
                 course_code)
@@ -139,7 +140,10 @@ class All_Students_in_one_course(Resource):
             try:
                 controller_object.update_student_course_relation(
                     i['id'], course_code, new)
-                delivers_object.update_delivers_relation()
+                for d in i['Deliverables']:
+                    print(d["submit"])
+                    delivers_object.update_deliverable_result(
+                        {"deliverable_id": d["id"], "user_id": d["submit"], 'mark': d["mark"] if d['mark']!='' else None})
             except ErrorHandler as e:
                 return e.error
         return jsonify(

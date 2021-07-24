@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import cls from "./Assignment.module.css";
-import { FilePicker } from "react-file-picker";
 import {
   downloadD,
   getDelivByID,
@@ -197,7 +196,7 @@ function Page(props) {
     });
   };
 
-  const { files, onClick, errors, HiddenFileInput } = useFilePicker({
+  const { files, onClick, HiddenFileInput } = useFilePicker({
     maxFileSize: 1000,
   })
 

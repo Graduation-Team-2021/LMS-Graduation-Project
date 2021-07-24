@@ -311,6 +311,7 @@ export const setCourseStudent = async (id, Data) => {
       },
     }
   );
+  console.log(res.data);
 };
 
 export const AddCourse = async (Data) => {
