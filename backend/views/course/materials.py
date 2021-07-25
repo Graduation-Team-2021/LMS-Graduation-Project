@@ -24,7 +24,6 @@ class material(Resource):
         })
 
 
-
 # /courses/<course_code>/materials
 class materials(Resource):
     def __init__(self):
@@ -34,7 +33,8 @@ class materials(Resource):
         self.reqparse.add_argument('downloadable', type=bool, location='json')
         self.reqparse.add_argument('course_material', type=str,
                                    location='json')  # course material is the course code to which the materials belong
-        self.reqparse.add_argument('students_number', type=int, location='json')
+        self.reqparse.add_argument(
+            'students_number', type=int, location='json')
 
     def get(self, course_code):
         try:
@@ -43,9 +43,11 @@ class materials(Resource):
             return e.error
         return {**{
             'status_code': 200,
-             
-        },**materials}
+
+        }, **materials}
 # /courses/<course_code>/materials/pdfs
+
+
 class materials_pdfs(Resource):
     def get(self, course_code):
         try:
@@ -54,9 +56,11 @@ class materials_pdfs(Resource):
             return e.error
         return {**{
             'status_code': 200,
-             
-        },**materials}
+
+        }, **materials}
 # /courses/<course_code>/materials/videos
+
+
 class materials_videos(Resource):
     def get(self, course_code):
         try:
@@ -65,17 +69,19 @@ class materials_videos(Resource):
             return e.error
         return {**{
             'status_code': 200,
-             
-        },**materials}
+
+        }, **materials}
 
 # /materials/<id>/uri
+
+
 class download_material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
 
     def get(self, id):
         try:
-            return {"url":controller_object.get_material_uri(id)}
+            return {"url": controller_object.get_material_uri(id)}
         except ErrorHandler as e:
             return e.error
 
@@ -91,18 +97,22 @@ class download_material(Resource):
 #             return e.error
 
 # /courses/<course_code>/materials/upload
+
+
 class upload_material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
+        self.reqparse.add_argument(
+            'file', type=werkzeug.datastructures.FileStorage, location='files')
 
     def post(self, course_code):
-        print('[Adham Nour]',request.values)
+        print('[Adham Nour]', request.values)
         args = self.reqparse.parse_args()
-        print('[Adham Nour]',args)
+        print('[Adham Nour]', args)
         file_to_be_uploaded = args['file']
         print(request.values[1])
-        text = controller_object.upload_material(file_to_be_uploaded, course_code)
+        text = controller_object.upload_material(
+            file_to_be_uploaded, course_code)
         return jsonify({
             'message': 'Materials uploaded successfully',
             'status_code': 200
