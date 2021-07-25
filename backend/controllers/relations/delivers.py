@@ -21,7 +21,8 @@ class delivers_controller():
                 Deliver.deliverable_id == deliverable_id)
             else:
                 delivers_relations = Deliver.query.join(GroupDeliverableRelation)\
-                    .filter(GroupDeliverableRelation.deliverable_id == deliverable_id)\
+                    .filter(Deliver.deliverable_id == deliverable_id)\
+                    .filter(GroupDeliverableRelation.deliverable_id == Deliver.deliverable_id)\
                     .join(GroupProject).filter(GroupDeliverableRelation.group_id == GroupProject.group_id)\
                     .join(StudentGroupRelation).filter(GroupProject.group_id==StudentGroupRelation.group_id)\
                     .filter(StudentGroupRelation.student_id == user_id).filter(
