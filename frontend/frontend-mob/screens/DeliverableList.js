@@ -70,7 +70,7 @@ const AllDelivList = (props) => {
       }
 
       const pieData = {};
-      if (myCourse) {
+      if (myCourse&&newRes.length!==0) {
         newRes[0].deliverables.forEach((delv) => {
           if (pieData[delv.status]) {
             pieData[delv.status] += 1;
@@ -207,6 +207,8 @@ const AllDelivList = (props) => {
                 {
                   course: myCourse,
                   isQuiz: isQuiz,
+                  retriveQuiz:retrieveCourseQuizes,
+                  retriveDeliv:retrieveStudentDeliverables,
                 }
               )
             }

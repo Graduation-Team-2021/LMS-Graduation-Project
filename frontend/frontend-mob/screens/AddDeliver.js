@@ -14,10 +14,10 @@ const AddDeliver = (props) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-        "deliverable_name": "",
-        "mark": '',
-        "students_number": "",
-        description: "",
+      deliverable_name: "",
+      mark: "",
+      students_number: "",
+      description: "",
     },
   });
 
@@ -25,14 +25,19 @@ const AddDeliver = (props) => {
 
   const onSubmit = (data) => {
     data["deadline"] = date.toISOString().slice(0, 10);
-    data['course_deliverables'] = course.course_code
+    data["course_deliverables"] = course.CourseID;
     //TODO: send the request to te backend here
     AC(data).then((res) => {
       if (res) {
         //TODO: Show it Succeded
+        console.log("====================================");
+        console.log(res);
+        console.log("====================================");
         reset();
         setDate(new Date());
         setItems([]);
+        props.navigation.getParam("retriveDeliv")();
+        props.navigation.goBack();
       }
     });
   };
@@ -87,7 +92,7 @@ const AddDeliver = (props) => {
           name="mark"
           rules={{
             required: true,
-            validate: (value) => parseInt(value)>=0,
+            validate: (value) => parseInt(value) >= 0,
           }}
           defaultValue=""
         />
@@ -106,7 +111,7 @@ const AddDeliver = (props) => {
           name="students_number"
           rules={{
             required: true,
-            validate: (value) => parseInt(value)>0,
+            validate: (value) => parseInt(value) > 0,
           }}
           defaultValue=""
         />
