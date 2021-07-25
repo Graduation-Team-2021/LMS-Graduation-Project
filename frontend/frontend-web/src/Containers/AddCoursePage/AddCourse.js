@@ -187,9 +187,10 @@ class AddCoursePage extends Component {
       );
     } else if (event.target.name === "Course Code") {
       console.log(event.target.value);
-      x = (
-        validator.isEmpty(event.target.value) || event.target.value.length > 7
-      );
+      x =
+        validator.isEmpty(event.target.value) || event.target.value.length > 7;
+    } else if ("Course Picture(Optional)") {
+      x = false;
     } else {
       x = validator.isEmpty(event.target.value);
     }
