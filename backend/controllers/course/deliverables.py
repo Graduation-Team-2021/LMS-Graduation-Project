@@ -323,8 +323,8 @@ class deliverable_controller:
                     mark = deliverable_result.mark
                 all_deliverables_list.append({
                     'user_id': i[0],
-                    'name': i[1],
                     'email': i[2],
+                    'name': i[1],
                     'mark': mark
                 })
 
