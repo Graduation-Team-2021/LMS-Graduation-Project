@@ -25,18 +25,18 @@ const CourseVideoScreen = (props) => {
 
   let pickDocumentHandler = async () => {
     let result = await DocumentPicker.getDocumentAsync({
-      multiple: false,
+      multiple: true,
     });
     console.log("[result]====================================");
     console.log(result);
     console.log("====================================");
     if (result.type != "cancel") {
       console.log("====================================");
-      console.log(result);
+      console.log(result.output);
       console.log("====================================");
 
       const fileBase64 = await FileSystem.readAsStringAsync(result.uri, {
-        encoding: FileSystem.EncodingType.Base64,
+        encoding: FileSystem.EncodingType.Base64
       });
       // console.log("====================================");
       // console.log(fileBase64);
@@ -149,7 +149,7 @@ const CourseVideoScreen = (props) => {
 
   return (
     <Portal.Host>
-      <Portal>
+      {/* <Portal>
         <FAB style={styles.fab} icon="plus" onPress={pickDocumentHandler} />
       </Portal>
       <Portal>
@@ -162,7 +162,7 @@ const CourseVideoScreen = (props) => {
             <Button onPress={hideDialog}>Done</Button>
           </Dialog.Actions>
         </Dialog>
-      </Portal>
+      </Portal> */}
       {videosLoaded ? (
         <VideoList videos={videos} navigation={props.navigation} />
       ) : (
