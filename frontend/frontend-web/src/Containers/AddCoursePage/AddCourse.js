@@ -126,7 +126,8 @@ class AddCoursePage extends Component {
         Error[element] = true;
       }
       if (
-        this.state.Fields[element] === "select" && element==='List of Doctors' &&
+        this.state.Fields[element] === "select" &&
+        element === "List of Doctors" &&
         this.state.Data[element].length === 0
       ) {
         Error[element] = true;
@@ -183,6 +184,11 @@ class AddCoursePage extends Component {
         validator.isNumeric(event.target.value) &&
         event.target.value <= 12 * 7 &&
         event.target.value > 0
+      );
+    } else if (event.target.name === "Course Code") {
+      console.log(event.target.value);
+      x = (
+        validator.isEmpty(event.target.value) || event.target.value.length > 7
       );
     } else {
       x = validator.isEmpty(event.target.value);
