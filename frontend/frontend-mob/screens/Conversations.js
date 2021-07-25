@@ -19,9 +19,9 @@ const ConversationScreen = (props) => {
         newState.isConnected && newState.isInternetReachable
       );
     NetInfo.addEventListener(setConnectivity);
+    msngrskt.auth = { userID: props.userData.ID };
+    msngrskt.connect();
   }, []);
-  msngrskt.auth = { userID: props.userData.ID };
-  msngrskt.connect();
 
   useEffect(() => {
     msngrskt.on("private message", (res) => setNewMessage(res));
@@ -34,13 +34,13 @@ const ConversationScreen = (props) => {
         user["id"] = res.user_id;
         user["name"] = res.name;
         user["photo"] = res.photo;
-      })
+      });
       user["text"] = newMessage.content.text;
       let temp = [user, ...conversations];
       setConversations(temp);
     }
     conversations.sort(function (a, b) {
-      return new Date.parse(b.sent_time) - new Date.parse(a.sent_time);
+      return new Date(b.sent_time) - new Date(a.sent_time);
     });
   }, [newMessage]);
 
