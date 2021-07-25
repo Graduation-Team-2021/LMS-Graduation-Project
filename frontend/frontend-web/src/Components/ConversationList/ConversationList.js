@@ -149,16 +149,6 @@ export default connect(
       });
       setUsers(temp);
     });
-    /* axios.get("https://randomuser.me/api/?results=20").then((response) => {
-      let newConversations = response.data.results.map((result) => {
-        return {
-          photo: result.picture.large,
-          name: `${result.name.first} ${result.name.last}`,
-          text: "Hello world! This is a test message for a demo.",
-        };
-      });
-      setConversations([...conversations, ...newConversations]);
-    }); */
   };
   /////////////////////////////////////////////////////////////////////////////
   useEffect(getConversations, [props.userData.Token]);
