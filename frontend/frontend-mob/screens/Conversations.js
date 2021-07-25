@@ -33,9 +33,9 @@ const ConversationScreen = (props) => {
       getUser(newMessage.from).then((res) => {
         user["id"] = res.user_id;
         user["name"] = res.name;
+        user["photo"] = res.photo;
       })
-      user["message"] = newMessage.content.text;
-      user["time"] = newMessage.sent_time;
+      user["text"] = newMessage.content.text;
       let temp = [user, ...conversations];
       setConversations(temp);
     }
