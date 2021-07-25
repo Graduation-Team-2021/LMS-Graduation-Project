@@ -21,7 +21,7 @@ const DeliverableDescription = (props) => {
       multiple: true,
     });
     if(result.type!="cancel"){
-      setFile(result)
+      setFile(result.output)
     }
   }
 
