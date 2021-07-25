@@ -51,7 +51,10 @@ const DeliverableDescription = (props) => {
     studentsSubmissions(props.userData.ID, props.navigation.getParam('deliverable_id')).then((res) => {
       let temp =[]
       if (res) {
-        res.forEach((ele) => {
+        console.log('[KAKAKAK]====================================');
+        console.log(res);
+        console.log('[KAKAKAKKAKAKAKAKAKAKKAK]====================================');
+        res.data.forEach((ele) => {
           temp.push(
           {delivers_id:ele['delivers_id'],file_type:ele['file_type'],file_name:ele['file_name']}
           );
