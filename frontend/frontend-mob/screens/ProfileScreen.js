@@ -72,7 +72,7 @@ const ProfileScreen = (props) => {
               <Text style={styles.text}>
                 {props.userData.Role == "student"
                   ? "Passed"
-                  : "Currnet Teaching"}{" "}
+                  : "Current Teaching"}{" "}
                 Courses
               </Text>
               <Text style={styles.text}>
