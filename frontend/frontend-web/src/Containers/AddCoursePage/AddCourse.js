@@ -116,7 +116,7 @@ class AddCoursePage extends Component {
     let Error = this.state.Error;
 
     keys.forEach((element) => {
-      if (this.state.Data[element] === "") {
+      if (this.state.Data[element] === "" && element!=="Course Picture(Optional)") {
         Error[element] = true;
       }
       if (
@@ -189,7 +189,7 @@ class AddCoursePage extends Component {
       console.log(event.target.value);
       x =
         validator.isEmpty(event.target.value) || event.target.value.length > 7;
-    } else if ("Course Picture(Optional)") {
+    } else if (event.target.name ==="Course Picture(Optional)") {
       x = false;
     } else {
       x = validator.isEmpty(event.target.value);
