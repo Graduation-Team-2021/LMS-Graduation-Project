@@ -895,6 +895,16 @@ export const AddNewEvent = async (data) => {
   return res.data["message"];
 };
 
+export const AddNewDeliv = async (Data) => {
+  //TODO: Integrate the Deliverables backend
+  const res = await instance.post(`/deliverables`, Data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data;
+};
+
 //change password
 //get quizes  => should be stored in the local storage
 //add quizes

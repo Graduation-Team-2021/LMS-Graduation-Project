@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ActivityIndicator, StyleSheet } from "react-native";
+import { ActivityIndicator, StyleSheet, Alert } from "react-native";
 import VideoList from "../components/videos_list";
 import { uploadFile, getVideos, azure } from "../Interface/Interface";
 import { Portal, FAB, Paragraph, Dialog, Button } from "react-native-paper";
@@ -9,6 +9,8 @@ import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import * as FileSystem from "expo-file-system";
 import { FileSystemUploadType } from "expo-file-system";
+import { deleteMaterial } from "../Interface/Interface";
+
 // import DocumentPicker from 'react-native-document-picker';
 
 const CourseVideoScreen = (props) => {
@@ -18,6 +20,23 @@ const CourseVideoScreen = (props) => {
   const [file, setFile] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
   const [visible, setVisible] = useState(false);
+
+  const deleteMaterialHandler = (material_id, material_type) => {
+    deleteMaterial(material_id).then((res) => {
+      let new_videos = [...videos];
+      var index = new_videos.findIndex(function (element) {
+        return element.material_id === material_id;
+      });
+      if (index !== -1) {
+        new_videos.splice(index, 1);
+        setVideos(new_videos);
+      }
+
+      Alert.alert("Deleted Successfully", "Your file is deleted successfully", [
+        { text: "Ok" },
+      ]);
+    });
+  };
 
   const showDialog = () => setVisible(true);
 
@@ -36,7 +55,7 @@ const CourseVideoScreen = (props) => {
       console.log("====================================");
 
       const fileBase64 = await FileSystem.readAsStringAsync(result.uri, {
-        encoding: FileSystem.EncodingType.Base64
+        encoding: FileSystem.EncodingType.Base64,
       });
       // console.log("====================================");
       // console.log(fileBase64);
@@ -164,7 +183,11 @@ const CourseVideoScreen = (props) => {
         </Dialog>
       </Portal> */}
       {videosLoaded ? (
-        <VideoList videos={videos} navigation={props.navigation} />
+        <VideoList
+          videos={videos}
+          navigation={props.navigation}
+          deleteMaterialHandler={deleteMaterialHandler}
+        />
       ) : (
         <ActivityIndicator color="red" />
       )}
