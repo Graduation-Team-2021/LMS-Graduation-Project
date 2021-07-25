@@ -3,7 +3,6 @@ import ConversationList from "../ConversationList/ConversationList";
 import MessageWindow from "../MessageWindow/MessageWindow";
 import cls from "./Messenger.module.css";
 import Card from "../Card/Card";
-import msngrskt from "../../sockets/msngrskts";
 import { connect } from "react-redux";
 import { mapStateToProps } from "../../store/reduxMaps";
 
@@ -28,8 +27,6 @@ class Messenger extends Component {
   constructor(props) {
     super(props);
     this.state = { Current: null, isNew: false, hasChanged: false, newConversationID: null, newText: "", showList:false };
-    msngrskt.auth = { userID: props.userData.ID };
-    msngrskt.connect();
   }
 
   setCurrent = (value) => {

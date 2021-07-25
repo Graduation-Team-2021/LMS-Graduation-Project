@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import MainPage from "./Containers/MainPage/MainPage";
 import Home from "./Containers/HomePage/HomePage";
 import Login from "./Containers/LoginPage/LoginPage";
 import Profile from "./Containers/ProfilePage/ProfilePage";
 import Courses from "./Containers/CoursesPage/CoursesPage";
-import Groups from "./Containers/GroupsPage/GroupsPage"
+import Groups from "./Containers/GroupsPage/GroupsPage";
 import Course from "./Containers/CoursePage/CoursePage";
 import Mark_edit from "./Ibrahim/Mrak_edit.js";
 import Group from "./Containers/GroupPage/GroupPage.js";
@@ -27,8 +27,16 @@ import { connect } from "react-redux";
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import Search from "./Containers/SearchPage/SearchPage";
 import CreateQuiz from "./Containers/CreateQuiz/CreateQuiz";
+import msngrskt from "../../sockets/msngrskts";
 
 const App = (props) => {
+  
+  useEffect(() => {
+    if (props.userData.Token) {
+      msngrskt.auth = { userID: props.userData.ID };
+      msngrskt.connect();
+    }
+  }, [props.userData.ID, props.userData.Token]);
 
   return (
     <BrowserRouter>
@@ -50,7 +58,11 @@ const App = (props) => {
                 <Route path="/Deliv" exact component={Deliv} />
                 <Route path="/Quiz/:id" exact component={Quiz} />
                 <Route path="/Deliv/Assignment/:id" exact component={Deliv} />
-                <Route path="/Deliv/Assignment/:id/:group_id" exact component={Deliv} />
+                <Route
+                  path="/Deliv/Assignment/:id/:group_id"
+                  exact
+                  component={Deliv}
+                />
                 <Route path="/Course/:id/Deliv" exact component={Deliv} />
                 <Route path="/Course/:id/Quiz" exact component={Quiz} />
                 <Route path="/Course/:cid/PDFs/:id" exact component={PDF} />
