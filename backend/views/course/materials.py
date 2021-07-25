@@ -103,7 +103,7 @@ class upload_material(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(
-            'file', type=werkzeug.datastructures.CombinedMultiDict, location='files')
+            'file', type=werkzeug.datastructures.FileStorage, location='files')
 
     def post(self, course_code):
         print('[Adham Nour]', request)
