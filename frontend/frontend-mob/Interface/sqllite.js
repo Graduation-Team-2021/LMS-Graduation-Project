@@ -466,45 +466,15 @@ export function SQLGetUser(user_id) {
 }
 
 export function SQLInsertUser(user) {
-  FileSystem.downloadAsync(
-    azure + user.picture,
-    FileSystem.documentDirectory + "currentuserpicture.png"
-  )
-    .then((res) => {
-      console.log("[download result]====================================");
-      console.log(res);
-      console.log("[download result]====================================");
-    })
-    .catch((err) => {
-      console.log("====================================");
-      console.log(err);
-      console.log("====================================");
-    });
   db.transaction((tx) => {
-    console.log("====================================");
-    console.log(user);
-    console.log("====================================");
-    tx.executeSql(
-      "INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)",
-      [
-        user.user_id,
-        user.name,
-        user.email,
-        user.birthday,
-        user.password,
-        user.picture,
-      ],
-      (_, res) => {
-        console.log("====================================");
-        console.log(res);
-        console.log("====================================");
-      },
-      (_, err) => {
-        console.log("====================================");
-        console.log(err);
-        console.log("====================================");
-      }
-    );
+    tx.executeSql("INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)", [
+      user.user_id,
+      user.name,
+      user.email,
+      user.birthday,
+      user.password,
+      user.picture,
+    ]);
   });
 }
 export function SQLGetRecentPosts(user_id, role) {
@@ -1115,9 +1085,7 @@ export function SQLGetTeachedCourse(course_id) {
 // exculsign up
 
 export function SQLogout() {
-  console.log("====================================");
-  console.log("kaka");
-  console.log("====================================");
+
   db.transaction((tx) => {
     tx.executeSql(
       "SELECT name FROM sqlite_master WHERE type ='table'",

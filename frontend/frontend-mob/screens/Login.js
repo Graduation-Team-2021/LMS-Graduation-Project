@@ -100,9 +100,7 @@ const LoginScreen = (props) => {
                         params: { studentName: value.name },
                       });
                       Interface.getUser(ID).then((v) => {
-                        props.userDataActions.onSetPicture(
-                          Interface.azure + v.picture
-                        );
+                        props.userDataActions.onSetPicture(v.picture);
                       });
                     } else {
                       //TODO : show a modal to inform the user about in valid login with a snackbar
