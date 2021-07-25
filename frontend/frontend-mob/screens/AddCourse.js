@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { TextInput, Button } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import MultiSelect from "react-native-multiple-select";
-import { getDoctors, AddCourse as AC } from "../Interface/Interface";
+import { getDoctors, getCourses, AddCourse as AC } from "../Interface/Interface";
 
 const AddCourse = (props) => {
   const {
@@ -26,6 +26,7 @@ const AddCourse = (props) => {
   });
   const onSubmit = (data) => {
     data["doctors"] = items;
+    data['pre'] = otheritems
     data["course_deadline"] = date.toISOString().slice(0, 10);
 
     //TODO: send the request to te backend here
@@ -45,7 +46,11 @@ const AddCourse = (props) => {
 
   const [items, setItems] = React.useState([]);
 
+  const [otheritems, setotherItems] = React.useState([]);
+
   const [Doctors, setDoctors] = React.useState([]);
+
+  const [Pre, setPre] = React.useState([]);
 
   React.useEffect(() => {
     getDoctors().then((res) => {
@@ -53,6 +58,17 @@ const AddCourse = (props) => {
         setDoctors(
           res.map((val) => ({ id: val.id.toString(), name: val.name }))
         );
+      }
+    });
+  }, []);
+
+  React.useEffect(() => {
+    getCourses("").then((res) => {
+      if (res) {
+        setPre(
+          res.map((val) => ({ id: val["course_code"].toString(), name: val["course_name"] }))
+        )
+        
       }
     });
   }, []);
@@ -185,6 +201,15 @@ const AddCourse = (props) => {
             setItems(Items);
           }}
           selectedItems={items}
+        />
+        <MultiSelect
+          uniqueKey="id"
+          selectText="Prerequisites"
+          items={Pre}
+          onSelectedItemsChange={(Items) => {
+            setotherItems(Items);
+          }}
+          selectedItems={otheritems}
         />
         <Button
           icon="lock-reset"
