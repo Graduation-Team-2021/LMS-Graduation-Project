@@ -79,16 +79,18 @@ const MessagesScreen = (props) => {
     const second_id = props.navigation.state.params.second_id;
     getAllMessages(props.userData.Token, second_id).then((res) => {
       const temp = [];
-      res.forEach((ele, index) => {
-        let time = ele["sent_time"];
-        let timestamp = new Date(time);
-        temp.push({
-          id: ele["message_id"],
-          sender_id: ele["sender_id"],
-          text: ele["text"],
-          time: timestamp,
+      if (res) {
+        res.forEach((ele, index) => {
+          let time = ele["sent_time"];
+          let timestamp = new Date(time);
+          temp.push({
+            id: ele["message_id"],
+            sender_id: ele["sender_id"],
+            text: ele["text"],
+            time: timestamp,
+          });
         });
-      });
+      }
       setMessages(temp);
     });
   };
