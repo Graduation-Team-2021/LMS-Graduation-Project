@@ -70,8 +70,8 @@ class Delete_Delivers_Relation(Resource):
     def delete(self, delivers_id):
         try:
             did = controller_object.delete_delivers_relation(delivers_id)
-            print(did)
-            gid = controller_object.get_all_delivers_by_user_id_and_deliverable_id(did[2], did[1])
+            deliv = deliv_obj.get_deliverable(did[1])
+            gid = controller_object.get_all_delivers_by_user_id_and_deliverable_id(did[2], did[1], deliv['students_number'])
             if len(gid)>0:
                 res_obj.post_deliverable_result(
                     {"deliverable_id": did[0], "mark": None})
@@ -138,8 +138,9 @@ class Student_Deliverables(Resource):
 
     def get(self, student_id, deliverable_id):
         try:
+            deliv = deliv_obj.get_deliverable(deliverable_id)
             student_deliverables = controller_object.get_all_delivers_by_user_id_and_deliverable_id(student_id,
-                                                                                                    deliverable_id)
+                                                                                                    deliverable_id, deliv['students_number'])
         except ErrorHandler as e:
             return e.error
         return {"data": student_deliverables, 'status_code': 200}
