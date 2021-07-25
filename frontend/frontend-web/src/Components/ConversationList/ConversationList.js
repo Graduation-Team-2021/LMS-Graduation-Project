@@ -3,13 +3,18 @@ import { connect } from "react-redux";
 import ConversationListItem from "./Item/Item";
 import SearchBar from "./SearchBar/SearchBar";
 import cls from "./ConversationList.module.css";
-import { getAllConversations, getAllUsers, getUser } from "../../Interface/Interface";
+import {
+  getAllConversations,
+  getAllUsers,
+  getUser,
+  url,
+} from "../../Interface/Interface";
 import { setUser } from "../../Models/User";
 import filler from "../../assets/Filler.png";
 import SearchItem from "../ConversationList/SearchItem/SearchItem";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 import msngrskt from "../../sockets/msngrskts";
-import Waiting from '../Waiting/Waiting'
+import Waiting from "../Waiting/Waiting";
 
 export default connect(
   mapStateToProps,
@@ -34,15 +39,20 @@ export default connect(
       setCurrentActiveUsers(response);
     });
     msngrskt.on("user connected", (response) => {
-      let temp = [response, ...CurrentActiveUsers]
+      let temp = [response, ...CurrentActiveUsers];
       console.log("New User Connected");
-      setCurrentActiveUsers(temp)
+      setCurrentActiveUsers(temp);
     });
     msngrskt.on("private message", (res) => setNewMessage(res));
     msngrskt.on("user disconnected", (response) => {
-      let temp = [...CurrentActiveUsers]
-      temp.splice(temp.findIndex(el => { return el === response }), 1)
-      setCurrentActiveUsers(temp)
+      let temp = [...CurrentActiveUsers];
+      temp.splice(
+        temp.findIndex((el) => {
+          return el === response;
+        }),
+        1
+      );
+      setCurrentActiveUsers(temp);
     });
   }, [CurrentActiveUsers]);
   ///////////////////////////////////////////////////////////////////////////
@@ -63,40 +73,60 @@ export default connect(
         let temp = [user, ...conversations];
         setConversations(temp);
         setNewMessage(null);
-      }
-      else {
+      } else {
         getUser(newMessage.from).then((res) => {
-          console.log(res)
+          console.log(res);
           let userino = {
             ID: res.user_id,
             name: res.name,
             text: newMessage.content.text,
-          }
+          };
           let temp = [userino, ...conversations];
           setConversations(temp);
           setNewMessage(null);
-        })
+        });
       }
     }
-  }, [newMessage]);
+  }, [conversations, newMessage]);
   //////////////////////////////////////////////////////////////////
-  const { hasChanged, Current, newMessID, newText, setChanged, setNewID, setNewText } = props
+  const {
+    hasChanged,
+    Current,
+    newMessID,
+    newText,
+    setChanged,
+    setNewID,
+    setNewText,
+  } = props;
   useEffect(() => {
     if (hasChanged) {
-      if (conversations.findIndex(Ar => { return Ar.ID === newMessID }) !== -1) {
-        conversations.splice(conversations.findIndex(Ar => { return Ar.ID === newMessID }), 1);
+      if (
+        conversations.findIndex((Ar) => {
+          return Ar.ID === newMessID;
+        }) !== -1
+      ) {
+        conversations.splice(
+          conversations.findIndex((Ar) => {
+            return Ar.ID === newMessID;
+          }),
+          1
+        );
       }
-      let newTemp = { ...Current }
-      newTemp.text = newText
-      newTemp.name = Users[Users.findIndex(Ar => { return Ar.ID === newMessID })].Name
-      let temp = [newTemp, ...conversations]
-      setConversations(temp)
-      setChanged(false)
-      setNewID(null)
-      setNewText("")
+      let newTemp = { ...Current };
+      newTemp.text = newText;
+      newTemp.name =
+        Users[
+          Users.findIndex((Ar) => {
+            return Ar.ID === newMessID;
+          })
+        ].Name;
+      let temp = [newTemp, ...conversations];
+      setConversations(temp);
+      setChanged(false);
+      setNewID(null);
+      setNewText("");
     }
-  },
-    [Users, conversations, Current, hasChanged, newMessID, newText, setChanged, setNewID, setNewText])
+  }, [Users, conversations, Current, hasChanged, newMessID, newText, setChanged, setNewID, setNewText]);
 
   /////////////////////////////////////////////////////////////////
   function useOutsideAlerter(ref) {
@@ -126,7 +156,8 @@ export default connect(
     getAllConversations(props.userData.Token).then((res) => {
       const temp = [];
       res.forEach((ele) => {
-        ele["user"]["photo"] = filler;
+        console.log(ele);
+        ele["user"]["photo"] = ele['user']['picture']?url+ele['user']['picture'] :filler;
         let x = setUser(ele["user"]);
         let data = {
           name: ele["user"]["name"],
@@ -144,7 +175,11 @@ export default connect(
       //TODO: use User Photo
       const temp = [];
       res.forEach((element) => {
-        element["photo"] = filler;
+        if (element["picture"]) console.log(element);
+        element["photo"] = element["picture"]
+          ? url + element["picture"]
+          : filler;
+        if (element["photo"] !== filler) console.log(element);
         temp.push(setUser(element));
       });
       setUsers(temp);
@@ -173,7 +208,13 @@ export default connect(
   let addbb = null;
   let oldResults = [];
   if (searchVis.showSearch) {
-    searchbb = <SearchBar searchQuery={oldQuery} setSearchQuery={setOldQuery} fillerText="Search in your chats..." />;
+    searchbb = (
+      <SearchBar
+        searchQuery={oldQuery}
+        setSearchQuery={setOldQuery}
+        fillerText="Search in your chats..."
+      />
+    );
     if (oldQuery !== "") {
       oldConv.forEach((value, index) => {
         if (value.Name.toLowerCase().includes(oldQuery.toLowerCase())) {
@@ -183,9 +224,8 @@ export default connect(
               data={{
                 name: value.name,
                 photo: filler,
-                text: " "
-              }
-              }
+                text: " ",
+              }}
               onClick={() => {
                 props.setIsNew(false);
                 props.setVis();
@@ -204,13 +244,23 @@ export default connect(
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   let SearchResult = [];
   if (addBarVis.showBar) {
-    addbb = <SearchBar searchQuery={Query} setSearchQuery={setQuery} fillerText="Search for someone to start a new chat..." />;
+    addbb = (
+      <SearchBar
+        searchQuery={Query}
+        setSearchQuery={setQuery}
+        fillerText="Search for someone to start a new chat..."
+      />
+    );
     if (Query !== "") {
       Users.forEach((value, index) => {
-        let isPart = false
-        let onClickHandler = null
+        let isPart = false;
+        let onClickHandler = null;
         if (value.Name.toLowerCase().includes(Query.toLowerCase())) {
-          oldConv.forEach((ele) => { if (ele.ID === value.ID) { isPart = true; } })
+          oldConv.forEach((ele) => {
+            if (ele.ID === value.ID) {
+              isPart = true;
+            }
+          });
           if (isPart) {
             onClickHandler = () => {
               props.setVis();
@@ -218,16 +268,15 @@ export default connect(
               props.setCurrent(value);
               setQuery("");
               setAddBar({ showBar: false });
-            }
-          }
-          else {
+            };
+          } else {
             onClickHandler = () => {
               props.setVis();
               props.setIsNew(true);
               props.setCurrent(value);
               setQuery("");
               setAddBar({ showBar: false });
-            }
+            };
           }
           SearchResult.push(
             <SearchItem
@@ -243,13 +292,16 @@ export default connect(
   }
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
-  let listCls = [cls.conversationList]
-  if (props.visState) { listCls = [cls.conversationList]; }
-  else { listCls.push(cls.listClosed) }
+  let listCls = [cls.conversationList];
+  if (props.visState) {
+    listCls = [cls.conversationList];
+  } else {
+    listCls.push(cls.listClosed);
+  }
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
-    <div className={listCls.join(' ')} ref={wrapperRef}>
+    <div className={listCls.join(" ")} ref={wrapperRef}>
       <div className={cls.title}>
         Messages
         <button className={cls.search} onClick={toggleSearch}>
@@ -277,10 +329,9 @@ export default connect(
 
       <Waiting Loading={loading}>
         <div className={cls.scrollableList}>
-          {
-            !(addBarVis.showBar && Query !== "") ?
-              (!(searchVis.showSearch && oldQuery !== "") ?
-                conversations.map((conversation, index) => (
+          {!(addBarVis.showBar && Query !== "")
+            ? !(searchVis.showSearch && oldQuery !== "")
+              ? conversations.map((conversation, index) => (
                   <ConversationListItem
                     onClick={() => {
                       props.setIsNew(false);
@@ -290,11 +341,15 @@ export default connect(
                     isOnline={CurrentActiveUsers.includes(conversation.ID)}
                     key={index}
                     data={conversation}
-                    isCurrent={props.Current === null ? false : props.Current.ID === conversation.ID}
+                    isCurrent={
+                      props.Current === null
+                        ? false
+                        : props.Current.ID === conversation.ID
+                    }
                   />
-                )) : oldResults)
-              : SearchResult
-          }
+                ))
+              : oldResults
+            : SearchResult}
         </div>
       </Waiting>
     </div>

@@ -26,6 +26,8 @@ export default function Item(props) {
   if(props.isCurrent) {itemCls.push(cls.active)}
   else {itemCls = [cls.item]}
 
+  console.log(photo);
+
   return (
     <div className={itemCls.join(' ')} onClick={props.onClick}>
       <div className={cls.holder}>
