@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../store/reduxMaps";
 import * as FileSystem from "expo-file-system";
 import { FileSystemUploadType } from "expo-file-system";
-// import DocumentPicker from 'react-native-document-picker';
 
 const CourseVideoScreen = (props) => {
   const myCourse = props.navigation.getParam("course");
@@ -42,7 +41,7 @@ const CourseVideoScreen = (props) => {
       // console.log(fileBase64);
       // console.log("====================================");
 
-      uploadFileHandler(result, fileBase64);
+      uploadFileHandler(result.file, fileBase64);
 
       // const base64Response = await fetch(
       //   `data:application/pdf;base64,${fileBase64}`
@@ -149,7 +148,7 @@ const CourseVideoScreen = (props) => {
 
   return (
     <Portal.Host>
-      {/* <Portal>
+      <Portal>
         <FAB style={styles.fab} icon="plus" onPress={pickDocumentHandler} />
       </Portal>
       <Portal>
@@ -162,7 +161,7 @@ const CourseVideoScreen = (props) => {
             <Button onPress={hideDialog}>Done</Button>
           </Dialog.Actions>
         </Dialog>
-      </Portal> */}
+      </Portal>
       {videosLoaded ? (
         <VideoList videos={videos} navigation={props.navigation} />
       ) : (
