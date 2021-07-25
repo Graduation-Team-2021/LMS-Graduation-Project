@@ -132,7 +132,7 @@ const MiniMenu = (props) => {
             {console.log(props.userData.Pic)}
             <ImageHolder
               className={classes.UserImage}
-              filler={props.userData.Pic ? props.userData.Pic : filler}
+              filler={props.userData.Pic}
             />
           </Button>
         </span>
@@ -236,7 +236,7 @@ const MiniMenu = (props) => {
                           />
 
                           <ImageHolder
-                            src={props.userData.Pic || filler}
+                            src={props.userData.Pic}
                             alt=""
                             className={classes.Image}
                           />
