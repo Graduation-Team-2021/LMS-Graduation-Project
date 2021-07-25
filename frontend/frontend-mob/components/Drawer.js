@@ -49,6 +49,7 @@ const Drawer = (props) => {
         title="Logout"
         onPress={() => {
           AsyncStorage.removeItem("token").then((value) => {
+            localStorage.SQLogout();
             props.navigation.navigate("Login");
           });
         }}

@@ -1081,3 +1081,38 @@ export function SQLGetTeachedCourse(course_id) {
 }
 
 // exculsign up
+
+export function SQLogout() {
+  console.log("====================================");
+  console.log("kaka");
+  console.log("====================================");
+  db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT name FROM sqlite_master WHERE type ='table'",
+      [],
+      (tx, res) => {
+        for (let index = 0; index < res.rows.length; index++) {
+          tx.executeSql(
+            `DELETE FROM ${res.rows.item(index).name}`,
+            [],
+            (_, res) => {
+              console.log("====================================");
+              console.log(res);
+              console.log("====================================");
+            },
+            (_, err) => {
+              console.log("====================================");
+              console.log(err);
+              console.log("====================================");
+            }
+          );
+        }
+      },
+      (_, err) => {
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
+      }
+    );
+  });
+}
