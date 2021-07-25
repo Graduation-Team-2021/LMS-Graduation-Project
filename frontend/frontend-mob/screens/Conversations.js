@@ -6,7 +6,7 @@ import NetInfo from "@react-native-community/netinfo";
 import ANHeaderButton from "../components/ANHeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import ConversationCard from "../components/ConversationCard";
-import { getAllConversations } from "../Interface/Interface";
+import { getAllConversations, getUser } from "../Interface/Interface";
 import msngrskt from "../sockets/msngrskts";
 
 const ConversationScreen = (props) => {
@@ -29,30 +29,15 @@ const ConversationScreen = (props) => {
 
   useEffect(() => {
     if (newMessage) {
-      let res = newMessage;
-      let user = null;
-      for (let index = 0; index < conversations.length; index++) {
-        if (conversations[index].ID === res.from) {
-          user = conversations[index];
-          conversations.splice(index, 1);
-          break;
-        }
-      }
-      if (user) {
-        user["text"] = res.content.text;
-        let temp = [user, ...conversations];
-        setConversations(temp);
-      } else {
-        for (let index = 0; index < Users.length; index++) {
-          if (Users[index].ID === res.from) {
-            user = Users[index];
-            break;
-          }
-        }
-        user["text"] = res.content.text;
-        let temp = [user, ...conversations];
-        setConversations(temp);
-      }
+      let user = {};
+      getUser(newMessage.from).then((res) => {
+        user["id"] = res.user_id;
+        user["name"] = res.name;
+      })
+      user["message"] = newMessage.content.text;
+      user["time"] = newMessage.sent_time;
+      let temp = [user, ...conversations];
+      setConversations(temp);
     }
     conversations.sort(function (a, b) {
       return new Date.parse(b.sent_time) - new Date.parse(a.sent_time);
