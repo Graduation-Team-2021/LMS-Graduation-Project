@@ -41,7 +41,7 @@ class User(Resource):
         user = {
             'user_id': user_id,
             'name': args['name'],
-            'email': args['email'],
+            'email': args['email'].lower(),
             'national_id': args['national_id'],
             'birthday': args['birthday'],
         }
@@ -152,8 +152,8 @@ class Sign_Up(Resource):
         student_year = args['student_year']
         scientific_degree = args['scientific_degree']
         user = {
-            'name': args['name'].lower(),
-            'email': args['email'],
+            'name': args['name'],
+            'email': args['email'].lower(),
             'national_id': args['national_id'],
             'birthday': args['birthday'],
             'password': generate_hash(args['password']),
