@@ -36,6 +36,7 @@ const AddCourse = (props) => {
         reset();
         setDate(new Date());
         setItems([]);
+        setotherItems([])
       }
     });
   };
