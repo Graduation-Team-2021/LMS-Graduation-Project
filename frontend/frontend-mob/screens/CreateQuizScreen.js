@@ -200,7 +200,7 @@ const CreateQuizScreen = (props) => {
           onPress={() => {
             Alert.alert(
               "Are you sure that you want to submit?",
-              `the quiz contains of ${questions.current.length} questions in 15 minute, if you want more please purchase the full version `,
+              `the quiz contains of ${questions.current.length} questions in 15 minute`,
               [
                 {
                   text: "not yet",
@@ -232,7 +232,15 @@ const CreateQuizScreen = (props) => {
                       return Alert.alert(
                         "Quiz Uploaded Successfully",
                         "You have made one successfull upload for a quiz",
-                        [{ text: "Okay" }]
+                        [
+                          {
+                            text: "Okay",
+                            onPress: () => {
+                              props.navigation.getParam("retriveQuiz")();
+                              props.navigation.goBack();
+                            },
+                          },
+                        ]
                       );
                     });
                   },

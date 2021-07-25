@@ -70,7 +70,7 @@ const AllDelivList = (props) => {
       }
 
       const pieData = {};
-      if (myCourse&&newRes.length!==0) {
+      if (myCourse && newRes.length !== 0) {
         newRes[0].deliverables.forEach((delv) => {
           if (pieData[delv.status]) {
             pieData[delv.status] += 1;
@@ -193,10 +193,12 @@ const AllDelivList = (props) => {
     />
   );
   const ScrollViewContent = isQuiz ? QuizContent : DeliverableContent;
-
+  console.log("[kak]====================================");
+  console.log(myCourse);
+  console.log("====================================");
   return (
     <Portal.Host>
-      {props.userData.Role === "professor" ? (
+      {props.userData.Role === "professor" && myCourse ? (
         <Portal>
           <FAB
             style={styles.fab}
@@ -207,8 +209,8 @@ const AllDelivList = (props) => {
                 {
                   course: myCourse,
                   isQuiz: isQuiz,
-                  retriveQuiz:retrieveCourseQuizes,
-                  retriveDeliv:retrieveStudentDeliverables,
+                  retriveQuiz: retrieveCourseQuizes,
+                  retriveDeliv: retrieveStudentDeliverables,
                 }
               )
             }
@@ -223,7 +225,8 @@ const AllDelivList = (props) => {
       >
         {snackBarMessage.current}
       </Snackbar>
-      {props.userData.Role === "student" ? (
+      {props.userData.Role === "student" ||
+      (props.userData.Role === "professor" && !myCourse) ? (
         <PieChart style={{ height: 200, paddingTop: 10 }} data={pieData} />
       ) : null}
       {deliverablesLoaded ? (
