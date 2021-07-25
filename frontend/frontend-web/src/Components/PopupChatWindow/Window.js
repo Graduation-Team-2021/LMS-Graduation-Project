@@ -7,7 +7,7 @@ import SearchBar from "../ConversationList/SearchBar/SearchBar";
 import Compose from "./Compose/Compose";
 import Waiting from "../Waiting/Waiting";
 import cls from "./Window.module.css";
-import { getAllMessages, sendMessage } from "../../Interface/Interface";
+import { getAllMessages, sendMessage, getUser } from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 // TODO: initialize the socket-io client here
 import msngrskt from "../../sockets/msngrskts";
@@ -30,6 +30,7 @@ export default connect(
   const [Animation, setAnimation] = useState(false);
   ///////////////////////////////////////////////////////////////////////////////////////
   let CURRENT_MESSAGE_ID = props.currentMessage.currentMessage.ID;
+  let CURRENT_MESSAGE_NAME = props.currentMessage.currentMessage.Name;
   let listCls = [cls.hideList]; //TODO: Fix the Animation
   if (CURRENT_MESSAGE_ID) {
     listCls = [cls.list];
@@ -74,7 +75,22 @@ export default connect(
     getMessages();
     setLoading(true);
     setDismissed({ dismissed: false });
-  }, [props.currentMessage.currentMessage, newMes, getMessages]);
+  }, [props.currentMessage.currentMessage, getMessages]);
+
+  useEffect(() => {
+    if (newMes) {
+      if (newMes.from === CURRENT_MESSAGE_ID) { }
+      else {
+        getUser(newMes.from).then((res) => {
+          props.currentMessageActions.onSetCurrentMessage({
+            Name: res.name,
+            ID: res.user_id,
+          })
+        })
+      }
+    }
+    setDismissed({ dismissed: false });
+  }, [newMes]);
 
   useEffect(() => {
     msngrskt.on("private message", (res) => setNewMes(res));
@@ -254,7 +270,7 @@ export default connect(
       <div className={listCls.join(" ")}>
         <React.Fragment>
           <div className={cls.title}>
-            {props.currentMessage.currentMessage.Name}
+            {CURRENT_MESSAGE_NAME}
             <button className={cls.search} onClick={toggleSearch}>
               <i>
                 <img
