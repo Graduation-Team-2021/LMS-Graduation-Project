@@ -109,10 +109,10 @@ class upload_material(Resource):
         print('[Adham Nour]', request.values)
         args = self.reqparse.parse_args()
         print('[Adham Nour]', args)
-        file_to_be_uploaded = args['file']
-        print(request.values[1])
-        text = controller_object.upload_material(
-            file_to_be_uploaded, course_code)
+        # file_to_be_uploaded = args['file']
+        # print(request.values[1])
+        # text = controller_object.upload_material(
+        #     file_to_be_uploaded, course_code)
         return jsonify({
             'message': 'Materials uploaded successfully',
             'status_code': 200
