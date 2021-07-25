@@ -92,6 +92,8 @@ export default connect(
     setDismissed({ dismissed: false });
   }, [newMes]);
 
+  msngrskt.auth = { userID: props.userData.ID };
+  msngrskt.connect();
   useEffect(() => {
     msngrskt.on("private message", (res) => setNewMes(res));
   }, []);

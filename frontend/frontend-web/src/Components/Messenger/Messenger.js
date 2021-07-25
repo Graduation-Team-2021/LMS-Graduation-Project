@@ -6,22 +6,6 @@ import Card from "../Card/Card";
 import { connect } from "react-redux";
 import { mapStateToProps } from "../../store/reduxMaps";
 
-/* export default function Messenger(props) {
-  const [Current, setCurrent] = useState(null);
-  const [isNew, setIsNew] = useState(false);
-
-  return (
-    <span className={cls.holder}>
-      <Card shadow className={cls.Card}>
-        <div className={cls.Messenger}>
-          <LSB />
-          <ConversationList setCurrent={setCurrent} setIsNew={setIsNew} />
-          <MessageWindow Current={Current} isNew={isNew} />
-        </div>
-      </Card>
-    </span>
-  );
-} */
 
 class Messenger extends Component {
   constructor(props) {

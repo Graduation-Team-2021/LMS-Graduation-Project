@@ -25,23 +25,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(function MessageList
   const [newMes, setNewMes] = useState(null)
   const [Query, setQuery] = useState("");
   const [loading, setLoading] = useState(true)
-  ////////////////////////////////////////////////////////////////////////////////////////
-  //var tempMessages1 = [
-  //  {
-  //    id: 1,
-  //    author: "apple",
-  //    message: "Definitely looks like everyone is affected",
-  //    timestamp: new Date().getTime(),
-  //  },
-  //  {
-  //    id: 2,
-  //    author: "orange",
-  //    message:
-  //      "They literally have to have one of each because you want to see benchmarks and builds by them.",
-  //    timestamp: new Date().getTime(),
-  //  },
-  //];
-  ///////////////////////////////////////////////////////////////////////////////////////
+ 
 
   const getMessages = useCallback(() => {
     if (props.Current) {

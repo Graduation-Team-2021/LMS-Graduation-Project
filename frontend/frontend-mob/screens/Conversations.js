@@ -6,7 +6,7 @@ import NetInfo from "@react-native-community/netinfo";
 import ANHeaderButton from "../components/ANHeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import ConversationCard from "../components/ConversationCard";
-import { getAllConversations } from "../Interface/Interface";
+import { getAllConversations, getUser } from "../Interface/Interface";
 import msngrskt from "../sockets/msngrskts";
 
 const ConversationScreen = (props) => {
@@ -42,21 +42,22 @@ const ConversationScreen = (props) => {
         user["text"] = res.content.text;
         let temp = [user, ...conversations];
         setConversations(temp);
-      } else {
-        for (let index = 0; index < Users.length; index++) {
-          if (Users[index].ID === res.from) {
-            user = Users[index];
-            break;
+        setNewMessage(null);
+      }
+      else {
+        getUser(newMessage.from).then((res) => {
+          console.log(res)
+          let userino = {
+            ID: res.user_id,
+            name: res.name,
+            text: newMessage.content.text,
           }
-        }
-        user["text"] = res.content.text;
-        let temp = [user, ...conversations];
-        setConversations(temp);
+          let temp = [userino, ...conversations];
+          setConversations(temp);
+          setNewMessage(null);
+        })
       }
     }
-    conversations.sort(function (a, b) {
-      return new Date.parse(b.sent_time) - new Date.parse(a.sent_time);
-    });
   }, [newMessage]);
 
   const getConversations = () => {
