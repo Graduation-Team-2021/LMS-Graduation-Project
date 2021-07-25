@@ -1,4 +1,6 @@
 import * as SQLite from "expo-sqlite";
+import * as FileSystem from "expo-file-system";
+const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const db = SQLite.openDatabase("LMS.db");
 
@@ -464,15 +466,45 @@ export function SQLGetUser(user_id) {
 }
 
 export function SQLInsertUser(user) {
+  FileSystem.downloadAsync(
+    azure + user.picture,
+    FileSystem.documentDirectory + "currentuserpicture.png"
+  )
+    .then((res) => {
+      console.log("[download result]====================================");
+      console.log(res);
+      console.log("[download result]====================================");
+    })
+    .catch((err) => {
+      console.log("====================================");
+      console.log(err);
+      console.log("====================================");
+    });
   db.transaction((tx) => {
-    tx.executeSql("INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)", [
-      user.user_id,
-      user.name,
-      user.email,
-      user.birthday,
-      user.password,
-      user.picture,
-    ]);
+    console.log("====================================");
+    console.log(user);
+    console.log("====================================");
+    tx.executeSql(
+      "INSERT OR REPLACE INTO user VALUES(?,?,?,?,?,?)",
+      [
+        user.user_id,
+        user.name,
+        user.email,
+        user.birthday,
+        user.password,
+        user.picture,
+      ],
+      (_, res) => {
+        console.log("====================================");
+        console.log(res);
+        console.log("====================================");
+      },
+      (_, err) => {
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
+      }
+    );
   });
 }
 export function SQLGetRecentPosts(user_id, role) {
@@ -1096,22 +1128,16 @@ export function SQLogout() {
             `DELETE FROM ${res.rows.item(index).name}`,
             [],
             (_, res) => {
-              console.log("====================================");
               console.log(res);
-              console.log("====================================");
             },
             (_, err) => {
-              console.log("====================================");
               console.log(err);
-              console.log("====================================");
             }
           );
         }
       },
       (_, err) => {
-        console.log("====================================");
         console.log(err);
-        console.log("====================================");
       }
     );
   });

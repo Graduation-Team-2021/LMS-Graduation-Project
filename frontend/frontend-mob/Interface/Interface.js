@@ -643,6 +643,7 @@ export const getUser = async (id) => {
       "Content-Type": "application/json",
     },
   });
+  localStorage.SQLInsertUser(res.data);
   return res.data;
 };
 export const getGradeSoFar = async (id) => {
