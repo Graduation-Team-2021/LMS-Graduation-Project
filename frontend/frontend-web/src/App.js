@@ -42,6 +42,7 @@ const App = (props) => {
     <BrowserRouter>
       {props.userData.Token ? (
         <MainPage Name={props.userData.Name}>
+        {console.log(props.userData)}
           <Switch>
             {props.userData.Role !== "admin" ? (
               <React.Fragment>
