@@ -19,12 +19,12 @@ const ProfileScreen = (props) => {
         props.userData.Token,
         props.userData.ID,
         props.userData.Role
-      )
-        .then((res) => {
-          setPassedCourses(res);
-        })
-      Interface.getRecentUserPosts(props.userData.Token)
-        .then((res) => setYourPosts(res))
+      ).then((res) => {
+        setPassedCourses(res);
+      });
+      Interface.getRecentUserPosts(props.userData.Token).then((res) =>
+        setYourPosts(res)
+      );
     }
   }, []);
   let sum = 0;
@@ -55,7 +55,7 @@ const ProfileScreen = (props) => {
               rounded
               size="xlarge"
               source={{
-                uri: props.userData.pic,
+                uri: Interface.azure + props.userData.pic,
               }}
               containerStyle={styles.avatarContainerStyle}
             />
