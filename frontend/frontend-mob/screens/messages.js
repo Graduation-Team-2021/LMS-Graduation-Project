@@ -29,21 +29,28 @@ const MessagesScreen = (props) => {
 
   useEffect(() => {
     msngrskt.on("private message", (res) => {
-      console.log('[Adham Nour El-Waffaa]====================================');
+      console.log("[Adham Nour El-Waffaa]====================================");
       console.log(res);
-      console.log('====================================');
+      console.log("====================================");
       setNewMessage(res);
     });
   }, []);
-
+  console.log(
+    "[David Wants this project Done now]===================================="
+  );
+  console.log(newMessage);
+  console.log("====================================");
   useEffect(() => {
-    if (newMessage && newMes.from === props.userData.ID) {
+    if (
+      newMessage &&
+      newMessage.from === props.navigation.getParam("second_id")
+    ) {
       const Temp = [
         ...messages,
         {
           id: newMessage.length,
           sender_id: newMessage.from,
-          text: newMessage,
+          text: newMessage.content.text,
           time: new Date(newMessage.content.sent_time).getTime(),
         },
       ];
@@ -52,7 +59,7 @@ const MessagesScreen = (props) => {
   }, [newMessage, props.Current]);
 
   const sendMessageHandler = () => {
-    if (sentMessage == "") {
+    if (!sentMessage || sentMessage.text == "") {
       return 0;
     }
     input.current.clear();
@@ -120,9 +127,10 @@ const MessagesScreen = (props) => {
         <View style={styles.SendMessageContainer}>
           <Input
             ref={input}
-            onChangeText={(text) =>
-              setSentMessage({ text: text, sender_id: props.userData.ID })
-            }
+            onChangeText={(text) => {
+              console.log("Writing", text);
+              setSentMessage({ text: text, sender_id: props.userData.ID });
+            }}
             onPress={sendMessageHandler}
           />
           <TouchableCmp
