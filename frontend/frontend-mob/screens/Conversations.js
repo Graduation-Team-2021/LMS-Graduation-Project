@@ -29,7 +29,6 @@ const ConversationScreen = (props) => {
 
   useEffect(() => {
     if (newMessage) {
-<<<<<<< HEAD
       let user = {};
       getUser(newMessage.from).then((res) => {
         user["id"] = res.user_id;
@@ -43,37 +42,6 @@ const ConversationScreen = (props) => {
     conversations.sort(function (a, b) {
       return new Date(b.sent_time) - new Date(a.sent_time);
     });
-=======
-      let res = newMessage;
-      let user = null;
-      for (let index = 0; index < conversations.length; index++) {
-        if (conversations[index].ID === res.from) {
-          user = conversations[index];
-          conversations.splice(index, 1);
-          break;
-        }
-      }
-      if (user) {
-        user["text"] = res.content.text;
-        let temp = [user, ...conversations];
-        setConversations(temp);
-        setNewMessage(null);
-      }
-      else {
-        getUser(newMessage.from).then((res) => {
-          console.log(res)
-          let userino = {
-            ID: res.user_id,
-            name: res.name,
-            text: newMessage.content.text,
-          }
-          let temp = [userino, ...conversations];
-          setConversations(temp);
-          setNewMessage(null);
-        })
-      }
-    }
->>>>>>> d5f7d0f6528e6a956e64748ef8a85e7a1c34a2f1
   }, [newMessage]);
 
   const getConversations = () => {
