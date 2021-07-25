@@ -17,7 +17,7 @@ class SignUpPage extends Component {
       Email: "",
       Password: "",
       NationalID: "",
-      Birthday: "",
+      Birthday: (new Date()).toISOString().slice(0, 10),
       Role: "",
     },
     errors: {
@@ -37,7 +37,7 @@ class SignUpPage extends Component {
         Email: "",
         Password: "",
         NationalID: "",
-        Birthday: "",
+        Birthday: (new Date()).toISOString().slice(0, 10),
         Role: "",
       },
       errors: {
@@ -78,16 +78,17 @@ class SignUpPage extends Component {
         alert("Sign Up Succesful");
         this.initSignup();
       } else {
-        alert(res.message);
+        console.log(res)
+        alert(res.description);
       }
-      this.initSignup();
     }
   };
 
   onBirthdayChange = (value) => {
+    console.log(value);
     this.setState((prevState) => {
       return {
-        errors: { ...prevState.errors },
+        errors: { ...prevState.errors , BirthdayError: false},
         data: { ...prevState.data, Birthday: value },
       };
     });

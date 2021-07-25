@@ -4,6 +4,8 @@ import ImageHolder from "../../../../Components/ImageHolder/ImageHolder";
 import Button from "../../../../Components/Button/Button";
 import { setGroup } from "../../../../Models/Group";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { mapDispatchToProps, mapStateToProps } from "../../../../store/reduxMaps";
 
 const Group = (props) => {
   const user = props.Data;
@@ -51,4 +53,4 @@ const Group = (props) => {
   );
 };
 
-export default withRouter(Group);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Group));

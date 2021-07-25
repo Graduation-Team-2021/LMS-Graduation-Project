@@ -7,7 +7,11 @@ import SearchBar from "../ConversationList/SearchBar/SearchBar";
 import Compose from "./Compose/Compose";
 import Waiting from "../Waiting/Waiting";
 import cls from "./Window.module.css";
-import { getAllMessages, sendMessage, getUser } from "../../Interface/Interface";
+import {
+  getAllMessages,
+  sendMessage,
+  getUser,
+} from "../../Interface/Interface";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
 // TODO: initialize the socket-io client here
 import msngrskt from "../../sockets/msngrskts";
@@ -47,29 +51,32 @@ export default connect(
 
   const getMessages = useCallback(() => {
     if (props.currentMessage.currentMessage) {
-      getAllMessages(
-        props.userData.Token,
-        CURRENT_MESSAGE_ID
-      ).then((res) => {
-        const temp = [];
-        res.forEach((ele) => {
-          let time = ele["sent_time"];
-          let timestamp = new Date(time);
-          temp.push({
-            id: ele["message_id"],
-            author: ele["sender_id"],
-            message: ele["text"],
-            timestamp: timestamp,
+      getAllMessages(props.userData.Token, CURRENT_MESSAGE_ID)
+        .then((res) => {
+          const temp = [];
+          res.forEach((ele) => {
+            let time = ele["sent_time"];
+            let timestamp = new Date(time);
+            temp.push({
+              id: ele["message_id"],
+              author: ele["sender_id"],
+              message: ele["text"],
+              timestamp: timestamp,
+            });
           });
+          setMessages(temp);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setMessages([]);
+          setLoading(false);
         });
-        setMessages(temp);
-        setLoading(false);
-      }).catch((err) => {
-        setMessages([]);
-        setLoading(false);
-      });
     }
-  }, [CURRENT_MESSAGE_ID, props.currentMessage.currentMessage, props.userData.Token]);
+  }, [
+    CURRENT_MESSAGE_ID,
+    props.currentMessage.currentMessage,
+    props.userData.Token,
+  ]);
   ///////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     getMessages();
@@ -79,14 +86,14 @@ export default connect(
 
   useEffect(() => {
     if (newMes) {
-      if (newMes.from === CURRENT_MESSAGE_ID) { }
-      else {
+      if (newMes.from === CURRENT_MESSAGE_ID) {
+      } else {
         getUser(newMes.from).then((res) => {
           props.currentMessageActions.onSetCurrentMessage({
             Name: res.name,
             ID: res.user_id,
-          })
-        })
+          });
+        });
       }
     }
     setDismissed({ dismissed: false });
@@ -268,7 +275,14 @@ export default connect(
         minWidth: "0",
       }}
     >
-      <img className={cls.ButtCls} onClick={Dismiss} src="/messages.png" width="35" height="35" alt="Chats" />
+      <img
+        className={cls.ButtCls}
+        onClick={Dismiss}
+        src="/messages.png"
+        width="35"
+        height="35"
+        alt="Chats"
+      />
       <div className={listCls.join(" ")}>
         <React.Fragment>
           <div className={cls.title}>
@@ -307,8 +321,7 @@ export default connect(
                 </i>
               </button>,
             ]}
-          >
-          </Compose>
+          ></Compose>
         </React.Fragment>
       </div>
     </div>

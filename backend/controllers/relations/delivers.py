@@ -19,28 +19,46 @@ class delivers_controller():
             if number == 1 :
                 delivers_relations = Deliver.query.filter(Deliver.student_id == user_id).filter(
                 Deliver.deliverable_id == deliverable_id)
+                delivers_relations = [d.serialize() for d in delivers_relations]
             else:
-                delivers_relations = Deliver.query\
-                    .filter(Deliver.deliverable_id == deliverable_id).join(Deliverables)\
-                    .filter(Deliverables.deliverable_id == Deliver.deliverable_id).join(GroupDeliverableRelation)\
-                    .filter(GroupDeliverableRelation.deliverable_id == Deliverables.deliverable_id)\
-                    .join(GroupProject).filter(GroupDeliverableRelation.group_id == GroupProject.group_id)\
-                    .join(StudentGroupRelation).filter(GroupProject.group_id==StudentGroupRelation.group_id)\
-                    .filter(StudentGroupRelation.student_id == user_id).filter(
-                Deliver.deliverable_id == deliverable_id)
+                group = None
+                groups = Deliverables_Results.query.filter(
+                            Deliverables_Results.deliverable_id == deliverable_id
+                        ).join(Deliverables).filter(Deliverables.deliverable_id==Deliverables_Results.deliverable_id)\
+                            .join(GroupDeliverableRelation).filter(GroupDeliverableRelation.deliverable_id
+                                                                   == Deliverables.deliverable_id)\
+                            .join(GroupProject).filter(GroupProject.group_id == GroupDeliverableRelation.group_id)\
+                            .join(StudentGroupRelation).filter(GroupProject.group_id == StudentGroupRelation.group_id)\
+                            .filter(Deliverables_Results.user_id == StudentGroupRelation.student_id)\
+                                .with_entities(Deliverables_Results.user_id, GroupProject.group_id)\
+                                .all()
+                for g in groups:
+                    s = StudentGroupRelation.query.filter_by(group_id=g[1], student_id=user_id).first()
+                    print (s)
+                    if s is not None:
+                        group = g[0]
+                        break
+                if group is not None:
+                    delivers_relations = Deliver.query\
+                    .filter(Deliver.deliverable_id == deliverable_id).filter(
+                Deliver.student_id == group)
+                    delivers_relations = [d.serialize() for d in delivers_relations]
+                else:
+                    delivers_relations = []
+            print(delivers_relations)
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({
                 'description': error,
                 'status_code': 500
             })
-        if not delivers_relations:
+        if delivers_relations is None:
             raise ErrorHandler({'description': 'deliverables do not exist',
                                 'status_code': 500
                                 })
         deliver_relations_formatted = []
         for i in delivers_relations:
-            deliver_relations_formatted.append(i.serialize())
+            deliver_relations_formatted.append(i)
         return deliver_relations_formatted
 
     def post_delivers_relation(self, delivers_relation):

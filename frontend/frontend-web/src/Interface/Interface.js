@@ -137,6 +137,7 @@ export const getFinishedCourses = async (Token, id, role) => {
       Authorization: "Bearer " + Token,
     },
   });
+  console.log(res.data);
   if (res.data["status_code"] !== 200) {
     //TODO: Better Check
     return null;
@@ -299,6 +300,7 @@ export const getCourseStudents = async (id) => {
       "Content-Type": "application/json",
     },
   });
+  console.log(res.data);
   return res.data["names"];
 };
 export const setCourseStudent = async (id, Data) => {
@@ -311,7 +313,10 @@ export const setCourseStudent = async (id, Data) => {
       },
     }
   );
-  console.log(res.data);
+  if (res.data["status_code"] !== 200) {
+    return null;
+  }
+  return res.data;
 };
 
 export const AddCourse = async (Data) => {
@@ -410,11 +415,13 @@ export const SubmitDelivByID = async (Token, data, data2) => {
       Authorization: "Bearer " + Token,
     },
   });
+  console.log(res.data);
   const delivs = res.data["delivers_id"];
   console.log(delivs);
   for (let index = 0; index < delivs.length; index++) {
     let file = new FormData();
     file.append("file", data2[index]);
+    console.log(data2[index]);
     res = await instance.post(
       `/my_deliverables/${delivs[index]}/upload`,
       file,
@@ -425,8 +432,11 @@ export const SubmitDelivByID = async (Token, data, data2) => {
         },
       }
     );
-    return res.data;
+    if (res.data["status_code"] !== 200) {
+      return null;
+    }
   }
+  return delivs;
   /*return res.data["names"];*/
 };
 
@@ -577,6 +587,7 @@ export const AddQuiz = async (Data) => {
       },
     }
   );
+  console.log(res.data);
   if (res.data["status_code"] === 200) {
     return true;
   } else {
@@ -636,6 +647,7 @@ export const BE_Enroll = async (id, Token, cid) => {
       },
     }
   );
+  console.log(res.data);
   if (res.data.status_code === 200) {
     return true;
   } else {
@@ -795,6 +807,7 @@ export const deleteFile = async (id) => {
       "Content-Type": "application/json",
     },
   });
+  console.log(res.data);
   if (res.data["status_code"] !== 200) {
     return null;
   }
@@ -845,7 +858,7 @@ export const finish = async (id, course, total) => {
     {
       course_code: course,
       student_id: id,
-      total: total
+      total: total,
     },
     {
       headers: {
@@ -854,4 +867,6 @@ export const finish = async (id, course, total) => {
     }
   );
   console.log(res.data);
+  if (res.data["status code"] !== 200) return null;
+  return res.data;
 };

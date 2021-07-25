@@ -149,6 +149,7 @@ class student_course_relation_controller():
             deliv_list = deliv_object.get_all_course_deliverables(
                 course_code, student_id, 'student')
             for d in deliv_list:
+                print(d)
                 t2['assign'].append({
                     "id": d["deliverable_id"],
                     'name': d['deliverable_name'],

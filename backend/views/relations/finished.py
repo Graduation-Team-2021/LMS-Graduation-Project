@@ -34,7 +34,7 @@ class finished_relation_view(Resource):
                     }
                 )
             if not finished_courses:
-                return jsonify({'message': 'No finished courses for this specific student'})
+                return jsonify({'courses': [], 'status_code':200})
         except ErrorHandler as e:
             return e.error
         return {'courses': data_list, 'status_code': 200}

@@ -29,7 +29,9 @@ import Waiting from "../../Waiting/Waiting";
 function Page(props) {
   const ele = props.location.state.data;
 
-  const gid = ele.gid;
+  const gid = ele.group_id;
+
+  const isgroup = props.group;
 
   const [grade, setGrade] = useState(0);
 
@@ -48,7 +50,8 @@ function Page(props) {
   const [current, setCurrent] = useState(null);
 
   useEffect(() => {
-    getDelivByID(ele.id, props.userData.ID, gid).then((res) => {
+    getDelivByID(ele.id, props.userData.ID, isgroup).then((res) => {
+      console.log(res);
       setFile(
         res.map((val) => ({
           name: val.file_name,
@@ -56,19 +59,25 @@ function Page(props) {
           delivers_id: val.delivers_id,
         }))
       );
-      if (ele.group_id === "Not Chosen Yet") {
+      if (!gid) {
         //TODO: Get all Groups
         getDelivGroup(ele.id).then((res2) => {
           setGroup(res2.map((val) => ({ name: val.name, value: val.gid })));
         });
       }
     });
-  }, [ele, ele.id, gid, props.userData.ID]);
+  }, [ele, ele.id, gid, isgroup, props.userData.ID]);
 
   const Submit = () => {
-    if (!gid) {
-      const selfile2 = selfile.filter(value=>value.delivers_id===null)
-      if (selfile2.length!==0) {
+    if (!isgroup) {
+      const selfile2 = selfile.filter((value) => {
+        return value.delivers_id === undefined;
+      });
+      const rest = selfile.filter((value) => {
+        return value.delivers_id !== undefined;
+      });
+      console.log(selfile2, selfile);
+      if (selfile2.length !== 0) {
         setLoading(true);
         SubmitDelivByID(
           props.userData.Token,
@@ -79,16 +88,34 @@ function Page(props) {
               file_type: value.type,
             })),
           },
-          selfile
+          selfile2
         ).then((res) => {
-          if (res["status_code"] === 200) {
+          if (res) {
+            for (let index = 0; index < res.length; index++) {
+              selfile2[index]["delivers_id"] = res[index];
+            }
+            const temp = [
+              ...rest,
+              ...selfile2.map((value) => {
+                console.log(value);
+                return {
+                  name: value.name,
+                  type: value.type,
+                  delivers_id: value.delivers_id,
+                };
+              }),
+            ];
+            setFile(temp);
             setLoading(false);
             setDone(true);
+          } else {
+            alert("Couldn't upload File, please try again");
+            setShow(false);
           }
         });
       } else {
-        alert("No New Files Are Added")
-        setShow(false)
+        alert("No New Files Are Added");
+        setShow(false);
       }
     } else {
     }
@@ -99,7 +126,8 @@ function Page(props) {
       user_id: props.userData.ID,
       group_id: cg[0].value,
     }).then((res) => {
-      ele.group_id = cg[0].name;
+      ele.group_id = cg[0].value;
+      ele.group_name = cg[0].name;
       setShow(false);
     });
   };
@@ -156,7 +184,7 @@ function Page(props) {
     setFile([...selfile, e[0]]);
   };
   const remove = (index) => {
-    if (!gid) {
+    if (!isgroup) {
       if (!selfile[index].delivers_id) {
         const temp = [...selfile];
         temp.splice(index, 1);
@@ -198,7 +226,7 @@ function Page(props) {
 
   const { files, onClick, HiddenFileInput } = useFilePicker({
     maxFileSize: 1000,
-  })
+  });
 
   const cFile = selfile[current] ? (
     <React.Fragment>
@@ -284,12 +312,12 @@ function Page(props) {
   console.log(content);
   return (
     <div className={cls.page}>
-      {!gid ? <Modal show={show}>{modCont}</Modal> : null}
+      {!isgroup ? <Modal show={show}>{modCont}</Modal> : null}
       <div className={cls.content}>
         <h1>
           {" "}
           This is "{ele.name}" {ele.type} from "{ele.course}" course
-          {gid ? `, Submitted by ${ele.user_name}` : ""}
+          {isgroup ? `, Submitted by ${ele.user_name}` : ""}
         </h1>
         <span
           style={{
@@ -299,7 +327,7 @@ function Page(props) {
           }}
         >
           Description: {ele.description}
-          {gid ? (
+          {isgroup ? (
             <span className={classes.Group_Select}>
               <Input
                 value={grade}
@@ -347,7 +375,7 @@ function Page(props) {
               {selfile.length === 0 ? null : (
                 <Thumbnails
                   remove={(index) => {
-                    if (!gid && selfile[index].delivers_id) {
+                    if (!isgroup && selfile[index].delivers_id) {
                       setCurrent(index);
                       setContent("Files");
                       setShow(true);
@@ -358,7 +386,7 @@ function Page(props) {
                   files={selfile}
                 />
               )}
-              {!gid ? (
+              {!isgroup ? (
                 <Dropzone onDrop={onFileChange}>
                   {({ getRootProps, getInputProps }) => (
                     <div className={classes.Handle} {...getRootProps()}>
@@ -379,7 +407,7 @@ function Page(props) {
         <button
           className={cls.button}
           onClick={() => {
-            if (!gid) {
+            if (!isgroup) {
               if (selfile.length !== 0) {
                 setContent("Submit");
                 setDone(false);
@@ -389,7 +417,7 @@ function Page(props) {
               }
             } else {
               if (grade >= 0 && grade <= ele.total)
-                SubmitDgrade(ele.id, gid, grade).then((res) => {
+                SubmitDgrade(ele.cid, isgroup, grade).then((res) => {
                   console.log(res);
                   alert("Submitted");
                 });

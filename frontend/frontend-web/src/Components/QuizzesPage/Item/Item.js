@@ -82,7 +82,7 @@ function Page(props) {
       <div>
         <h1>
           {" "}
-          This is "{ele.name}" Quiz from "{ele.course}" course
+          This is {ele.name} from "{ele.course}" course
         </h1>
         <h2>
           <b>Allowed time: {ele.leeway}</b>

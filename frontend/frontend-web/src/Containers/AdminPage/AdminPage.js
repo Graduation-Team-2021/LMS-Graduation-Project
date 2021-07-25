@@ -43,7 +43,7 @@ const AdminPage = (props) => {
 
   useEffect(() => {
     getUser(ID).then((res) => {
-      res.picture = res.picture?url + res.picture:null;
+      res.picture = res.picture?(url + res.picture):null;
       setuserSelf(res);
     });
   }, [ID]);

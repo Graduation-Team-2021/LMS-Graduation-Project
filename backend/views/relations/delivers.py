@@ -31,28 +31,30 @@ class Delivers_Relation(Resource):
         delivs = args['delives']
         delivers_id = []
         try:
-            deliv_number = deliv_obj.get_deliverable(args["deliverable_id"])['students_number']
+            deliv_number = deliv_obj.get_deliverable(
+                args["deliverable_id"])['students_number']
             delives = controller_object\
-                .get_all_delivers_by_user_id_and_deliverable_id(user_id,\
-                    args["deliverable_id"], deliv_number)
+                .get_all_delivers_by_user_id_and_deliverable_id(user_id,
+                                                                args["deliverable_id"], deliv_number)
             for d in range(len(delivs)):
-                if len(delives) ==0:
+                if len(delives) == 0:
                     student_id = student_id
                 else:
-                    student_id = delivs[0]['student_id']
+                    student_id = delives[0]['student_id']
                 delivers_relation = {
                     "deliverable_id": args["deliverable_id"],
                     "student_id": student_id,
                     'file_name': delivs[d]['file_name'],
                     'file_type': delivs[d]["file_type"]
                 }
-                    
+
                 delivers_id.append(controller_object.post_delivers_relation(
                     delivers_relation))
                 res_obj.post_deliverable_result(
-                    {"deliverable_id": args["deliverable_id"], "mark": None})
+                    {"deliverable_id": args["deliverable_id"], "mark": None, 'user_id': student_id})
         except ErrorHandler as e:
             return e.error
+
         return jsonify({
             'message': 'deliverables uploaded successfully',
             'delivers_id': delivers_id,
@@ -69,14 +71,17 @@ class Delete_Delivers_Relation(Resource):
 
     def delete(self, delivers_id):
         try:
-            did = controller_object.delete_delivers_relation(delivers_id)
-            deliv = deliv_obj.get_deliverable(did[1])
-            gid = controller_object.get_all_delivers_by_user_id_and_deliverable_id(did[2], did[1], deliv['students_number'])
-            if len(gid)>0:
+            did = controller_object.delete_delivers_relation(
+                delivers_id).serialize()
+            deliv = deliv_obj.get_deliverable(did['deliverable_id'])
+            gid = controller_object.get_all_delivers_by_user_id_and_deliverable_id(
+                did['student_id'], did['deliverable_id'], deliv['students_number'])
+            if len(gid) > 0:
                 res_obj.post_deliverable_result(
-                    {"deliverable_id": did[0], "mark": None})
+                    {"deliverable_id": did['deliverable_id'], 'user_id': did['student_id'], "mark": None})
             else:
-                res_obj.delete_deliverable_result(did[0])
+                res_obj.delete_deliverable_result(
+                    {'deliverable_id': did['deliverable_id'], 'user_id': did['student_id']})
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -90,7 +95,7 @@ class Delete_Delivers_Relation(Resource):
             did = controller_object.update_delivers_relation(
                 delivers_id, args['data'])
             res_obj.update_deliverable_result(
-                    {"deliverable_id": did, "mark": None})
+                {"deliverable_id": did['deliverable_id'], 'user_id':did['student_id'], "mark": None})
         except ErrorHandler as e:
             return e.error
         return jsonify({
@@ -110,6 +115,7 @@ class Upload_Deliverable_File(Resource):
     def post(self, delivers_id):
         args = self.reqparse.parse_args()
         file_to_be_uploaded = args['file']
+        print('uploading')
         try:
             controller_object.upload_deliverable(
                 delivers_id, file_to_be_uploaded)
@@ -133,7 +139,7 @@ class Download_Deliverable_File(Resource):
             return e.error
 
 
-#   
+#
 class Student_Deliverables(Resource):
 
     def get(self, student_id, deliverable_id):

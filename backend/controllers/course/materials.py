@@ -21,7 +21,7 @@ class materials_controller():
         return data_formatted
     
     def get_course_pdfs(self,course_code):
-        materials = Materials.query.filter_by(course_material=course_code).filter_by(material_type=".pdf").all()
+        materials = Materials.query.filter_by(course_material=course_code).filter_by(material_type="application/pdf").all()
         if materials is None:
             raise ErrorHandler({
                 'description': 'Materials does not exist.',
@@ -35,7 +35,7 @@ class materials_controller():
         return data_formatted
     
     def get_course_videos(self,course_code):
-        materials = Materials.query.filter_by(course_material=course_code).filter(Materials.material_type!=".pdf").all()
+        materials = Materials.query.filter_by(course_material=course_code).filter(Materials.material_type.like('video%')).all()
         if materials is None:
             raise ErrorHandler({
                 'description': 'Materials does not exist.',
@@ -77,7 +77,7 @@ class materials_controller():
             material_type = material['material_type']
             material_name = material['material_name']
             course_code = material['course_material']
-            file_path = f"courses/{course_code}/materials/{material_id}/{material_name}{material_type.lower()}"
+            file_path = f"courses/{course_code}/materials/{material_id}/{material_name}"
             return url_for('static',filename=file_path)                      
         except SQLAlchemyError as e:
             error = str(e)
@@ -123,7 +123,8 @@ class materials_controller():
 
     def upload_material(self, file, course_code):
         try:
-            file_name, file_type = os.path.splitext(file.filename)
+            file_name = file.filename
+            file_type = file.content_type
             material = {
                 "material_name": file_name,
                 "material_type": file_type,

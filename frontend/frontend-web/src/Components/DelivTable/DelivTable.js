@@ -161,10 +161,12 @@ export default connect(
                   mark: v2["mark"],
                   smark: value["smark"] || "Not Graded yet",
                   id: v2["deliverable_id"],
-                  group_id: v2["group_id"] || "Not Chosen Yet",
+                  group_id: v2["group_id"],
+                  group_name: v2["group_name"] || "Not Chosen Yet",
                 })
               );
             }
+            console.log(temp);
           } else {
             if (props.id) {
               temp.push({
@@ -203,15 +205,17 @@ export default connect(
       getStudentDeliver(props.id).then((res) => {
         if (res) {
           setRows(
-            res.map((v2) => ({
+            res.map((v2, index) => ({
               user_name: v2["group_name"],
               mark: v2["mark"] || "Not Graded yet",
-              id: props.id,
+              id: index,
               gid: v2["user_id"],
               name: props.name,
               type: "Assignment",
               course: props.course,
               total: props.mark,
+              cid: props.id,
+              status: v2["mark"]? 'Graded': "Not Started"
             }))
           );
           setLoading(false);

@@ -8,7 +8,7 @@ Base = declarative_base()
 class Exams(db.Model, Base):
     __tablename__ = 'exams'
     exam_id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.String(7), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
+    course_id = db.Column(db.String(10), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                          nullable=False)
     exam_duration=db.Column(db.String(50))
     exam_marks = db.Column(db.Integer)

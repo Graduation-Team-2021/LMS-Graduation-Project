@@ -22,7 +22,9 @@ class Deliver(db.Model, Base):
         return {
             'delivers_id': self.delivers_id,
             "file_type": self.file_type,
-            "file_name": self.file_name
+            "file_name": self.file_name,
+            'deliverable_id': self.deliverable_id,
+            'student_id': self.student_id
         }
 
     def insert(self):
@@ -33,7 +35,7 @@ class Deliver(db.Model, Base):
     def update(self):
         db.session.merge(self)
         db.session.commit()
-        return self.deliverable_id
+        return self.serialize()
 
     def delete(self):
         db.session.delete(self)

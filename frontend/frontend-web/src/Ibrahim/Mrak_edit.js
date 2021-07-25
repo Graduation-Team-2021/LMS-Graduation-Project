@@ -24,6 +24,7 @@ class MarkEdit extends Component {
     getDeliv(this.props.match.params.id, this.props.userData.Token).then(
       (res1) => {
         getCourseStudents(this.props.match.params.id).then((res) => {
+          console.log(res);
           const course = res1.map((val) => ({
             name: val["deliverable_name"],
             mark: val["mark"],
@@ -77,7 +78,16 @@ class MarkEdit extends Component {
           console.log(val, newVal, newVal.mark);
           return val + (newVal.mark || 0);
         }, 0)
-    );
+    ).then((res) => {
+      if (res) {
+        alert("Operation Done Sucessfully");
+        const users = [...this.state.users];
+        users.splice(Key, 1);
+        this.setState({ users: users });
+      } else {
+        alert("Unable to comply, please try again later");
+      }
+    });
   };
 
   mark = (event, id, index) => {
@@ -127,7 +137,16 @@ class MarkEdit extends Component {
   };
 
   sumbit = () => {
-    setCourseStudent(this.props.match.params.id, this.state.users);
+    setCourseStudent(this.props.match.params.id, this.state.users).then(
+      (res) => {
+        if (res) {
+          alert("Marks Edited Sucessfully");
+          this.props.history.goBack();
+        } else {
+          alert("Unable to edit, please try again later");
+        }
+      }
+    );
   };
   render() {
     document.title = "Edit Grades";

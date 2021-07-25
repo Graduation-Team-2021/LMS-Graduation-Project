@@ -22,6 +22,8 @@ const CoursePage = (props) => {
     props.userData.Name,
   ];
 
+  console.log(props.userData, Name)
+
   const {
     CourseID: courseID,
     CourseName: Title,
@@ -47,6 +49,7 @@ const CoursePage = (props) => {
   };
 
   const Focus = () => {
+    setContent('Post')
     show();
   };
 
@@ -119,7 +122,7 @@ const CoursePage = (props) => {
         <h2>
           Final: {final!==null?`${final} out of ${props.location.state.Data.final}`:"Not graded"}
         </h2>
-        <Button onClick={() => this.setState({ clicked: false })}>Close</Button>
+        <Button onClick={() => setclicked(false)}>Close</Button>
       </div>
     </Waiting>
   );

@@ -53,7 +53,7 @@ class Student_Course_Relation(Resource):
                 if g == (len(groups)-1) or \
                     (g < (len(groups)-1) and
                         len(group_obj.get_one_group_all_students(groups[g])) < number):
-                    group_obj.enroll_in_group(user_id, g)
+                    group_obj.enroll_in_group(user_id, groups[g])
                     break
         except ErrorHandler as e:
             return e.error
