@@ -1,8 +1,11 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, Button } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 import sha256 from "crypto-js/sha512";
+import {  BottomSheet } from "react-native-elements";
+
+import SearchingButtomModal from "../components/searchingButtomModal";
 const AdminHomeScreen = (props) => {
   const target = props.userData;
   const hashedItem = sha256(JSON.stringify(target));
@@ -22,65 +25,92 @@ const AdminHomeScreen = (props) => {
     firstColor = firstColor.concat(newIndex1.toString(16));
     lastColor = lastColor.concat(newIndex2.toString(16));
   }
+  const [ButtomModalVisability, setButtomModalVisability] = useState(false);
+  useEffect(() => {
+    props.navigation.setParams({
+      showBottomModalSheet: () => setButtomModalVisability(true),
+      studentName: props.userData.Name,
+    });
+  }, []);
   return (
-    <ScrollView>
-      <View style={styles.screen}>
-        <Card containerStyle={styles.cardContainerStyle}>
-          <LinearGradient
-            colors={[firstColor, lastColor]}
-            style={styles.avatarBackground}
-            start={{
-              x: 0,
-              y: 0.5,
-            }}
-            end={{
-              x: 1,
-              y: 0.5,
-            }}
-            key={hashedItem}
-          >
-            <Avatar
-              rounded
-              size="xlarge"
-              source={{
-                uri:
-                  "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg",
+    <Fragment>
+      <BottomSheet
+        isVisible={ButtomModalVisability}
+        modalProps={{
+          onRequestClose: () => setButtomModalVisability(false),
+          hardwareAccelerated: true,
+          transparent: true,
+        }}
+      >
+        <SearchingButtomModal
+          closeTheBottomSheet={() => setButtomModalVisability(false)}
+          navigateToResults={(searchingQuery) => {
+            setButtomModalVisability(false);
+            props.navigation.navigate({
+              routeName: "SearchReasult",
+              params: { searchingQuery: searchingQuery },
+            });
+          }}
+        />
+      </BottomSheet>
+      <ScrollView>
+        <View style={styles.screen}>
+          <Card containerStyle={styles.cardContainerStyle}>
+            <LinearGradient
+              colors={[firstColor, lastColor]}
+              style={styles.avatarBackground}
+              start={{
+                x: 0,
+                y: 0.5,
               }}
-              containerStyle={{
-                ...styles.avatarContainerStyle,
-                backgroundColor: avatarColor,
+              end={{
+                x: 1,
+                y: 0.5,
               }}
-              title={target.Name[0].toUpperCase()}
-              titleStyle={{ fontSize: 80 }}
-              source={target.picture != null ? { uri: target.picture } : null}
-            />
-          </LinearGradient>
-          <Card.Divider />
-          <View style={{ alignItems: "center", paddingBottom: 15 }}>
-            <Text>{target.Name}</Text>
-            {/* <Text>email : {target.email} </Text> */}
-          </View>
-        </Card>
-        <View style={styles.buttonContrainer}>
-          <View style={styles.button}>
-            <Button
-              title="Add User"
-              onPress={() => {
-                props.navigation.navigate("AddUser")
-              }}
-            />
-          </View>
-          <View style={styles.button}>
-            <Button
-              title="Add Course"
-              onPress={() => {
-                props.navigation.navigate("AddCourse")
-              }}
-            />
+              key={hashedItem}
+            >
+              <Avatar
+                rounded
+                size="xlarge"
+                source={{
+                  uri: "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg",
+                }}
+                containerStyle={{
+                  ...styles.avatarContainerStyle,
+                  backgroundColor: avatarColor,
+                }}
+                title={target.Name[0].toUpperCase()}
+                titleStyle={{ fontSize: 80 }}
+                source={target.picture != null ? { uri: target.picture } : null}
+              />
+            </LinearGradient>
+            <Card.Divider />
+            <View style={{ alignItems: "center", paddingBottom: 15 }}>
+              <Text>{target.Name}</Text>
+              {/* <Text>email : {target.email} </Text> */}
+            </View>
+          </Card>
+          <View style={styles.buttonContrainer}>
+            <View style={styles.button}>
+              <Button
+                title="Add User"
+                onPress={() => {
+                  props.navigation.navigate("AddUser");
+                }}
+              />
+            </View>
+            <View style={styles.button}>
+              <Button
+                title="Add Course"
+                onPress={() => {
+                  props.navigation.navigate("AddCourse");
+                }}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </Fragment>
   );
 };
 

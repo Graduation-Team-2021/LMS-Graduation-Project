@@ -25,11 +25,16 @@ const AddUser = (props) => {
   const onSubmit = (data) => {
     data["role"] = items[0];
     data["birthday"] = date.toISOString().slice(0, 10);
+    console.log('====================================');
+    console.log('Done?');
+    console.log('====================================');
 
     //TODO: send the request to te backend here
     AC(data).then((res) => {
       if (res) {
-        //TODO: Show it Succeded
+        console.log('====================================');
+        console.log('Done!');
+        console.log('====================================');
         reset();
         setDate(new Date());
         setItems([]);
@@ -53,7 +58,6 @@ const AddUser = (props) => {
 
   return (
     <View>
-      <ScrollView>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -98,8 +102,8 @@ const AddUser = (props) => {
               onChangeText={(value) => onChange(value)}
               value={value}
               mode="outlined"
-              error={errors.weekly_hours}
-              keyboardType="numeric"
+              error={errors.national_id}
+              keyboardType="phone-pad"
             />
           )}
           name="national_id"
@@ -117,7 +121,7 @@ const AddUser = (props) => {
               onChangeText={(value) => onChange(value)}
               value={value}
               mode="outlined"
-              error={errors.group_number}
+              error={errors.password}
               secureTextEntry
             />
           )}
@@ -128,6 +132,7 @@ const AddUser = (props) => {
           }}
           defaultValue=""
         />
+        
         <MultiSelect
           uniqueKey="id"
           selectText="Role"
@@ -164,7 +169,6 @@ const AddUser = (props) => {
         >
           Submit User
         </Button>
-      </ScrollView>
     </View>
   );
 };

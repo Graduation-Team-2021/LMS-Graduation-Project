@@ -24,7 +24,7 @@ const RecentEventScreen = (props) => {
   if (events != null) {
     content = (
       <Portal.Host>
-        <Portal>
+        {/* <Portal>
           <FAB
             onPress={showModal}
             icon="plus"
@@ -40,7 +40,7 @@ const RecentEventScreen = (props) => {
           >
             <Text>Example Modal. Click outside this area to dismiss.</Text>
           </Modal>
-        </Portal>
+        </Portal> */}
         <Text style={styles.row}>{events.event_name}</Text>
         <Text style={styles.row}>{events.course_code}</Text>
         <Text style={styles.row}>{events.event_description}</Text>

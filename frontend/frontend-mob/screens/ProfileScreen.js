@@ -20,7 +20,7 @@ const ProfileScreen = (props) => {
         props.userData.ID,
         props.userData.Role
       ).then((res) => {
-        setPassedCourses(res);
+        if (res) setPassedCourses(res);
       });
       Interface.getRecentUserPosts(props.userData.Token).then((res) =>
         setYourPosts(res)
@@ -63,8 +63,7 @@ const ProfileScreen = (props) => {
 
           <Card.Divider />
           <View style={{ alignItems: "center", paddingBottom: 15 }}>
-            <Text>THe User Name</Text>
-            <Text>The user current year</Text>
+            <Text>{props.userData.Name}</Text>
             <Card
               wrapperStyle={styles.displayDataCardWrapperStyle}
               containerStyle={styles.displayDataCardContainerStyle}
