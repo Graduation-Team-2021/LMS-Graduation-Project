@@ -1,6 +1,6 @@
 from controllers.relations.finished import finished_relation_controller
 from controllers.relations.learns import student_course_relation_controller
-from controllers.course.group_project import GroupProjectController
+from controllers.relations.group_course_relation import group_course_controller
 from controllers.relations.student_group_relation import StudentGroupRelationController
 from methods.errors import *
 from flask_restful import Resource, reqparse
@@ -9,6 +9,7 @@ from flask import jsonify
 controller_object = finished_relation_controller()
 current_object = student_course_relation_controller()
 student_course_object = StudentGroupRelationController()
+course_obj = group_course_controller()
 
 
 # /student/<student_id>/finishedCourses
@@ -47,10 +48,9 @@ class finished_relation_view(Resource):
             controller_object.post_finished_course(course)
             current_object.delete_student_course_relation(
                 student_id, args["course_code"])
-            groups = student_course_object.get_one_student_one_course_all_groups(
-                student_id, args["course_code"])
+            groups = course_obj.get_all_course_groups(args["course_code"])
             for g in groups:
-                student_course_object.remove_from_group(student_id, g[0])
+                student_course_object.remove_from_group(student_id, g["group_id"])
         except ErrorHandler as e:
             return e.error
         return jsonify({

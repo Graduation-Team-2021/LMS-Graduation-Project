@@ -60,7 +60,8 @@ class StudentGroupRelationController:
         enroll = StudentGroupRelation.query.filter(StudentGroupRelation.student_id == user)\
             .filter(StudentGroupRelation.group_id == group).first()
         try:
-            StudentGroupRelation.delete(enroll) 
+            if enroll is not None:
+                StudentGroupRelation.delete(enroll) 
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({
