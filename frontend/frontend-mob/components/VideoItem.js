@@ -15,9 +15,7 @@ import { Entypo } from "@expo/vector-icons";
 import { connect } from "react-redux";
 const VideoItem = (props) => {
   let TouchableCmp = TouchableOpacity;
-  if (Platform.OS === "android" && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
-  }
+
   const previewVideoHandler = () => {
     props.previewVideoHandler(props.video.material_id);
   };
