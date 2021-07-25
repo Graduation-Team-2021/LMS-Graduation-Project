@@ -18,7 +18,6 @@ import DropDownMenu from "../DropDownMenu/DropDownMenu";
 import ImageHolder from "../ImageHolder/ImageHolder";
 import Button from "../../Components/Button/Button";
 import { mapDispatchToProps, mapStateToProps } from "../../store/reduxMaps";
-import { url } from "../../Interface/Interface";
 const MiniMenu = (props) => {
   const [Notif, setNotif] = useState(false);
   const [Menu, setMenu] = useState(false);

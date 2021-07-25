@@ -43,7 +43,7 @@ const AdminPage = (props) => {
 
   useEffect(() => {
     getUser(ID).then((res) => {
-      res.picture = url + res.picture;
+      res.picture = res.picture?url + res.picture:null;
       setuserSelf(res);
     });
   }, [ID]);
@@ -215,6 +215,7 @@ const AdminPage = (props) => {
           <div className={classes.background}>{/*insert your image here*/}</div>
           <div className={classes.User}>
             <div className={classes.main}>
+
               <ImageHolder
                 className={classes.Pic}
                 filler={
