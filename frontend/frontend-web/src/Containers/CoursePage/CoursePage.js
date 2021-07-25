@@ -91,7 +91,7 @@ const CoursePage = (props) => {
         }}
       >
         <h2>Upload Successful</h2>
-        <Button onClick={() => this.setState({ clicked: false })}>Close</Button>
+        <Button onClick={() => setclicked(false)}>Close</Button>
       </div>
     </Waiting>
   );

@@ -77,7 +77,11 @@ class deliverable_controller:
         student_number = deliverable = Deliverables.query.filter_by(
             deliverable_id=deliverable_id).first().serialize()['students_number']
         total_number_of_students = Learns_Relation.query.filter_by(course_code=course_code).with_entities(
-            func.count(Learns_Relation.course_code)).group_by(Learns_Relation.course_code).all()[0][0]
+            func.count(Learns_Relation.course_code)).group_by(Learns_Relation.course_code).all()
+        if len(total_number_of_students)!=0:
+            total_number_of_students = total_number_of_students[0][0]
+        else:
+            total_number_of_students = 0
         number_of_groups = math.ceil(total_number_of_students/student_number)
         course = Course.query.filter_by(
             course_code=course_code).first().serialize()

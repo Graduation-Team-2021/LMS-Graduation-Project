@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { TextInput, Button } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { AddNewDeliv as AC } from "../Interface/Interface";
+import {AddNewDeliv as AC } from "../Interface/Interface";
 
 const AddDeliver = (props) => {
   const {
