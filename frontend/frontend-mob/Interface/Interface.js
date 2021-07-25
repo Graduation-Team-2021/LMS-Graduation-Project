@@ -273,7 +273,7 @@ export const uploadFile = async (
   b64
 ) => {
   let data = new FormData();
-  data.append('files', b64,file);
+  data.append('file', b64,'files');
 
   const res = await instance.post(
     `/courses/${CourseID}/materials/upload`,

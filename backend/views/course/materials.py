@@ -106,7 +106,7 @@ class upload_material(Resource):
             'file', type=werkzeug.datastructures.FileStorage, location='files')
 
     def post(self, course_code):
-        print('[Adham Nour]', request.values)
+        print('[Adham Nour]', request.files)
         args = self.reqparse.parse_args()
         print('[Adham Nour]', args)
         file_to_be_uploaded = args['file']
