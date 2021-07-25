@@ -95,15 +95,17 @@ const MessagesScreen = (props) => {
             scrollViewRef.current.scrollToEnd({ animated: true })
           }
         >
-          {messages.map((msg, i) => (
-            <MessageCard
-              key={msg.id}
-              message={msg.text}
-              position={msg.sender_id === props.userData.ID ? false : true}
-            >
-              {" "}
-            </MessageCard>
-          ))}
+          {messages.map((msg, i) => {
+            return (
+              <MessageCard
+                key={i}
+                message={msg.text}
+                position={msg.sender_id === props.userData.ID ? false : true}
+              >
+                {" "}
+              </MessageCard>
+            );
+          })}
         </ScrollView>
       </View>
       <KeyboardAvoidingView
