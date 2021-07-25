@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import ConversationListItem from "./Item/Item";
 import SearchBar from "./SearchBar/SearchBar";
 import cls from "./ConversationList.module.css";
-import { getAllConversations, getAllUsers } from "../../Interface/Interface";
+import { getAllConversations, getAllUsers, getUser } from "../../Interface/Interface";
 import { setUser } from "../../Models/User";
 import filler from "../../assets/Filler.png";
 import SearchItem from "../ConversationList/SearchItem/SearchItem";
@@ -62,21 +62,25 @@ export default connect(
         user["text"] = res.content.text;
         let temp = [user, ...conversations];
         setConversations(temp);
-      } else {
-        for (let index = 0; index < Users.length; index++) {
-          if (Users[index].ID === res.from) {
-            user = Users[index];
-            break;
+        setNewMessage(null);
+      }
+      else {
+        getUser(newMessage.from).then((res) => {
+          console.log(res)
+          let userino = {
+            ID: res.user_id,
+            name: res.name,
+            text: newMessage.content.text,
           }
-        }
-        user["text"] = res.content.text;
-        let temp = [user, ...conversations];
-        setConversations(temp);
+          let temp = [userino, ...conversations];
+          setConversations(temp);
+          setNewMessage(null);
+        })
       }
     }
-  }, [newMessage, Users, conversations]);
+  }, [newMessage]);
   //////////////////////////////////////////////////////////////////
-  const {hasChanged, Current, newMessID, newText, setChanged,setNewID, setNewText} = props
+  const { hasChanged, Current, newMessID, newText, setChanged, setNewID, setNewText } = props
   useEffect(() => {
     if (hasChanged) {
       if (conversations.findIndex(Ar => { return Ar.ID === newMessID }) !== -1) {
@@ -92,7 +96,7 @@ export default connect(
       setNewText("")
     }
   },
-    [Users, conversations, Current, hasChanged, newMessID, newText,setChanged,setNewID, setNewText])
+    [Users, conversations, Current, hasChanged, newMessID, newText, setChanged, setNewID, setNewText])
 
   /////////////////////////////////////////////////////////////////
   function useOutsideAlerter(ref) {
@@ -145,16 +149,6 @@ export default connect(
       });
       setUsers(temp);
     });
-    /* axios.get("https://randomuser.me/api/?results=20").then((response) => {
-      let newConversations = response.data.results.map((result) => {
-        return {
-          photo: result.picture.large,
-          name: `${result.name.first} ${result.name.last}`,
-          text: "Hello world! This is a test message for a demo.",
-        };
-      });
-      setConversations([...conversations, ...newConversations]);
-    }); */
   };
   /////////////////////////////////////////////////////////////////////////////
   useEffect(getConversations, [props.userData.Token]);
