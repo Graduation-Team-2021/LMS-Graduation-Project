@@ -28,7 +28,12 @@ const MessagesScreen = (props) => {
   const second_user = props.navigation.state.params.second_id;
 
   useEffect(() => {
-    msngrskt.on("private message", (res) => setNewMessage(res));
+    msngrskt.on("private message", (res) => {
+      console.log('[Adham Nour El-Waffaa]====================================');
+      console.log(res);
+      console.log('====================================');
+      setNewMessage(res);
+    });
   }, []);
 
   useEffect(() => {
