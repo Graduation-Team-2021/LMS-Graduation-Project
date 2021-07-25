@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { DrawerItems } from "react-navigation-drawer";
@@ -15,7 +15,7 @@ const Drawer = (props) => {
   //FIXME: there is problem, the user picture is always undefined.
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View>
+      <ScrollView>
         <View
           style={{
             paddingTop: "21%",
@@ -41,23 +41,18 @@ const Drawer = (props) => {
           </View>
         </View>
         <DrawerItems {...props} />
-        <Button
-          icon={
-            <Icon
-              name="logout"
-              size={15}
-              color="white"
-              style={{ padding: 10 }}
-            />
-          }
-          title="Logout"
-          onPress={() => {
-            AsyncStorage.removeItem("token").then((value) => {
-              props.navigation.navigate("Login");
-            });
-          }}
-        />
-      </View>
+      </ScrollView>
+      <Button
+        icon={
+          <Icon name="logout" size={15} color="white" style={{ padding: 10 }} />
+        }
+        title="Logout"
+        onPress={() => {
+          AsyncStorage.removeItem("token").then((value) => {
+            props.navigation.navigate("Login");
+          });
+        }}
+      />
     </SafeAreaView>
   );
 };
