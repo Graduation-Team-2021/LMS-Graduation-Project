@@ -106,7 +106,7 @@ class upload_material(Resource):
             'file', type=werkzeug.datastructures.CombinedMultiDict, location='files')
 
     def post(self, course_code):
-        print('[Adham Nour]', request.files)
+        print('[Adham Nour]', request)
         args = self.reqparse.parse_args()
         print('[Adham Nour]', args)
         file_to_be_uploaded = args['file']
