@@ -29,19 +29,35 @@ const ConversationScreen = (props) => {
 
   useEffect(() => {
     if (newMessage) {
-      let user = {};
-      getUser(newMessage.from).then((res) => {
-        user["id"] = res.user_id;
-        user["name"] = res.name;
-        user["photo"] = res.photo;
-      })
-      user["text"] = newMessage.content.text;
-      let temp = [user, ...conversations];
-      setConversations(temp);
+      let res = newMessage;
+      let user = null;
+      for (let index = 0; index < conversations.length; index++) {
+        if (conversations[index].ID === res.from) {
+          user = conversations[index];
+          conversations.splice(index, 1);
+          break;
+        }
+      }
+      if (user) {
+        user["text"] = res.content.text;
+        let temp = [user, ...conversations];
+        setConversations(temp);
+        setNewMessage(null);
+      }
+      else {
+        getUser(newMessage.from).then((res) => {
+          console.log(res)
+          let userino = {
+            ID: res.user_id,
+            name: res.name,
+            text: newMessage.content.text,
+          }
+          let temp = [userino, ...conversations];
+          setConversations(temp);
+          setNewMessage(null);
+        })
+      }
     }
-    conversations.sort(function (a, b) {
-      return new Date.parse(b.sent_time) - new Date.parse(a.sent_time);
-    });
   }, [newMessage]);
 
   const getConversations = () => {
