@@ -13,7 +13,7 @@ class Deliverables(db.Model, Base):
     deliverable_name = db.Column(db.String(50), nullable=False)
     deadline = db.Column(db.DateTime, nullable=False)
     description = db.Column(db.Text)
-    course_deliverables = db.Column(db.String(5),
+    course_deliverables = db.Column(db.String(10),
                                     ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                                     nullable=False)
 
