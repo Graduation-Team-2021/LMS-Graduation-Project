@@ -27,10 +27,10 @@ import { connect } from "react-redux";
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import Search from "./Containers/SearchPage/SearchPage";
 import CreateQuiz from "./Containers/CreateQuiz/CreateQuiz";
-import msngrskt from "../../sockets/msngrskts";
+import msngrskt from "./sockets/msngrskts";
 
 const App = (props) => {
-  
+
   useEffect(() => {
     if (props.userData.Token) {
       msngrskt.auth = { userID: props.userData.ID };
