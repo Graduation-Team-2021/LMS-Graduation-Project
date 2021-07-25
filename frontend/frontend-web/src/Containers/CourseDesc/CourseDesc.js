@@ -243,7 +243,6 @@ class CourseDesc extends Component {
                 name="myfile"
                 multiple
                 onChange={this.handleFIleUpload}
-                value={this.state.file}
               />
               <br />
               <Button className={classes.Button} onClick={this.Submit}>
