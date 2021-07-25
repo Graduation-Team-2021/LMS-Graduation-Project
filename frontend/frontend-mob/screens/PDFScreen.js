@@ -8,7 +8,6 @@ const PdfReader = (props) => {
   const [pdfUri, setPdfUri] = React.useState("");
   React.useEffect(() => {
     materialUri(pdfId).then((res) => {
-      console.log(res);
       setPdfUri(res);
     });
   }, []);

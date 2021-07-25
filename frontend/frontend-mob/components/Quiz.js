@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  Alert,
+} from "react-native";
 import { Card } from "react-native-elements";
 import Question from "./Question";
 import { getQuizByID, SubmitQuiz } from "../Interface/Interface";
@@ -27,6 +34,18 @@ const Quiz = (props) => {
           console.log("====================================");
           console.log(result);
           console.log("====================================");
+          Alert.alert(
+            "Quiz has been submitted successfully",
+            "You have submitted your quiz successfully",
+            [
+              {
+                text: "ok",
+                onPress: () => {
+                  props.navigation.goBack();
+                },
+              },
+            ]
+          );
         });
       },
     });

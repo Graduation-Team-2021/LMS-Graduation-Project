@@ -42,9 +42,6 @@ const AllDelivList = (props) => {
   const retrieveCourseQuizes = () => {
     if (myCourse && isQuiz) {
       getQuizzes(myCourse.CourseID, props.userData.ID).then((res) => {
-        console.log("[Quiz]====================================");
-        console.log(res);
-        console.log("[Quiz]====================================");
         let pieData = {};
         res.forEach((quiz) => {
           if (pieData[quiz.status]) {

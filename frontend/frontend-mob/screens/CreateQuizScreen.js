@@ -222,13 +222,6 @@ const CreateQuizScreen = (props) => {
                     };
                     console.log(kak);
                     AddQuiz(kak).then((res) => {
-                      console.log(
-                        "[Davids wanna sleep]===================================="
-                      );
-                      console.log(res);
-                      console.log(
-                        "[Davids wanna sleep]===================================="
-                      );
                       return Alert.alert(
                         "Quiz Uploaded Successfully",
                         "You have made one successfull upload for a quiz",

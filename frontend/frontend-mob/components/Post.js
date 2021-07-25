@@ -11,7 +11,6 @@ const Post = (props) => {
   const [postComments, setPostComments] = useState([]);
 
   useEffect(() => {
-    console.log(postData);
     for (
       let index = 0;
       index < (postData.Comments.length > 2 ? 2 : postData.Comments.length);
@@ -39,7 +38,6 @@ const Post = (props) => {
   };
   const commentPressHandler = async () => {
     if (currentTypingComment === "") {
-      console.log("empty comment");
       alert("this is an empty comment");
       return;
     }
@@ -49,7 +47,6 @@ const Post = (props) => {
       commenter_id: props.userData.ID,
     };
     //Todo: set comments
-    console.log("adding Comment to DB");
     await Comment(
       props.userData.Token,
       props.userData.ID,

@@ -30,9 +30,6 @@ const AddDeliver = (props) => {
     AC(data).then((res) => {
       if (res) {
         //TODO: Show it Succeded
-        console.log("====================================");
-        console.log(res);
-        console.log("====================================");
         reset();
         setDate(new Date());
         setItems([]);

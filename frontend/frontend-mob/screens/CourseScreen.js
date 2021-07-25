@@ -23,9 +23,6 @@ import * as DocumentPicker from "expo-document-picker";
 const data = ["sklahjdlsa"];
 const CourseScreen = (props) => {
   const myCourse = props.navigation.getParam("course");
-  console.log("====================================");
-  console.log("[myCourse]", myCourse);
-  console.log("====================================");
   const [Data, setData] = useState(data);
   const [deliverables, setDeliverables] = useState([]);
   const [deliverablesLoaded, setDeliverablesLoaded] = useState(false);
