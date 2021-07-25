@@ -4,8 +4,8 @@ import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
-import * as SQLite from "expo-sqlite";
-import {CreateTable} from '../Interface/sqllite'
+import { CreateTable } from "../Interface/sqllite";
+import { getUser } from "../Interface/Interface";
 
 const AuthLoadingScreen = (props) => {
   const bootStrapAsync = () => {
@@ -24,6 +24,9 @@ const AuthLoadingScreen = (props) => {
               routeName: "Home",
               params: { studentName: name },
             },
+          });
+          getUser(jwt_decode(token).id).then((v) => {
+            props.userDataActions.onSetPicture(v.picture);
           });
         });
       } else {

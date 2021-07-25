@@ -1,4 +1,6 @@
 import * as SQLite from "expo-sqlite";
+import * as FileSystem from "expo-file-system";
+const azure = "http://lmsproj.centralus.cloudapp.azure.com:5000";
 
 const db = SQLite.openDatabase("LMS.db");
 
@@ -1081,3 +1083,30 @@ export function SQLGetTeachedCourse(course_id) {
 }
 
 // exculsign up
+
+export function SQLogout() {
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT name FROM sqlite_master WHERE type ='table'",
+      [],
+      (tx, res) => {
+        for (let index = 0; index < res.rows.length; index++) {
+          tx.executeSql(
+            `DELETE FROM ${res.rows.item(index).name}`,
+            [],
+            (_, res) => {
+              console.log(res);
+            },
+            (_, err) => {
+              console.log(err);
+            }
+          );
+        }
+      },
+      (_, err) => {
+        console.log(err);
+      }
+    );
+  });
+}

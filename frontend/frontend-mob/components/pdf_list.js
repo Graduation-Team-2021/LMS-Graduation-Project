@@ -34,9 +34,6 @@ const PdfList = (props) => {
       data={props.Pdfs}
       keyExtractor={(_, index) => index.toString()}
       renderItem={(item, i) => {
-        console.log("====================================");
-        console.log(item);
-        console.log("====================================");
         return (
           <PdfItem
             key={i}

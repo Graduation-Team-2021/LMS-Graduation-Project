@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { DrawerItems } from "react-navigation-drawer";
@@ -10,12 +10,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { mapDispatchToProps, mapStateToProps } from "../store/reduxMaps";
 import { connect } from "react-redux";
 import * as localStorage from "../Interface/sqllite";
+import { azure } from "../Interface/Interface";
 
 const Drawer = (props) => {
-  //FIXME: there is problem, the user picture is always undefined.
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View>
+      <ScrollView>
         <View
           style={{
             paddingTop: "21%",
@@ -31,7 +31,7 @@ const Drawer = (props) => {
               uri:
                 props.userData.pic === null
                   ? "https://avatarfiles.alphacoders.com/263/thumb-1920-263348.jpg"
-                  : props.userData.pic,
+                  : azure + props.userData.pic,
             }}
             containerStyle={styles.avatarContainerStyle}
           />
@@ -41,23 +41,19 @@ const Drawer = (props) => {
           </View>
         </View>
         <DrawerItems {...props} />
-        <Button
-          icon={
-            <Icon
-              name="logout"
-              size={15}
-              color="white"
-              style={{ padding: 10 }}
-            />
-          }
-          title="Logout"
-          onPress={() => {
-            AsyncStorage.removeItem("token").then((value) => {
-              props.navigation.navigate("Login");
-            });
-          }}
-        />
-      </View>
+      </ScrollView>
+      <Button
+        icon={
+          <Icon name="logout" size={15} color="white" style={{ padding: 10 }} />
+        }
+        title="Logout"
+        onPress={() => {
+          AsyncStorage.removeItem("token").then((value) => {
+            localStorage.SQLogout();
+            props.navigation.navigate("Login");
+          });
+        }}
+      />
     </SafeAreaView>
   );
 };

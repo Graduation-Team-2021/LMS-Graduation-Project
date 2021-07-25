@@ -274,9 +274,6 @@ export const uploadFile = async (
 ) => {
   let data = new FormData();
   data.append("file", file);
-  console.log("[ADham]====================================");
-  console.log(data);
-  console.log("[ADham]====================================");
 
   const res = await instance.post(
     `/courses/${CourseID}/materials/upload`,
@@ -691,7 +688,6 @@ export const AddQuiz = async (Data) => {
       },
     }
   );
-  console.log(res.data);
   if (res.data["status_code"] === 200) {
     return true;
   } else {
@@ -705,9 +701,7 @@ export const SubmitQuiz = async (Data) => {
       "Content-Type": "application/json",
     },
   });
-  console.log("====================================");
-  console.log(res.data);
-  console.log("====================================");
+
   if (res.data["status_code"] === 200) {
     return true;
   } else {
@@ -902,7 +896,6 @@ export const AddNewDeliv = async (Data) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(res.data);
   return res.data;
 };
 

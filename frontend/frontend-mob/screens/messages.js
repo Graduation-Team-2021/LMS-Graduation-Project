@@ -28,7 +28,12 @@ const MessagesScreen = (props) => {
   const second_user = props.navigation.state.params.second_id;
 
   useEffect(() => {
-    msngrskt.on("private message", (res) => setNewMessage(res));
+    msngrskt.on("private message", (res) => {
+      console.log('[Adham Nour El-Waffaa]====================================');
+      console.log(res);
+      console.log('====================================');
+      setNewMessage(res);
+    });
   }, []);
 
   useEffect(() => {
@@ -95,15 +100,17 @@ const MessagesScreen = (props) => {
             scrollViewRef.current.scrollToEnd({ animated: true })
           }
         >
-          {messages.map((msg, i) => (
-            <MessageCard
-              key={msg.id}
-              message={msg.text}
-              position={msg.sender_id === props.userData.ID ? false : true}
-            >
-              {" "}
-            </MessageCard>
-          ))}
+          {messages.map((msg, i) => {
+            return (
+              <MessageCard
+                key={i}
+                message={msg.text}
+                position={msg.sender_id === props.userData.ID ? false : true}
+              >
+                {" "}
+              </MessageCard>
+            );
+          })}
         </ScrollView>
       </View>
       <KeyboardAvoidingView

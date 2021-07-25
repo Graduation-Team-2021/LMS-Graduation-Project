@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import sha256 from "crypto-js/sha512";
 
@@ -39,7 +34,10 @@ const CoursePreview = (props) => {
         })
       }
     >
-      <Card containerStyle={styles.containingCard}>
+      <Card
+        containerStyle={styles.containingCard}
+        wrapperStyle={{ justifyContent: "center", alignItems: "center" }}
+      >
         <View style={styles.courseNameContainingView}>
           <Text style={styles.courseName}>{props.Course.CourseName}</Text>
         </View>
@@ -50,6 +48,7 @@ const CoursePreview = (props) => {
             ...styles.containingCard,
             backgroundColor: avatarColor,
           }}
+          avatarStyle={styles.containingCard}
           titleStyle={{ fontSize: 30 }}
           source={
             props.Course.CoursePicture
