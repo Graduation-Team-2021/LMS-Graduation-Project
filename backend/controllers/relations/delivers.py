@@ -20,9 +20,10 @@ class delivers_controller():
                 delivers_relations = Deliver.query.filter(Deliver.student_id == user_id).filter(
                 Deliver.deliverable_id == deliverable_id)
             else:
-                delivers_relations = Deliver.query.join(GroupDeliverableRelation)\
-                    .filter(Deliver.deliverable_id == deliverable_id)\
-                    .filter(GroupDeliverableRelation.deliverable_id == Deliver.deliverable_id)\
+                delivers_relations = Deliver.query\
+                    .filter(Deliver.deliverable_id == deliverable_id).join(Deliverables)\
+                    .filter(Deliverables.deliverable_id == Deliver.deliverable_id).join(GroupDeliverableRelation)\
+                    .filter(GroupDeliverableRelation.deliverable_id == Deliverables.deliverable_id)\
                     .join(GroupProject).filter(GroupDeliverableRelation.group_id == GroupProject.group_id)\
                     .join(StudentGroupRelation).filter(GroupProject.group_id==StudentGroupRelation.group_id)\
                     .filter(StudentGroupRelation.student_id == user_id).filter(
