@@ -6,6 +6,7 @@ import {
   getAllConversations,
   getUser,
   searchUsers,
+  url,
 } from "../../../../Interface/Interface";
 import { setUser } from "../../../../Models/User";
 import filler from "../../../../assets/Filler.png";
@@ -58,7 +59,7 @@ export default connect(
             <SearchItem
               key={index}
               Name={value.name}
-              img={filler}
+              img={value.picture ? url + value.picture : filler}
               onClick={() => {
                 props.currentMessageActions.onSetCurrentMessage({
                   Name: value.name,
@@ -115,7 +116,7 @@ export default connect(
         getUser(res.from).then((result) => {
           user["name"] = result.name;
           user["text"] = res.content.text;
-          user["photo"] = filler;
+          user["photo"] = res.picture ? url + res.picture : filler;
           user["isOnline"] = true;
           let temp = [user, ...conversations];
           setConversations(temp);
@@ -139,7 +140,7 @@ export default connect(
     getAllConversations(props.userData.Token).then((res) => {
       const temp = [];
       res.forEach((ele) => {
-        ele["user"]["photo"] = filler;
+        ele["user"]["photo"] = ele['user']['picture'] ? url + ele['user']['picture'] : filler;
         let x = setUser(ele["user"]);
         let data = {
           name: ele["user"]["name"],
