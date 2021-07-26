@@ -37,7 +37,6 @@ const Drawer = (props) => {
           />
           <View>
             <Text>{props.userData.Name}</Text>
-            <Text>The User Current year</Text>
           </View>
         </View>
         <DrawerItems {...props} />
