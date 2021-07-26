@@ -30,7 +30,7 @@ export default function Item(props) {
       </div>
       <div className={cls['conversation-info']}>
         <h1 className={cls.title}>{name}</h1>
-        <p className={cls.snippet}>{text}</p>
+        <p className={cls.snippet}>{"..."+text.slice(text.length-40,text.length)}</p>
       </div>
     </div>
   );
