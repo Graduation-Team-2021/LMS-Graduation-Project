@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { connect } from "react-redux";
 import ConversationListItem from "./Item/Item";
 import SearchBar from "./SearchBar/SearchBar";
 import cls from "./ConversationList.module.css";
 import {
   getAllConversations,
-  getAllUsers,
   getUser,
+  searchUsers,
   url,
 } from "../../Interface/Interface";
 import { setUser } from "../../Models/User";
@@ -26,11 +26,76 @@ export default connect(
   const [addBarVis, setAddBar] = useState({ showBar: false });
   const [Query, setQuery] = useState("");
   const [oldQuery, setOldQuery] = useState("");
-  const [Users, setUsers] = useState([]);
   const [CurrentActiveUsers, setCurrentActiveUsers] = useState([]);
   const [oldConv, setOldConv] = useState([]);
   const [newMessage, setNewMessage] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [started, setStarted] = useState(false);
+  const [SearchResult, setResult] = useState([]);
+  ///////////////////////////////////////////////////////////////////////////
+  let addbb = null;
+  if (addBarVis.showBar) {
+    addbb = (
+      <SearchBar
+        searchQuery={Query}
+        setSearchQuery={setQuery}
+        fillerText="Search for someone to start a new chat..."
+      />
+    );
+  }
+  ///////////////////////////////////////////////////////////////////////////
+  const onSearch = useCallback(() => {
+    if (Query !== "") {
+      if (!started) setStarted(true);
+      searchUsers(Query).then((res) => {
+        setLoading(false);
+        let tempResults = [];
+        res.forEach((value, index) => {
+          let onClickHandler = null;
+          let isPart = false;
+          oldConv.forEach((ele) => {
+            if (ele.ID === value.user_id) {
+              isPart = true;
+            }
+          });
+          if (isPart) {
+            onClickHandler = () => {
+              props.setVis();
+              props.setIsNew(false);
+              props.setCurrent({
+                ID: value.user_id,
+                Name: value.name,
+                ...value
+              });
+              setQuery("");
+              setAddBar({ showBar: false });
+            };
+          } else {
+            onClickHandler = () => {
+              props.setVis();
+              props.setIsNew(true);
+              props.setCurrent({
+                ID: value.user_id,
+                Name: value.name,
+                ...value
+              });
+              setQuery("");
+              setAddBar({ showBar: false });
+            };
+          }
+          tempResults.push(
+            <SearchItem
+              key={index}
+              Name={value.name}
+              img={value.picture ? url + value.picture : filler}
+              onClick={onClickHandler}
+            />
+          );
+        });
+        setResult(tempResults);
+      });
+    }
+  }, [Query, started]);
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
 
@@ -70,16 +135,17 @@ export default connect(
       }
       if (user) {
         user["text"] = res.content.text;
+        user["photo"] = user.picture ? url + user.picture : filler
         let temp = [user, ...conversations];
         setConversations(temp);
         setNewMessage(null);
       } else {
         getUser(newMessage.from).then((res) => {
-          console.log(res);
           let userino = {
             ID: res.user_id,
             name: res.name,
             text: newMessage.content.text,
+            photo:res.picture ? url + res.picture : filler,
           };
           let temp = [userino, ...conversations];
           setConversations(temp);
@@ -100,34 +166,40 @@ export default connect(
   } = props;
   useEffect(() => {
     if (hasChanged) {
-      if (
-        conversations.findIndex((Ar) => {
-          return Ar.ID === newMessID;
-        }) !== -1
-      ) {
-        conversations.splice(
+      let newTemp = { ...Current };
+      getUser(newMessID).then((res) => {
+        if (
           conversations.findIndex((Ar) => {
             return Ar.ID === newMessID;
-          }),
-          1
-        );
-      }
-      let newTemp = { ...Current };
-      newTemp.text = newText;
-      newTemp.name =
-        Users[
-          Users.findIndex((Ar) => {
-            return Ar.ID === newMessID;
-          })
-        ].Name;
-      let temp = [newTemp, ...conversations];
-      setConversations(temp);
-      setChanged(false);
-      setNewID(null);
-      setNewText("");
+          }) !== -1
+        ) {
+          conversations.splice(
+            conversations.findIndex((Ar) => {
+              return Ar.ID === newMessID;
+            }),
+            1
+          );
+        }
+        newTemp.text = newText;
+        newTemp.name = res.name;
+        newTemp.photo = res.picture ? url + res.picture : filler
+        let temp = [newTemp, ...conversations];
+        setConversations(temp);
+        setChanged(false);
+        setNewID(null);
+        setNewText("");
+      })
     }
-  }, [Users, conversations, Current, hasChanged, newMessID, newText, setChanged, setNewID, setNewText]);
-
+  }, [conversations, Current, hasChanged, newMessID, newText, setChanged, setNewID, setNewText]);
+  /////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    if (Query !== "") {
+      setLoading(true);
+      onSearch();
+    } else {
+      setResult([]);
+    }
+  }, [onSearch, Query]);
   /////////////////////////////////////////////////////////////////
   function useOutsideAlerter(ref) {
     useEffect(() => {
@@ -156,8 +228,7 @@ export default connect(
     getAllConversations(props.userData.Token).then((res) => {
       const temp = [];
       res.forEach((ele) => {
-        console.log(ele);
-        ele["user"]["photo"] = ele['user']['picture']?url+ele['user']['picture'] :filler;
+        ele["user"]["photo"] = ele['user']['picture'] ? url + ele['user']['picture'] : filler;
         let x = setUser(ele["user"]);
         let data = {
           name: ele["user"]["name"],
@@ -170,19 +241,6 @@ export default connect(
       });
       setOldConv(temp);
       setLoading(false);
-    });
-    getAllUsers().then((res) => {
-      //TODO: use User Photo
-      const temp = [];
-      res.forEach((element) => {
-        if (element["picture"]) console.log(element);
-        element["photo"] = element["picture"]
-          ? url + element["picture"]
-          : filler;
-        if (element["photo"] !== filler) console.log(element);
-        temp.push(setUser(element));
-      });
-      setUsers(temp);
     });
   };
   /////////////////////////////////////////////////////////////////////////////
@@ -205,7 +263,6 @@ export default connect(
   /////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////
   let searchbb = null;
-  let addbb = null;
   let oldResults = [];
   if (searchVis.showSearch) {
     searchbb = (
@@ -223,7 +280,7 @@ export default connect(
               key={index}
               data={{
                 name: value.name,
-                photo: filler,
+                photo: value.photo,
                 text: " ",
               }}
               onClick={() => {
@@ -234,56 +291,6 @@ export default connect(
                 setSearchVis({ showSearch: false });
               }}
               isOnline={value.isOnline}
-            />
-          );
-        }
-      });
-    }
-  }
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////
-  let SearchResult = [];
-  if (addBarVis.showBar) {
-    addbb = (
-      <SearchBar
-        searchQuery={Query}
-        setSearchQuery={setQuery}
-        fillerText="Search for someone to start a new chat..."
-      />
-    );
-    if (Query !== "") {
-      Users.forEach((value, index) => {
-        let isPart = false;
-        let onClickHandler = null;
-        if (value.Name.toLowerCase().includes(Query.toLowerCase())) {
-          oldConv.forEach((ele) => {
-            if (ele.ID === value.ID) {
-              isPart = true;
-            }
-          });
-          if (isPart) {
-            onClickHandler = () => {
-              props.setVis();
-              props.setIsNew(false);
-              props.setCurrent(value);
-              setQuery("");
-              setAddBar({ showBar: false });
-            };
-          } else {
-            onClickHandler = () => {
-              props.setVis();
-              props.setIsNew(true);
-              props.setCurrent(value);
-              setQuery("");
-              setAddBar({ showBar: false });
-            };
-          }
-          SearchResult.push(
-            <SearchItem
-              key={index}
-              Name={value.Name}
-              img={filler}
-              onClick={onClickHandler}
             />
           );
         }
@@ -332,22 +339,22 @@ export default connect(
           {!(addBarVis.showBar && Query !== "")
             ? !(searchVis.showSearch && oldQuery !== "")
               ? conversations.map((conversation, index) => (
-                  <ConversationListItem
-                    onClick={() => {
-                      props.setIsNew(false);
-                      props.setCurrent(conversation);
-                      props.setVis();
-                    }}
-                    isOnline={CurrentActiveUsers.includes(conversation.ID)}
-                    key={index}
-                    data={conversation}
-                    isCurrent={
-                      props.Current === null
-                        ? false
-                        : props.Current.ID === conversation.ID
-                    }
-                  />
-                ))
+                <ConversationListItem
+                  onClick={() => {
+                    props.setIsNew(false);
+                    props.setCurrent(conversation);
+                    props.setVis();
+                  }}
+                  isOnline={CurrentActiveUsers.includes(conversation.ID)}
+                  key={index}
+                  data={conversation}
+                  isCurrent={
+                    props.Current === null
+                      ? false
+                      : props.Current.ID === conversation.ID
+                  }
+                />
+              ))
               : oldResults
             : SearchResult}
         </div>
