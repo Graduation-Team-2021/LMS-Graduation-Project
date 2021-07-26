@@ -78,7 +78,7 @@ class deliverable_controller:
             deliverable_id=deliverable_id).first().serialize()['students_number']
         total_number_of_students = Learns_Relation.query.filter_by(course_code=course_code).with_entities(
             func.count(Learns_Relation.course_code)).group_by(Learns_Relation.course_code).all()
-        if len(total_number_of_students)!=0:
+        if len(total_number_of_students) != 0:
             total_number_of_students = total_number_of_students[0][0]
         else:
             total_number_of_students = 0
@@ -221,9 +221,9 @@ class deliverable_controller:
                 for i in deliverable:
                     t = i.serialize()
                     if t['students_number'] > 1:
-                        
+
                         student_group = StudentGroupRelation.query.filter(
-                    StudentGroupRelation.student_id == user_id).all()
+                            StudentGroupRelation.student_id == user_id).all()
                         deliverable_group = GroupDeliverableRelation.query.filter(
                             GroupDeliverableRelation.deliverable_id == i.deliverable_id).all()
                         deliverable_group_formatted = []
@@ -234,58 +234,63 @@ class deliverable_controller:
                             deliverable_group_formatted.append(j.serialize())
                         t['group_id'] = None
                         t['group_name'] = None
-                        t["submit"]=None
+                        t["submit"] = None
                         for k in deliverable_group_formatted:
                             for j in student_group_formatted:
                                 if k['group_id'] == j['group_id']:
-                                    temp = groups_controller.get_group(j['group_id'])
+                                    temp = groups_controller.get_group(
+                                        j['group_id'])
                                     deliv = delivers_controller_object\
-                                        .get_all_delivers_by_user_id_and_deliverable_id(user_id\
-                                            , i.deliverable_id, t['students_number'])
+                                        .get_all_delivers_by_user_id_and_deliverable_id(user_id, i.deliverable_id, t['students_number'])
                                     t['group_id'] = temp[
                                         'group_id']
                                     t['group_name'] = temp['group_name']
-                                    if len(deliv)>0:
+                                    if len(deliv) > 0:
                                         t['submit'] = deliv[0]['student_id']
                                     break
                     else:
                         t['submit'] = user_id
                     deliverables_formatted.append(t)
                 for i in deliverables_formatted:
-                    delivers_relation = Deliver.query.filter(
-                        Deliver.deliverable_id == i['deliverable_id']).filter(Deliver.student_id == user_id).first()
                     if i['students_number'] == 1:
+                        delivers_relation = Deliver.query.filter(
+                            Deliver.deliverable_id == i['deliverable_id']).filter(Deliver.student_id == user_id).first()
                         grade = Deliverables_Results.query.filter(
                             Deliverables_Results.deliverable_id == i['deliverable_id']
                         ).filter(Deliverables_Results.user_id == user_id).first()
                         if grade is not None:
                             grade = grade.serialize()
+                        else:
+                            grade = {'mark': None}
                     else:
-                        grade = {'mark':None}
+                        grade = {'mark': None}
                         grades = Deliverables_Results.query.filter(
                             Deliverables_Results.deliverable_id == i['deliverable_id']
-                        ).join(Deliverables).filter(Deliverables.deliverable_id==Deliverables_Results.deliverable_id)\
+                        ).join(Deliverables).filter(Deliverables.deliverable_id == Deliverables_Results.deliverable_id)\
                             .join(GroupDeliverableRelation).filter(GroupDeliverableRelation.deliverable_id
                                                                    == Deliverables.deliverable_id)\
                             .join(GroupProject).filter(GroupProject.group_id == GroupDeliverableRelation.group_id)\
                             .join(StudentGroupRelation).filter(GroupProject.group_id == StudentGroupRelation.group_id)\
                             .filter(Deliverables_Results.user_id == StudentGroupRelation.student_id)\
-                                .with_entities(Deliverables_Results.mark, GroupProject.group_id)\
-                                .all()
+                            .with_entities(Deliverables_Results.mark, GroupProject.group_id, Deliverables_Results.user_id)\
+                            .all()
                         for g in grades:
-                            s = StudentGroupRelation.query.filter_by(group_id=g[1], student_id=user_id).first()
+                            s = StudentGroupRelation.query.filter_by(
+                                group_id=g[1], student_id=user_id).first()
                             if s is not None:
+                                delivers_relation = Deliver.query.filter(
+                            Deliver.deliverable_id == i['deliverable_id']).filter(Deliver.student_id == g[2]).first()
                                 grade['mark'] = g[0]
                                 break
                     status = ""
-                    if(datetime.now() > i['deadline'] and grade is None):
+                    if(datetime.now() > i['deadline'] and grade['mark'] is None):
                         status = "Overdue"
                         i['smark'] = 0
-                    elif(datetime.now() > i['deadline'] and grade is not None):
-                        
+                    elif(datetime.now() > i['deadline'] and grade['mark'] is not None):
+
                         status = 'Completed'
                         i['smark'] = grade['mark']
-                    elif(grade is not None):
+                    elif(grade['mark'] is not None):
                         status = 'Graded'
                         i['smark'] = grade['mark']
                     elif(delivers_relation is not None):
@@ -304,16 +309,17 @@ class deliverable_controller:
                 for i in deliverable:
                     deliverables_formatted.append(i.serialize())
                 for i in deliverables_formatted:
-
                     delivers_relation = delivers_controller_object.count_number_of_ungraded_deliverables(
                         i['deliverable_id'])
-                    i['unsolved_deliverables'] = delivers_relation
+                    i['unsolved_deliverables'] = delivers_relation[0]
                     status = ""
-                    if(datetime.now() > i['deadline']):
+                    if(datetime.now() > i['deadline'] and delivers_relation[0] != delivers_relation[1]):
+                        status = "Overdue"
+                    elif (delivers_relation[0] == 0):
                         status = "Completed"
-                    elif(delivers_relation != 0):
+                    elif(delivers_relation[0] != 0):
                         status = "In Progress"
-                    else:
+                    elif (delivers_relation[0] == delivers_relation[1]):
                         status = "Not Started"
                     i['status'] = status
                     deliverables_modified.append(i)

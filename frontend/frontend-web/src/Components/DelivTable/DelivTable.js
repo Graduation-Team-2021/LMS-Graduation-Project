@@ -215,7 +215,8 @@ export default connect(
               course: props.course,
               total: props.mark,
               cid: props.id,
-              status: v2["mark"]? 'Graded': "Not Started"
+              status: v2["mark"]? 'Graded': "Not Started",
+              description: props["description"] || "No Description",
             }))
           );
           setLoading(false);

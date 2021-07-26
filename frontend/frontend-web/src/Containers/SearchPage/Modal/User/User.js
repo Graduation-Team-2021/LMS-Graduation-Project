@@ -23,7 +23,7 @@ const User = (props) => {
         <div>{user.email}</div>
       </span>
       <span className={classes.Button}>
-        <Button
+        {user.user_id!==props.userData.ID?<Button
           className={classes.Inner}
           onClick={() => {
             props.currentMessageActions.onSetCurrentMessage({
@@ -34,7 +34,7 @@ const User = (props) => {
           }}
         >
           Message
-        </Button>
+        </Button>:null}
       </span>
     </div>
   );

@@ -19,12 +19,8 @@ class deliverable_results_controller:
                        == deliverable['deliverable_id']).filter(
                     Deliverables_Results.user_id == user_id
                 ).first()
-            if deliverable_result is None:
-                raise ErrorHandler({
-                    'description': 'Deliverable results not found',
-                    'status_code': 404
-                })
-            deliverable_result.full_mark = deliverable['mark']
+            if deliverable_result is not None:
+                deliverable_result.full_mark = deliverable['mark']
 
             return deliverable_result
         except SQLAlchemyError as e:
@@ -38,7 +34,7 @@ class deliverable_results_controller:
     def post_deliverable_result(self, deliverable_result):
         deliverable = deliverable_object.get_deliverable(
             deliverable_result['deliverable_id'])
-        if deliverable['mark'] < deliverable_result['mark']:
+        if deliverable_result['mark'] is not None and deliverable['mark'] < deliverable_result['mark']:
             raise ErrorHandler({
                 'description': "Mark assigned is higher than the maximum allowed.",
                 'status_code': 404

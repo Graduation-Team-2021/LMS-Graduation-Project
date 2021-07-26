@@ -50,7 +50,7 @@ function Page(props) {
   const [current, setCurrent] = useState(null);
 
   useEffect(() => {
-    getDelivByID(ele.id, props.userData.ID, isgroup).then((res) => {
+    getDelivByID((!isgroup?ele.id:ele.cid), props.userData.ID, isgroup).then((res) => {
       console.log(res);
       setFile(
         res.map((val) => ({

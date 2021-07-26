@@ -177,10 +177,12 @@ class delivers_controller():
                                                                    Deliver.student_id).with_entities(
                 Deliverables_Results.mark)
             count = 0
+            total = 0
             for i in student_marks:
+                total +=1
                 if i[0] is None:
                     count = count + 1
-            return count
+            return count, total
         except SQLAlchemyError as e:
             error = str(e)
             raise ErrorHandler({

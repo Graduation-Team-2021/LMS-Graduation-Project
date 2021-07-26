@@ -66,19 +66,8 @@ const ProfilePage = (props) => {
   };
 
   useEffect(() => {
-    if (!RecentEvent)
-      getRecentEvent(Token, ID, Role).then((res) => {
-        if (res) {
-          setRecentEvent(setEvent(res));
-        } else {
-          TokenError();
-        }
-      });
-  }, [Token, ID, Role, TokenError, RecentEvent, setRecentEvent]);
-
-  useEffect(() => {
     getUser(ID).then((res) => {
-      res.picture = url + res.picture;
+      res.picture = res.picture ? url + res.picture : null;
       setuserSelf(res);
     });
   }, [ID]);
@@ -90,7 +79,8 @@ const ProfilePage = (props) => {
         res.forEach((C) =>
           Courses.push({
             Title: `${C["course_code"]}: ${C["course_name"]}`,
-            grade: C["course_mark"], pic: C['course_pic']
+            grade: C["course_mark"],
+            pic: C["course_pic"],
           })
         );
         setFinished(Courses);
@@ -108,11 +98,11 @@ const ProfilePage = (props) => {
         setGrade(res.reduce((a, b) => a + b["course_mark"], 0));
       });
     } else {
-      getDegree(ID).then(res=>{
+      getDegree(ID).then((res) => {
         if (res) {
-          setGrade(res.scientific_degree||"N/A")
+          setGrade(res.scientific_degree || "N/A");
         }
-      })
+      });
     }
   }, [ID, Role]);
 
@@ -144,10 +134,10 @@ const ProfilePage = (props) => {
                 <span className={classes.DD}>
                   <div className={classes.Details}>
                     <div className={classes.Name}>{props.userData.Name}</div>
-                    {Role==='student'?<div>Year: {year}</div>:null}
+                    {Role === "student" ? <div>Year: {year}</div> : null}
                   </div>
                   <FilePicker
-                   maxSize={1000}
+                    maxSize={1000}
                     onChange={(FileObject) => {
                       handleFIleUpload(FileObject);
                     }}
@@ -190,7 +180,7 @@ const ProfilePage = (props) => {
           />
         </div>
       </Card>
-      {RecentEvent ? <Upcoming Event={RecentEvent} /> : <h1>Loading.....</h1>}
+      <Upcoming />
     </div>
   );
 };

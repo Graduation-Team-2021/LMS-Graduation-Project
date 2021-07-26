@@ -9,7 +9,7 @@ Base = declarative_base()
 class Finished(db.Model, Base):
     __tablename__ = 'finish'
 
-    course_code = db.Column(db.String(5), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
+    course_code = db.Column(db.String(10), ForeignKey('course.course_code', ondelete='CASCADE', onupdate="CASCADE"),
                             primary_key=True)
     student_id = db.Column(db.Integer, ForeignKey('student.user_id', ondelete='CASCADE', onupdate="CASCADE"),
                            primary_key=True)
